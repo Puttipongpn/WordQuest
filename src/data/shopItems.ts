@@ -4,14 +4,14 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "upgrade-attack",
     name: "Upgrade Attack",
-    description: "Preview: increase a selected card's attack for this run.",
+    description: "Increase a selected card's attack by +2 for this run.",
     cost: 35,
     type: "upgrade-attack",
     icon: "ATK",
     effect: {
       type: "attack",
-      amount: 1,
-      description: "Add +1 attack to a selected word card.",
+      amount: 2,
+      description: "Add +2 attack to a selected word card.",
     },
   },
   {
@@ -73,14 +73,14 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "add-shield",
     name: "Add Shield",
-    description: "Preview: give a selected card a shield effect for this run.",
+    description: "Give a selected card Shield +3 for this run.",
     cost: 40,
     type: "add-shield",
     icon: "SHD",
     effect: {
       type: "shield",
-      amount: 2,
-      description: "Add +2 shield to a selected word card.",
+      amount: 3,
+      description: "Add +3 shield to a selected word card.",
     },
   },
   {

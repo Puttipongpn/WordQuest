@@ -388,6 +388,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Run upgrades should reset on run restart, page refresh, or app reload and should not become permanent learning progress.
 - Status: Accepted
 
+### 2026-06-04: Shield Absorbs Damage Before HP
+
+- Decision: Monster attacks reduce player shield before damaging player HP.
+- Reason: Shield needs a clear defensive role that supports simple roguelike combat and readable battle feedback.
+- Status: Accepted
+
+### 2026-06-04: Add Shield as Second Active Shop Purchase
+
+- Decision: Activate `Add Shield` after `Upgrade Attack` as the second current-run shop purchase.
+- Reason: Add Shield proves that shop purchases can add card effects, not only change base attack.
+- Status: Accepted
+
+### 2026-06-04: Shield Effects Are Temporary Current-Run Card Effects
+
+- Decision: Add Shield modifies only current-run card effects by adding or increasing Shield +3 on the selected card.
+- Reason: Shop upgrades should affect the active run deck without mutating seed vocabulary data or permanent progress.
+- Status: Accepted
+
+### 2026-06-04: Shield Is Not Persisted
+
+- Decision: Player shield and current-run card shield effects are not saved to LocalStorage.
+- Reason: Shield is run progress and must reset on run restart, death, page refresh, or app reload.
+- Status: Accepted
+
 ### 2026-06-04: Shop Presentation First
 
 - Decision: Build the Shop screen and sample shop item data before implementing purchase logic.

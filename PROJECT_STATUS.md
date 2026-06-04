@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 11 first shop purchase logic is complete. GitHub backup is configured on `origin/main`.
+Phase 12 basic shield system and Add Shield shop purchase are complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -130,10 +130,19 @@ Phase 11 first shop purchase logic is complete. GitHub backup is configured on `
 - Subtracted the existing Upgrade Attack shop item cost when purchase succeeds.
 - Added not-enough-gold and success feedback for Upgrade Attack.
 - Kept all other shop items preview-only / coming soon.
-- Reset current-run deck, gold, monster state, HP, shield display, and run progression on run restart.
+- Reset current-run deck, gold, monster state, HP, shield, and run progression on run restart.
 - Kept shop upgrades, gold, and current-run deck changes out of LocalStorage.
-- Kept element items, shield items, remove card, duplicate card, boss logic, run rewards, deck unlocks, and final art assets unimplemented.
+- Kept element items, remove card, duplicate card, boss logic, run rewards, deck unlocks, and final art assets unimplemented.
 - Verified the project with `npm run build` after Phase 11.
+- Made player shield functional in Dungeon battles.
+- Monster attacks now reduce shield before damaging player HP.
+- Triggered cards with shield effects now add shield while still dealing `baseAttack` damage.
+- Activated the `Add Shield` shop purchase for current-run cards.
+- Add Shield lets the player choose a current-run card and add or increase Shield by +3.
+- Kept shield, shield effects, shop upgrades, gold, and current-run deck changes temporary and out of LocalStorage.
+- Updated Dungeon feedback to show shield absorbed, HP damage taken, shield gained, and triggered effects summary.
+- Kept element items, remove card, duplicate card, boss logic, run rewards, deck unlocks, and final art assets unimplemented.
+- Verified the project with `npm run build` after Phase 12.
 
 ## In Progress
 
@@ -141,7 +150,7 @@ Phase 11 first shop purchase logic is complete. GitHub backup is configured on `
 
 ## Next Task
 
-Phase 12 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 13 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -217,6 +226,10 @@ The following documents are required and must be updated after every completed t
 - Gold is temporary run progress
 - Shop upgrades are not persisted to LocalStorage
 - Starter Deck seed data is not mutated by shop upgrades
+- Shield absorbs monster damage before HP
+- Add Shield is the second active shop purchase
+- Shield effects are temporary current-run card effects
+- Shield and shield effects are not persisted to LocalStorage
 
 ## Important Rules
 
@@ -241,7 +254,7 @@ Keep game playable and simple.
 - Sound effects
 - More mini-games
 - Full dungeon battle logic
-- Remaining shop purchase logic
+- Remaining shop purchase logic for element, remove, and duplicate items
 - Boss battles
 - Run rewards
 - Save migrations beyond version 1

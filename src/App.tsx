@@ -27,6 +27,7 @@ const shopInterval = 5;
 const initialRunGold = 20;
 const monsterGoldReward = 5;
 const attackUpgradeAmount = 2;
+const shieldUpgradeAmount = 3;
 
 const initialRunProgress: RunProgressState = {
   monstersDefeated: 0,
@@ -130,6 +131,61 @@ export default function App() {
     return true;
   }
 
+  function purchaseShieldUpgrade(cardId: string, cost: number) {
+    if (runGold < cost) {
+      return false;
+    }
+
+    setRunGold((currentGold) => currentGold - cost);
+    setCurrentRunDeck((currentDeck) =>
+      currentDeck.map((card) => {
+        if (card.id !== cardId) {
+          return card;
+        }
+
+        const effects = card.effects ?? [];
+        const existingShieldEffect = effects.find(
+          (effect) => effect.type === "shield",
+        );
+
+        if (existingShieldEffect) {
+          let hasUpgradedShield = false;
+
+          return {
+            ...card,
+            effects: effects.map((effect) => {
+              if (effect.type !== "shield" || hasUpgradedShield) {
+                return effect;
+              }
+
+              hasUpgradedShield = true;
+
+              return {
+                ...effect,
+                amount: effect.amount + shieldUpgradeAmount,
+                description: `Gain ${effect.amount + shieldUpgradeAmount} shield when triggered.`,
+              };
+            }),
+          };
+        }
+
+        return {
+          ...card,
+          effects: [
+            ...effects,
+            {
+              type: "shield",
+              amount: shieldUpgradeAmount,
+              description: `Gain ${shieldUpgradeAmount} shield when triggered.`,
+            },
+          ],
+        };
+      }),
+    );
+
+    return true;
+  }
+
   return (
     <div className="min-h-screen">
       <AppHeader currentScreen={currentScreen} onNavigate={setCurrentScreen} />
@@ -164,6 +220,7 @@ export default function App() {
             currentRunDeck={currentRunDeck}
             onNavigate={setCurrentScreen}
             onPurchaseAttackUpgrade={purchaseAttackUpgrade}
+            onPurchaseShieldUpgrade={purchaseShieldUpgrade}
             runGold={runGold}
             runProgress={runProgress}
           />

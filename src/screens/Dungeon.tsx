@@ -38,6 +38,10 @@ type BattleLog = {
   triggeredCard?: WordCard;
   damageDealt?: number;
   damageTaken?: number;
+  hpDamageTaken?: number;
+  shieldAbsorbed?: number;
+  shieldGained?: number;
+  effectsSummary?: string;
 };
 
 const initialPlayerHp = 30;
@@ -106,6 +110,31 @@ function formatMiniGameName(miniGameType: BattleMiniGameType) {
   return miniGameType === "word-choice" ? "Word Choice" : "Word Match";
 }
 
+function getCardShieldAmount(card: WordCard) {
+  return (
+    card.effects?.reduce(
+      (total, effect) => total + (effect.type === "shield" ? effect.amount : 0),
+      0,
+    ) ?? 0
+  );
+}
+
+function getCardEffectsSummary(card: WordCard) {
+  const shieldAmount = getCardShieldAmount(card);
+  const effects = [`Attack ${card.baseAttack}`];
+
+  if (shieldAmount > 0) {
+    effects.push(`Shield +${shieldAmount}`);
+  }
+
+  const elements =
+    card.effects
+      ?.filter((effect) => effect.type === "element")
+      .map((effect) => `${effect.element} +${effect.amount}`) ?? [];
+
+  return [...effects, ...elements].join(" / ");
+}
+
 export function Dungeon({
   currentRunDeck,
   onMonsterDefeated,
@@ -115,7 +144,7 @@ export function Dungeon({
   runProgress,
 }: DungeonProps) {
   const [playerHp, setPlayerHp] = useState(initialPlayerHp);
-  const [shield] = useState(initialShield);
+  const [shield, setShield] = useState(initialShield);
   const [monsterIndex, setMonsterIndex] = useState(0);
   const [monsterHp, setMonsterHp] = useState(
     () => getMonsterForIndex(0).maxHp,
@@ -177,48 +206,66 @@ export function Dungeon({
   }
 
   function triggerCard(card: WordCard) {
+    const shieldGained = getCardShieldAmount(card);
+    const effectsSummary = getCardEffectsSummary(card);
     const nextMonsterHp = Math.max(monsterHp - card.baseAttack, 0);
 
     setMonsterHp(nextMonsterHp);
+    if (shieldGained > 0) {
+      setShield((currentShield) => currentShield + shieldGained);
+    }
 
     if (nextMonsterHp === 0) {
       onMonsterDefeated();
       setBattleStatus("monster-defeated");
       setBattleLog({
         tone: "success",
-        message: `${card.word} triggered for ${card.baseAttack} damage. ${currentMonster.name} defeated.`,
+        message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${currentMonster.name} defeated.`,
         triggeredCard: card,
         damageDealt: card.baseAttack,
+        shieldGained,
+        effectsSummary,
       });
       return;
     }
 
     setBattleLog({
       tone: "success",
-      message: `${card.word} triggered for ${card.baseAttack} damage.`,
+      message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}.`,
       triggeredCard: card,
       damageDealt: card.baseAttack,
+      shieldGained,
+      effectsSummary,
     });
   }
 
   function monsterAttack() {
-    const nextPlayerHp = Math.max(playerHp - currentMonster.attack, 0);
+    const shieldAbsorbed = Math.min(shield, currentMonster.attack);
+    const hpDamageTaken = currentMonster.attack - shieldAbsorbed;
+    const nextShield = shield - shieldAbsorbed;
+    const nextPlayerHp = Math.max(playerHp - hpDamageTaken, 0);
+
+    setShield(nextShield);
     setPlayerHp(nextPlayerHp);
 
     if (nextPlayerHp === 0) {
       setBattleStatus("run-failed");
       setBattleLog({
         tone: "danger",
-        message: `Wrong answer. No card triggered. ${currentMonster.name} dealt ${currentMonster.attack} damage. Run Failed.`,
+        message: `Wrong answer. No card triggered. ${currentMonster.name} attacked for ${currentMonster.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}. Run Failed.`,
         damageTaken: currentMonster.attack,
+        hpDamageTaken,
+        shieldAbsorbed,
       });
       return;
     }
 
     setBattleLog({
       tone: "danger",
-      message: `Wrong answer. No card triggered. ${currentMonster.name} dealt ${currentMonster.attack} damage.`,
+      message: `Wrong answer. No card triggered. ${currentMonster.name} attacked for ${currentMonster.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
       damageTaken: currentMonster.attack,
+      hpDamageTaken,
+      shieldAbsorbed,
     });
   }
 
@@ -283,6 +330,7 @@ export function Dungeon({
   function handleRestartRun() {
     onResetRun();
     setPlayerHp(initialPlayerHp);
+    setShield(initialShield);
     setMonsterIndex(0);
     setMonsterHp(getMonsterForIndex(0).maxHp);
     setBattleStatus("fighting");
@@ -393,7 +441,7 @@ export function Dungeon({
             <StatCard
               label="Shield"
               value={shield}
-              helper="Display only for now"
+              helper="Absorbs monster damage before HP"
               tone="sky"
             />
             <StatCard
@@ -496,7 +544,7 @@ export function Dungeon({
               </Badge>
             </div>
             <p className="mt-1 text-slate-700">{battleLog.message}</p>
-            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <div className="rounded-md bg-white/70 p-3">
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   Triggered card
@@ -521,6 +569,38 @@ export function Dungeon({
                   {battleLog.damageTaken ?? 0}
                 </p>
               </div>
+              <div className="rounded-md bg-white/70 p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Shield absorbed
+                </p>
+                <p className="mt-1 font-semibold text-slate-950">
+                  {battleLog.shieldAbsorbed ?? 0}
+                </p>
+              </div>
+              <div className="rounded-md bg-white/70 p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  HP damage
+                </p>
+                <p className="mt-1 font-semibold text-slate-950">
+                  {battleLog.hpDamageTaken ?? 0}
+                </p>
+              </div>
+              <div className="rounded-md bg-white/70 p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Shield gained
+                </p>
+                <p className="mt-1 font-semibold text-slate-950">
+                  {battleLog.shieldGained ?? 0}
+                </p>
+              </div>
+            </div>
+            <div className="mt-3 rounded-md bg-white/70 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Triggered effects
+              </p>
+              <p className="mt-1 font-semibold text-slate-950">
+                {battleLog.effectsSummary ?? "None"}
+              </p>
             </div>
             {isAnswered && battleStatus === "fighting" && (
               <Button
@@ -572,6 +652,9 @@ export function Dungeon({
               <p className="mt-1 text-sm text-slate-600">
                 Base attack {featuredCard.baseAttack}
               </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Shield effect +{getCardShieldAmount(featuredCard)}
+              </p>
             </div>
           </div>
           <div className="mt-5 rounded-md border border-slate-200 p-4">
@@ -584,8 +667,10 @@ export function Dungeon({
             <p className="font-semibold text-slate-950">Trigger rule</p>
             <p className="mt-2 text-sm text-slate-600">
               Correct answers trigger the selected word card and deal damage
-              equal to base attack. Incorrect answers do not trigger card
-              effects and cause monster attack damage.
+              equal to base attack. Shield effects add player shield when the
+              card triggers. Incorrect answers do not trigger card effects and
+              cause monster attack damage, with shield absorbing damage before
+              HP.
             </p>
           </div>
         </aside>

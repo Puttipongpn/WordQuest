@@ -153,7 +153,7 @@ The first dungeon battle and run progression foundation is implemented with temp
 
 Current battle rules:
 
-- Player has HP, shield display, and gold display.
+- Player has HP, functional shield, and gold display.
 - Dungeon run progression tracks monsters defeated, current floor, and next shop checkpoint.
 - The run deck starts as a temporary copy of `Starter Deck`.
 - Dungeon battle questions use the current-run deck copy.
@@ -168,8 +168,11 @@ Current battle rules:
 - Correct Word Match pairs trigger the selected English word card.
 - Triggered cards deal damage equal to `baseAttack`.
 - If a current-run card has been upgraded in the shop, the upgraded `baseAttack` is used for battle damage.
+- If a triggered card has a shield effect, the player gains that shield while the card still deals `baseAttack` damage.
 - Incorrect answers do not trigger card effects.
-- Incorrect answers cause the current monster to attack player HP.
+- Incorrect answers cause the current monster to attack.
+- Monster attacks reduce player shield before damaging player HP.
+- Shield starts at 0 each run and is temporary run progress.
 - When monster HP reaches 0, the screen shows `Monster Defeated`.
 - Defeating a monster increases `monstersDefeated` by 1.
 - Defeating a monster grants +5 temporary gold.
@@ -183,9 +186,8 @@ Current battle rules:
 
 Deferred dungeon systems:
 
-- Shield absorption
 - Run rewards
-- Remaining shop purchase logic
+- Remaining shop purchase logic for element, remove, and duplicate items
 - Boss logic
 - Permanent mastery updates from battle
 
@@ -208,7 +210,7 @@ Battle mini-games should eventually include timers. Difficulty should affect tim
 
 ## Shop Plan
 
-Shop presentation is implemented. The first active shop purchase is `Upgrade Attack`.
+Shop presentation is implemented. The active shop purchases are `Upgrade Attack` and `Add Shield`.
 
 The shop appears every 5 monsters during dungeon runs.
 
@@ -236,12 +238,16 @@ Current shop rules:
 - `Upgrade Attack` is purchasable.
 - `Upgrade Attack` uses its existing shop item cost.
 - If the player has enough temporary gold, the player can choose one current-run card and increase its `baseAttack` by +2.
+- `Add Shield` is purchasable.
+- `Add Shield` uses its existing shop item cost.
+- If the player has enough temporary gold, the player can choose one current-run card and add Shield +3.
+- If the selected card already has a shield effect, Add Shield increases that shield effect by +3.
 - If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback.
-- Other shop items remain preview-only / coming soon.
+- Element, remove, and duplicate shop items remain preview-only / coming soon.
 - Dungeon can route to Shop when a checkpoint is available.
 - Shop can route back to Dungeon.
 - Shop upgrades modify only current-run cards.
-- Shop upgrades, gold, and current-run deck changes are not saved to LocalStorage.
+- Shop upgrades, shield effects, gold, and current-run deck changes are not saved to LocalStorage.
 
 ## Card Effects
 
@@ -265,6 +271,8 @@ Rules:
   - Attack
   - Shield
   - Element
+- Attack effects currently use the card's `baseAttack` for damage.
+- Shield effects currently add player shield when the card triggers.
 - Incorrect answers do not trigger card effects.
 - Future shop upgrades and enchantments modify card effects, not player stats directly.
 
@@ -279,7 +287,7 @@ Current element types:
 - Wind
 - Earth
 
-Elements are planned as simple card effect properties for Version 1. Detailed element interactions and balance rules are deferred until combat exists.
+Elements are planned as simple card effect properties for Version 1. Detailed element interactions and balance rules are deferred until element purchases or element cards exist.
 
 ## Death Rule
 

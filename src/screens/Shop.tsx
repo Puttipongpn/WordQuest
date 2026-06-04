@@ -8,6 +8,7 @@ type ShopProps = {
   currentRunDeck: WordCard[];
   onNavigate: (screen: ScreenName) => void;
   onPurchaseAttackUpgrade: (cardId: string, cost: number) => boolean;
+  onPurchaseShieldUpgrade: (cardId: string, cost: number) => boolean;
   runGold: number;
   runProgress: RunProgressState;
 };
@@ -18,24 +19,42 @@ type PurchaseFeedback = {
 };
 
 const upgradeAttackItemId = "upgrade-attack";
+const addShieldItemId = "add-shield";
 const attackUpgradeAmount = 2;
+const shieldUpgradeAmount = 3;
+
+function getCardShieldAmount(card: WordCard) {
+  return (
+    card.effects?.reduce(
+      (total, effect) => total + (effect.type === "shield" ? effect.amount : 0),
+      0,
+    ) ?? 0
+  );
+}
 
 export function Shop({
   currentRunDeck,
   onNavigate,
   onPurchaseAttackUpgrade,
+  onPurchaseShieldUpgrade,
   runGold,
   runProgress,
 }: ShopProps) {
   const [selectedAttackCardId, setSelectedAttackCardId] = useState(
     currentRunDeck[0]?.id ?? "",
   );
+  const [selectedShieldCardId, setSelectedShieldCardId] = useState(
+    currentRunDeck[0]?.id ?? "",
+  );
   const [purchaseFeedback, setPurchaseFeedback] = useState<PurchaseFeedback>({
     tone: "neutral",
-    message: "Choose a card to preview the Upgrade Attack purchase.",
+    message: "Choose a card to preview an active shop purchase.",
   });
   const selectedAttackCard = currentRunDeck.find(
     (card) => card.id === selectedAttackCardId,
+  );
+  const selectedShieldCard = currentRunDeck.find(
+    (card) => card.id === selectedShieldCardId,
   );
 
   function handlePurchaseAttackUpgrade(cost: number) {
@@ -63,11 +82,36 @@ export function Shop({
     });
   }
 
+  function handlePurchaseShieldUpgrade(cost: number) {
+    if (!selectedShieldCard) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: "Choose a card before buying Add Shield.",
+      });
+      return;
+    }
+
+    const isPurchased = onPurchaseShieldUpgrade(selectedShieldCard.id, cost);
+
+    if (!isPurchased) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: `Not enough gold. Add Shield costs ${cost} gold.`,
+      });
+      return;
+    }
+
+    setPurchaseFeedback({
+      tone: "success",
+      message: `${selectedShieldCard.word} gained Shield +${shieldUpgradeAmount} for this run.`,
+    });
+  }
+
   return (
     <ScreenShell
       eyebrow="Upgrade"
       title="Current Run Shop"
-      description="Buy temporary current-run upgrades. Only Upgrade Attack is active in this phase."
+      description="Buy temporary current-run upgrades. Upgrade Attack and Add Shield are active in this phase."
       framed={false}
     >
       <CardPanel className="mb-6 border-emerald-200 bg-emerald-50">
@@ -78,8 +122,8 @@ export function Shop({
               Shop upgrades are temporary and affect only the current run.
             </p>
             <p className="mt-2 text-sm text-emerald-800">
-              Upgrade Attack can modify a copied current-run card. Other shop
-              item types remain preview-only for now.
+              Upgrade Attack and Add Shield can modify copied current-run
+              cards. Other shop item types remain preview-only for now.
             </p>
           </div>
           <div className="grid gap-3 sm:min-w-72 sm:grid-cols-3">
@@ -92,7 +136,7 @@ export function Shop({
             <StatCard
               label="Mode"
               value="Partial"
-              helper="Attack only"
+              helper="Attack + Shield"
               tone="emerald"
             />
             <StatCard
@@ -116,19 +160,21 @@ export function Shop({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {sampleShopItems.map((item) => {
           const isUpgradeAttack = item.id === upgradeAttackItemId;
+          const isAddShield = item.id === addShieldItemId;
+          const isActivePurchase = isUpgradeAttack || isAddShield;
 
           return (
             <CardPanel
               key={item.id}
               className={`flex min-h-72 flex-col ${
-                isUpgradeAttack ? "border-emerald-300" : ""
+                isActivePurchase ? "border-emerald-300" : ""
               }`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-md bg-slate-100 text-xs font-bold text-slate-700">
                   {item.icon}
                 </div>
-                <Badge tone={isUpgradeAttack ? "emerald" : "slate"}>
+                <Badge tone={isActivePurchase ? "emerald" : "slate"}>
                   {item.type.replaceAll("-", " ")}
                 </Badge>
               </div>
@@ -185,6 +231,51 @@ export function Shop({
                 </div>
               )}
 
+              {isAddShield && (
+                <div className="mt-5 rounded-md border border-sky-100 bg-sky-50 p-3">
+                  <p className="text-sm font-semibold text-sky-950">
+                    Choose current-run card
+                  </p>
+                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
+                    {currentRunDeck.map((card) => {
+                      const isSelected = selectedShieldCardId === card.id;
+                      const currentShield = getCardShieldAmount(card);
+
+                      return (
+                        <button
+                          key={card.id}
+                          type="button"
+                          onClick={() => setSelectedShieldCardId(card.id)}
+                          className={`w-full rounded-md border p-3 text-left transition ${
+                            isSelected
+                              ? "border-sky-500 bg-white ring-1 ring-sky-200"
+                              : "border-sky-100 bg-white/70 hover:border-sky-400"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="font-semibold capitalize text-slate-950">
+                              {card.word}
+                            </span>
+                            <span className="text-sm font-semibold text-slate-600">
+                              Shield {currentShield} -&gt;{" "}
+                              {currentShield + shieldUpgradeAmount}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {selectedShieldCard && (
+                    <p className="mt-3 text-sm font-semibold text-sky-900">
+                      Preview: {selectedShieldCard.word} Shield{" "}
+                      {getCardShieldAmount(selectedShieldCard)} -&gt;{" "}
+                      {getCardShieldAmount(selectedShieldCard) +
+                        shieldUpgradeAmount}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="mt-5 border-t border-slate-100 pt-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="text-sm font-semibold text-slate-500">Cost</p>
@@ -198,6 +289,15 @@ export function Shop({
                     onClick={() => handlePurchaseAttackUpgrade(item.cost)}
                   >
                     Buy Upgrade Attack
+                  </Button>
+                ) : isAddShield ? (
+                  <Button
+                    type="button"
+                    className="w-full"
+                    disabled={!selectedShieldCard}
+                    onClick={() => handlePurchaseShieldUpgrade(item.cost)}
+                  >
+                    Buy Add Shield
                   </Button>
                 ) : (
                   <Button
