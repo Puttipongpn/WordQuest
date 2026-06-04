@@ -430,6 +430,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Shield is run progress and must reset on run restart, death, page refresh, or app reload.
 - Status: Accepted
 
+### 2026-06-04: Element Shop Items Are Active
+
+- Decision: Activate Add Fire Element, Add Water Element, Add Wind Element, and Add Earth Element as current-run shop purchases.
+- Reason: Element purchases complete the basic Version 1 card effect set without adding advanced combat interactions yet.
+- Status: Accepted
+
+### 2026-06-04: One Element Per Card for Now
+
+- Decision: A current-run card may have one element effect for now, and buying a new element replaces any existing element on that card.
+- Reason: One element per card keeps Phase 14 simple and avoids early balancing complexity.
+- Status: Accepted
+
+### 2026-06-04: Element Effects Are Display-Only in Phase 14
+
+- Decision: Element effects show in battle feedback but do not change damage, weakness, resistance, or other combat math.
+- Reason: The first element phase should validate card modification and UI feedback before adding advanced interactions.
+- Status: Accepted
+
+### 2026-06-04: Element Effects Are Temporary Current-Run Card Effects
+
+- Decision: Element effects modify only current-run cards and are not saved to LocalStorage.
+- Reason: Element upgrades are run progress and must reset with the current run.
+- Status: Accepted
+
 ### 2026-06-04: Shop Presentation First
 
 - Decision: Build the Shop screen and sample shop item data before implementing purchase logic.

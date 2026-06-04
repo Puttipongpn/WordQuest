@@ -17,7 +17,7 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "add-fire-element",
     name: "Add Fire Element",
-    description: "Preview: add fire power to a selected card for this run.",
+    description: "Add or replace Fire element on a selected card for this run.",
     cost: 45,
     type: "add-element",
     icon: "FIRE",
@@ -31,7 +31,7 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "add-water-element",
     name: "Add Water Element",
-    description: "Preview: add water power to a selected card for this run.",
+    description: "Add or replace Water element on a selected card for this run.",
     cost: 45,
     type: "add-element",
     icon: "WATER",
@@ -45,7 +45,7 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "add-wind-element",
     name: "Add Wind Element",
-    description: "Preview: add wind power to a selected card for this run.",
+    description: "Add or replace Wind element on a selected card for this run.",
     cost: 45,
     type: "add-element",
     icon: "WIND",
@@ -59,7 +59,7 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "add-earth-element",
     name: "Add Earth Element",
-    description: "Preview: add earth power to a selected card for this run.",
+    description: "Add or replace Earth element on a selected card for this run.",
     cost: 45,
     type: "add-element",
     icon: "EARTH",

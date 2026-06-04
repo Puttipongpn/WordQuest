@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 13 complete. Phase 14 has not started yet.
+Current phase: Phase 14 complete. Phase 15 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -159,6 +159,15 @@ GitHub backup is configured:
 - Preserved Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
 - Kept element items, remove card, duplicate card, boss logic, run rewards, timers, run persistence, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 13.
+- Activated Add Fire Element, Add Water Element, Add Wind Element, and Add Earth Element shop purchases.
+- Element shop items let the player choose one current-run card and add or replace that card's element effect.
+- A current-run card may have one element effect for now.
+- Element effects are temporary current-run card effects and are not saved to LocalStorage.
+- Dungeon triggered effects summary now displays element effects, such as `Element: Fire`.
+- Element effects are display-only in Phase 14 and do not change damage, weakness, or resistance.
+- Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
+- Kept remove card, duplicate card, boss logic, run rewards, timers, run persistence, advanced element interactions, and final art assets unimplemented.
+- Verified the project again with `npm run build` after Phase 14.
 
 ## Implemented Screens
 
@@ -181,7 +190,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, and after Phase 13 Word Scramble work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, and after Phase 14 basic element shop work.
 
 The local development server can be started with:
 
@@ -330,10 +339,11 @@ Current Dungeon implementation:
 - Monster attacks reduce shield before damaging player HP.
 - Triggered cards with shield effects add shield while still dealing `baseAttack` damage.
 - Dungeon feedback shows total monster attack, shield absorbed, HP damage taken, shield gained, triggered card, and triggered effects summary.
-- No element item effects, remove card, duplicate card, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
+- No remove card, duplicate card, boss logic, run rewards, backend, API, advanced element interactions, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
 - Phase 13 added Word Scramble with typed answer input.
+- Phase 14 added display-only element effects from current-run shop purchases.
 
 Current Shop implementation:
 
@@ -342,19 +352,23 @@ Current Shop implementation:
 - The Shop screen is labeled `Current Run Shop`.
 - The screen explains that shop upgrades are temporary and affect only the current run.
 - Each shop item card shows an icon placeholder, name, description, cost, and type.
-- Upgrade Attack and Add Shield are active purchases.
+- Upgrade Attack, Add Shield, and Add Fire/Water/Wind/Earth Element are active purchases.
 - Upgrade Attack uses the existing shop item cost.
 - The player can choose one card from the current-run deck for Upgrade Attack.
 - Upgrade Attack increases the selected card's `baseAttack` by +2 and subtracts gold when the player has enough gold.
 - Add Shield uses the existing shop item cost.
 - The player can choose one card from the current-run deck for Add Shield.
 - Add Shield adds Shield +3 to the selected card or increases an existing shield effect by +3.
+- Element purchases use the existing shop item costs.
+- The player can choose one card from the current-run deck for each element purchase.
+- Element purchases add or replace the selected card's single element effect.
+- Element effects are display-only in Phase 14 and do not change damage.
 - The Shop shows success feedback after a purchase and not-enough-gold feedback when gold is insufficient.
-- All other shop items have disabled coming-soon actions.
+- Remove Card and Duplicate Card have disabled coming-soon actions.
 - Phase 7 was presentation-only; Phase 11 added Upgrade Attack and Phase 12 added Add Shield.
 - Phase 9 UI polish made item type, cost, preview-only state, and current-run-only messaging clearer.
 - Phase 10 added `Back To Dungeon` routing.
-- Element items, remove card, duplicate card, and balancing are deferred.
+- Remove card, duplicate card, advanced element interactions, and balancing are deferred.
 
 ## Version 1 Scope
 
@@ -415,6 +429,10 @@ Version 1 should not include:
 - Word Scramble is the third battle mini-game.
 - Word Scramble uses typed input first.
 - Word Scramble uses the current-run deck and the Card Trigger System.
+- Element shop items are active.
+- A card may have one element effect for now.
+- Element effects are display-only in Phase 14.
+- Element effects are temporary current-run card effects and are not persisted.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -496,7 +514,8 @@ Current battle foundation rules:
 - Shop can route back to Dungeon.
 - Upgrade Attack can increase a current-run card's `baseAttack` by +2.
 - Add Shield can add or increase Shield +3 on a current-run card.
-- Element, remove, and duplicate shop item purchases are not connected to dungeon runs yet.
+- Element shop purchases can add or replace one display-only element effect on a current-run card.
+- Remove and duplicate shop item purchases are not connected to dungeon runs yet.
 - Boss appears at monster 20 later.
 - Run rewards are deferred.
 
@@ -605,7 +624,8 @@ Current shop state:
 - Upgrade Attack modifies only current-run card attack.
 - Add Shield modifies only current-run card shield effects.
 - Active purchases cost gold and subtract from temporary run gold.
-- Element, remove, and duplicate shop actions are preview-only / coming soon.
+- Element shop actions are active and display-only in battle summaries.
+- Remove and duplicate shop actions are preview-only / coming soon.
 - No shop upgrade is saved to LocalStorage.
 
 ## Required Project Documents
@@ -638,8 +658,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 13 is complete.
+Phase 14 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, element/remove/duplicate shop purchase logic, run rewards, timers, persistent run state, element interactions, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, remove/duplicate shop purchase logic, run rewards, timers, persistent run state, advanced element interactions, or final art assets unless explicitly requested.

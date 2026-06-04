@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 13 Word Scramble battle mini-game is complete. GitHub backup is configured on `origin/main`.
+Phase 14 basic element shop items are complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -153,6 +153,15 @@ Phase 13 Word Scramble battle mini-game is complete. GitHub backup is configured
 - Preserved Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
 - Kept element items, remove card, duplicate card, boss logic, run rewards, timers, run persistence, and final art assets unimplemented.
 - Verified the project with `npm run build` after Phase 13.
+- Activated Add Fire Element, Add Water Element, Add Wind Element, and Add Earth Element shop purchases.
+- Element shop items let the player choose one current-run card and add or replace that card's element effect.
+- Enforced the Phase 14 rule that a card may have one element effect for now.
+- Kept element effects temporary and out of LocalStorage.
+- Updated Dungeon triggered effects summary to show element effects, such as `Element: Fire`.
+- Kept element effects display-only with no weakness, resistance, or bonus damage.
+- Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
+- Kept remove card, duplicate card, boss logic, run rewards, timers, run persistence, advanced element interactions, and final art assets unimplemented.
+- Verified the project with `npm run build` after Phase 14.
 
 ## In Progress
 
@@ -160,7 +169,7 @@ Phase 13 Word Scramble battle mini-game is complete. GitHub backup is configured
 
 ## Next Task
 
-Phase 14 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 15 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -243,6 +252,10 @@ The following documents are required and must be updated after every completed t
 - Add Shield is the second active shop purchase
 - Shield effects are temporary current-run card effects
 - Shield and shield effects are not persisted to LocalStorage
+- Element shop items are active
+- A card may have one element effect for now
+- Element effects are display-only in Phase 14
+- Element effects are temporary current-run card effects and are not persisted
 
 ## Important Rules
 
@@ -267,7 +280,7 @@ Keep game playable and simple.
 - Sound effects
 - More mini-games
 - Full dungeon battle logic
-- Remaining shop purchase logic for element, remove, and duplicate items
+- Remaining shop purchase logic for remove and duplicate items
 - Boss battles
 - Run rewards
 - Save migrations beyond version 1

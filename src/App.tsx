@@ -10,6 +10,7 @@ import {
 } from "./screens";
 import { starterDeck } from "./data";
 import type {
+  ElementType,
   RunProgressState,
   SavedPlayerProgress,
   ScreenName,
@@ -186,6 +187,43 @@ export default function App() {
     return true;
   }
 
+  function purchaseElementUpgrade(
+    cardId: string,
+    cost: number,
+    element: ElementType,
+  ) {
+    if (runGold < cost) {
+      return false;
+    }
+
+    setRunGold((currentGold) => currentGold - cost);
+    setCurrentRunDeck((currentDeck) =>
+      currentDeck.map((card) => {
+        if (card.id !== cardId) {
+          return card;
+        }
+
+        const effectsWithoutElement =
+          card.effects?.filter((effect) => effect.type !== "element") ?? [];
+
+        return {
+          ...card,
+          effects: [
+            ...effectsWithoutElement,
+            {
+              type: "element",
+              element,
+              amount: 1,
+              description: `Element: ${element}`,
+            },
+          ],
+        };
+      }),
+    );
+
+    return true;
+  }
+
   return (
     <div className="min-h-screen">
       <AppHeader currentScreen={currentScreen} onNavigate={setCurrentScreen} />
@@ -220,6 +258,7 @@ export default function App() {
             currentRunDeck={currentRunDeck}
             onNavigate={setCurrentScreen}
             onPurchaseAttackUpgrade={purchaseAttackUpgrade}
+            onPurchaseElementUpgrade={purchaseElementUpgrade}
             onPurchaseShieldUpgrade={purchaseShieldUpgrade}
             runGold={runGold}
             runProgress={runProgress}

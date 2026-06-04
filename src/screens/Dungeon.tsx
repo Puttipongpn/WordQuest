@@ -195,7 +195,10 @@ function getCardEffectsSummary(card: WordCard) {
   const elements =
     card.effects
       ?.filter((effect) => effect.type === "element")
-      .map((effect) => `${effect.element} +${effect.amount}`) ?? [];
+      .map(
+        (effect) =>
+          `Element: ${effect.element.charAt(0).toUpperCase()}${effect.element.slice(1)}`,
+      ) ?? [];
 
   return [...effects, ...elements].join(" / ");
 }

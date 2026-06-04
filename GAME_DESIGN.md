@@ -172,6 +172,8 @@ Current battle rules:
 - Triggered cards deal damage equal to `baseAttack`.
 - If a current-run card has been upgraded in the shop, the upgraded `baseAttack` is used for battle damage.
 - If a triggered card has a shield effect, the player gains that shield while the card still deals `baseAttack` damage.
+- If a triggered card has an element effect, Dungeon displays that element in the triggered effects summary.
+- Element effects do not change damage, weakness, or resistance in Phase 14.
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack.
 - Monster attacks reduce player shield before damaging player HP.
@@ -190,7 +192,8 @@ Current battle rules:
 Deferred dungeon systems:
 
 - Run rewards
-- Remaining shop purchase logic for element, remove, and duplicate items
+- Remaining shop purchase logic for remove and duplicate items
+- Advanced element interactions
 - Boss logic
 - Permanent mastery updates from battle
 
@@ -213,7 +216,7 @@ Battle mini-games should eventually include timers. Difficulty should affect tim
 
 ## Shop Plan
 
-Shop presentation is implemented. The active shop purchases are `Upgrade Attack` and `Add Shield`.
+Shop presentation is implemented. The active shop purchases are `Upgrade Attack`, `Add Shield`, and the four Add Element items.
 
 The shop appears every 5 monsters during dungeon runs.
 
@@ -245,12 +248,17 @@ Current shop rules:
 - `Add Shield` uses its existing shop item cost.
 - If the player has enough temporary gold, the player can choose one current-run card and add Shield +3.
 - If the selected card already has a shield effect, Add Shield increases that shield effect by +3.
+- `Add Fire Element`, `Add Water Element`, `Add Wind Element`, and `Add Earth Element` are purchasable.
+- Element purchases use each shop item's existing cost.
+- If the player has enough temporary gold, the player can choose one current-run card and add or replace that card's element effect.
+- A card may have one element effect for now.
+- Element effects are display-only in Phase 14 and do not modify damage, weakness, or resistance.
 - If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback.
-- Element, remove, and duplicate shop items remain preview-only / coming soon.
+- Remove and duplicate shop items remain preview-only / coming soon.
 - Dungeon can route to Shop when a checkpoint is available.
 - Shop can route back to Dungeon.
 - Shop upgrades modify only current-run cards.
-- Shop upgrades, shield effects, gold, and current-run deck changes are not saved to LocalStorage.
+- Shop upgrades, shield effects, element effects, gold, and current-run deck changes are not saved to LocalStorage.
 
 ## Card Effects
 
@@ -276,6 +284,7 @@ Rules:
   - Element
 - Attack effects currently use the card's `baseAttack` for damage.
 - Shield effects currently add player shield when the card triggers.
+- Element effects currently display in battle feedback only.
 - Incorrect answers do not trigger card effects.
 - Future shop upgrades and enchantments modify card effects, not player stats directly.
 
@@ -290,7 +299,17 @@ Current element types:
 - Wind
 - Earth
 
-Elements are planned as simple card effect properties for Version 1. Detailed element interactions and balance rules are deferred until element purchases or element cards exist.
+Elements are simple current-run card effect properties in Phase 14.
+
+Current element rules:
+
+- A card may have one element effect for now.
+- Adding a new element to a card replaces the previous element.
+- Element effects are temporary current-run card effects.
+- Element effects are not saved to LocalStorage.
+- Triggered cards display their element in the battle effects summary.
+- Element effects do not change damage yet.
+- Weakness, resistance, bonus damage, and advanced balance rules are deferred.
 
 ## Death Rule
 

@@ -2,12 +2,23 @@ import { useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { sampleShopItems } from "../data";
-import type { RunProgressState, ScreenName, WordCard } from "../types";
+import type {
+  ElementType,
+  RunProgressState,
+  ScreenName,
+  ShopItem,
+  WordCard,
+} from "../types";
 
 type ShopProps = {
   currentRunDeck: WordCard[];
   onNavigate: (screen: ScreenName) => void;
   onPurchaseAttackUpgrade: (cardId: string, cost: number) => boolean;
+  onPurchaseElementUpgrade: (
+    cardId: string,
+    cost: number,
+    element: ElementType,
+  ) => boolean;
   onPurchaseShieldUpgrade: (cardId: string, cost: number) => boolean;
   runGold: number;
   runProgress: RunProgressState;
@@ -23,6 +34,10 @@ const addShieldItemId = "add-shield";
 const attackUpgradeAmount = 2;
 const shieldUpgradeAmount = 3;
 
+function formatElementName(element: ElementType) {
+  return element.charAt(0).toUpperCase() + element.slice(1);
+}
+
 function getCardShieldAmount(card: WordCard) {
   return (
     card.effects?.reduce(
@@ -32,10 +47,19 @@ function getCardShieldAmount(card: WordCard) {
   );
 }
 
+function getCardElement(card: WordCard) {
+  return card.effects?.find((effect) => effect.type === "element");
+}
+
+function getShopItemElement(item: ShopItem) {
+  return item.effect?.type === "element" ? item.effect.element : null;
+}
+
 export function Shop({
   currentRunDeck,
   onNavigate,
   onPurchaseAttackUpgrade,
+  onPurchaseElementUpgrade,
   onPurchaseShieldUpgrade,
   runGold,
   runProgress,
@@ -46,6 +70,9 @@ export function Shop({
   const [selectedShieldCardId, setSelectedShieldCardId] = useState(
     currentRunDeck[0]?.id ?? "",
   );
+  const [selectedElementCardIds, setSelectedElementCardIds] = useState<
+    Record<string, string>
+  >({});
   const [purchaseFeedback, setPurchaseFeedback] = useState<PurchaseFeedback>({
     tone: "neutral",
     message: "Choose a card to preview an active shop purchase.",
@@ -107,11 +134,55 @@ export function Shop({
     });
   }
 
+  function getSelectedElementCard(itemId: string) {
+    const selectedCardId = selectedElementCardIds[itemId] ?? currentRunDeck[0]?.id;
+
+    return currentRunDeck.find((card) => card.id === selectedCardId);
+  }
+
+  function handleSelectElementCard(itemId: string, cardId: string) {
+    setSelectedElementCardIds((currentSelections) => ({
+      ...currentSelections,
+      [itemId]: cardId,
+    }));
+  }
+
+  function handlePurchaseElementUpgrade(item: ShopItem, element: ElementType) {
+    const selectedElementCard = getSelectedElementCard(item.id);
+
+    if (!selectedElementCard) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: `Choose a card before buying ${item.name}.`,
+      });
+      return;
+    }
+
+    const isPurchased = onPurchaseElementUpgrade(
+      selectedElementCard.id,
+      item.cost,
+      element,
+    );
+
+    if (!isPurchased) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: `Not enough gold. ${item.name} costs ${item.cost} gold.`,
+      });
+      return;
+    }
+
+    setPurchaseFeedback({
+      tone: "success",
+      message: `${selectedElementCard.word} now has Element: ${formatElementName(element)} for this run.`,
+    });
+  }
+
   return (
     <ScreenShell
       eyebrow="Upgrade"
       title="Current Run Shop"
-      description="Buy temporary current-run upgrades. Upgrade Attack and Add Shield are active in this phase."
+      description="Buy temporary current-run upgrades. Attack, Shield, and Element purchases are active in this phase."
       framed={false}
     >
       <CardPanel className="mb-6 border-emerald-200 bg-emerald-50">
@@ -122,8 +193,9 @@ export function Shop({
               Shop upgrades are temporary and affect only the current run.
             </p>
             <p className="mt-2 text-sm text-emerald-800">
-              Upgrade Attack and Add Shield can modify copied current-run
-              cards. Other shop item types remain preview-only for now.
+              Upgrade Attack, Add Shield, and Element items can modify copied
+              current-run cards. Remove and Duplicate remain preview-only for
+              now.
             </p>
           </div>
           <div className="grid gap-3 sm:min-w-72 sm:grid-cols-3">
@@ -136,7 +208,7 @@ export function Shop({
             <StatCard
               label="Mode"
               value="Partial"
-              helper="Attack + Shield"
+              helper="Attack + Shield + Element"
               tone="emerald"
             />
             <StatCard
@@ -161,7 +233,10 @@ export function Shop({
         {sampleShopItems.map((item) => {
           const isUpgradeAttack = item.id === upgradeAttackItemId;
           const isAddShield = item.id === addShieldItemId;
-          const isActivePurchase = isUpgradeAttack || isAddShield;
+          const element = getShopItemElement(item);
+          const isAddElement = element !== null;
+          const isActivePurchase = isUpgradeAttack || isAddShield || isAddElement;
+          const selectedElementCard = getSelectedElementCard(item.id);
 
           return (
             <CardPanel
@@ -276,6 +351,58 @@ export function Shop({
                 </div>
               )}
 
+              {element && (
+                <div className="mt-5 rounded-md border border-amber-100 bg-amber-50 p-3">
+                  <p className="text-sm font-semibold text-amber-950">
+                    Choose current-run card
+                  </p>
+                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
+                    {currentRunDeck.map((card) => {
+                      const selectedCardId =
+                        selectedElementCardIds[item.id] ?? currentRunDeck[0]?.id;
+                      const isSelected = selectedCardId === card.id;
+                      const currentElement = getCardElement(card);
+
+                      return (
+                        <button
+                          key={card.id}
+                          type="button"
+                          onClick={() => handleSelectElementCard(item.id, card.id)}
+                          className={`w-full rounded-md border p-3 text-left transition ${
+                            isSelected
+                              ? "border-amber-500 bg-white ring-1 ring-amber-200"
+                              : "border-amber-100 bg-white/70 hover:border-amber-400"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="font-semibold capitalize text-slate-950">
+                              {card.word}
+                            </span>
+                            <span className="text-sm font-semibold text-slate-600">
+                              {currentElement
+                                ? formatElementName(currentElement.element)
+                                : "None"}{" "}
+                              -&gt; {formatElementName(element)}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {selectedElementCard && (
+                    <p className="mt-3 text-sm font-semibold text-amber-900">
+                      Preview: {selectedElementCard.word}{" "}
+                      {getCardElement(selectedElementCard)
+                        ? formatElementName(
+                            getCardElement(selectedElementCard)!.element,
+                          )
+                        : "None"}{" "}
+                      -&gt; {formatElementName(element)}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="mt-5 border-t border-slate-100 pt-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="text-sm font-semibold text-slate-500">Cost</p>
@@ -298,6 +425,15 @@ export function Shop({
                     onClick={() => handlePurchaseShieldUpgrade(item.cost)}
                   >
                     Buy Add Shield
+                  </Button>
+                ) : element ? (
+                  <Button
+                    type="button"
+                    className="w-full"
+                    disabled={!selectedElementCard}
+                    onClick={() => handlePurchaseElementUpgrade(item, element)}
+                  >
+                    Buy {item.name}
                   </Button>
                 ) : (
                   <Button
