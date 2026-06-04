@@ -336,8 +336,26 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ### 2026-06-04: Random Battle Mini-Game Selection
 
-- Decision: Each battle question randomly selects between Word Choice and Word Match.
+- Decision: Each battle question randomly selects between the currently implemented battle mini-games.
 - Reason: Random selection adds early variety while keeping the battle loop simple.
+- Status: Accepted
+
+### 2026-06-04: Word Scramble Battle Mini-Game
+
+- Decision: Add Word Scramble as the third Dungeon battle mini-game.
+- Reason: Word Scramble adds spelling recall practice while still fitting the vocabulary card battle loop.
+- Status: Accepted
+
+### 2026-06-04: Typed Input First for Scramble
+
+- Decision: The first Word Scramble implementation uses typed answer input instead of click-to-order letters.
+- Reason: Typed input is simpler to implement, easier to maintain, and enough to validate the mini-game.
+- Status: Accepted
+
+### 2026-06-04: Scramble Uses Current-Run Deck and Card Trigger System
+
+- Decision: Word Scramble chooses cards from the current-run deck, and correct typed answers trigger the selected scrambled word card.
+- Reason: Scramble must honor temporary attack and shield upgrades while keeping cards as the source of combat actions.
 - Status: Accepted
 
 ### 2026-06-04: Mini-Games Should Use Timers

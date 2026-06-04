@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 12 basic shield system and Add Shield shop purchase are complete. GitHub backup is configured on `origin/main`.
+Phase 13 Word Scramble battle mini-game is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -143,6 +143,16 @@ Phase 12 basic shield system and Add Shield shop purchase are complete. GitHub b
 - Updated Dungeon feedback to show shield absorbed, HP damage taken, shield gained, and triggered effects summary.
 - Kept element items, remove card, duplicate card, boss logic, run rewards, deck unlocks, and final art assets unimplemented.
 - Verified the project with `npm run build` after Phase 12.
+- Added Word Scramble as the third Dungeon battle mini-game.
+- Word Scramble randomly chooses 3 cards from the current-run deck and shows scrambled English word options.
+- Word Scramble uses typed input for the first simple implementation.
+- Correct Word Scramble answers trigger the selected current-run word card.
+- Word Scramble uses current-run `baseAttack` and shield effects, including shop upgrades.
+- Wrong Word Scramble answers do not trigger card effects and cause monster attacks with shield absorption.
+- Added Word Scramble into random battle mini-game selection with Word Choice and Word Match.
+- Preserved Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
+- Kept element items, remove card, duplicate card, boss logic, run rewards, timers, run persistence, and final art assets unimplemented.
+- Verified the project with `npm run build` after Phase 13.
 
 ## In Progress
 
@@ -150,7 +160,7 @@ Phase 12 basic shield system and Add Shield shop purchase are complete. GitHub b
 
 ## Next Task
 
-Phase 13 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 14 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -202,10 +212,13 @@ The following documents are required and must be updated after every completed t
 - Correct battle answers deal damage equal to the triggered card's `baseAttack`
 - Wrong battle answers make the current monster attack player HP
 - Phase 5 does not implement shop logic, boss logic, run rewards, LocalStorage, or permanent mastery updates from battle
-- Dungeon battle supports Word Choice and Word Match mini-game structures
-- Each battle question randomly selects Word Choice or Word Match
+- Dungeon battle supports Word Choice, Word Match, and Word Scramble mini-game structures
+- Each battle question randomly selects Word Choice, Word Match, or Word Scramble
 - Word Match uses 3 English words and 3 Thai meanings
 - Correct Word Match pairs trigger the selected English word card
+- Word Scramble uses 3 scrambled current-run deck cards and typed input
+- Correct Word Scramble answers trigger the selected scrambled word card
+- Word Scramble uses current-run card attack and shield effects through the Card Trigger System
 - Phase 6 still does not implement shop logic, boss logic, run rewards, LocalStorage, or permanent mastery updates from battle
 - Shop presentation loads sample data from `src/data/shopItems.ts`
 - Shop items are current-run only

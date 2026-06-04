@@ -160,12 +160,15 @@ Current battle rules:
 - Current sample monsters are Slime, Goblin, and Bat.
 - Each monster has name, HP, max HP, and attack.
 - Battle questions use `Starter Deck` vocabulary cards.
-- Each battle question randomly selects Word Choice or Word Match.
+- Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Word Choice shows one prompt card and 4 Thai meaning choices.
 - Word Match shows 3 English words and 3 Thai meanings.
 - Word Match asks the player to select one English word and one Thai meaning.
+- Word Scramble shows 3 scrambled English word options from the current-run deck.
+- Word Scramble asks the player to choose one scrambled card and type the original English word.
 - Correct answers trigger the selected word card.
 - Correct Word Match pairs trigger the selected English word card.
+- Correct Word Scramble answers trigger the selected scrambled word card.
 - Triggered cards deal damage equal to `baseAttack`.
 - If a current-run card has been upgraded in the shop, the upgraded `baseAttack` is used for battle damage.
 - If a triggered card has a shield effect, the player gains that shield while the card still deals `baseAttack` damage.
@@ -204,7 +207,7 @@ Battle mini-games:
 
 - Word Choice: implemented.
 - Word Match: implemented.
-- Word Scramble
+- Word Scramble: implemented with typed input, 3 scrambled current-run card options, and Card Trigger System effects.
 
 Battle mini-games should eventually include timers. Difficulty should affect time limit and damage.
 

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 12 complete. Phase 13 has not started yet.
+Current phase: Phase 13 complete. Phase 14 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -149,6 +149,16 @@ GitHub backup is configured:
 - Kept shield, shield effects, shop upgrades, gold, and current-run deck changes temporary and out of LocalStorage.
 - Kept element items, remove card, duplicate card, boss logic, run rewards, deck unlocks, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 12.
+- Added Word Scramble as the third Dungeon battle mini-game.
+- Word Scramble randomly chooses 3 cards from the current-run deck and shows scrambled English word options.
+- Word Scramble uses typed input for the first simple implementation.
+- Correct Word Scramble answers trigger the selected current-run word card.
+- Word Scramble uses current-run `baseAttack` and shield effects, including shop upgrades.
+- Wrong Word Scramble answers do not trigger card effects and cause monster attacks with shield absorption.
+- Added Word Scramble into random battle mini-game selection with Word Choice and Word Match.
+- Preserved Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
+- Kept element items, remove card, duplicate card, boss logic, run rewards, timers, run persistence, and final art assets unimplemented.
+- Verified the project again with `npm run build` after Phase 13.
 
 ## Implemented Screens
 
@@ -157,7 +167,7 @@ The following screens are implemented or stubbed:
 - Home: polished entry screen with flow badges, primary actions, reset progress, and prototype summary.
 - Deck Review: polished vocabulary presentation screen using `Starter Deck`.
 - Training: polished first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: polished local-state vocabulary card battle foundation with temporary run progression, current-run deck, gold, shield absorption, and shop checkpoint routing.
+- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, current-run deck, gold, shield absorption, and shop checkpoint routing.
 - Shop: current-run shop with active Upgrade Attack and Add Shield purchases, preview-only remaining items, and back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
@@ -171,7 +181,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, and after Phase 12 basic shield system work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, and after Phase 13 Word Scramble work.
 
 The local development server can be started with:
 
@@ -293,12 +303,15 @@ Current Dungeon implementation:
 - Player state includes HP, functional shield, and gold display.
 - Monster state includes current monster, HP, max HP, and attack.
 - Battle questions use a simple mini-game structure and the current-run deck.
-- Each battle question randomly selects Word Choice or Word Match.
+- Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Word Choice shows one prompt card and 4 Thai meaning answer choices.
 - Word Match shows 3 English words and 3 Thai meanings.
 - Word Match requires selecting one English word and one Thai meaning.
+- Word Scramble shows 3 scrambled English word options from the current-run deck.
+- Word Scramble asks the player to choose one scrambled card and type the original English word.
 - Correct Word Choice answers trigger the prompt word card.
 - Correct Word Match pairs trigger the selected English word card.
+- Correct Word Scramble answers trigger the selected scrambled word card.
 - Triggered cards deal damage equal to `baseAttack`.
 - Triggered cards use the current-run card's `baseAttack`, including any Upgrade Attack purchases.
 - Incorrect answers do not trigger card effects.
@@ -320,6 +333,7 @@ Current Dungeon implementation:
 - No element item effects, remove card, duplicate card, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
+- Phase 13 added Word Scramble with typed answer input.
 
 Current Shop implementation:
 
@@ -398,6 +412,9 @@ Version 1 should not include:
 - Shield absorbs monster damage before HP.
 - Shield effects are temporary current-run card effects.
 - Shield and shield effects are not persisted to LocalStorage.
+- Word Scramble is the third battle mini-game.
+- Word Scramble uses typed input first.
+- Word Scramble uses the current-run deck and the Card Trigger System.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -464,8 +481,9 @@ Current battle foundation rules:
 - Gold starts at 20.
 - The player fights monsters one by one.
 - Run progression tracks monsters defeated, current floor, and next shop checkpoint.
-- The current foundation randomly selects Word Choice or Word Match for each battle question.
+- The current foundation randomly selects Word Choice, Word Match, or Word Scramble for each battle question.
 - Correct answers trigger the selected word card.
+- Word Scramble correct typed answers trigger the selected scrambled word card.
 - Triggered word cards deal damage equal to `baseAttack` in the current foundation.
 - Triggered word cards with shield effects add shield while still dealing `baseAttack` damage.
 - Incorrect answers do not trigger card effects.
@@ -544,8 +562,9 @@ Initial battle mini-games:
 - Word Scramble
   - Show multiple scrambled word choices.
   - Player chooses which word to solve.
-  - Harder words give more damage.
-  - Solving correctly triggers card effects.
+  - Player types the original English word.
+  - Solving correctly triggers the selected current-run card.
+  - Current-run attack and shield upgrades apply through the Card Trigger System.
 
 Training mini-games:
 
@@ -619,8 +638,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 12 is complete.
+Phase 13 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, element/remove/duplicate shop purchase logic, run rewards, persistent run state, element interactions, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, element/remove/duplicate shop purchase logic, run rewards, timers, persistent run state, element interactions, or final art assets unless explicitly requested.

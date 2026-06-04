@@ -19,7 +19,7 @@ type DungeonProps = {
   runProgress: RunProgressState;
 };
 
-type BattleMiniGameType = "word-choice" | "word-match";
+type BattleMiniGameType = "word-choice" | "word-match" | "word-scramble";
 
 type WordChoiceQuestion = {
   card: WordCard;
@@ -30,6 +30,15 @@ type WordChoiceQuestion = {
 type WordMatchQuestion = {
   cards: WordCard[];
   meanings: WordCard[];
+};
+
+type WordScrambleOption = {
+  card: WordCard;
+  scrambledWord: string;
+};
+
+type WordScrambleQuestion = {
+  options: WordScrambleOption[];
 };
 
 type BattleLog = {
@@ -46,9 +55,16 @@ type BattleLog = {
 
 const initialPlayerHp = 30;
 const initialShield = 0;
+const battleMiniGames: BattleMiniGameType[] = [
+  "word-choice",
+  "word-match",
+  "word-scramble",
+];
 
 function chooseBattleMiniGame(): BattleMiniGameType {
-  return Math.random() < 0.5 ? "word-choice" : "word-match";
+  const randomIndex = Math.floor(Math.random() * battleMiniGames.length);
+
+  return battleMiniGames[randomIndex];
 }
 
 function getMonsterForIndex(index: number): Monster {
@@ -106,8 +122,57 @@ function buildWordMatchQuestion(seed: number, deck: WordCard[]): WordMatchQuesti
   return { cards, meanings };
 }
 
+function scrambleWord(word: string, seed: number) {
+  const letters = word.toLowerCase().split("");
+
+  if (letters.length <= 1) {
+    return word;
+  }
+
+  const rotatedLetters = letters.map(
+    (_, index) => letters[(index + seed + 1) % letters.length],
+  );
+
+  for (let index = 0; index < rotatedLetters.length - 1; index += 2) {
+    const nextIndex = index + 1;
+    const currentLetter = rotatedLetters[index];
+    rotatedLetters[index] = rotatedLetters[nextIndex];
+    rotatedLetters[nextIndex] = currentLetter;
+  }
+
+  const scrambledWord = rotatedLetters.join("");
+
+  if (scrambledWord !== word.toLowerCase()) {
+    return scrambledWord;
+  }
+
+  return [...letters].reverse().join("");
+}
+
+function buildWordScrambleQuestion(
+  seed: number,
+  deck: WordCard[],
+): WordScrambleQuestion {
+  const cards = rotateCards(seed + 2, deck).slice(0, 3);
+
+  return {
+    options: cards.map((card, index) => ({
+      card,
+      scrambledWord: scrambleWord(card.word, seed + index),
+    })),
+  };
+}
+
 function formatMiniGameName(miniGameType: BattleMiniGameType) {
-  return miniGameType === "word-choice" ? "Word Choice" : "Word Match";
+  if (miniGameType === "word-choice") {
+    return "Word Choice";
+  }
+
+  if (miniGameType === "word-match") {
+    return "Word Match";
+  }
+
+  return "Word Scramble";
 }
 
 function getCardShieldAmount(card: WordCard) {
@@ -158,6 +223,10 @@ export function Dungeon({
   const [selectedMeaningId, setSelectedMeaningId] = useState<string | null>(
     null,
   );
+  const [selectedScrambleCardId, setSelectedScrambleCardId] = useState<
+    string | null
+  >(null);
+  const [scrambleAnswer, setScrambleAnswer] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
   const [battleLog, setBattleLog] = useState<BattleLog>({
     tone: "neutral",
@@ -176,10 +245,16 @@ export function Dungeon({
     () => buildWordMatchQuestion(questionSeed, currentRunDeck),
     [currentRunDeck, questionSeed],
   );
+  const wordScrambleQuestion = useMemo(
+    () => buildWordScrambleQuestion(questionSeed, currentRunDeck),
+    [currentRunDeck, questionSeed],
+  );
   const featuredCard =
     miniGameType === "word-choice"
       ? wordChoiceQuestion.card
-      : wordMatchQuestion.cards[0];
+      : miniGameType === "word-match"
+        ? wordMatchQuestion.cards[0]
+        : wordScrambleQuestion.options[0].card;
   const isShopAvailable =
     runProgress.monstersDefeated > 0 &&
     runProgress.monstersDefeated === runProgress.nextShopAt;
@@ -192,6 +267,8 @@ export function Dungeon({
     setSelectedChoiceId(null);
     setSelectedWordId(null);
     setSelectedMeaningId(null);
+    setSelectedScrambleCardId(null);
+    setScrambleAnswer("");
     setIsAnswered(false);
   }
 
@@ -305,6 +382,36 @@ export function Dungeon({
       if (triggeredCard) {
         triggerCard(triggeredCard);
       }
+      return;
+    }
+
+    monsterAttack();
+  }
+
+  function handleWordScrambleSubmit() {
+    if (
+      isAnswered ||
+      battleStatus !== "fighting" ||
+      selectedScrambleCardId === null ||
+      scrambleAnswer.trim() === ""
+    ) {
+      return;
+    }
+
+    const selectedOption = wordScrambleQuestion.options.find(
+      (option) => option.card.id === selectedScrambleCardId,
+    );
+
+    if (!selectedOption) {
+      return;
+    }
+
+    setIsAnswered(true);
+
+    if (
+      scrambleAnswer.trim().toLowerCase() === selectedOption.card.word.toLowerCase()
+    ) {
+      triggerCard(selectedOption.card);
       return;
     }
 
@@ -503,7 +610,7 @@ export function Dungeon({
                 selectedChoiceId={selectedChoiceId}
                 onAnswer={handleWordChoiceAnswer}
               />
-            ) : (
+            ) : miniGameType === "word-match" ? (
               <WordMatchBattle
                 isAnswered={isAnswered}
                 question={wordMatchQuestion}
@@ -512,6 +619,16 @@ export function Dungeon({
                 onSelectMeaning={setSelectedMeaningId}
                 onSelectWord={setSelectedWordId}
                 onSubmit={handleWordMatchSubmit}
+              />
+            ) : (
+              <WordScrambleBattle
+                answer={scrambleAnswer}
+                isAnswered={isAnswered}
+                question={wordScrambleQuestion}
+                selectedCardId={selectedScrambleCardId}
+                onAnswerChange={setScrambleAnswer}
+                onSelectCard={setSelectedScrambleCardId}
+                onSubmit={handleWordScrambleSubmit}
               />
             )}
           </div>
@@ -898,6 +1015,156 @@ function WordMatchBattle({
       >
         Check Pair
       </Button>
+    </div>
+  );
+}
+
+type WordScrambleBattleProps = {
+  answer: string;
+  isAnswered: boolean;
+  question: WordScrambleQuestion;
+  selectedCardId: string | null;
+  onAnswerChange: (answer: string) => void;
+  onSelectCard: (cardId: string) => void;
+  onSubmit: () => void;
+};
+
+function WordScrambleBattle({
+  answer,
+  isAnswered,
+  question,
+  selectedCardId,
+  onAnswerChange,
+  onSelectCard,
+  onSubmit,
+}: WordScrambleBattleProps) {
+  const selectedOption = question.options.find(
+    (option) => option.card.id === selectedCardId,
+  );
+  const isCorrect =
+    isAnswered &&
+    selectedOption !== undefined &&
+    answer.trim().toLowerCase() === selectedOption.card.word.toLowerCase();
+  const isWrong = isAnswered && selectedOption !== undefined && !isCorrect;
+
+  return (
+    <div className="mt-5">
+      <div className="rounded-lg bg-slate-50 p-5">
+        <p className="font-semibold text-slate-950">
+          Choose one scrambled word, then type the original English word.
+        </p>
+        <p className="mt-1 text-sm text-slate-600">
+          A correct typed answer triggers the selected current-run card.
+        </p>
+      </div>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        {question.options.map((option) => {
+          const isSelected = selectedCardId === option.card.id;
+          const showCorrect = isCorrect && isSelected;
+          const showWrong = isWrong && isSelected;
+
+          return (
+            <button
+              key={option.card.id}
+              type="button"
+              disabled={isAnswered}
+              onClick={() => onSelectCard(option.card.id)}
+              className={`rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                showCorrect
+                  ? "border-emerald-500 bg-emerald-50"
+                  : showWrong
+                    ? "border-red-400 bg-red-50"
+                    : isSelected
+                      ? "border-emerald-500 bg-white"
+                      : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="font-mono text-2xl font-bold tracking-wide text-slate-950">
+                    {option.scrambledWord}
+                  </p>
+                  <p className="mt-2 text-sm text-slate-500">
+                    Attack {option.card.baseAttack}
+                    {getCardShieldAmount(option.card) > 0
+                      ? ` / Shield +${getCardShieldAmount(option.card)}`
+                      : ""}
+                  </p>
+                </div>
+                {!isAnswered && isSelected && <Badge tone="sky">Selected</Badge>}
+                {showCorrect && <Badge tone="emerald">Solved</Badge>}
+                {showWrong && <Badge tone="red">Wrong</Badge>}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="mt-5 rounded-lg border border-slate-200 bg-white p-4">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end">
+          <div className="flex-1">
+            <label
+              htmlFor="word-scramble-answer"
+              className="text-sm font-semibold uppercase tracking-wide text-slate-500"
+            >
+              Typed answer
+            </label>
+            <input
+              id="word-scramble-answer"
+              type="text"
+              value={answer}
+              disabled={isAnswered || selectedOption === undefined}
+              onChange={(event) => onAnswerChange(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSubmit();
+                }
+              }}
+              className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-lg font-semibold text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100 disabled:text-slate-500"
+              placeholder={
+                selectedOption
+                  ? "Type the original word"
+                  : "Choose a scrambled word first"
+              }
+            />
+          </div>
+          <Button
+            type="button"
+            disabled={isAnswered || selectedOption === undefined || answer.trim() === ""}
+            onClick={onSubmit}
+          >
+            Check Word
+          </Button>
+        </div>
+
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-md bg-slate-50 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Selected scrambled card
+            </p>
+            <p className="mt-1 font-mono text-lg font-bold text-slate-950">
+              {selectedOption?.scrambledWord ?? "None"}
+            </p>
+          </div>
+          <div className="rounded-md bg-slate-50 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Typed answer
+            </p>
+            <p className="mt-1 font-semibold text-slate-950">
+              {answer.trim() || "None"}
+            </p>
+          </div>
+          <div className="rounded-md bg-slate-50 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Correct word
+            </p>
+            <p className="mt-1 font-semibold capitalize text-slate-950">
+              {isAnswered ? selectedOption?.card.word : "Hidden"}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
