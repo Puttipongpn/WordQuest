@@ -190,6 +190,13 @@ Current battle rules:
 - Duplicated cards are added as extra current-run deck entries and may appear more often.
 - Battle question builders avoid showing the same word twice in a single question, even when duplicates exist in the run deck.
 - After a monster is defeated, the player can spawn the next sample monster.
+- Boss becomes available after 20 defeated monsters.
+- The current sample boss is Gatekeeper.
+- Boss battles use the same Word Choice, Word Match, Word Scramble, Card Trigger System, current-run deck, attack, shield, and element display behavior as regular monster battles.
+- Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
+- When boss HP reaches 0, the screen shows `Run Complete`.
+- Run Complete shows monsters defeated, current floor, final gold, and current-run deck size.
+- Boss defeat does not grant permanent rewards or deck unlocks yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - After run failure, the player can restart the local run.
 
@@ -197,7 +204,7 @@ Deferred dungeon systems:
 
 - Run rewards
 - Advanced element interactions
-- Boss logic
+- Deck unlocks
 - Permanent mastery updates from battle
 
 Dungeon battle and run progression state are still temporary React state only. LocalStorage is used for permanent progress, not current run progress.

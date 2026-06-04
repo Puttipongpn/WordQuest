@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 15 Remove Card and Duplicate Card shop purchases are complete. GitHub backup is configured on `origin/main`.
+Phase 16 boss battle foundation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -174,6 +174,17 @@ Phase 15 Remove Card and Duplicate Card shop purchases are complete. GitHub back
 - Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, element effects, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
 - Kept boss logic, run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
 - Verified the project with `npm run build` after Phase 15.
+- Added sample boss data in `src/data/bosses.ts`.
+- Added the first boss, Gatekeeper, with higher HP, higher attack, and a placeholder icon.
+- Boss becomes available after 20 defeated monsters.
+- Added Boss Available UI and a Start Boss Battle action in Dungeon.
+- Boss battles use the same Word Choice, Word Match, Word Scramble, Card Trigger System, current-run deck, attack, shield, and element display behavior.
+- Wrong boss battle answers cause boss attacks, with shield absorbing damage before HP.
+- Boss defeat creates a Run Complete state.
+- Added a simple run completion summary with monsters defeated, current floor, final gold, and current-run deck size.
+- Restarting a run resets boss state along with HP, shield, gold, monster state, run progression, and current-run deck changes.
+- Kept run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
+- Verified the project with `npm run build` after Phase 16.
 
 ## In Progress
 
@@ -181,7 +192,7 @@ Phase 15 Remove Card and Duplicate Card shop purchases are complete. GitHub back
 
 ## Next Task
 
-Phase 16 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 17 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -273,6 +284,10 @@ The following documents are required and must be updated after every completed t
 - Minimum current-run deck size is 5 cards
 - Duplicates preserve current-run upgrades
 - Remove and Duplicate are temporary run deck mutations
+- Boss appears at monster 20
+- Boss uses the same Card Trigger System as regular monsters
+- Boss defeat creates a Run Complete state
+- Run rewards are deferred
 
 ## Important Rules
 
@@ -297,7 +312,6 @@ Keep game playable and simple.
 - Sound effects
 - More mini-games
 - Full dungeon battle logic
-- Boss battles
 - Run rewards
 - Save migrations beyond version 1
 - Balancing

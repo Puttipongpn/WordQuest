@@ -7,7 +7,7 @@ import {
   ProgressBar,
   StatCard,
 } from "../components/ui";
-import { sampleMonsters } from "../data";
+import { sampleBoss, sampleMonsters } from "../data";
 import type { Monster, RunProgressState, ScreenName, WordCard } from "../types";
 
 type DungeonProps = {
@@ -55,6 +55,7 @@ type BattleLog = {
 
 const initialPlayerHp = 30;
 const initialShield = 0;
+const bossMilestone = 20;
 const battleMiniGames: BattleMiniGameType[] = [
   "word-choice",
   "word-match",
@@ -244,6 +245,8 @@ export function Dungeon({
   const [monsterHp, setMonsterHp] = useState(
     () => getMonsterForIndex(0).maxHp,
   );
+  const [isBossEncounter, setIsBossEncounter] = useState(false);
+  const [hasCompletedBoss, setHasCompletedBoss] = useState(false);
   const [questionSeed, setQuestionSeed] = useState(0);
   const [miniGameType, setMiniGameType] = useState<BattleMiniGameType>(() =>
     chooseBattleMiniGame(),
@@ -263,10 +266,12 @@ export function Dungeon({
     message: "Choose a correct answer to trigger a word card.",
   });
   const [battleStatus, setBattleStatus] = useState<
-    "fighting" | "monster-defeated" | "run-failed"
+    "fighting" | "monster-defeated" | "run-failed" | "run-complete"
   >("fighting");
 
   const currentMonster = getMonsterForIndex(monsterIndex);
+  const currentEncounter = isBossEncounter ? sampleBoss : currentMonster;
+  const encounterLabel = isBossEncounter ? "Boss" : "Monster";
   const wordChoiceQuestion = useMemo(
     () => buildWordChoiceQuestion(questionSeed, currentRunDeck),
     [currentRunDeck, questionSeed],
@@ -288,6 +293,10 @@ export function Dungeon({
   const isShopAvailable =
     runProgress.monstersDefeated > 0 &&
     runProgress.monstersDefeated === runProgress.nextShopAt;
+  const isBossAvailable =
+    runProgress.monstersDefeated >= bossMilestone &&
+    !isBossEncounter &&
+    !hasCompletedBoss;
   const monstersUntilShop = Math.max(
     runProgress.nextShopAt - runProgress.monstersDefeated,
     0,
@@ -323,11 +332,25 @@ export function Dungeon({
     }
 
     if (nextMonsterHp === 0) {
+      if (isBossEncounter) {
+        setHasCompletedBoss(true);
+        setBattleStatus("run-complete");
+        setBattleLog({
+          tone: "success",
+          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. Run Complete.`,
+          triggeredCard: card,
+          damageDealt: card.baseAttack,
+          shieldGained,
+          effectsSummary,
+        });
+        return;
+      }
+
       onMonsterDefeated();
       setBattleStatus("monster-defeated");
       setBattleLog({
         tone: "success",
-        message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${currentMonster.name} defeated.`,
+        message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${currentEncounter.name} defeated.`,
         triggeredCard: card,
         damageDealt: card.baseAttack,
         shieldGained,
@@ -347,8 +370,8 @@ export function Dungeon({
   }
 
   function monsterAttack() {
-    const shieldAbsorbed = Math.min(shield, currentMonster.attack);
-    const hpDamageTaken = currentMonster.attack - shieldAbsorbed;
+    const shieldAbsorbed = Math.min(shield, currentEncounter.attack);
+    const hpDamageTaken = currentEncounter.attack - shieldAbsorbed;
     const nextShield = shield - shieldAbsorbed;
     const nextPlayerHp = Math.max(playerHp - hpDamageTaken, 0);
 
@@ -359,8 +382,8 @@ export function Dungeon({
       setBattleStatus("run-failed");
       setBattleLog({
         tone: "danger",
-        message: `Wrong answer. No card triggered. ${currentMonster.name} attacked for ${currentMonster.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}. Run Failed.`,
-        damageTaken: currentMonster.attack,
+        message: `Wrong answer. No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}. Run Failed.`,
+        damageTaken: currentEncounter.attack,
         hpDamageTaken,
         shieldAbsorbed,
       });
@@ -369,8 +392,8 @@ export function Dungeon({
 
     setBattleLog({
       tone: "danger",
-      message: `Wrong answer. No card triggered. ${currentMonster.name} attacked for ${currentMonster.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
-      damageTaken: currentMonster.attack,
+      message: `Wrong answer. No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
+      damageTaken: currentEncounter.attack,
       hpDamageTaken,
       shieldAbsorbed,
     });
@@ -464,10 +487,25 @@ export function Dungeon({
     });
   }
 
+  function handleStartBoss() {
+    setIsBossEncounter(true);
+    setMonsterHp(sampleBoss.maxHp);
+    setBattleStatus("fighting");
+    resetAnswerState();
+    setQuestionSeed((current) => current + 1);
+    setMiniGameType(chooseBattleMiniGame());
+    setBattleLog({
+      tone: "neutral",
+      message: `${sampleBoss.name} appears. Defeat the boss to complete the run.`,
+    });
+  }
+
   function handleRestartRun() {
     onResetRun();
     setPlayerHp(initialPlayerHp);
     setShield(initialShield);
+    setIsBossEncounter(false);
+    setHasCompletedBoss(false);
     setMonsterIndex(0);
     setMonsterHp(getMonsterForIndex(0).maxHp);
     setBattleStatus("fighting");
@@ -496,9 +534,9 @@ export function Dungeon({
                 {formatMiniGameName(miniGameType)}
               </h3>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Temporary run flow only. Shop routing exists, but purchases,
-                boss battles, rewards, save system, and permanent mastery
-                updates are not connected here yet.
+                Temporary run flow only. Shop routing, current-run purchases,
+                and the first boss encounter exist. Rewards, save system, and
+                permanent mastery updates are not connected here yet.
               </p>
             </div>
             <Button
@@ -510,7 +548,7 @@ export function Dungeon({
             </Button>
           </div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatCard
               label="Monsters Defeated"
               value={runProgress.monstersDefeated}
@@ -537,28 +575,62 @@ export function Dungeon({
               helper="Temporary run state"
               tone={isShopAvailable ? "amber" : "sky"}
             />
+            <StatCard
+              label="Boss"
+              value={
+                hasCompletedBoss
+                  ? "Defeated"
+                  : isBossEncounter
+                    ? "Active"
+                    : isBossAvailable
+                      ? "Available"
+                      : `${runProgress.monstersDefeated} / ${bossMilestone}`
+              }
+              helper="Monster 20 milestone"
+              tone={
+                hasCompletedBoss
+                  ? "emerald"
+                  : isBossAvailable || isBossEncounter
+                    ? "red"
+                    : "slate"
+              }
+            />
           </div>
 
           <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <Badge tone={isShopAvailable ? "amber" : "sky"}>
-                  {isShopAvailable ? "Shop Available" : "Run Progress"}
+                <Badge
+                  tone={isBossAvailable ? "red" : isShopAvailable ? "amber" : "sky"}
+                >
+                  {isBossAvailable
+                    ? "Boss Available"
+                    : isShopAvailable
+                      ? "Shop Available"
+                      : "Run Progress"}
                 </Badge>
                 <p className="mt-2 text-sm font-semibold text-slate-950">
-                  Monster Defeated: {runProgress.monstersDefeated} /{" "}
-                  {runProgress.nextShopAt} until Shop
+                  {isBossAvailable
+                    ? `${sampleBoss.name} is ready after ${bossMilestone} defeated monsters.`
+                    : `Monster Defeated: ${runProgress.monstersDefeated} / ${runProgress.nextShopAt} until Shop`}
                 </p>
               </div>
-              {isShopAvailable && (
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => onNavigate("shop")}
-                >
-                  Go To Shop
-                </Button>
-              )}
+              <div className="flex flex-wrap gap-3">
+                {isBossAvailable && (
+                  <Button type="button" onClick={handleStartBoss}>
+                    Start Boss Battle
+                  </Button>
+                )}
+                {isShopAvailable && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => onNavigate("shop")}
+                  >
+                    Go To Shop
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -593,33 +665,34 @@ export function Dungeon({
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <span className="grid size-16 place-items-center rounded-md bg-white text-4xl shadow-sm">
-                  {currentMonster.imagePlaceholder}
+                  {currentEncounter.imagePlaceholder}
                 </span>
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-                    Current Monster
+                    Current {encounterLabel}
                   </p>
                   <h4 className="text-2xl font-bold text-slate-950">
-                    {currentMonster.name}
+                    {currentEncounter.name}
                   </h4>
                   <p className="text-sm text-slate-600">
-                    Attack {currentMonster.attack}
+                    Attack {currentEncounter.attack}
                   </p>
                 </div>
               </div>
               <div className="min-w-44">
                 <p className="text-sm font-semibold text-slate-700">
-                  HP {monsterHp} / {currentMonster.maxHp}
+                  HP {monsterHp} / {currentEncounter.maxHp}
                 </p>
                 <div className="mt-2">
                   <ProgressBar
                     value={monsterHp}
-                    max={currentMonster.maxHp}
-                    label={`${currentMonster.name} HP`}
+                    max={currentEncounter.maxHp}
+                    label={`${currentEncounter.name} HP`}
+                    tone={isBossEncounter ? "red" : "emerald"}
                   />
                 </div>
                 <Badge tone="red" className="mt-3">
-                  Attack {currentMonster.attack}
+                  {encounterLabel} Attack {currentEncounter.attack}
                 </Badge>
               </div>
             </div>
@@ -760,9 +833,16 @@ export function Dungeon({
             )}
             {battleStatus === "monster-defeated" && (
               <div className="mt-4 flex flex-wrap gap-3">
-                <Button type="button" onClick={handleNextMonster}>
-                  Spawn Next Monster
-                </Button>
+                {!isBossAvailable && (
+                  <Button type="button" onClick={handleNextMonster}>
+                    Spawn Next Monster
+                  </Button>
+                )}
+                {isBossAvailable && (
+                  <Button type="button" onClick={handleStartBoss}>
+                    Start Boss Battle
+                  </Button>
+                )}
                 {isShopAvailable && (
                   <Button
                     type="button"
@@ -772,6 +852,42 @@ export function Dungeon({
                     Go To Shop
                   </Button>
                 )}
+              </div>
+            )}
+            {battleStatus === "run-complete" && (
+              <div className="mt-4 rounded-lg border border-emerald-200 bg-white/70 p-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge tone="emerald">Run Complete</Badge>
+                  <p className="font-semibold text-slate-950">
+                    Boss defeated. Rewards are deferred for now.
+                  </p>
+                </div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  <StatCard
+                    label="Monsters Defeated"
+                    value={runProgress.monstersDefeated}
+                    tone="emerald"
+                  />
+                  <StatCard
+                    label="Current Floor"
+                    value={runProgress.currentFloor}
+                    tone="sky"
+                  />
+                  <StatCard label="Final Gold" value={runGold} tone="amber" />
+                  <StatCard
+                    label="Run Deck Size"
+                    value={currentRunDeck.length}
+                    tone="slate"
+                  />
+                </div>
+                <Button
+                  type="button"
+                  onClick={handleRestartRun}
+                  className="mt-4"
+                  variant="secondary"
+                >
+                  Restart Run
+                </Button>
               </div>
             )}
             {battleStatus === "run-failed" && (

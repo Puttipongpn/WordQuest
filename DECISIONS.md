@@ -376,6 +376,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: A boss gives each run a clear milestone and completion goal.
 - Status: Accepted
 
+### 2026-06-04: Boss Appears at Monster 20
+
+- Decision: The first boss becomes available after 20 defeated monsters.
+- Reason: A fixed milestone gives the prototype a clear run climax without needing a full floor system yet.
+- Status: Accepted
+
+### 2026-06-04: Boss Uses the Same Card Trigger System
+
+- Decision: Boss battles use Word Choice, Word Match, Word Scramble, and the same triggered card effects as regular monster battles.
+- Reason: Reusing the established battle system keeps boss implementation simple and ensures current-run card upgrades matter.
+- Status: Accepted
+
+### 2026-06-04: Boss Defeat Creates Run Complete State
+
+- Decision: Defeating the boss shows Run Complete with a simple run summary.
+- Reason: The prototype needs a visible run endpoint before rewards, unlocks, and completion persistence are added.
+- Status: Accepted
+
+### 2026-06-04: Run Rewards Are Deferred
+
+- Decision: Boss defeat does not grant run rewards, deck unlocks, or permanent progress yet.
+- Reason: Phase 16 should validate boss flow and run completion before adding reward design.
+- Status: Accepted
+
 ### 2026-06-04: Shop Upgrades Affect Only Current Run
 
 - Decision: Shop upgrades, card enchantments, duplication, removal, and run items affect only the active run.

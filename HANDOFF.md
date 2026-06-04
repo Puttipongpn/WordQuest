@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 15 complete. Phase 16 has not started yet.
+Current phase: Phase 16 complete. Phase 17 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -180,6 +180,17 @@ GitHub backup is configured:
 - Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, element effects, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
 - Kept boss logic, run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 15.
+- Added sample boss data in `src/data/bosses.ts`.
+- Added the first boss, Gatekeeper, with higher HP, higher attack, and a placeholder icon.
+- Boss becomes available after 20 defeated monsters.
+- Added Boss Available UI and a Start Boss Battle action in Dungeon.
+- Boss battles use the same Word Choice, Word Match, Word Scramble, Card Trigger System, current-run deck, attack, shield, and element display behavior.
+- Wrong boss battle answers cause boss attacks, with shield absorbing damage before HP.
+- Boss defeat creates a Run Complete state.
+- Added a simple run completion summary with monsters defeated, current floor, final gold, and current-run deck size.
+- Restarting a run resets boss state along with HP, shield, gold, monster state, run progression, and current-run deck changes.
+- Kept run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
+- Verified the project again with `npm run build` after Phase 16.
 
 ## Implemented Screens
 
@@ -188,7 +199,7 @@ The following screens are implemented or stubbed:
 - Home: polished entry screen with flow badges, primary actions, reset progress, and prototype summary.
 - Deck Review: polished vocabulary presentation screen using `Starter Deck`.
 - Training: polished first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, current-run deck, gold, shield absorption, and shop checkpoint routing.
+- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, current-run deck, gold, shield absorption, shop checkpoint routing, boss encounter, and Run Complete state.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
@@ -202,7 +213,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, and after Phase 15 current-run deck mutation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, and after Phase 16 boss battle foundation work.
 
 The local development server can be started with:
 
@@ -250,6 +261,7 @@ Current data files:
 
 - `src/data/starterDeck.ts`: the first sample vocabulary deck.
 - `src/data/monsters.ts`: sample monster list with Slime, Goblin, and Bat.
+- `src/data/bosses.ts`: sample boss data with Gatekeeper.
 - `src/data/shopItems.ts`: sample current-run shop item placeholders.
 - `src/data/index.ts`: data exports.
 
@@ -351,12 +363,17 @@ Current Dungeon implementation:
 - Monster attacks reduce shield before damaging player HP.
 - Triggered cards with shield effects add shield while still dealing `baseAttack` damage.
 - Dungeon feedback shows total monster attack, shield absorbed, HP damage taken, shield gained, triggered card, and triggered effects summary.
-- No boss logic, run rewards, backend, API, advanced element interactions, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
+- Boss becomes available after 20 defeated monsters.
+- The first boss is Gatekeeper.
+- Boss battles use the same mini-games and Card Trigger System as regular monsters.
+- Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
+- No run rewards, backend, API, advanced element interactions, deck unlocks, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
 - Phase 13 added Word Scramble with typed answer input.
 - Phase 14 added display-only element effects from current-run shop purchases.
 - Phase 15 added current-run deck mutation through Remove Card and Duplicate Card purchases.
+- Phase 16 added Boss Available, Gatekeeper boss battle, and Run Complete state.
 
 Current Shop implementation:
 
@@ -539,7 +556,9 @@ Current battle foundation rules:
 - Element shop purchases can add or replace one display-only element effect on a current-run card.
 - Remove Card can remove a current-run deck card as long as the deck stays above 5 cards.
 - Duplicate Card can add a unique-id copy of a current-run card, preserving upgrades.
-- Boss appears at monster 20 later.
+- Boss becomes available after 20 defeated monsters.
+- Boss uses the same Card Trigger System as regular monsters.
+- Boss defeat creates a Run Complete state.
 - Run rewards are deferred.
 
 ## Deck System
@@ -681,8 +700,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 15 is complete.
+Phase 16 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, run rewards, timers, persistent run state, advanced element interactions, deck unlocks, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, run rewards, timers, persistent run state, advanced element interactions, deck unlocks, or final art assets unless explicitly requested.
