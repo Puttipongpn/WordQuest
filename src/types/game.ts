@@ -53,6 +53,8 @@ export type WordMastery = {
   lastReviewedAt?: string;
 };
 
+export type WordMasteryByCardId = Record<string, number>;
+
 export type PlayerProgress = {
   unlockedDeckIds: string[];
   completedDeckIds: string[];

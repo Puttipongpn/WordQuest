@@ -113,6 +113,7 @@ After every completed task:
 - Update `PROJECT_STATUS.md`
 - Update `HANDOFF.md`
 - Update `DECISIONS.md`
+- Update `GAME_DESIGN.md` when gameplay rules, systems, or scope change
 
 Record any new architecture decisions and major design changes.
 

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 3 complete. Phase 4 has not started yet.
+Current phase: Phase 4.5 complete. Phase 5 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -58,6 +58,20 @@ GitHub backup is configured:
 - Added `.gitignore` for generated files and local environment files.
 - Added a proper `README.md` for WordQuest.
 - Pushed the current project backup to GitHub on `origin/main`.
+- Built Word Choice Training using `Starter Deck` from `src/data`.
+- Added a local-state-only training question flow.
+- Added 4 Thai meaning answer choices per question.
+- Added correct/wrong feedback, correct answer reveal, and Next/Restart flow.
+- Added training progress display with current question, total questions, correct count, and incorrect count.
+- Verified the project again with `npm run build` after Phase 4.
+- Created `GAME_DESIGN.md` as the central accepted game design document.
+- Added app-level in-memory word mastery state.
+- Passed mastery data to Deck Review and Training.
+- Updated Deck Review to show current mastery values instead of hardcoded `0 / 5`.
+- Updated Training so correct answers increase word mastery by 1.
+- Clamped mastery to the range `0` to `5`.
+- Kept mastery temporary with no LocalStorage persistence.
+- Verified the project again with `npm run build` after Phase 4.5.
 
 ## Implemented Screens
 
@@ -65,7 +79,7 @@ The following screens are implemented or stubbed:
 
 - Home: entry screen with buttons to review a deck or enter the dungeon.
 - Deck Review: implemented vocabulary presentation screen using `Starter Deck`.
-- Training: placeholder for non-dungeon practice mini-games.
+- Training: implemented first Word Choice Training interaction using `Starter Deck`.
 - Dungeon: placeholder battle area with links to Shop and Run Result.
 - Shop: placeholder current-run upgrade cards.
 - Run Result: placeholder summary screen with a button back to Home.
@@ -80,7 +94,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, and after Phase 3 Deck Review work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, and after Phase 4 Training work.
 
 The local development server can be started with:
 
@@ -123,16 +137,45 @@ Repository files:
 
 - `.gitignore`: excludes `node_modules/`, `dist/`, environment files, `.DS_Store`, logs, and TypeScript build info.
 - `README.md`: project overview, tech stack, status, planned features, commands, and Version 1 scope.
+- `GAME_DESIGN.md`: central gameplay design reference for project concept, systems, rules, planned features, and deferred scope.
 
 Current Deck Review implementation:
 
 - `src/screens/DeckReview.tsx` imports `starterDeck` from `src/data`.
+- It receives in-memory `wordMastery` from `src/App.tsx`.
 - All cards render in a responsive grid.
 - Clicking a card stores the selected card in local React state.
 - The selected card detail panel shows word, Thai meaning, part of speech, example sentence, difficulty, base attack, effects, and mastery placeholder.
-- Mastery is display-only and hardcoded as `0 / 5` per card for now.
-- Deck summary shows deck name, total cards, and a placeholder total mastery value.
-- No persistence, save logic, battle logic, shop logic, or training logic is connected to Deck Review.
+- Mastery displays real in-memory values from `0 / 5`.
+- Deck summary shows deck name, total cards, and current total in-memory mastery.
+- Deck Review does not mutate mastery and has no persistence, save logic, battle logic, shop logic, or training interaction logic.
+
+Current Training implementation:
+
+- `src/screens/Training.tsx` imports `starterDeck` from `src/data`.
+- The first mini-game is Word Choice Training.
+- It uses the first 10 cards from `Starter Deck`.
+- Each question shows either the card image placeholder or English word as the prompt.
+- Each question shows 4 Thai meaning answer choices.
+- Player selection shows correct/wrong feedback and reveals the correct answer.
+- A Next button advances to the next question.
+- The final question shows a Restart button that resets the local training session.
+- Training progress shows current question, total questions, correct count, and incorrect count.
+- Training receives in-memory `wordMastery` and an `onIncreaseWordMastery` callback from `src/App.tsx`.
+- Correct answers increase that word's in-memory mastery by 1.
+- Mastery cannot exceed 5.
+- Wrong answers do not decrease mastery for now.
+- Training does not change HP, gold, shield, run state, shop state, dungeon progress, LocalStorage, or permanent saved progress.
+
+Current Word Mastery implementation:
+
+- App-level state lives in `src/App.tsx` as `WordMasteryByCardId`.
+- Default mastery is `0` for cards that do not yet have an entry.
+- Mastery range is `0` to `5`.
+- Correct Training answers increase mastery by `1`.
+- Wrong Training answers do not decrease mastery.
+- Mastery is not saved to LocalStorage yet.
+- Mastery resets when the page refreshes.
 
 ## Version 1 Scope
 
@@ -192,6 +235,8 @@ Permanent progress includes:
 - Best run stats
 
 Permanent progress should be saved in LocalStorage for Version 1.
+
+Current prototype note: word mastery is currently in-memory only. It behaves like the future permanent progress concept but is not persisted yet.
 
 ## Run Progress Rules
 
@@ -290,9 +335,15 @@ Initial battle mini-games:
   - Harder words give more damage.
   - Solving correctly triggers card effects.
 
-Training mini-games planned:
+Training mini-games:
 
-- Image / word choice quiz
+- Word Choice Training
+  - Implemented with local state only.
+  - Uses `Starter Deck` data.
+  - Shows image placeholder or English word prompts.
+  - Uses 4 Thai meaning answer choices.
+  - Shows correct/wrong feedback and correct answer after selection.
+  - Correct answers increase in-memory word mastery by 1.
 - Match word to meaning
 
 Mini-games should eventually include timers. Difficulty should affect time limit and damage.
@@ -321,8 +372,9 @@ These documents are required project maintenance files:
 - `PROJECT_STATUS.md`: current progress, completed work, active task, and next task.
 - `HANDOFF.md`: project handoff context for another developer or AI agent.
 - `DECISIONS.md`: accepted decision log.
+- `GAME_DESIGN.md`: central accepted gameplay design reference.
 
-After every completed task, update all three documents as needed.
+After every completed task, update these documents as needed. Update `GAME_DESIGN.md` when gameplay rules, systems, or scope change.
 
 ## GitHub Backup
 
@@ -343,8 +395,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 4 has not started yet.
+Phase 5 has not started yet.
 
 Recommended next task:
 
-Build Training mode presentation and the first simple training interactions without changing dungeon HP or run state.
+Build the first dungeon battle run state and basic monster battle flow without adding shop logic yet.

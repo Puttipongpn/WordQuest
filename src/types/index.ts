@@ -11,5 +11,6 @@ export type {
   VocabularyDeck,
   WordCard,
   WordMastery,
+  WordMasteryByCardId,
 } from "./game";
 export type { ScreenName } from "./navigation";

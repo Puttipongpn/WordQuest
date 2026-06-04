@@ -172,6 +172,54 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Practice should support learning without punishing or altering roguelike progress.
 - Status: Accepted
 
+### 2026-06-04: Training Uses Local State First
+
+- Decision: The first Training implementation uses local React state only, with no LocalStorage or permanent mastery updates.
+- Reason: Phase 4 should validate the training interaction before adding persistence or progress systems.
+- Status: Accepted
+
+### 2026-06-04: Word Choice Training First
+
+- Decision: The first training mini-game is Word Choice Training using `Starter Deck`, 4 Thai meaning answer choices, and image or English word prompts.
+- Reason: Word choice is simple to understand, works with existing seed card data, and fits the non-dungeon practice loop.
+- Status: Accepted
+
+### 2026-06-04: Training State Isolation
+
+- Decision: Training must not change HP, gold, shield, run state, shop state, dungeon progress, LocalStorage, or permanent mastery in Phase 4.
+- Reason: Training should remain outside dungeon runs and avoid accidental coupling with future battle/save systems.
+- Status: Accepted
+
+### 2026-06-04: GAME_DESIGN.md Required Design Document
+
+- Decision: Maintain `GAME_DESIGN.md` as the central accepted gameplay design document.
+- Reason: Gameplay systems need one readable source of truth before dungeon, mastery, shop, and mini-game systems become more complex.
+- Status: Accepted
+
+### 2026-06-04: In-Memory Mastery Before LocalStorage
+
+- Decision: Implement word mastery in React state before adding LocalStorage persistence.
+- Reason: In-memory mastery lets Deck Review and Training validate the learning loop before save-system complexity is introduced.
+- Status: Accepted
+
+### 2026-06-04: Mastery Range
+
+- Decision: Each word card has mastery from `0` to `5`.
+- Reason: A small fixed range is easy to display, understand, and balance for the Version 1 prototype.
+- Status: Accepted
+
+### 2026-06-04: Correct Training Answer Increases Mastery
+
+- Decision: A correct Training answer increases that word's mastery by `1`.
+- Reason: Correct answers should provide immediate learning progress feedback without requiring persistence yet.
+- Status: Accepted
+
+### 2026-06-04: Wrong Training Answer Does Not Decrease Mastery
+
+- Decision: Wrong Training answers do not decrease mastery in the Version 1 prototype.
+- Reason: Early training should encourage practice without punishing mistakes while the learning loop is still being built.
+- Status: Accepted
+
 ### 2026-06-04: Initial Mini-Games
 
 - Decision: Start with Word Match and Word Scramble as battle mini-games.

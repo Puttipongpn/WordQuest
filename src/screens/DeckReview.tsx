@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { starterDeck } from "../data";
-import type { CardEffect, DifficultyLevel, WordCard } from "../types";
+import type {
+  CardEffect,
+  DifficultyLevel,
+  WordCard,
+  WordMasteryByCardId,
+} from "../types";
 
-const masteryCurrent = 0;
 const masteryTarget = 5;
+
+type DeckReviewProps = {
+  wordMastery: WordMasteryByCardId;
+};
 
 const difficultyLabels: Record<DifficultyLevel, string> = {
   1: "Easy",
@@ -24,11 +32,16 @@ function formatEffect(effect: CardEffect) {
   return `${effect.description} (${effect.type}, ${effect.amount})`;
 }
 
-export function DeckReview() {
+export function DeckReview({ wordMastery }: DeckReviewProps) {
   const [selectedCard, setSelectedCard] = useState<WordCard>(
     starterDeck.cards[0],
   );
 
+  const selectedMastery = wordMastery[selectedCard.id] ?? 0;
+  const totalMastery = starterDeck.cards.reduce(
+    (sum, card) => sum + (wordMastery[card.id] ?? 0),
+    0,
+  );
   const totalMasteryTarget = starterDeck.cards.length * masteryTarget;
 
   return (
@@ -54,7 +67,7 @@ export function DeckReview() {
                 </div>
                 <div className="rounded-md bg-emerald-50 p-3">
                   <p className="font-semibold text-emerald-800">
-                    {masteryCurrent} / {totalMasteryTarget}
+                    {totalMastery} / {totalMasteryTarget}
                   </p>
                   <p className="text-slate-600">Mastery</p>
                 </div>
@@ -68,6 +81,8 @@ export function DeckReview() {
           >
             {starterDeck.cards.map((card) => {
               const isSelected = selectedCard.id === card.id;
+              const cardMastery = wordMastery[card.id] ?? 0;
+              const masteryPercent = (cardMastery / masteryTarget) * 100;
 
               return (
                 <button
@@ -98,10 +113,13 @@ export function DeckReview() {
                     </p>
                   </div>
                   <div className="mt-4 h-2 rounded-full bg-slate-100">
-                    <div className="h-2 w-0 rounded-full bg-emerald-500" />
+                    <div
+                      className="h-2 rounded-full bg-emerald-500"
+                      style={{ width: `${masteryPercent}%` }}
+                    />
                   </div>
                   <p className="mt-2 text-xs font-medium text-slate-500">
-                    Mastery {masteryCurrent} / {masteryTarget}
+                    Mastery {cardMastery} / {masteryTarget}
                   </p>
                 </button>
               );
@@ -196,10 +214,15 @@ export function DeckReview() {
               </dt>
               <dd className="mt-2">
                 <div className="h-2 rounded-full bg-slate-100">
-                  <div className="h-2 w-0 rounded-full bg-emerald-500" />
+                  <div
+                    className="h-2 rounded-full bg-emerald-500"
+                    style={{
+                      width: `${(selectedMastery / masteryTarget) * 100}%`,
+                    }}
+                  />
                 </div>
                 <p className="mt-2 font-semibold text-slate-950">
-                  {masteryCurrent} / {masteryTarget}
+                  {selectedMastery} / {masteryTarget}
                 </p>
               </dd>
             </div>
