@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
+import { Badge, CardPanel, ProgressBar, StatCard } from "../components/ui";
 import { starterDeck } from "../data";
 import type {
   CardEffect,
@@ -45,10 +46,15 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
   const totalMasteryTarget = starterDeck.cards.length * masteryTarget;
 
   return (
-    <ScreenShell eyebrow="Cards" title="Deck Review" framed={false}>
+    <ScreenShell
+      eyebrow="Cards"
+      title="Deck Review"
+      description="Scan the Starter Deck, inspect card effects, and track saved mastery."
+      framed={false}
+    >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
         <div className="space-y-5">
-          <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <CardPanel>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h3 className="text-2xl font-bold text-slate-950">
@@ -59,21 +65,15 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm sm:min-w-64">
-                <div className="rounded-md bg-slate-100 p-3">
-                  <p className="font-semibold text-slate-950">
-                    {starterDeck.cards.length}
-                  </p>
-                  <p className="text-slate-600">Total cards</p>
-                </div>
-                <div className="rounded-md bg-emerald-50 p-3">
-                  <p className="font-semibold text-emerald-800">
-                    {totalMastery} / {totalMasteryTarget}
-                  </p>
-                  <p className="text-slate-600">Mastery</p>
-                </div>
+                <StatCard label="Total cards" value={starterDeck.cards.length} />
+                <StatCard
+                  label="Mastery"
+                  value={`${totalMastery} / ${totalMasteryTarget}`}
+                  tone="emerald"
+                />
               </div>
             </div>
-          </section>
+          </CardPanel>
 
           <section
             className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3"
@@ -82,7 +82,6 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
             {starterDeck.cards.map((card) => {
               const isSelected = selectedCard.id === card.id;
               const cardMastery = wordMastery[card.id] ?? 0;
-              const masteryPercent = (cardMastery / masteryTarget) * 100;
 
               return (
                 <button
@@ -100,22 +99,34 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
                     <span className="grid size-14 place-items-center rounded-md bg-slate-100 text-3xl">
                       {card.imagePlaceholder}
                     </span>
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
+                    <Badge
+                      tone={
+                        card.difficulty === 3
+                          ? "red"
+                          : card.difficulty === 2
+                            ? "amber"
+                            : "emerald"
+                      }
+                    >
                       {formatDifficulty(card.difficulty)}
-                    </span>
+                    </Badge>
                   </div>
                   <div className="mt-5">
                     <p className="text-xl font-bold capitalize text-slate-950">
                       {card.word}
                     </p>
-                    <p className="mt-1 text-sm text-slate-600">
-                      Base attack {card.baseAttack}
-                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <Badge tone="slate">ATK {card.baseAttack}</Badge>
+                      <Badge tone={card.effects?.length ? "purple" : "slate"}>
+                        {card.effects?.length ?? 0} effects
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="mt-4 h-2 rounded-full bg-slate-100">
-                    <div
-                      className="h-2 rounded-full bg-emerald-500"
-                      style={{ width: `${masteryPercent}%` }}
+                  <div className="mt-4">
+                    <ProgressBar
+                      value={cardMastery}
+                      max={masteryTarget}
+                      label={`${card.word} mastery`}
                     />
                   </div>
                   <p className="mt-2 text-xs font-medium text-slate-500">
@@ -127,7 +138,7 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
           </section>
         </div>
 
-        <aside className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:sticky lg:top-6 lg:self-start">
+        <aside className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:sticky lg:top-28 lg:self-start">
           <div className="flex items-start gap-4">
             <span className="grid size-16 shrink-0 place-items-center rounded-md bg-slate-100 text-4xl">
               {selectedCard.imagePlaceholder}
@@ -168,22 +179,18 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
               </dd>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-md bg-slate-100 p-3">
-                <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Difficulty
-                </dt>
-                <dd className="mt-1 font-semibold text-slate-950">
-                  {formatDifficulty(selectedCard.difficulty)}
-                </dd>
-              </div>
-              <div className="rounded-md bg-slate-100 p-3">
-                <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  Base attack
-                </dt>
-                <dd className="mt-1 font-semibold text-slate-950">
-                  {selectedCard.baseAttack}
-                </dd>
-              </div>
+              <StatCard
+                label="Difficulty"
+                value={formatDifficulty(selectedCard.difficulty)}
+                tone={
+                  selectedCard.difficulty === 3
+                    ? "red"
+                    : selectedCard.difficulty === 2
+                      ? "amber"
+                      : "emerald"
+                }
+              />
+              <StatCard label="Base attack" value={selectedCard.baseAttack} />
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -213,14 +220,11 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
                 Mastery
               </dt>
               <dd className="mt-2">
-                <div className="h-2 rounded-full bg-slate-100">
-                  <div
-                    className="h-2 rounded-full bg-emerald-500"
-                    style={{
-                      width: `${(selectedMastery / masteryTarget) * 100}%`,
-                    }}
-                  />
-                </div>
+                <ProgressBar
+                  value={selectedMastery}
+                  max={masteryTarget}
+                  label={`${selectedCard.word} mastery`}
+                />
                 <p className="mt-2 font-semibold text-slate-950">
                   {selectedMastery} / {masteryTarget}
                 </p>

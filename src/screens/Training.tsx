@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
+import {
+  Badge,
+  Button,
+  CardPanel,
+  ProgressBar,
+  StatCard,
+} from "../components/ui";
 import { starterDeck } from "../data";
 import type { WordCard, WordMasteryByCardId } from "../types";
 
@@ -98,14 +105,17 @@ export function Training({
   }
 
   return (
-    <ScreenShell eyebrow="Practice" title="Training" framed={false}>
+    <ScreenShell
+      eyebrow="Practice"
+      title="Training"
+      description="Practice outside dungeon runs. Correct answers save word mastery only."
+      framed={false}
+    >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <CardPanel>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-                Word Choice Training
-              </p>
+              <Badge tone="emerald">Word Choice Training</Badge>
               <h3 className="mt-1 text-2xl font-bold text-slate-950">
                 Choose the correct Thai meaning
               </h3>
@@ -114,9 +124,7 @@ export function Training({
                 shield, dungeon progress, shop state, or current run progress.
               </p>
             </div>
-            <div className="rounded-md bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-800">
-              Question {questionIndex + 1} / {questions.length}
-            </div>
+            <Badge>Question {questionIndex + 1} / {questions.length}</Badge>
           </div>
 
           <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-5">
@@ -162,20 +170,26 @@ export function Training({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => handleAnswer(choice)}
-                  className={`min-h-20 rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`min-h-24 rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                     showCorrect
-                      ? "border-emerald-500 bg-emerald-50"
+                      ? "border-emerald-500 bg-emerald-50 ring-1 ring-emerald-200"
                       : showWrong
-                        ? "border-red-400 bg-red-50"
+                        ? "border-red-400 bg-red-50 ring-1 ring-red-200"
                         : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
                   } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
                 >
-                  <p className="text-lg font-semibold text-slate-950">
-                    {choice.meaningTh}
-                  </p>
-                  <p className="mt-1 text-sm capitalize text-slate-500">
-                    {choice.partOfSpeech}
-                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-950">
+                        {choice.meaningTh}
+                      </p>
+                      <p className="mt-1 text-sm capitalize text-slate-500">
+                        {choice.partOfSpeech}
+                      </p>
+                    </div>
+                    {showCorrect && <Badge tone="emerald">Correct</Badge>}
+                    {showWrong && <Badge tone="red">Wrong</Badge>}
+                  </div>
                 </button>
               );
             })}
@@ -202,13 +216,12 @@ export function Training({
                     {currentQuestion.card.exampleSentence}
                   </p>
                 </div>
-                <button
+                <Button
                   type="button"
                   onClick={handleNext}
-                  className="rounded-md bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
                 >
                   {isLastQuestion ? "Restart" : "Next"}
-                </button>
+                </Button>
               </div>
             ) : (
               <div>
@@ -221,32 +234,20 @@ export function Training({
               </div>
             )}
           </div>
-        </section>
+        </CardPanel>
 
         <aside className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:self-start">
           <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
             Training Progress
           </p>
           <div className="mt-4 grid gap-3">
-            <div className="rounded-md bg-slate-100 p-4">
-              <p className="text-2xl font-bold text-slate-950">
-                {questionIndex + 1} / {questions.length}
-              </p>
-              <p className="text-sm text-slate-600">Current question</p>
-            </div>
+            <StatCard
+              label="Current question"
+              value={`${questionIndex + 1} / ${questions.length}`}
+            />
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-md bg-emerald-50 p-4">
-                <p className="text-2xl font-bold text-emerald-800">
-                  {correctCount}
-                </p>
-                <p className="text-sm text-slate-600">Correct</p>
-              </div>
-              <div className="rounded-md bg-red-50 p-4">
-                <p className="text-2xl font-bold text-red-700">
-                  {incorrectCount}
-                </p>
-                <p className="text-sm text-slate-600">Incorrect</p>
-              </div>
+              <StatCard label="Correct" value={correctCount} tone="emerald" />
+              <StatCard label="Incorrect" value={incorrectCount} tone="red" />
             </div>
             <div className="rounded-md border border-slate-200 p-4">
               <p className="font-semibold text-slate-950">
@@ -261,12 +262,11 @@ export function Training({
               <p className="font-semibold capitalize text-slate-950">
                 {currentQuestion.card.word} mastery
               </p>
-              <div className="mt-3 h-2 rounded-full bg-slate-100">
-                <div
-                  className="h-2 rounded-full bg-emerald-500"
-                  style={{
-                    width: `${(currentMastery / masteryTarget) * 100}%`,
-                  }}
+              <div className="mt-3">
+                <ProgressBar
+                  value={currentMastery}
+                  max={masteryTarget}
+                  label={`${currentQuestion.card.word} mastery`}
                 />
               </div>
               <p className="mt-2 text-sm font-semibold text-slate-700">

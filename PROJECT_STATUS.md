@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 8 LocalStorage permanent progress save system is complete. GitHub backup is configured on `origin/main`.
+Phase 9 simple UI polish is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -101,6 +101,16 @@ Phase 8 LocalStorage permanent progress save system is complete. GitHub backup i
 - Added a Home screen reset progress action that clears saved progress and resets in-memory progress to defaults.
 - Added safe fallback behavior for missing, invalid, or incompatible saved data.
 - Verified the project with `npm run build` after Phase 8.
+- Added simple reusable UI components in `src/components/ui.tsx`.
+- Polished overall layout consistency across Home, Deck Review, Training, Dungeon, Shop, and Run Result.
+- Improved header and screen shell spacing, descriptions, and mobile-friendly navigation.
+- Improved Deck Review scanability for difficulty, mastery, base attack, and effects.
+- Improved Training answer states for unanswered, correct, wrong, and correct answer reveal.
+- Improved Dungeon readability with stat cards, HP bars, monster attack badges, mini-game labels, and clearer feedback states.
+- Improved Shop readability with current-run messaging, item type badges, cost badges, and disabled preview-only actions.
+- Improved Run Result placeholder presentation.
+- Kept placeholder visuals only and did not add final art assets.
+- Verified the project with `npm run build` after Phase 9.
 
 ## In Progress
 
@@ -108,7 +118,7 @@ Phase 8 LocalStorage permanent progress save system is complete. GitHub backup i
 
 ## Next Task
 
-Start Phase 9 when requested: add simple UI polish while keeping placeholder art.
+Phase 10 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -173,6 +183,8 @@ The following documents are required and must be updated after every completed t
 - LocalStorage saves permanent progress only
 - Run progress is not persisted
 - Reset Progress clears saved permanent progress and resets in-memory progress to defaults
+- Phase 9 introduced small reusable UI primitives for presentation consistency
+- Phase 9 changed presentation only and did not change gameplay rules
 
 ## Important Rules
 
@@ -200,4 +212,4 @@ Keep game playable and simple.
 - Shop purchase logic
 - Save migrations beyond version 1
 - Balancing
-- Mobile polish
+- Additional mobile polish

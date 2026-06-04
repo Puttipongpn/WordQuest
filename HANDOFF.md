@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 8 complete. Phase 9 has not started yet.
+Current phase: Phase 9 complete. Phase 10 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -107,17 +107,27 @@ GitHub backup is configured:
 - Added a Home screen reset progress action that clears LocalStorage and resets in-memory progress to defaults.
 - Kept temporary run progress out of LocalStorage, including gold, HP, shield, shop upgrades, duplicated cards, removed cards, card enchantments, monster state, and current dungeon run state.
 - Verified the project again with `npm run build` after Phase 8.
+- Added simple reusable UI components in `src/components/ui.tsx`.
+- Polished layout consistency across Home, Deck Review, Training, Dungeon, Shop, and Run Result.
+- Improved header navigation and `ScreenShell` descriptions.
+- Improved Deck Review scanability for difficulty, mastery, base attack, and effects.
+- Improved Training answer states and progress readability.
+- Improved Dungeon battle readability with stat cards, HP bars, monster attack badge, mini-game label, triggered card, damage dealt, damage taken, and correct/wrong feedback.
+- Improved Shop readability with current-run messaging, item type badges, cost badges, and disabled preview-only buttons.
+- Improved Run Result placeholder layout.
+- Kept placeholder visuals only and did not add final art assets.
+- Verified the project again with `npm run build` after Phase 9.
 
 ## Implemented Screens
 
 The following screens are implemented or stubbed:
 
-- Home: entry screen with buttons to review a deck or enter the dungeon.
-- Deck Review: implemented vocabulary presentation screen using `Starter Deck`.
-- Training: implemented first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: implemented first local-state vocabulary card battle foundation.
-- Shop: current-run shop presentation with placeholder item cards and preview-only actions.
-- Run Result: placeholder summary screen with a button back to Home.
+- Home: polished entry screen with flow badges, primary actions, reset progress, and prototype summary.
+- Deck Review: polished vocabulary presentation screen using `Starter Deck`.
+- Training: polished first Word Choice Training interaction using `Starter Deck`.
+- Dungeon: polished local-state vocabulary card battle foundation.
+- Shop: polished current-run shop presentation with placeholder item cards and preview-only actions.
+- Run Result: polished placeholder summary screen with a button back to Home.
 
 Navigation is controlled by `currentScreen` state in `src/App.tsx`.
 
@@ -129,7 +139,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, and after Phase 8 LocalStorage save work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, and after Phase 9 UI polish work.
 
 The local development server can be started with:
 
@@ -142,7 +152,7 @@ npm run dev -- --host 127.0.0.1
 The app is intentionally small and simple.
 
 - `src/App.tsx`: owns the current screen state and renders the active screen.
-- `src/components`: reusable UI pieces such as the app header and screen layout shell.
+- `src/components`: reusable UI pieces such as the app header, screen layout shell, and small UI primitives.
 - `src/screens`: top-level screen components.
 - `src/types`: shared TypeScript types.
 - `src/game`: reserved for pure game logic.
@@ -162,6 +172,12 @@ Current shared type files:
 
 - `src/types/navigation.ts`: screen navigation names.
 - `src/types/game.ts`: vocabulary cards, decks, player progress, run state, monsters, bosses, shop items, elements, mini-game types, and mastery data.
+
+Current component files:
+
+- `src/components/AppHeader.tsx`: responsive top navigation.
+- `src/components/ScreenShell.tsx`: consistent screen spacing, title, and optional description.
+- `src/components/ui.tsx`: small reusable presentation primitives: `Badge`, `Button`, `CardPanel`, `ProgressBar`, and `StatCard`.
 
 Current utility files:
 
@@ -190,6 +206,7 @@ Current Deck Review implementation:
 - Mastery displays persisted values from `0 / 5`.
 - Deck summary shows deck name, total cards, and current total saved mastery.
 - Deck Review does not mutate mastery and has no persistence, save logic, battle logic, shop logic, or training interaction logic.
+- Phase 9 UI polish added clearer badges, stat cards, and progress bars for scanability.
 
 Current Training implementation:
 
@@ -207,6 +224,7 @@ Current Training implementation:
 - Mastery cannot exceed 5.
 - Wrong answers do not decrease mastery for now.
 - Training does not change HP, gold, shield, run state, shop state, dungeon progress, or temporary run progress.
+- Phase 9 UI polish made unanswered, correct, wrong, and correct-answer states clearer.
 
 Current Word Mastery implementation:
 
@@ -253,6 +271,7 @@ Current Dungeon implementation:
 - Gold is display-only in this phase.
 - Shield is display-only in this phase.
 - No shop logic, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
+- Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 
 Current Shop implementation:
 
@@ -263,6 +282,7 @@ Current Shop implementation:
 - Each shop item card shows an icon placeholder, name, description, cost, and type.
 - Each shop item has a disabled `Preview Only` button.
 - Phase 7 does not modify cards, deck contents, player gold, run state, or card effects.
+- Phase 9 UI polish made item type, cost, preview-only state, and current-run-only messaging clearer.
 - Purchase logic, shop routing from dungeon, card selection for upgrades, removal, duplication, and balancing are deferred.
 
 ## Version 1 Scope
@@ -314,6 +334,7 @@ Version 1 should not include:
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
+- Phase 9 introduced small reusable UI primitives for consistent presentation without changing gameplay rules.
 
 ## Permanent Progress Rules
 
@@ -515,8 +536,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 8 is complete.
+Phase 9 is complete.
 
 Recommended next task:
 
-Start Phase 9 when requested: add simple UI polish while keeping placeholder art. Do not add backend, boss logic, shop purchase logic, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, shop purchase logic, run rewards, or final art assets unless explicitly requested.

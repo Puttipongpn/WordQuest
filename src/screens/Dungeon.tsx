@@ -1,5 +1,12 @@
 import { useMemo, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
+import {
+  Badge,
+  Button,
+  CardPanel,
+  ProgressBar,
+  StatCard,
+} from "../components/ui";
 import { sampleMonsters, starterDeck } from "../data";
 import type { Monster, ScreenName, WordCard } from "../types";
 
@@ -131,9 +138,6 @@ export function Dungeon({ onNavigate }: DungeonProps) {
     miniGameType === "word-choice"
       ? wordChoiceQuestion.card
       : wordMatchQuestion.cards[0];
-  const monsterHpPercent = (monsterHp / currentMonster.maxHp) * 100;
-  const playerHpPercent = (playerHp / initialPlayerHp) * 100;
-
   function resetAnswerState() {
     setSelectedChoiceId(null);
     setSelectedWordId(null);
@@ -269,14 +273,17 @@ export function Dungeon({ onNavigate }: DungeonProps) {
   }
 
   return (
-    <ScreenShell eyebrow="Battle" title="Dungeon" framed={false}>
+    <ScreenShell
+      eyebrow="Battle"
+      title="Dungeon"
+      description="Answer vocabulary mini-games to trigger cards. Run state here is local and temporary."
+      framed={false}
+    >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <CardPanel>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-                Battle Mini-Game
-              </p>
+              <Badge tone="emerald">Battle Mini-Game</Badge>
               <h3 className="mt-1 text-2xl font-bold text-slate-950">
                 {formatMiniGameName(miniGameType)}
               </h3>
@@ -285,42 +292,40 @@ export function Dungeon({ onNavigate }: DungeonProps) {
                 permanent mastery updates are connected here yet.
               </p>
             </div>
-            <button
+            <Button
               type="button"
               onClick={() => onNavigate("run-result")}
-              className="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 hover:border-emerald-500 hover:text-emerald-700"
+              variant="secondary"
             >
               End Run
-            </button>
+            </Button>
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm font-semibold text-slate-600">Player HP</p>
-              <p className="mt-1 text-2xl font-bold text-red-700">
-                {playerHp} / {initialPlayerHp}
-              </p>
-              <div className="mt-3 h-2 rounded-full bg-white">
-                <div
-                  className="h-2 rounded-full bg-red-500"
-                  style={{ width: `${playerHpPercent}%` }}
-                />
-              </div>
-            </div>
-            <div className="rounded-md bg-sky-50 p-4">
-              <p className="text-sm font-semibold text-slate-600">Shield</p>
-              <p className="mt-1 text-2xl font-bold text-sky-700">{shield}</p>
-              <p className="mt-2 text-xs text-slate-500">
-                Display only for this battle pass.
-              </p>
-            </div>
-            <div className="rounded-md bg-amber-50 p-4">
-              <p className="text-sm font-semibold text-slate-600">Gold</p>
-              <p className="mt-1 text-2xl font-bold text-amber-700">{gold}</p>
-              <p className="mt-2 text-xs text-slate-500">
-                Display only. No battle rewards yet.
-              </p>
-            </div>
+            <StatCard
+              label="Player HP"
+              value={`${playerHp} / ${initialPlayerHp}`}
+              tone="red"
+            >
+              <ProgressBar
+                value={playerHp}
+                max={initialPlayerHp}
+                tone="red"
+                label="Player HP"
+              />
+            </StatCard>
+            <StatCard
+              label="Shield"
+              value={shield}
+              helper="Display only for now"
+              tone="sky"
+            />
+            <StatCard
+              label="Gold"
+              value={gold}
+              helper="No battle rewards yet"
+              tone="amber"
+            />
           </div>
 
           <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-5">
@@ -345,21 +350,23 @@ export function Dungeon({ onNavigate }: DungeonProps) {
                 <p className="text-sm font-semibold text-slate-700">
                   HP {monsterHp} / {currentMonster.maxHp}
                 </p>
-                <div className="mt-2 h-2 rounded-full bg-white">
-                  <div
-                    className="h-2 rounded-full bg-emerald-500"
-                    style={{ width: `${monsterHpPercent}%` }}
+                <div className="mt-2">
+                  <ProgressBar
+                    value={monsterHp}
+                    max={currentMonster.maxHp}
+                    label={`${currentMonster.name} HP`}
                   />
                 </div>
+                <Badge tone="red" className="mt-3">
+                  Attack {currentMonster.attack}
+                </Badge>
               </div>
             </div>
           </div>
 
           <div className="mt-6 rounded-lg border border-slate-200 bg-white p-5">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-                {formatMiniGameName(miniGameType)}
-              </p>
+              <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
               <p className="text-sm text-slate-500">
                 Correct answers trigger the selected word card.
               </p>
@@ -394,7 +401,24 @@ export function Dungeon({ onNavigate }: DungeonProps) {
                   : "border-slate-200 bg-white"
             }`}
           >
-            <p className="font-semibold text-slate-950">Battle Feedback</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="font-semibold text-slate-950">Battle Feedback</p>
+              <Badge
+                tone={
+                  battleLog.tone === "success"
+                    ? "emerald"
+                    : battleLog.tone === "danger"
+                      ? "red"
+                      : "slate"
+                }
+              >
+                {battleLog.tone === "success"
+                  ? "Correct"
+                  : battleLog.tone === "danger"
+                    ? "Wrong"
+                    : "Waiting"}
+              </Badge>
+            </div>
             <p className="mt-1 text-slate-700">{battleLog.message}</p>
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
               <div className="rounded-md bg-white/70 p-3">
@@ -423,39 +447,37 @@ export function Dungeon({ onNavigate }: DungeonProps) {
               </div>
             </div>
             {isAnswered && battleStatus === "fighting" && (
-              <button
+              <Button
                 type="button"
                 onClick={advanceQuestion}
-                className="mt-4 rounded-md bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
+                className="mt-4"
               >
                 Next Mini-Game
-              </button>
+              </Button>
             )}
             {battleStatus === "monster-defeated" && (
-              <button
+              <Button
                 type="button"
                 onClick={handleNextMonster}
-                className="mt-4 rounded-md bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
+                className="mt-4"
               >
                 Spawn Next Monster
-              </button>
+              </Button>
             )}
             {battleStatus === "run-failed" && (
-              <button
+              <Button
                 type="button"
                 onClick={handleRestartRun}
-                className="mt-4 rounded-md bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700"
+                className="mt-4 bg-red-600 hover:bg-red-700"
               >
                 Restart Run
-              </button>
+              </Button>
             )}
           </div>
-        </section>
+        </CardPanel>
 
         <aside className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:self-start">
-          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-            Card Trigger System
-          </p>
+          <Badge tone="emerald">Card Trigger System</Badge>
           <div className="mt-4 flex items-start gap-4">
             <span className="grid size-14 place-items-center rounded-md bg-slate-100 text-3xl">
               {featuredCard.imagePlaceholder}
@@ -505,7 +527,7 @@ function WordChoiceBattle({
   return (
     <div className="mt-5">
       {question.promptType === "image" ? (
-        <div className="flex items-center gap-4 rounded-lg bg-slate-50 p-5">
+        <div className="flex flex-col gap-4 rounded-lg bg-slate-50 p-5 sm:flex-row sm:items-center">
           <span className="grid size-20 place-items-center rounded-md bg-white text-5xl shadow-sm">
             {question.card.imagePlaceholder}
           </span>
@@ -549,13 +571,19 @@ function WordChoiceBattle({
                     ? "border-red-400 bg-red-50"
                     : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
               } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
-            >
-              <p className="text-lg font-semibold text-slate-950">
-                {choice.meaningTh}
-              </p>
-              <p className="mt-1 text-sm capitalize text-slate-500">
-                {choice.partOfSpeech}
-              </p>
+                >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-lg font-semibold text-slate-950">
+                    {choice.meaningTh}
+                  </p>
+                  <p className="mt-1 text-sm capitalize text-slate-500">
+                    {choice.partOfSpeech}
+                  </p>
+                </div>
+                {showCorrect && <Badge tone="emerald">Correct</Badge>}
+                {showWrong && <Badge tone="red">Wrong</Badge>}
+              </div>
             </button>
           );
         })}
@@ -602,8 +630,10 @@ function WordMatchBattle({
           <div className="mt-2 grid gap-3">
             {question.cards.map((card) => {
               const isSelected = selectedWordId === card.id;
-              const showCorrect = isAnswered && isSelected && selectedMeaningId === card.id;
-              const showWrong = isAnswered && isSelected && selectedMeaningId !== card.id;
+              const showCorrect =
+                isAnswered && isSelected && selectedMeaningId === card.id;
+              const showWrong =
+                isAnswered && isSelected && selectedMeaningId !== card.id;
 
               return (
                 <button
@@ -621,12 +651,19 @@ function WordMatchBattle({
                           : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
                   }`}
                 >
-                  <p className="text-lg font-semibold capitalize text-slate-950">
-                    {card.word}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Base attack {card.baseAttack}
-                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-lg font-semibold capitalize text-slate-950">
+                        {card.word}
+                      </p>
+                      <p className="mt-1 text-sm text-slate-500">
+                        Base attack {card.baseAttack}
+                      </p>
+                    </div>
+                    {!isAnswered && isSelected && <Badge tone="sky">Selected</Badge>}
+                    {showCorrect && <Badge tone="emerald">Match</Badge>}
+                    {showWrong && <Badge tone="red">Wrong</Badge>}
+                  </div>
                 </button>
               );
             })}
@@ -640,8 +677,10 @@ function WordMatchBattle({
           <div className="mt-2 grid gap-3">
             {question.meanings.map((card) => {
               const isSelected = selectedMeaningId === card.id;
-              const showCorrect = isAnswered && isSelected && selectedWordId === card.id;
-              const showWrong = isAnswered && isSelected && selectedWordId !== card.id;
+              const showCorrect =
+                isAnswered && isSelected && selectedWordId === card.id;
+              const showWrong =
+                isAnswered && isSelected && selectedWordId !== card.id;
 
               return (
                 <button
@@ -659,12 +698,19 @@ function WordMatchBattle({
                           : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
                   }`}
                 >
-                  <p className="text-lg font-semibold text-slate-950">
-                    {card.meaningTh}
-                  </p>
-                  <p className="mt-1 text-sm capitalize text-slate-500">
-                    {card.partOfSpeech}
-                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-950">
+                        {card.meaningTh}
+                      </p>
+                      <p className="mt-1 text-sm capitalize text-slate-500">
+                        {card.partOfSpeech}
+                      </p>
+                    </div>
+                    {!isAnswered && isSelected && <Badge tone="sky">Selected</Badge>}
+                    {showCorrect && <Badge tone="emerald">Match</Badge>}
+                    {showWrong && <Badge tone="red">Wrong</Badge>}
+                  </div>
                 </button>
               );
             })}
@@ -672,14 +718,14 @@ function WordMatchBattle({
         </div>
       </div>
 
-      <button
+      <Button
         type="button"
         disabled={isAnswered || !selectedWordId || !selectedMeaningId}
         onClick={onSubmit}
-        className="mt-5 rounded-md bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+        className="mt-5"
       >
         Check Pair
-      </button>
+      </Button>
     </div>
   );
 }

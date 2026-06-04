@@ -190,6 +190,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Deck Review needs repeated card elements and a detail panel without nesting them inside a larger card container.
 - Status: Accepted
 
+### 2026-06-04: Reusable UI Primitives for Presentation Polish
+
+- Decision: Use small reusable UI primitives such as badges, buttons, card panels, progress bars, and stat cards for Phase 9 presentation polish.
+- Reason: Shared primitives improve layout consistency and readability without changing gameplay rules or adding complex UI architecture.
+- Status: Accepted
+
 ### 2026-06-04: Training Does Not Affect HP or Run State
 
 - Decision: Training mode is outside dungeon runs and should not change dungeon HP or temporary run state.

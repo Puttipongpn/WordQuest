@@ -1,4 +1,5 @@
 import { ScreenShell } from "../components/ScreenShell";
+import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import type { ScreenName } from "../types";
 
 type HomeProps = {
@@ -18,46 +19,74 @@ export function Home({ onNavigate, onResetProgress }: HomeProps) {
   }
 
   return (
-    <ScreenShell eyebrow="Start" title="Home">
-      <div className="grid gap-5 md:grid-cols-[1.4fr_1fr]">
+    <ScreenShell
+      eyebrow="Start"
+      title="Home"
+      description="Review cards, train vocabulary, then enter the dungeon when you are ready."
+    >
+      <div className="grid gap-5 lg:grid-cols-[1.35fr_0.85fr]">
         <div>
-          <p className="text-lg text-slate-700">
-            Choose a vocabulary deck, review the cards, train with mini-games,
-            then enter the dungeon when you are ready.
+          <div className="flex flex-wrap gap-2">
+            <Badge tone="emerald">Vocabulary cards</Badge>
+            <Badge tone="sky">Mini-game battles</Badge>
+            <Badge tone="amber">Local prototype</Badge>
+          </div>
+          <h3 className="mt-5 max-w-2xl text-2xl font-bold text-slate-950">
+            Build mastery before battle, then trigger cards by answering
+            vocabulary questions.
+          </h3>
+          <p className="mt-3 max-w-2xl text-slate-600">
+            Permanent word mastery is saved locally. Current dungeon runs remain
+            temporary and reset separately.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => onNavigate("deck-review")}
-              className="rounded-md bg-emerald-600 px-4 py-2 font-semibold text-white hover:bg-emerald-700"
-            >
+            <Button type="button" onClick={() => onNavigate("deck-review")}>
               Review Deck
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={() => onNavigate("dungeon")}
-              className="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-800 hover:border-emerald-500 hover:text-emerald-700"
+              variant="secondary"
             >
               Enter Dungeon
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               onClick={handleResetProgress}
-              className="rounded-md border border-red-200 px-4 py-2 font-semibold text-red-700 hover:border-red-400 hover:bg-red-50"
+              variant="danger"
             >
               Reset Progress
-            </button>
+            </Button>
           </div>
         </div>
-        <div className="rounded-md bg-slate-100 p-5">
-          <p className="text-5xl" aria-hidden="true">
-            🃏
-          </p>
-          <p className="mt-3 font-semibold text-slate-900">Prototype Shell</p>
-          <p className="mt-1 text-sm text-slate-600">
-            Placeholder visuals only. Game systems arrive in later phases.
-          </p>
-        </div>
+        <CardPanel className="bg-gradient-to-br from-slate-50 to-emerald-50">
+          <div className="flex items-center gap-4">
+            <p className="text-5xl" aria-hidden="true">
+              🃏
+            </p>
+            <div>
+              <p className="font-semibold text-slate-900">Prototype v0.1</p>
+              <p className="mt-1 text-sm text-slate-600">
+                Placeholder visuals only.
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            <StatCard label="Deck" value="20" helper="Starter cards" />
+            <StatCard
+              label="Mastery"
+              value="0-5"
+              helper="Saved locally"
+              tone="emerald"
+            />
+            <StatCard
+              label="Runs"
+              value="Temp"
+              helper="Not persisted"
+              tone="amber"
+            />
+          </div>
+        </CardPanel>
       </div>
     </ScreenShell>
   );

@@ -16,8 +16,8 @@ const navItems: Array<{ screen: ScreenName; label: string }> = [
 
 export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
   return (
-    <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div>
           <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
             Vocabulary Dungeon
@@ -26,7 +26,7 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
             Roguelike Deckbuilder Prototype
           </h1>
         </div>
-        <nav className="flex flex-wrap gap-2" aria-label="Main screens">
+        <nav className="flex gap-2 overflow-x-auto pb-1" aria-label="Main screens">
           {navItems.map((item) => {
             const isActive = currentScreen === item.screen;
 
@@ -35,7 +35,7 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
                 key={item.screen}
                 type="button"
                 onClick={() => onNavigate(item.screen)}
-                className={`rounded-md border px-3 py-2 text-sm font-medium transition ${
+                className={`shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition ${
                   isActive
                     ? "border-slate-950 bg-slate-950 text-white"
                     : "border-slate-200 bg-white text-slate-700 hover:border-emerald-500 hover:text-emerald-700"
