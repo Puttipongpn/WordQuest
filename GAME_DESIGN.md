@@ -89,16 +89,29 @@ Current saved data intentionally excludes:
 
 Vocabulary is represented as decks of word cards.
 
-Current deck:
+Current decks:
 
 - `Starter Deck`
-- 20 realistic sample vocabulary cards
 - Stored in `src/data/starterDeck.ts`
-- Marked completed in permanent progress after the boss is defeated
+- `Food Deck`
+- Stored in `src/data/foodDeck.ts`
+- Both decks contain 20 manual sample vocabulary cards
+- Both decks are exported through `availableDecks` from `src/data`
+
+Current selected deck rules:
+
+- `Starter Deck` is selected by default.
+- Home provides the first deck selection UI.
+- Deck Review uses the selected deck.
+- Training uses the selected deck.
+- Dungeon current-run deck starts as a temporary copy of the selected deck.
+- Shop purchases mutate only the selected deck's current-run copy.
+- Boss defeat marks the selected deck completed in permanent progress.
+- Changing decks starts a fresh temporary run and does not reset word mastery or completed deck ids.
 
 Decks should target around 20 words each. The long-term source for vocabulary is Oxford 3000, but manual seed data is used first.
 
-Real new deck unlocks are intentionally deferred.
+Real deck unlock progression and Oxford 3000 import are intentionally deferred.
 
 ## Word Card Structure
 
@@ -154,7 +167,7 @@ Training must not change:
 Current mini-game:
 
 - Word Choice Training
-- Uses `Starter Deck`
+- Uses the selected deck
 - Uses the first 10 cards for the first prototype
 - Shows either image placeholder or English word prompts
 - Shows 4 Thai meaning answer choices
@@ -171,11 +184,11 @@ Current battle rules:
 
 - Player has HP, functional shield, and gold display.
 - Dungeon run progression tracks monsters defeated, current floor, and next shop checkpoint.
-- The run deck starts as a temporary copy of `Starter Deck`.
+- The run deck starts as a temporary copy of the selected deck.
 - Dungeon battle questions use the current-run deck copy.
 - Current sample monsters are Slime, Goblin, and Bat.
 - Each monster has name, HP, max HP, and attack.
-- Battle questions use `Starter Deck` vocabulary cards.
+- Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Word Choice shows one prompt card and 4 Thai meaning choices.
 - Word Match shows 3 English words and 3 Thai meanings.
@@ -213,16 +226,16 @@ Current battle rules:
 - Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
 - When boss HP reaches 0, the screen shows `Run Complete`.
 - Run Complete shows monsters defeated, current floor, final gold, and current-run deck size.
-- Boss defeat marks Starter Deck completed in `completedDeckIds`.
+- Boss defeat marks the selected deck completed in `completedDeckIds`.
 - Completed deck ids are saved in LocalStorage permanent progress.
-- Run Complete shows reward feedback that Starter Deck was completed and permanent progress was saved.
+- Run Complete shows reward feedback that the selected deck was completed and permanent progress was saved.
 - Boss defeat does not unlock real new decks yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - After run failure, the player can restart the local run.
 
 Deferred dungeon systems:
 
-- Run rewards beyond the Starter Deck completion marker
+- Run rewards beyond the selected deck completion marker
 - Advanced element interactions
 - Deck unlocks
 - Permanent mastery updates from battle

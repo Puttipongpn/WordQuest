@@ -317,7 +317,7 @@ export function Shop({
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedRemoveCard.word} removed from this run deck only. The Starter Deck source and permanent progress were not changed.`,
+      message: `${selectedRemoveCard.word} removed from this run deck only. The source deck and permanent progress were not changed.`,
     });
   }
 

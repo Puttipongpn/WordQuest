@@ -170,7 +170,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: The Deck Review screen loads `Starter Deck` directly from `src/data`.
 - Reason: The first review screen should use real seed data before adding deck selection or unlock logic.
-- Status: Accepted
+- Status: Superseded by `Selected Deck Controls Core Screens`
 
 ### 2026-06-04: Deck Review Card Selection State
 
@@ -212,7 +212,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: The first training mini-game is Word Choice Training using `Starter Deck`, 4 Thai meaning answer choices, and image or English word prompts.
 - Reason: Word choice is simple to understand, works with existing seed card data, and fits the non-dungeon practice loop.
-- Status: Accepted
+- Status: Superseded by `Selected Deck Controls Core Screens` for deck source; Word Choice Training remains accepted
 
 ### 2026-06-04: Training State Isolation
 
@@ -402,7 +402,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ### 2026-06-04: Boss Defeat Marks Current Deck Completed
 
-- Decision: Defeating the boss marks the current deck as completed; for now, the current deck is `Starter Deck`.
+- Decision: Defeating the boss marks the current deck as completed.
 - Reason: A small permanent completion reward makes Run Complete meaningful without adding full deck unlock design yet.
 - Status: Accepted
 
@@ -414,7 +414,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ### 2026-06-04: Real Deck Unlocks Are Deferred
 
-- Decision: Completing Starter Deck does not unlock a real second deck yet.
+- Decision: Completing a deck does not unlock a real progression deck yet.
 - Reason: Phase 17 should prove completion persistence before importing Oxford 3000 or adding deck unlock progression.
 - Status: Accepted
 
@@ -428,7 +428,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: Dungeon runs use a temporary copy of `Starter Deck`, and shop upgrades modify only that current-run copy.
 - Reason: Shop upgrades need to affect battle cards without mutating seed data or permanent vocabulary progress.
-- Status: Accepted
+- Status: Superseded by `Selected Deck Controls Core Screens`
 
 ### 2026-06-04: Upgrade Attack Purchase First
 
@@ -560,6 +560,30 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: Phase 19 applies a cozy fantasy dungeon game-style UI using CSS, Tailwind, emoji, and placeholder icons only.
 - Reason: The prototype should feel more like a game before final art assets are generated or imported.
+- Status: Accepted
+
+### 2026-06-04: Multiple Decks Supported
+
+- Decision: Support multiple manual sample decks through `availableDecks`, starting with Starter Deck and Food Deck.
+- Reason: The app needs to prove the multi-deck flow before importing Oxford 3000 or building advanced unlock progression.
+- Status: Accepted
+
+### 2026-06-04: Selected Deck Controls Core Screens
+
+- Decision: The selected deck controls Deck Review, Training, Dungeon current-run deck creation, and Run Complete deck completion.
+- Reason: Deck selection should be the single source of truth for the active learning and dungeon loop.
+- Status: Accepted
+
+### 2026-06-04: Changing Decks Resets Temporary Run State
+
+- Decision: Changing decks resets temporary run state and the current-run deck, but does not reset word mastery or completed deck ids.
+- Reason: A new active deck should start a fresh run while preserving permanent learning progress.
+- Status: Accepted
+
+### 2026-06-04: Oxford 3000 Import Still Deferred
+
+- Decision: Do not import Oxford 3000 in Phase 21; continue using small manual sample decks.
+- Reason: Manual decks are enough to validate multi-deck app flow without adding data import complexity.
 - Status: Accepted
 
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, CardPanel, ProgressBar, StatCard } from "../components/ui";
-import { starterDeck } from "../data";
 import type {
   CardEffect,
   DifficultyLevel,
+  VocabularyDeck,
   WordCard,
   WordMasteryByCardId,
 } from "../types";
@@ -13,6 +13,7 @@ const masteryTarget = 5;
 
 type DeckReviewProps = {
   completedDeckIds: string[];
+  deck: VocabularyDeck;
   wordMastery: WordMasteryByCardId;
 };
 
@@ -36,25 +37,32 @@ function formatEffect(effect: CardEffect) {
 
 export function DeckReview({
   completedDeckIds,
+  deck,
   wordMastery,
 }: DeckReviewProps) {
-  const [selectedCard, setSelectedCard] = useState<WordCard>(
-    starterDeck.cards[0],
-  );
-  const isStarterDeckCompleted = completedDeckIds.includes(starterDeck.id);
+  const [selectedCard, setSelectedCard] = useState<WordCard>(deck.cards[0]);
+  const isDeckCompleted = completedDeckIds.includes(deck.id);
+
+  useEffect(() => {
+    setSelectedCard((currentCard) =>
+      deck.cards.some((card) => card.id === currentCard.id)
+        ? currentCard
+        : deck.cards[0],
+    );
+  }, [deck]);
 
   const selectedMastery = wordMastery[selectedCard.id] ?? 0;
-  const totalMastery = starterDeck.cards.reduce(
+  const totalMastery = deck.cards.reduce(
     (sum, card) => sum + (wordMastery[card.id] ?? 0),
     0,
   );
-  const totalMasteryTarget = starterDeck.cards.length * masteryTarget;
+  const totalMasteryTarget = deck.cards.length * masteryTarget;
 
   return (
     <ScreenShell
       eyebrow="Cards"
       title="Deck Review"
-      description="Scan the Starter Deck, inspect card effects, and track saved mastery."
+      description={`Scan ${deck.name}, inspect card effects, and track saved mastery.`}
       framed={false}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
@@ -64,23 +72,23 @@ export function DeckReview({
               <div>
                 <div className="flex flex-wrap items-center gap-3">
                   <h3 className="text-2xl font-black text-amber-950">
-                    {starterDeck.name}
+                    {deck.name}
                   </h3>
-                  <Badge tone={isStarterDeckCompleted ? "emerald" : "sky"}>
-                    {isStarterDeckCompleted ? "Completed" : "In Progress"}
+                  <Badge tone={isDeckCompleted ? "emerald" : "sky"}>
+                    {isDeckCompleted ? "Completed" : "In Progress"}
                   </Badge>
                 </div>
                 <p className="mt-2 max-w-2xl text-sm font-medium text-amber-950/75">
-                  {starterDeck.description}
+                  {deck.description}
                 </p>
                 <p className="mt-2 text-sm font-bold text-amber-900">
-                  {isStarterDeckCompleted
-                    ? "Starter Deck completed. Permanent progress saved."
+                  {isDeckCompleted
+                    ? `${deck.name} completed. Permanent progress saved.`
                     : "Defeat the boss in Dungeon to mark this deck completed."}
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm sm:min-w-64">
-                <StatCard label="Total cards" value={starterDeck.cards.length} />
+                <StatCard label="Total cards" value={deck.cards.length} />
                 <StatCard
                   label="Mastery"
                   value={`${totalMastery} / ${totalMasteryTarget}`}
@@ -88,9 +96,9 @@ export function DeckReview({
                 />
                 <StatCard
                   label="Deck Status"
-                  value={isStarterDeckCompleted ? "Complete" : "Open"}
+                  value={isDeckCompleted ? "Complete" : "Open"}
                   helper="Saved progress"
-                  tone={isStarterDeckCompleted ? "emerald" : "sky"}
+                  tone={isDeckCompleted ? "emerald" : "sky"}
                 />
               </div>
             </div>
@@ -98,9 +106,9 @@ export function DeckReview({
 
           <section
             className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3"
-            aria-label={`${starterDeck.name} cards`}
+            aria-label={`${deck.name} cards`}
           >
-            {starterDeck.cards.map((card) => {
+            {deck.cards.map((card) => {
               const isSelected = selectedCard.id === card.id;
               const cardMastery = wordMastery[card.id] ?? 0;
 

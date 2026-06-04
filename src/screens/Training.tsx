@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import {
   Badge,
@@ -7,8 +7,7 @@ import {
   ProgressBar,
   StatCard,
 } from "../components/ui";
-import { starterDeck } from "../data";
-import type { WordCard, WordMasteryByCardId } from "../types";
+import type { VocabularyDeck, WordCard, WordMasteryByCardId } from "../types";
 
 type AnswerResult = "correct" | "wrong";
 
@@ -18,21 +17,21 @@ type TrainingQuestion = {
   choices: WordCard[];
 };
 
-const trainingCards = starterDeck.cards.slice(0, 10);
 const masteryTarget = 5;
 
 type TrainingProps = {
+  deck: VocabularyDeck;
   wordMastery: WordMasteryByCardId;
   onIncreaseWordMastery: (cardId: string) => void;
 };
 
-function buildChoices(card: WordCard, cardIndex: number) {
-  const distractors = starterDeck.cards
+function buildChoices(card: WordCard, cardIndex: number, deck: VocabularyDeck) {
+  const distractors = deck.cards
     .filter((candidate) => candidate.id !== card.id)
     .slice(cardIndex, cardIndex + 3);
 
   if (distractors.length < 3) {
-    const fallbackChoices = starterDeck.cards.filter(
+    const fallbackChoices = deck.cards.filter(
       (candidate) =>
         candidate.id !== card.id &&
         !distractors.some((distractor) => distractor.id === candidate.id),
@@ -46,21 +45,24 @@ function buildChoices(card: WordCard, cardIndex: number) {
   );
 }
 
-function buildQuestions() {
+function buildQuestions(deck: VocabularyDeck) {
+  const trainingCards = deck.cards.slice(0, 10);
+
   return trainingCards.map((card, index): TrainingQuestion => {
     return {
       card,
       promptType: index % 2 === 0 ? "image" : "word",
-      choices: buildChoices(card, index + 1),
+      choices: buildChoices(card, index + 1, deck),
     };
   });
 }
 
 export function Training({
+  deck,
   wordMastery,
   onIncreaseWordMastery,
 }: TrainingProps) {
-  const questions = useMemo(() => buildQuestions(), []);
+  const questions = useMemo(() => buildQuestions(deck), [deck]);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
   const [result, setResult] = useState<AnswerResult | null>(null);
@@ -71,6 +73,14 @@ export function Training({
   const isAnswered = result !== null;
   const isLastQuestion = questionIndex === questions.length - 1;
   const currentMastery = wordMastery[currentQuestion.card.id] ?? 0;
+
+  useEffect(() => {
+    setQuestionIndex(0);
+    setSelectedCardId(null);
+    setResult(null);
+    setCorrectCount(0);
+    setIncorrectCount(0);
+  }, [deck.id]);
 
   function handleAnswer(choice: WordCard) {
     if (isAnswered) {
@@ -251,10 +261,10 @@ export function Training({
             </div>
             <div className="rounded-lg border border-amber-900/15 bg-white/70 p-4">
               <p className="font-black text-amber-950">
-                Deck: {starterDeck.name}
+                Deck: {deck.name}
               </p>
               <p className="mt-1 text-sm font-medium text-amber-950/70">
-                Using {questions.length} of {starterDeck.cards.length} cards for
+                Using {questions.length} of {deck.cards.length} cards for
                 this first training prototype.
               </p>
             </div>

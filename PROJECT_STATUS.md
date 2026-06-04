@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 20 Dungeon battle layout refactor is complete. GitHub backup is configured on `origin/main`.
+Phase 21 Deck Selection Foundation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -226,6 +226,18 @@ Phase 20 Dungeon battle layout refactor is complete. GitHub backup is configured
 - Preserved Word Choice, Word Match, Word Scramble, shield, elements, shop routing, boss routing, current-run deck, remove/duplicate card behavior, permanent completion reward, and LocalStorage behavior.
 - No gameplay rules, combat math, save logic, deck rules, or progression rules changed in Phase 20.
 - Verified the project with `npm run build` after Phase 20.
+- Added a second manual sample vocabulary deck, `Food Deck`, with 20 food-related cards.
+- Added `availableDecks` data export containing `Starter Deck` and `Food Deck`.
+- Added app-level selected deck state with `Starter Deck` as the default selected deck.
+- Added Home deck selection UI showing deck name, card count, description, selected status, and completed status.
+- Updated Deck Review to use the selected deck and show selected deck completion status.
+- Updated Training to use the selected deck while preserving saved word mastery updates.
+- Updated Dungeon current-run deck creation so runs start from the selected deck copy.
+- Updated boss completion reward so Run Complete marks the selected deck completed instead of hardcoding Starter Deck.
+- Updated completed deck status to support both Starter Deck and Food Deck through existing LocalStorage permanent progress.
+- Changing decks now resets temporary run state and current-run deck without resetting word mastery or completed deck ids.
+- Preserved combat rules, shop purchases, run deck mutation, boss battle, permanent-progress-only LocalStorage rules, and Oxford 3000 deferral.
+- Verified the project with `npm run build` after Phase 21.
 
 ## In Progress
 
@@ -233,7 +245,7 @@ Phase 20 Dungeon battle layout refactor is complete. GitHub backup is configured
 
 ## Next Task
 
-Phase 21 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 22 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -263,15 +275,15 @@ The following documents are required and must be updated after every completed t
 - Difficulty uses numeric levels: 1 = Easy, 2 = Medium, 3 = Hard
 - Shared game types live in `src/types`
 - Seed vocabulary data lives in `src/data`
-- Deck Review loads `Starter Deck` directly from `src/data`
+- Deck Review uses the selected deck from app-level state
 - Deck Review uses local React state for selected-card detail display
-- Mastery display is a placeholder only: `0 / 5` per card
+- Mastery display uses saved permanent progress from `0 / 5` per card
 - GitHub backup remote is `https://github.com/Puttipongpn/WordQuest.git`
 - Main branch is `main`
-- Training mode uses `Starter Deck` from `src/data`
+- Training mode uses the selected deck from app-level state
 - Word Choice Training uses local React state only
 - Training does not change HP, gold, shield, run state, shop state, or dungeon progress
-- First training prototype uses 10 starter cards and 4 Thai meaning answer choices per question
+- First training prototype uses 10 selected-deck cards and 4 Thai meaning answer choices per question
 - `GAME_DESIGN.md` is the central gameplay design reference
 - Word mastery is saved in LocalStorage as permanent progress
 - Word mastery range is `0` to `5`
@@ -311,7 +323,7 @@ The following documents are required and must be updated after every completed t
 - Upgrade Attack is the first active shop purchase
 - Gold is temporary run progress
 - Shop upgrades are not persisted to LocalStorage
-- Starter Deck seed data is not mutated by shop upgrades
+- Source deck seed data is not mutated by shop upgrades
 - Shield absorbs monster damage before HP
 - Add Shield is the second active shop purchase
 - Shield effects are temporary current-run card effects
@@ -334,6 +346,10 @@ The following documents are required and must be updated after every completed t
 - Real new deck unlocks are deferred
 - Run rewards beyond the first deck completion marker are deferred
 - Phase 19 uses placeholder game-style UI, not final art assets
+- Multiple decks are supported through manual sample deck data
+- Selected deck controls Deck Review, Training, Dungeon current-run deck, and Run Complete deck completion reward
+- Changing decks resets only temporary run state
+- Oxford 3000 import is still deferred
 
 ## Important Rules
 

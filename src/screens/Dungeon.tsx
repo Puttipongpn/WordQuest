@@ -8,17 +8,24 @@ import {
   StatCard,
 } from "../components/ui";
 import { sampleBoss, sampleMonsters } from "../data";
-import type { Monster, RunProgressState, ScreenName, WordCard } from "../types";
+import type {
+  Monster,
+  RunProgressState,
+  ScreenName,
+  VocabularyDeck,
+  WordCard,
+} from "../types";
 
 type DungeonProps = {
   currentRunDeck: WordCard[];
-  isStarterDeckCompleted: boolean;
-  onCompleteStarterDeck: () => void;
+  isSelectedDeckCompleted: boolean;
+  onCompleteSelectedDeck: () => void;
   onMonsterDefeated: () => void;
   onNavigate: (screen: ScreenName) => void;
   onResetRun: () => void;
   runGold: number;
   runProgress: RunProgressState;
+  selectedDeck: VocabularyDeck;
 };
 
 type BattleMiniGameType = "word-choice" | "word-match" | "word-scramble";
@@ -235,13 +242,14 @@ function getCardEffectsSummary(card: WordCard) {
 
 export function Dungeon({
   currentRunDeck,
-  isStarterDeckCompleted,
-  onCompleteStarterDeck,
+  isSelectedDeckCompleted,
+  onCompleteSelectedDeck,
   onMonsterDefeated,
   onNavigate,
   onResetRun,
   runGold,
   runProgress,
+  selectedDeck,
 }: DungeonProps) {
   const [playerHp, setPlayerHp] = useState(initialPlayerHp);
   const [shield, setShield] = useState(initialShield);
@@ -342,12 +350,12 @@ export function Dungeon({
 
     if (nextMonsterHp === 0) {
       if (isBossEncounter) {
-        onCompleteStarterDeck();
+        onCompleteSelectedDeck();
         setHasCompletedBoss(true);
         setBattleStatus("run-complete");
         setBattleLog({
           tone: "success",
-          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. Starter Deck completed. Permanent progress saved.`,
+          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. ${selectedDeck.name} completed. Permanent progress saved.`,
           triggeredCard: card,
           damageDealt: card.baseAttack,
           shieldGained,
@@ -541,6 +549,7 @@ export function Dungeon({
             <Badge tone={isBossEncounter ? "red" : "emerald"}>
               {encounterLabel} Encounter
             </Badge>
+            <Badge tone="purple">{selectedDeck.name}</Badge>
             <Button
               type="button"
               onClick={() => onNavigate("run-result")}
@@ -822,7 +831,7 @@ export function Dungeon({
               <div className="flex flex-wrap items-center gap-2">
                 <Badge tone="emerald">Run Complete</Badge>
                 <p className="font-black text-emerald-950">
-                  Starter Deck completed.
+                  {selectedDeck.name} completed.
                 </p>
               </div>
               <p className="mt-2 text-sm font-medium text-emerald-950/75">
@@ -837,7 +846,7 @@ export function Dungeon({
                 <StatCard
                   label="Deck Reward"
                   value="Completed"
-                  helper={isStarterDeckCompleted ? "Already saved" : "Saved after boss defeat"}
+                  helper={isSelectedDeckCompleted ? "Already saved" : "Saved after boss defeat"}
                   tone="emerald"
                 />
               </div>

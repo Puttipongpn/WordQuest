@@ -8,12 +8,13 @@ import {
   Shop,
   Training,
 } from "./screens";
-import { starterDeck } from "./data";
+import { availableDecks, starterDeck } from "./data";
 import type {
   ElementType,
   RunProgressState,
   SavedPlayerProgress,
   ScreenName,
+  VocabularyDeck,
   WordCard,
 } from "./types";
 import {
@@ -51,8 +52,8 @@ function getNextShopAt(monstersDefeated: number) {
   return Math.ceil(monstersDefeated / shopInterval) * shopInterval;
 }
 
-function createRunDeckCopy(): WordCard[] {
-  return starterDeck.cards.map((card) => ({
+function createRunDeckCopy(deck: VocabularyDeck): WordCard[] {
+  return deck.cards.map((card) => ({
     ...card,
     effects: card.effects?.map((effect) => ({ ...effect })),
   }));
@@ -74,15 +75,18 @@ function countUniqueWords(deck: WordCard[]) {
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenName>("home");
+  const [selectedDeckId, setSelectedDeckId] = useState(starterDeck.id);
   const [playerProgress, setPlayerProgress] =
     useState<SavedPlayerProgress>(loadPlayerProgress);
   const [runProgress, setRunProgress] =
     useState<RunProgressState>(initialRunProgress);
   const [runGold, setRunGold] = useState(initialRunGold);
   const [currentRunDeck, setCurrentRunDeck] = useState<WordCard[]>(
-    createRunDeckCopy,
+    () => createRunDeckCopy(starterDeck),
   );
 
+  const selectedDeck =
+    availableDecks.find((deck) => deck.id === selectedDeckId) ?? starterDeck;
   const wordMastery = playerProgress.wordMastery;
   const completedDeckIds = playerProgress.completedDeckIds;
 
@@ -111,15 +115,18 @@ export default function App() {
     setPlayerProgress(createDefaultPlayerProgress());
   }
 
-  function markStarterDeckCompleted() {
+  function markSelectedDeckCompleted() {
     setPlayerProgress((currentProgress) => {
-      if (currentProgress.completedDeckIds.includes(starterDeck.id)) {
+      if (currentProgress.completedDeckIds.includes(selectedDeck.id)) {
         return currentProgress;
       }
 
       const nextProgress: SavedPlayerProgress = {
         ...currentProgress,
-        completedDeckIds: [...currentProgress.completedDeckIds, starterDeck.id],
+        completedDeckIds: [
+          ...currentProgress.completedDeckIds,
+          selectedDeck.id,
+        ],
       };
 
       savePlayerProgress(nextProgress);
@@ -144,7 +151,21 @@ export default function App() {
   function resetCurrentRun() {
     setRunProgress(initialRunProgress);
     setRunGold(initialRunGold);
-    setCurrentRunDeck(createRunDeckCopy());
+    setCurrentRunDeck(createRunDeckCopy(selectedDeck));
+  }
+
+  function selectDeck(deckId: string) {
+    const nextDeck =
+      availableDecks.find((deck) => deck.id === deckId) ?? starterDeck;
+
+    if (nextDeck.id === selectedDeck.id) {
+      return;
+    }
+
+    setSelectedDeckId(nextDeck.id);
+    setRunProgress(initialRunProgress);
+    setRunGold(initialRunGold);
+    setCurrentRunDeck(createRunDeckCopy(nextDeck));
   }
 
   function purchaseAttackUpgrade(cardId: string, cost: number) {
@@ -322,33 +343,40 @@ export default function App() {
       <main>
         {currentScreen === "home" && (
           <Home
+            availableDecks={availableDecks}
             completedDeckIds={completedDeckIds}
             onNavigate={setCurrentScreen}
             onResetProgress={resetPlayerProgress}
+            onSelectDeck={selectDeck}
+            selectedDeckId={selectedDeck.id}
           />
         )}
         {currentScreen === "deck-review" && (
           <DeckReview
             completedDeckIds={completedDeckIds}
+            deck={selectedDeck}
             wordMastery={wordMastery}
           />
         )}
         {currentScreen === "training" && (
           <Training
+            deck={selectedDeck}
             wordMastery={wordMastery}
             onIncreaseWordMastery={increaseWordMastery}
           />
         )}
         {currentScreen === "dungeon" && (
           <Dungeon
+            key={selectedDeck.id}
             currentRunDeck={currentRunDeck}
-            isStarterDeckCompleted={completedDeckIds.includes(starterDeck.id)}
-            onCompleteStarterDeck={markStarterDeckCompleted}
+            isSelectedDeckCompleted={completedDeckIds.includes(selectedDeck.id)}
+            onCompleteSelectedDeck={markSelectedDeckCompleted}
             onMonsterDefeated={recordMonsterDefeated}
             onNavigate={setCurrentScreen}
             onResetRun={resetCurrentRun}
             runGold={runGold}
             runProgress={runProgress}
+            selectedDeck={selectedDeck}
           />
         )}
         {currentScreen === "shop" && (

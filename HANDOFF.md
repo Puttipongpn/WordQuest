@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 20 complete. Phase 21 has not started yet.
+Current phase: Phase 21 complete. Phase 22 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -232,15 +232,25 @@ GitHub backup is configured:
 - Moved verbose trigger-rule text into a collapsible details panel.
 - Preserved all existing battle mini-games, current-run deck behavior, shop routing, boss routing, run completion reward, and LocalStorage behavior.
 - Verified the project again with `npm run build` after Phase 20.
+- Added a second manual sample vocabulary deck, `Food Deck`, with 20 food-related cards.
+- Added `availableDecks` in `src/data` so app screens can access all manual sample decks.
+- Added app-level selected deck state with `Starter Deck` as the default selected deck.
+- Added Home deck selection UI showing each deck's name, description, card count, selected status, and completed status.
+- Updated Deck Review and Training to use the selected deck instead of hardcoded Starter Deck data.
+- Updated Dungeon so the current-run deck starts as a copy of the selected deck.
+- Updated boss defeat / Run Complete so the selected deck id is marked completed in LocalStorage permanent progress.
+- Changing decks resets temporary run state, gold, run progression, and current-run deck while preserving word mastery and completed deck ids.
+- Preserved existing combat rules, shop purchases, run deck mutation, boss behavior, LocalStorage permanent-progress-only rules, and Oxford 3000 deferral.
+- Verified the project again with `npm run build` after Phase 21.
 
 ## Implemented Screens
 
 The following screens are implemented or stubbed:
 
-- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, and Starter Deck completion status.
-- Deck Review: polished vocabulary presentation screen using `Starter Deck`, including mastery and deck completion status.
-- Training: polished first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, current-run deck, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and the first permanent deck completion reward.
+- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, and deck selection for Starter Deck / Food Deck.
+- Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
+- Training: polished first Word Choice Training interaction using the selected deck.
+- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
@@ -254,7 +264,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, and after Phase 20 Dungeon battle layout refactor work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, and after Phase 21 deck selection foundation work.
 
 The local development server can be started with:
 
@@ -301,10 +311,11 @@ Current utility files:
 Current data files:
 
 - `src/data/starterDeck.ts`: the first sample vocabulary deck.
+- `src/data/foodDeck.ts`: the second manual sample deck for multi-deck flow testing.
 - `src/data/monsters.ts`: sample monster list with Slime, Goblin, and Bat.
 - `src/data/bosses.ts`: sample boss data with Gatekeeper.
 - `src/data/shopItems.ts`: sample current-run shop item placeholders.
-- `src/data/index.ts`: data exports.
+- `src/data/index.ts`: data exports, including `availableDecks`.
 
 Repository files:
 
@@ -314,7 +325,7 @@ Repository files:
 
 Current Deck Review implementation:
 
-- `src/screens/DeckReview.tsx` imports `starterDeck` from `src/data`.
+- `src/screens/DeckReview.tsx` receives the selected deck from `src/App.tsx`.
 - It receives current `wordMastery` from `src/App.tsx`.
 - All cards render in a responsive grid.
 - Clicking a card stores the selected card in local React state.
@@ -326,9 +337,9 @@ Current Deck Review implementation:
 
 Current Training implementation:
 
-- `src/screens/Training.tsx` imports `starterDeck` from `src/data`.
+- `src/screens/Training.tsx` receives the selected deck from `src/App.tsx`.
 - The first mini-game is Word Choice Training.
-- It uses the first 10 cards from `Starter Deck`.
+- It uses the first 10 cards from the selected deck.
 - Each question shows either the card image placeholder or English word as the prompt.
 - Each question shows 4 Thai meaning answer choices.
 - Player selection shows correct/wrong feedback and reveals the correct answer.
@@ -359,7 +370,7 @@ Current LocalStorage save implementation:
 - Save key is internal to the utility.
 - Save data includes `version: 1`.
 - Saved permanent progress includes word mastery, unlocked deck ids placeholder, completed deck ids, and statistics placeholder.
-- `completedDeckIds` currently stores Starter Deck completion after boss defeat.
+- `completedDeckIds` stores completed deck ids for both Starter Deck and Food Deck after boss defeat.
 - Missing, invalid, or incompatible saved data falls back to default progress.
 - Storage read/write failures are caught so the app can continue with in-memory state.
 - Home exposes a `Reset Progress` action.
@@ -372,8 +383,8 @@ Current Dungeon implementation:
 - `src/screens/Dungeon.tsx` imports `sampleMonsters` from `src/data`.
 - `src/App.tsx` owns temporary current-run deck, gold, and run progression state so Dungeon can route to Shop and back while preserving current-run changes.
 - Run progression tracks `monstersDefeated`, `currentFloor`, and `nextShopAt`.
-- The current-run deck starts as a copy of `Starter Deck`.
-- Shop upgrades must not mutate `src/data/starterDeck.ts`.
+- The current-run deck starts as a copy of the selected deck.
+- Shop upgrades must not mutate source deck data in `src/data`.
 - Dungeon battle questions use the current-run deck, not the original seed deck.
 - Player state includes HP, functional shield, and gold display.
 - Monster state includes current monster, HP, max HP, and attack.
@@ -398,7 +409,7 @@ Current Dungeon implementation:
 - Shop checkpoints occur every 5 defeated monsters.
 - At a shop checkpoint, Dungeon shows `Shop Available` and a `Go To Shop` button.
 - Shop routing can mutate the current-run deck only through active current-run purchases.
-- Restarting a failed run resets temporary run progression, gold, monster state, HP, shield, and the current-run deck back to a fresh `Starter Deck` copy.
+- Restarting a failed run resets temporary run progression, gold, monster state, HP, shield, and the current-run deck back to a fresh copy of the selected deck.
 - When player HP reaches 0, the screen shows `Run Failed` and allows restarting the local run.
 - Gold starts at 20 and is functional for Upgrade Attack and Add Shield purchases.
 - Shield starts at 0 and is functional temporary run state.
@@ -409,8 +420,8 @@ Current Dungeon implementation:
 - The first boss is Gatekeeper.
 - Boss battles use the same mini-games and Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
-- Boss defeat marks Starter Deck as completed in permanent LocalStorage progress.
-- Home and Deck Review display Starter Deck completion status.
+- Boss defeat marks the selected deck as completed in permanent LocalStorage progress.
+- Home and Deck Review display selected deck completion status.
 - Real new deck unlocks, backend, API, advanced element interactions, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
@@ -418,7 +429,7 @@ Current Dungeon implementation:
 - Phase 14 added display-only element effects from current-run shop purchases.
 - Phase 15 added current-run deck mutation through Remove Card and Duplicate Card purchases.
 - Phase 16 added Boss Available, Gatekeeper boss battle, and Run Complete state.
-- Phase 17 added the first permanent completion reward by saving Starter Deck in `completedDeckIds`.
+- Phase 17 added the first permanent completion reward; Phase 21 generalized it so boss defeat saves the selected deck id in `completedDeckIds`.
 
 Current Shop implementation:
 
@@ -579,7 +590,7 @@ The planned main loop is:
 Current battle foundation rules:
 
 - Player starts with HP, gold, and a current run copy of the selected deck.
-- Current run deck starts as a copy of `Starter Deck`.
+- Current run deck starts as a copy of the selected deck.
 - Gold starts at 20.
 - The player fights monsters one by one.
 - Run progression tracks monsters defeated, current floor, and next shop checkpoint.
@@ -605,7 +616,7 @@ Current battle foundation rules:
 - Boss becomes available after 20 defeated monsters.
 - Boss uses the same Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state.
-- Boss defeat marks Starter Deck as completed permanent progress.
+- Boss defeat marks the selected deck as completed permanent progress.
 - Completed deck ids persist in LocalStorage and are cleared only by Reset Progress.
 - Real new deck unlocks and run rewards beyond deck completion are deferred.
 - Phase 18 added QA cleanup for stale shop selections, purchase guards, duplicate id safety, clearer shop warnings, Boss Available copy, and Run Complete actions.
@@ -618,6 +629,10 @@ Current deck model:
 - Each word is represented as a `WordCard`.
 - The first sample deck is `Starter Deck`.
 - `Starter Deck` contains 20 realistic sample word cards.
+- The second sample deck is `Food Deck`.
+- `Food Deck` contains 20 manual food-related word cards.
+- App-level selected deck state controls Deck Review, Training, Dungeon current-run deck creation, and Run Complete deck completion.
+- Changing decks starts a fresh temporary run without clearing word mastery or completed deck ids.
 - Seed vocabulary data lives in `src/data`.
 
 Current word card fields:
@@ -680,7 +695,7 @@ Training mini-games:
 
 - Word Choice Training
   - Implemented with local state only.
-  - Uses `Starter Deck` data.
+  - Uses the selected deck data.
   - Shows image placeholder or English word prompts.
   - Uses 4 Thai meaning answer choices.
   - Shows correct/wrong feedback and correct answer after selection.
@@ -749,7 +764,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 16 is complete.
+Phase 21 is complete.
 
 Recommended next task:
 
