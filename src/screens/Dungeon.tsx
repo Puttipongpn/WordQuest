@@ -616,7 +616,7 @@ export function Dungeon({
                 </Badge>
                 <p className="mt-2 text-sm font-semibold text-slate-950">
                   {isBossAvailable
-                    ? `${sampleBoss.name} is ready after ${bossMilestone} defeated monsters.`
+                    ? `${sampleBoss.name} is ready. You can start the boss battle now or visit the shop first if a checkpoint is available.`
                     : `Monster Defeated: ${runProgress.monstersDefeated} / ${runProgress.nextShopAt} until Shop`}
                 </p>
               </div>
@@ -900,14 +900,28 @@ export function Dungeon({
                     tone="emerald"
                   />
                 </div>
-                <Button
-                  type="button"
-                  onClick={handleRestartRun}
-                  className="mt-4"
-                  variant="secondary"
-                >
-                  Restart Run
-                </Button>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Button
+                    type="button"
+                    onClick={handleRestartRun}
+                    variant="secondary"
+                  >
+                    Start Fresh Run
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => onNavigate("deck-review")}
+                  >
+                    Review Completed Deck
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => onNavigate("home")}
+                    variant="ghost"
+                  >
+                    Back Home
+                  </Button>
+                </div>
               </div>
             )}
             {battleStatus === "run-failed" && (

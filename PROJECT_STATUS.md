@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 17 permanent deck completion reward is complete. GitHub backup is configured on `origin/main`.
+Phase 18 gameplay flow QA, cleanup, and small UX fixes are complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -193,6 +193,17 @@ Phase 17 permanent deck completion reward is complete. GitHub backup is configur
 - Reset Progress clears completed deck ids along with saved word mastery.
 - Kept real new deck unlocks, Oxford 3000 import, timers, advanced element interactions, backend, auth, and final art assets unimplemented.
 - Verified the project with `npm run build` after Phase 17.
+- Performed full current-loop QA across Home, Deck Review, Training, Dungeon, Shop, Boss, Run Complete, and Reset Progress paths.
+- Added purchase guards so shop purchases cannot spend gold when the selected current-run card is stale or missing.
+- Made Duplicate Card ids more collision-resistant for rapid duplicate purchases.
+- Added Remove Card safety so removing a card must leave at least 5 current-run cards and at least 4 distinct visible words for battle questions.
+- Added Shop selection fallback after current-run deck mutation so selected card ids stay valid after remove/duplicate changes.
+- Improved shop feedback to clearly state current-run-only upgrades and reset behavior.
+- Improved Remove Card disabled/warning copy.
+- Improved Boss Available copy to explain the player can start boss battle or visit shop first.
+- Improved Run Complete actions with Start Fresh Run, Review Completed Deck, and Back Home.
+- Verified the local dev server responded successfully during QA.
+- Verified the project with `npm run build` after Phase 18.
 
 ## In Progress
 
@@ -200,7 +211,7 @@ Phase 17 permanent deck completion reward is complete. GitHub backup is configur
 
 ## Next Task
 
-Phase 18 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 19 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -290,6 +301,7 @@ The following documents are required and must be updated after every completed t
 - Remove Card is an active current-run shop purchase
 - Duplicate Card is an active current-run shop purchase
 - Minimum current-run deck size is 5 cards
+- Remove Card must preserve at least 4 distinct visible words for battle questions
 - Duplicates preserve current-run upgrades
 - Remove and Duplicate are temporary run deck mutations
 - Boss appears at monster 20

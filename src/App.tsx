@@ -30,6 +30,8 @@ const monsterGoldReward = 5;
 const attackUpgradeAmount = 2;
 const shieldUpgradeAmount = 3;
 const minimumRunDeckSize = 5;
+const minimumBattleWordOptions = 4;
+let duplicateCardSequence = 0;
 
 const initialRunProgress: RunProgressState = {
   monstersDefeated: 0,
@@ -57,11 +59,17 @@ function createRunDeckCopy(): WordCard[] {
 }
 
 function createDuplicateRunCard(card: WordCard): WordCard {
+  duplicateCardSequence += 1;
+
   return {
     ...card,
-    id: `${card.id}-copy-${Date.now()}`,
+    id: `${card.id}-copy-${Date.now()}-${duplicateCardSequence}`,
     effects: card.effects?.map((effect) => ({ ...effect })),
   };
+}
+
+function countUniqueWords(deck: WordCard[]) {
+  return new Set(deck.map((card) => card.word.toLowerCase())).size;
 }
 
 export default function App() {
@@ -140,7 +148,10 @@ export default function App() {
   }
 
   function purchaseAttackUpgrade(cardId: string, cost: number) {
-    if (runGold < cost) {
+    if (
+      runGold < cost ||
+      !currentRunDeck.some((card) => card.id === cardId)
+    ) {
       return false;
     }
 
@@ -160,7 +171,10 @@ export default function App() {
   }
 
   function purchaseShieldUpgrade(cardId: string, cost: number) {
-    if (runGold < cost) {
+    if (
+      runGold < cost ||
+      !currentRunDeck.some((card) => card.id === cardId)
+    ) {
       return false;
     }
 
@@ -219,7 +233,10 @@ export default function App() {
     cost: number,
     element: ElementType,
   ) {
-    if (runGold < cost) {
+    if (
+      runGold < cost ||
+      !currentRunDeck.some((card) => card.id === cardId)
+    ) {
       return false;
     }
 
@@ -252,7 +269,15 @@ export default function App() {
   }
 
   function purchaseRemoveCard(cardId: string, cost: number) {
-    if (runGold < cost || currentRunDeck.length <= minimumRunDeckSize) {
+    const deckAfterRemoval = currentRunDeck.filter((card) => card.id !== cardId);
+
+    if (
+      runGold < cost ||
+      currentRunDeck.length <= minimumRunDeckSize ||
+      deckAfterRemoval.length === currentRunDeck.length ||
+      deckAfterRemoval.length < minimumRunDeckSize ||
+      countUniqueWords(deckAfterRemoval) < minimumBattleWordOptions
+    ) {
       return false;
     }
 
@@ -267,7 +292,10 @@ export default function App() {
   }
 
   function purchaseDuplicateCard(cardId: string, cost: number) {
-    if (runGold < cost) {
+    if (
+      runGold < cost ||
+      !currentRunDeck.some((card) => card.id === cardId)
+    ) {
       return false;
     }
 

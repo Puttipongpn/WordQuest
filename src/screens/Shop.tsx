@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { sampleShopItems } from "../data";
@@ -38,6 +38,7 @@ const duplicateCardItemId = "duplicate-card";
 const attackUpgradeAmount = 2;
 const shieldUpgradeAmount = 3;
 const minimumRunDeckSize = 5;
+const minimumBattleWordOptions = 4;
 
 function formatElementName(element: ElementType) {
   return element.charAt(0).toUpperCase() + element.slice(1);
@@ -74,6 +75,19 @@ function getCardEffectSummary(card: WordCard) {
   }
 
   return summary.join(" / ");
+}
+
+function countUniqueWords(deck: WordCard[]) {
+  return new Set(deck.map((card) => card.word.toLowerCase())).size;
+}
+
+function canRemoveCardWithoutBreakingQuestions(deck: WordCard[], cardId: string) {
+  const deckAfterRemoval = deck.filter((card) => card.id !== cardId);
+
+  return (
+    deckAfterRemoval.length >= minimumRunDeckSize &&
+    countUniqueWords(deckAfterRemoval) >= minimumBattleWordOptions
+  );
 }
 
 export function Shop({
@@ -119,6 +133,58 @@ export function Shop({
     (card) => card.id === selectedDuplicateCardId,
   );
   const canRemoveCards = currentRunDeck.length > minimumRunDeckSize;
+  const canRemoveSelectedCard =
+    Boolean(selectedRemoveCard) &&
+    canRemoveCards &&
+    canRemoveCardWithoutBreakingQuestions(
+      currentRunDeck,
+      selectedRemoveCardId,
+    );
+  const firstRunCardId = currentRunDeck[0]?.id ?? "";
+
+  useEffect(() => {
+    const cardIds = new Set(currentRunDeck.map((card) => card.id));
+
+    if (!cardIds.has(selectedAttackCardId)) {
+      setSelectedAttackCardId(firstRunCardId);
+    }
+
+    if (!cardIds.has(selectedShieldCardId)) {
+      setSelectedShieldCardId(firstRunCardId);
+    }
+
+    if (!cardIds.has(selectedRemoveCardId)) {
+      setSelectedRemoveCardId(firstRunCardId);
+    }
+
+    if (!cardIds.has(selectedDuplicateCardId)) {
+      setSelectedDuplicateCardId(firstRunCardId);
+    }
+
+    setSelectedElementCardIds((currentSelections) => {
+      let didChange = false;
+      const nextSelections: Record<string, string> = {};
+
+      for (const [itemId, cardId] of Object.entries(currentSelections)) {
+        if (cardIds.has(cardId)) {
+          nextSelections[itemId] = cardId;
+          continue;
+        }
+
+        nextSelections[itemId] = firstRunCardId;
+        didChange = true;
+      }
+
+      return didChange ? nextSelections : currentSelections;
+    });
+  }, [
+    currentRunDeck,
+    firstRunCardId,
+    selectedAttackCardId,
+    selectedDuplicateCardId,
+    selectedRemoveCardId,
+    selectedShieldCardId,
+  ]);
 
   function handlePurchaseAttackUpgrade(cost: number) {
     if (!selectedAttackCard) {
@@ -134,14 +200,14 @@ export function Shop({
     if (!isPurchased) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Not enough gold. Upgrade Attack costs ${cost} gold.`,
+        message: `Unable to buy Upgrade Attack. It costs ${cost} gold and needs a valid current-run card.`,
       });
       return;
     }
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedAttackCard.word} attack upgraded by +${attackUpgradeAmount} for this run.`,
+      message: `${selectedAttackCard.word} attack upgraded by +${attackUpgradeAmount} for this run only. This upgrade resets on run restart, failure, or refresh.`,
     });
   }
 
@@ -159,14 +225,14 @@ export function Shop({
     if (!isPurchased) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Not enough gold. Add Shield costs ${cost} gold.`,
+        message: `Unable to buy Add Shield. It costs ${cost} gold and needs a valid current-run card.`,
       });
       return;
     }
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedShieldCard.word} gained Shield +${shieldUpgradeAmount} for this run.`,
+      message: `${selectedShieldCard.word} gained Shield +${shieldUpgradeAmount} for this run only. This shield effect resets with the run deck.`,
     });
   }
 
@@ -203,14 +269,14 @@ export function Shop({
     if (!isPurchased) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Not enough gold. ${item.name} costs ${item.cost} gold.`,
+        message: `Unable to buy ${item.name}. It costs ${item.cost} gold and needs a valid current-run card.`,
       });
       return;
     }
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedElementCard.word} now has Element: ${formatElementName(element)} for this run.`,
+      message: `${selectedElementCard.word} now has Element: ${formatElementName(element)} for this run only. Element effects are display-only for now.`,
     });
   }
 
@@ -218,7 +284,7 @@ export function Shop({
     if (!canRemoveCards) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `The current-run deck must keep at least ${minimumRunDeckSize} cards.`,
+        message: `Remove Card is disabled because the current-run deck must keep at least ${minimumRunDeckSize} cards.`,
       });
       return;
     }
@@ -231,19 +297,27 @@ export function Shop({
       return;
     }
 
+    if (!canRemoveSelectedCard) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: `Choose a different card. Battle questions need at least ${minimumBattleWordOptions} distinct visible words after removal.`,
+      });
+      return;
+    }
+
     const isPurchased = onPurchaseRemoveCard(selectedRemoveCard.id, cost);
 
     if (!isPurchased) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Not enough gold. Remove Card costs ${cost} gold.`,
+        message: `Unable to buy Remove Card. It costs ${cost} gold, needs a valid current-run card, and cannot reduce the deck below ${minimumRunDeckSize} cards.`,
       });
       return;
     }
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedRemoveCard.word} removed from this run deck.`,
+      message: `${selectedRemoveCard.word} removed from this run deck only. The Starter Deck source and permanent progress were not changed.`,
     });
   }
 
@@ -261,14 +335,14 @@ export function Shop({
     if (!isPurchased) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Not enough gold. Duplicate Card costs ${cost} gold.`,
+        message: `Unable to buy Duplicate Card. It costs ${cost} gold and needs a valid current-run card.`,
       });
       return;
     }
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedDuplicateCard.word} duplicated with current-run upgrades preserved.`,
+      message: `${selectedDuplicateCard.word} duplicated with current-run upgrades preserved. The copy exists only for this run.`,
     });
   }
 
@@ -291,6 +365,10 @@ export function Shop({
               current-run cards. Remove and Duplicate now mutate only this run
               deck.
             </p>
+            <p className="mt-2 text-sm font-medium text-emerald-900">
+              Run failure, run restart, or page refresh resets these deck
+              changes. Word mastery and completed deck status stay permanent.
+            </p>
           </div>
           <div className="grid gap-3 sm:min-w-72 sm:grid-cols-4">
             <StatCard
@@ -308,7 +386,7 @@ export function Shop({
             <StatCard
               label="Deck Size"
               value={currentRunDeck.length}
-              helper={`Minimum ${minimumRunDeckSize}`}
+              helper={`Min ${minimumRunDeckSize} cards / ${minimumBattleWordOptions} words`}
               tone={canRemoveCards ? "sky" : "red"}
             />
             <StatCard
@@ -517,7 +595,10 @@ export function Shop({
                   </p>
                   {!canRemoveCards && (
                     <p className="mt-2 rounded-md border border-red-200 bg-white p-2 text-sm font-semibold text-red-700">
-                      Current-run deck must keep at least {minimumRunDeckSize} cards.
+                      Remove Card is disabled. Current-run deck must keep at
+                      least {minimumRunDeckSize} cards and{" "}
+                      {minimumBattleWordOptions} distinct words so battle
+                      questions still have enough options.
                     </p>
                   )}
                   <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
@@ -550,8 +631,9 @@ export function Shop({
                   </div>
                   {selectedRemoveCard && canRemoveCards && (
                     <p className="mt-3 text-sm font-semibold text-red-900">
-                      Preview: remove {selectedRemoveCard.word}. Deck size{" "}
-                      {currentRunDeck.length} -&gt; {currentRunDeck.length - 1}
+                      {canRemoveSelectedCard
+                        ? `Preview: remove ${selectedRemoveCard.word}. Deck size ${currentRunDeck.length} -> ${currentRunDeck.length - 1}`
+                        : `Choose a different card. At least ${minimumBattleWordOptions} distinct words must remain for battle questions.`}
                     </p>
                   )}
                 </div>
@@ -635,10 +717,10 @@ export function Shop({
                   <Button
                     type="button"
                     className="w-full"
-                    disabled={!selectedRemoveCard || !canRemoveCards}
+                    disabled={!canRemoveSelectedCard}
                     onClick={() => handlePurchaseRemoveCard(item.cost)}
                   >
-                    Buy Remove Card
+                    {canRemoveCards ? "Buy Remove Card" : "Deck Too Small"}
                   </Button>
                 ) : isDuplicateCard ? (
                   <Button

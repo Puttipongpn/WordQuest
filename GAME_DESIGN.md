@@ -192,6 +192,7 @@ Current battle rules:
 - Removed cards no longer appear in Dungeon mini-games.
 - Duplicated cards are added as extra current-run deck entries and may appear more often.
 - Battle question builders avoid showing the same word twice in a single question, even when duplicates exist in the run deck.
+- Remove Card is guarded so battle questions keep enough distinct visible words.
 - After a monster is defeated, the player can spawn the next sample monster.
 - Boss becomes available after 20 defeated monsters.
 - The current sample boss is Gatekeeper.
@@ -273,11 +274,13 @@ Current shop rules:
 - `Remove Card` uses its existing shop item cost.
 - If the player has enough temporary gold and the current-run deck has more than 5 cards, the player can choose one current-run card and remove it.
 - The minimum current-run deck size is 5 cards.
+- Remove Card must leave at least 4 distinct visible words in the current-run deck.
 - `Duplicate Card` is purchasable.
 - `Duplicate Card` uses its existing shop item cost.
 - If the player has enough temporary gold, the player can choose one current-run card and add a unique-id copy of it to the current-run deck.
 - Duplicates preserve current-run upgrades, including upgraded `baseAttack`, shield effects, and element effects.
 - If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback.
+- If a selected current-run card becomes stale after deck mutation, purchase logic refuses the purchase and the Shop falls back to a valid selection.
 - Dungeon can route to Shop when a checkpoint is available.
 - Shop can route back to Dungeon.
 - Shop upgrades modify only current-run cards.

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 17 complete. Phase 18 has not started yet.
+Current phase: Phase 18 complete. Phase 19 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -200,6 +200,17 @@ GitHub backup is configured:
 - Reset Progress clears completed deck ids along with saved word mastery.
 - Kept real new deck unlocks, Oxford 3000 import, timers, advanced element interactions, backend, auth, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 17.
+- Performed full current-loop QA across Home, Deck Review, Training, Dungeon, Shop, Boss, Run Complete, and Reset Progress paths.
+- Added shop purchase guards so stale or missing current-run card ids cannot spend gold.
+- Made Duplicate Card ids more collision-resistant for rapid duplicate purchases.
+- Added Remove Card safety requiring at least 5 current-run cards and at least 4 distinct visible words to remain after removal.
+- Added Shop selection fallback after deck mutation so selected card ids stay valid.
+- Improved current-run-only shop feedback and reset behavior copy.
+- Improved Remove Card disabled/warning copy.
+- Improved Boss Available copy to clarify boss/shop choice at the monster 20 milestone.
+- Improved Run Complete actions with Start Fresh Run, Review Completed Deck, and Back Home.
+- Verified the local dev server response during QA.
+- Verified the project again with `npm run build` after Phase 18.
 
 ## Implemented Screens
 
@@ -222,7 +233,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, and after Phase 17 permanent deck completion reward work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, and after Phase 18 gameplay flow QA cleanup work.
 
 The local development server can be started with:
 
@@ -568,6 +579,7 @@ Current battle foundation rules:
 - Add Shield can add or increase Shield +3 on a current-run card.
 - Element shop purchases can add or replace one display-only element effect on a current-run card.
 - Remove Card can remove a current-run deck card as long as the deck stays above 5 cards.
+- Remove Card also requires at least 4 distinct visible words to remain so battle questions have enough unique options.
 - Duplicate Card can add a unique-id copy of a current-run card, preserving upgrades.
 - Boss becomes available after 20 defeated monsters.
 - Boss uses the same Card Trigger System as regular monsters.
@@ -575,6 +587,7 @@ Current battle foundation rules:
 - Boss defeat marks Starter Deck as completed permanent progress.
 - Completed deck ids persist in LocalStorage and are cleared only by Reset Progress.
 - Real new deck unlocks and run rewards beyond deck completion are deferred.
+- Phase 18 added QA cleanup for stale shop selections, purchase guards, duplicate id safety, clearer shop warnings, Boss Available copy, and Run Complete actions.
 
 ## Deck System
 

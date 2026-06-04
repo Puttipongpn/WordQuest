@@ -514,6 +514,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: A minimum deck size prevents battle mini-games from running out of card options and keeps runs playable.
 - Status: Accepted
 
+### 2026-06-04: Minimum Distinct Battle Words After Removal
+
+- Decision: Remove Card must leave at least 4 distinct visible words in the current-run deck.
+- Reason: Word Choice needs enough unique answer options, and Word Match / Word Scramble should not show duplicate visible words in one question.
+- Status: Accepted
+
 ### 2026-06-04: Duplicates Preserve Current-Run Upgrades
 
 - Decision: Duplicate Card copies the selected card's current-run attack, shield effects, and element effects.
