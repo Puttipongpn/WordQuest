@@ -16,7 +16,7 @@ The project prioritizes a playable learning loop before final art, balancing, or
 6. Correct answers trigger card effects such as attack, shield, or element power.
 7. Every 5 monsters, the shop appears.
 8. Every 20 monsters, a boss appears.
-9. Defeating the boss completes the run and unlocks progress rewards later.
+9. Defeating the boss completes the run and marks the current deck completed.
 
 ## Permanent Progress vs Run Progress
 
@@ -46,14 +46,14 @@ Run progress is temporary and is lost on death:
 - Current floor
 - Next shop checkpoint
 
-Version 1 saves permanent progress with LocalStorage. The current prototype persists word mastery and permanent progress placeholders only.
+Version 1 saves permanent progress with LocalStorage. The current prototype persists word mastery and completed deck progress.
 
 Current saved data includes:
 
 - Save `version: 1`
 - Word mastery
 - Unlocked deck ids placeholder
-- Completed deck ids placeholder
+- Completed deck ids
 - Statistics placeholder
 
 Current saved data intentionally excludes:
@@ -81,8 +81,11 @@ Current deck:
 - `Starter Deck`
 - 20 realistic sample vocabulary cards
 - Stored in `src/data/starterDeck.ts`
+- Marked completed in permanent progress after the boss is defeated
 
 Decks should target around 20 words each. The long-term source for vocabulary is Oxford 3000, but manual seed data is used first.
+
+Real new deck unlocks are intentionally deferred.
 
 ## Word Card Structure
 
@@ -196,13 +199,16 @@ Current battle rules:
 - Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
 - When boss HP reaches 0, the screen shows `Run Complete`.
 - Run Complete shows monsters defeated, current floor, final gold, and current-run deck size.
-- Boss defeat does not grant permanent rewards or deck unlocks yet.
+- Boss defeat marks Starter Deck completed in `completedDeckIds`.
+- Completed deck ids are saved in LocalStorage permanent progress.
+- Run Complete shows reward feedback that Starter Deck was completed and permanent progress was saved.
+- Boss defeat does not unlock real new decks yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - After run failure, the player can restart the local run.
 
 Deferred dungeon systems:
 
-- Run rewards
+- Run rewards beyond the Starter Deck completion marker
 - Advanced element interactions
 - Deck unlocks
 - Permanent mastery updates from battle

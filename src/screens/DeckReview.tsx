@@ -12,6 +12,7 @@ import type {
 const masteryTarget = 5;
 
 type DeckReviewProps = {
+  completedDeckIds: string[];
   wordMastery: WordMasteryByCardId;
 };
 
@@ -33,10 +34,14 @@ function formatEffect(effect: CardEffect) {
   return `${effect.description} (${effect.type}, ${effect.amount})`;
 }
 
-export function DeckReview({ wordMastery }: DeckReviewProps) {
+export function DeckReview({
+  completedDeckIds,
+  wordMastery,
+}: DeckReviewProps) {
   const [selectedCard, setSelectedCard] = useState<WordCard>(
     starterDeck.cards[0],
   );
+  const isStarterDeckCompleted = completedDeckIds.includes(starterDeck.id);
 
   const selectedMastery = wordMastery[selectedCard.id] ?? 0;
   const totalMastery = starterDeck.cards.reduce(
@@ -57,11 +62,21 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
           <CardPanel>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-slate-950">
-                  {starterDeck.name}
-                </h3>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h3 className="text-2xl font-bold text-slate-950">
+                    {starterDeck.name}
+                  </h3>
+                  <Badge tone={isStarterDeckCompleted ? "emerald" : "sky"}>
+                    {isStarterDeckCompleted ? "Completed" : "In Progress"}
+                  </Badge>
+                </div>
                 <p className="mt-2 max-w-2xl text-sm text-slate-600">
                   {starterDeck.description}
+                </p>
+                <p className="mt-2 text-sm font-medium text-slate-700">
+                  {isStarterDeckCompleted
+                    ? "Starter Deck completed. Permanent progress saved."
+                    : "Defeat the boss in Dungeon to mark this deck completed."}
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm sm:min-w-64">
@@ -70,6 +85,12 @@ export function DeckReview({ wordMastery }: DeckReviewProps) {
                   label="Mastery"
                   value={`${totalMastery} / ${totalMasteryTarget}`}
                   tone="emerald"
+                />
+                <StatCard
+                  label="Deck Status"
+                  value={isStarterDeckCompleted ? "Complete" : "Open"}
+                  helper="Saved progress"
+                  tone={isStarterDeckCompleted ? "emerald" : "sky"}
                 />
               </div>
             </div>

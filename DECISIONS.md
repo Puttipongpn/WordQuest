@@ -396,8 +396,26 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ### 2026-06-04: Run Rewards Are Deferred
 
-- Decision: Boss defeat does not grant run rewards, deck unlocks, or permanent progress yet.
-- Reason: Phase 16 should validate boss flow and run completion before adding reward design.
+- Decision: Run rewards beyond marking the current deck completed are deferred.
+- Reason: The prototype should persist one simple completion reward before adding broader reward design, deck unlocks, or balancing.
+- Status: Accepted
+
+### 2026-06-04: Boss Defeat Marks Current Deck Completed
+
+- Decision: Defeating the boss marks the current deck as completed; for now, the current deck is `Starter Deck`.
+- Reason: A small permanent completion reward makes Run Complete meaningful without adding full deck unlock design yet.
+- Status: Accepted
+
+### 2026-06-04: Completed Deck Ids Are Permanent Progress
+
+- Decision: `completedDeckIds` are saved in LocalStorage permanent progress and are cleared only by Reset Progress.
+- Reason: Deck completion should survive refreshes and failed runs while temporary run state remains unsaved.
+- Status: Accepted
+
+### 2026-06-04: Real Deck Unlocks Are Deferred
+
+- Decision: Completing Starter Deck does not unlock a real second deck yet.
+- Reason: Phase 17 should prove completion persistence before importing Oxford 3000 or adding deck unlock progression.
 - Status: Accepted
 
 ### 2026-06-04: Shop Upgrades Affect Only Current Run

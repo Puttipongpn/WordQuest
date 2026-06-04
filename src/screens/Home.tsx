@@ -1,13 +1,21 @@
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
+import { starterDeck } from "../data";
 import type { ScreenName } from "../types";
 
 type HomeProps = {
+  completedDeckIds: string[];
   onNavigate: (screen: ScreenName) => void;
   onResetProgress: () => void;
 };
 
-export function Home({ onNavigate, onResetProgress }: HomeProps) {
+export function Home({
+  completedDeckIds,
+  onNavigate,
+  onResetProgress,
+}: HomeProps) {
+  const isStarterDeckCompleted = completedDeckIds.includes(starterDeck.id);
+
   function handleResetProgress() {
     const shouldReset = window.confirm(
       "Reset saved word mastery and permanent progress?",
@@ -73,6 +81,16 @@ export function Home({ onNavigate, onResetProgress }: HomeProps) {
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
             <StatCard label="Deck" value="20" helper="Starter cards" />
+            <StatCard
+              label="Starter Deck"
+              value={isStarterDeckCompleted ? "Completed" : "In Progress"}
+              helper={
+                isStarterDeckCompleted
+                  ? "Permanent progress saved"
+                  : "Defeat the boss to complete"
+              }
+              tone={isStarterDeckCompleted ? "emerald" : "sky"}
+            />
             <StatCard
               label="Mastery"
               value="0-5"

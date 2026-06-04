@@ -76,6 +76,7 @@ export default function App() {
   );
 
   const wordMastery = playerProgress.wordMastery;
+  const completedDeckIds = playerProgress.completedDeckIds;
 
   function increaseWordMastery(cardId: string) {
     setPlayerProgress((currentProgress) => {
@@ -100,6 +101,23 @@ export default function App() {
   function resetPlayerProgress() {
     resetSavedProgress();
     setPlayerProgress(createDefaultPlayerProgress());
+  }
+
+  function markStarterDeckCompleted() {
+    setPlayerProgress((currentProgress) => {
+      if (currentProgress.completedDeckIds.includes(starterDeck.id)) {
+        return currentProgress;
+      }
+
+      const nextProgress: SavedPlayerProgress = {
+        ...currentProgress,
+        completedDeckIds: [...currentProgress.completedDeckIds, starterDeck.id],
+      };
+
+      savePlayerProgress(nextProgress);
+
+      return nextProgress;
+    });
   }
 
   function recordMonsterDefeated() {
@@ -276,12 +294,16 @@ export default function App() {
       <main>
         {currentScreen === "home" && (
           <Home
+            completedDeckIds={completedDeckIds}
             onNavigate={setCurrentScreen}
             onResetProgress={resetPlayerProgress}
           />
         )}
         {currentScreen === "deck-review" && (
-          <DeckReview wordMastery={wordMastery} />
+          <DeckReview
+            completedDeckIds={completedDeckIds}
+            wordMastery={wordMastery}
+          />
         )}
         {currentScreen === "training" && (
           <Training
@@ -292,6 +314,8 @@ export default function App() {
         {currentScreen === "dungeon" && (
           <Dungeon
             currentRunDeck={currentRunDeck}
+            isStarterDeckCompleted={completedDeckIds.includes(starterDeck.id)}
+            onCompleteStarterDeck={markStarterDeckCompleted}
             onMonsterDefeated={recordMonsterDefeated}
             onNavigate={setCurrentScreen}
             onResetRun={resetCurrentRun}

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 16 boss battle foundation is complete. GitHub backup is configured on `origin/main`.
+Phase 17 permanent deck completion reward is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -185,6 +185,14 @@ Phase 16 boss battle foundation is complete. GitHub backup is configured on `ori
 - Restarting a run resets boss state along with HP, shield, gold, monster state, run progression, and current-run deck changes.
 - Kept run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
 - Verified the project with `npm run build` after Phase 16.
+- Boss defeat now marks `Starter Deck` as completed permanent progress.
+- Saved `completedDeckIds` persist in LocalStorage after refresh and survive run failure.
+- Home shows whether Starter Deck is completed.
+- Deck Review shows Starter Deck completion status.
+- Run Complete shows reward feedback that Starter Deck was completed and permanent progress was saved.
+- Reset Progress clears completed deck ids along with saved word mastery.
+- Kept real new deck unlocks, Oxford 3000 import, timers, advanced element interactions, backend, auth, and final art assets unimplemented.
+- Verified the project with `npm run build` after Phase 17.
 
 ## In Progress
 
@@ -192,7 +200,7 @@ Phase 16 boss battle foundation is complete. GitHub backup is configured on `ori
 
 ## Next Task
 
-Phase 17 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 18 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -287,7 +295,10 @@ The following documents are required and must be updated after every completed t
 - Boss appears at monster 20
 - Boss uses the same Card Trigger System as regular monsters
 - Boss defeat creates a Run Complete state
-- Run rewards are deferred
+- Boss defeat marks the current deck completed
+- Completed deck ids are permanent progress saved in LocalStorage
+- Real new deck unlocks are deferred
+- Run rewards beyond the first deck completion marker are deferred
 
 ## Important Rules
 

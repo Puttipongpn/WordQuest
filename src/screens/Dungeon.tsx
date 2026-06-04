@@ -12,6 +12,8 @@ import type { Monster, RunProgressState, ScreenName, WordCard } from "../types";
 
 type DungeonProps = {
   currentRunDeck: WordCard[];
+  isStarterDeckCompleted: boolean;
+  onCompleteStarterDeck: () => void;
   onMonsterDefeated: () => void;
   onNavigate: (screen: ScreenName) => void;
   onResetRun: () => void;
@@ -233,6 +235,8 @@ function getCardEffectsSummary(card: WordCard) {
 
 export function Dungeon({
   currentRunDeck,
+  isStarterDeckCompleted,
+  onCompleteStarterDeck,
   onMonsterDefeated,
   onNavigate,
   onResetRun,
@@ -333,11 +337,12 @@ export function Dungeon({
 
     if (nextMonsterHp === 0) {
       if (isBossEncounter) {
+        onCompleteStarterDeck();
         setHasCompletedBoss(true);
         setBattleStatus("run-complete");
         setBattleLog({
           tone: "success",
-          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. Run Complete.`,
+          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. Starter Deck completed. Permanent progress saved.`,
           triggeredCard: card,
           damageDealt: card.baseAttack,
           shieldGained,
@@ -535,8 +540,8 @@ export function Dungeon({
               </h3>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
                 Temporary run flow only. Shop routing, current-run purchases,
-                and the first boss encounter exist. Rewards, save system, and
-                permanent mastery updates are not connected here yet.
+                the first boss encounter, and the first permanent deck
+                completion reward exist. Run state is still not saved.
               </p>
             </div>
             <Button
@@ -859,9 +864,14 @@ export function Dungeon({
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge tone="emerald">Run Complete</Badge>
                   <p className="font-semibold text-slate-950">
-                    Boss defeated. Rewards are deferred for now.
+                    Starter Deck completed. Permanent progress saved.
                   </p>
                 </div>
+                <p className="mt-2 text-sm text-slate-700">
+                  Next deck unlock coming soon. Temporary run upgrades, gold,
+                  HP, shield, monster state, boss state, and run deck changes
+                  were not saved.
+                </p>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   <StatCard
                     label="Monsters Defeated"
@@ -878,6 +888,16 @@ export function Dungeon({
                     label="Run Deck Size"
                     value={currentRunDeck.length}
                     tone="slate"
+                  />
+                  <StatCard
+                    label="Deck Reward"
+                    value="Completed"
+                    helper={
+                      isStarterDeckCompleted
+                        ? "Already saved"
+                        : "Saved after boss defeat"
+                    }
+                    tone="emerald"
                   />
                 </div>
                 <Button

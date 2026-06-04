@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 16 complete. Phase 17 has not started yet.
+Current phase: Phase 17 complete. Phase 18 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -191,15 +191,24 @@ GitHub backup is configured:
 - Restarting a run resets boss state along with HP, shield, gold, monster state, run progression, and current-run deck changes.
 - Kept run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 16.
+- Added the first permanent run completion reward.
+- Boss defeat now marks `Starter Deck` as completed.
+- Completed deck ids are saved in LocalStorage permanent progress.
+- Home shows whether Starter Deck is completed.
+- Deck Review shows Starter Deck completion status.
+- Run Complete shows reward feedback: Starter Deck completed and permanent progress saved.
+- Reset Progress clears completed deck ids along with saved word mastery.
+- Kept real new deck unlocks, Oxford 3000 import, timers, advanced element interactions, backend, auth, and final art assets unimplemented.
+- Verified the project again with `npm run build` after Phase 17.
 
 ## Implemented Screens
 
 The following screens are implemented or stubbed:
 
-- Home: polished entry screen with flow badges, primary actions, reset progress, and prototype summary.
-- Deck Review: polished vocabulary presentation screen using `Starter Deck`.
+- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, and Starter Deck completion status.
+- Deck Review: polished vocabulary presentation screen using `Starter Deck`, including mastery and deck completion status.
 - Training: polished first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, current-run deck, gold, shield absorption, shop checkpoint routing, boss encounter, and Run Complete state.
+- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, current-run deck, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and the first permanent deck completion reward.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
@@ -213,7 +222,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, and after Phase 16 boss battle foundation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, and after Phase 17 permanent deck completion reward work.
 
 The local development server can be started with:
 
@@ -317,7 +326,8 @@ Current LocalStorage save implementation:
 - `src/utils/playerProgressStorage.ts` owns LocalStorage access.
 - Save key is internal to the utility.
 - Save data includes `version: 1`.
-- Saved permanent progress includes word mastery, unlocked deck ids placeholder, completed deck ids placeholder, and statistics placeholder.
+- Saved permanent progress includes word mastery, unlocked deck ids placeholder, completed deck ids, and statistics placeholder.
+- `completedDeckIds` currently stores Starter Deck completion after boss defeat.
 - Missing, invalid, or incompatible saved data falls back to default progress.
 - Storage read/write failures are caught so the app can continue with in-memory state.
 - Home exposes a `Reset Progress` action.
@@ -367,13 +377,16 @@ Current Dungeon implementation:
 - The first boss is Gatekeeper.
 - Boss battles use the same mini-games and Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
-- No run rewards, backend, API, advanced element interactions, deck unlocks, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
+- Boss defeat marks Starter Deck as completed in permanent LocalStorage progress.
+- Home and Deck Review display Starter Deck completion status.
+- Real new deck unlocks, backend, API, advanced element interactions, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
 - Phase 13 added Word Scramble with typed answer input.
 - Phase 14 added display-only element effects from current-run shop purchases.
 - Phase 15 added current-run deck mutation through Remove Card and Duplicate Card purchases.
 - Phase 16 added Boss Available, Gatekeeper boss battle, and Run Complete state.
+- Phase 17 added the first permanent completion reward by saving Starter Deck in `completedDeckIds`.
 
 Current Shop implementation:
 
@@ -559,7 +572,9 @@ Current battle foundation rules:
 - Boss becomes available after 20 defeated monsters.
 - Boss uses the same Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state.
-- Run rewards are deferred.
+- Boss defeat marks Starter Deck as completed permanent progress.
+- Completed deck ids persist in LocalStorage and are cleared only by Reset Progress.
+- Real new deck unlocks and run rewards beyond deck completion are deferred.
 
 ## Deck System
 
