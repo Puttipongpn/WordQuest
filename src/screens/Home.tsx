@@ -3,9 +3,20 @@ import type { ScreenName } from "../types";
 
 type HomeProps = {
   onNavigate: (screen: ScreenName) => void;
+  onResetProgress: () => void;
 };
 
-export function Home({ onNavigate }: HomeProps) {
+export function Home({ onNavigate, onResetProgress }: HomeProps) {
+  function handleResetProgress() {
+    const shouldReset = window.confirm(
+      "Reset saved word mastery and permanent progress?",
+    );
+
+    if (shouldReset) {
+      onResetProgress();
+    }
+  }
+
   return (
     <ScreenShell eyebrow="Start" title="Home">
       <div className="grid gap-5 md:grid-cols-[1.4fr_1fr]">
@@ -28,6 +39,13 @@ export function Home({ onNavigate }: HomeProps) {
               className="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-800 hover:border-emerald-500 hover:text-emerald-700"
             >
               Enter Dungeon
+            </button>
+            <button
+              type="button"
+              onClick={handleResetProgress}
+              className="rounded-md border border-red-200 px-4 py-2 font-semibold text-red-700 hover:border-red-400 hover:bg-red-50"
+            >
+              Reset Progress
             </button>
           </div>
         </div>

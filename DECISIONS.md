@@ -46,6 +46,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: LocalStorage is simple, browser-native, and fits a local prototype.
 - Status: Accepted
 
+### 2026-06-04: LocalStorage Saves Permanent Progress Only
+
+- Decision: LocalStorage saves permanent progress only, including word mastery, unlocked deck ids, completed deck ids, and statistics placeholders.
+- Reason: Persistent storage should protect vocabulary learning progress without weakening the roguelike run reset rules.
+- Status: Accepted
+
+### 2026-06-04: Run Progress Is Not Persisted
+
+- Decision: Do not save gold, HP, shield, shop upgrades, duplicated cards, removed cards, card enchantments, monster state, or current dungeon run state.
+- Reason: Run state must remain temporary so death and run completion can fully reset the current run.
+- Status: Accepted
+
+### 2026-06-04: Save Data Versioning
+
+- Decision: Saved player progress includes a `version: 1` field.
+- Reason: Save versioning gives future phases a simple migration point when saved data changes.
+- Status: Accepted
+
+### 2026-06-04: Reset Progress Action
+
+- Decision: Add a simple Home screen action to clear saved progress and reset in-memory progress to defaults.
+- Reason: A prototype needs an easy way to test fresh progress and recover from unwanted or invalid saves.
+- Status: Accepted
+
 ### 2026-06-04: Separate Permanent Progress From Run Progress
 
 - Decision: Treat permanent progress and run progress as different state categories.

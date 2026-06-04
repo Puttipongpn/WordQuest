@@ -7,6 +7,7 @@ export type {
   Monster,
   PlayerProgress,
   RunState,
+  SavedPlayerProgress,
   ShopItem,
   ShopItemType,
   VocabularyDeck,

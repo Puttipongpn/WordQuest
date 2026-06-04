@@ -65,6 +65,18 @@ export type PlayerProgress = {
   bestMonsterDefeated: number;
 };
 
+export type SavedPlayerProgress = {
+  version: 1;
+  unlockedDeckIds: string[];
+  completedDeckIds: string[];
+  wordMastery: WordMasteryByCardId;
+  statistics: {
+    totalCorrectAnswers: number;
+    totalWrongAnswers: number;
+    bestMonsterDefeated: number;
+  };
+};
+
 export type RunState = {
   deckId: string;
   currentHp: number;

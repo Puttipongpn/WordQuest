@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 7 complete. Phase 8 has not started yet.
+Current phase: Phase 8 complete. Phase 9 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -98,6 +98,15 @@ GitHub backup is configured:
 - Added copy explaining shop upgrades are temporary and affect only the current run.
 - Kept shop actions as preview-only buttons with no purchase logic or state mutation.
 - Verified the project again with `npm run build` after Phase 7.
+- Created `src/utils/playerProgressStorage.ts` for LocalStorage permanent progress saves.
+- Added versioned saved progress data with `version: 1`.
+- Persisted word mastery, unlocked deck ids placeholder, completed deck ids placeholder, and statistics placeholder.
+- Loaded saved word mastery when the app starts.
+- Saved updated word mastery when Training answers are correct.
+- Added safe fallback behavior for missing, invalid, or incompatible saved data.
+- Added a Home screen reset progress action that clears LocalStorage and resets in-memory progress to defaults.
+- Kept temporary run progress out of LocalStorage, including gold, HP, shield, shop upgrades, duplicated cards, removed cards, card enchantments, monster state, and current dungeon run state.
+- Verified the project again with `npm run build` after Phase 8.
 
 ## Implemented Screens
 
@@ -120,7 +129,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, and after Phase 7 shop presentation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, and after Phase 8 LocalStorage save work.
 
 The local development server can be started with:
 
@@ -138,7 +147,7 @@ The app is intentionally small and simple.
 - `src/types`: shared TypeScript types.
 - `src/game`: reserved for pure game logic.
 - `src/data`: reserved for seed vocabulary decks and game data.
-- `src/utils`: reserved for utility helpers.
+- `src/utils`: utility helpers, currently including LocalStorage player progress save/load/reset.
 
 Expected architecture direction:
 
@@ -153,6 +162,10 @@ Current shared type files:
 
 - `src/types/navigation.ts`: screen navigation names.
 - `src/types/game.ts`: vocabulary cards, decks, player progress, run state, monsters, bosses, shop items, elements, mini-game types, and mastery data.
+
+Current utility files:
+
+- `src/utils/playerProgressStorage.ts`: LocalStorage load, save, reset, default progress, save version, and validation fallback helpers.
 
 Current data files:
 
@@ -170,12 +183,12 @@ Repository files:
 Current Deck Review implementation:
 
 - `src/screens/DeckReview.tsx` imports `starterDeck` from `src/data`.
-- It receives in-memory `wordMastery` from `src/App.tsx`.
+- It receives current `wordMastery` from `src/App.tsx`.
 - All cards render in a responsive grid.
 - Clicking a card stores the selected card in local React state.
 - The selected card detail panel shows word, Thai meaning, part of speech, example sentence, difficulty, base attack, effects, and mastery placeholder.
-- Mastery displays real in-memory values from `0 / 5`.
-- Deck summary shows deck name, total cards, and current total in-memory mastery.
+- Mastery displays persisted values from `0 / 5`.
+- Deck summary shows deck name, total cards, and current total saved mastery.
 - Deck Review does not mutate mastery and has no persistence, save logic, battle logic, shop logic, or training interaction logic.
 
 Current Training implementation:
@@ -189,21 +202,34 @@ Current Training implementation:
 - A Next button advances to the next question.
 - The final question shows a Restart button that resets the local training session.
 - Training progress shows current question, total questions, correct count, and incorrect count.
-- Training receives in-memory `wordMastery` and an `onIncreaseWordMastery` callback from `src/App.tsx`.
-- Correct answers increase that word's in-memory mastery by 1.
+- Training receives saved `wordMastery` and an `onIncreaseWordMastery` callback from `src/App.tsx`.
+- Correct answers increase that word's mastery by 1 and save updated permanent progress to LocalStorage.
 - Mastery cannot exceed 5.
 - Wrong answers do not decrease mastery for now.
-- Training does not change HP, gold, shield, run state, shop state, dungeon progress, LocalStorage, or permanent saved progress.
+- Training does not change HP, gold, shield, run state, shop state, dungeon progress, or temporary run progress.
 
 Current Word Mastery implementation:
 
-- App-level state lives in `src/App.tsx` as `WordMasteryByCardId`.
+- App-level permanent progress state lives in `src/App.tsx` as `SavedPlayerProgress`.
 - Default mastery is `0` for cards that do not yet have an entry.
 - Mastery range is `0` to `5`.
 - Correct Training answers increase mastery by `1`.
 - Wrong Training answers do not decrease mastery.
-- Mastery is not saved to LocalStorage yet.
-- Mastery resets when the page refreshes.
+- Mastery is loaded from LocalStorage on app start.
+- Mastery is saved to LocalStorage after correct Training answers.
+- Deck Review shows saved mastery after page refresh.
+
+Current LocalStorage save implementation:
+
+- `src/utils/playerProgressStorage.ts` owns LocalStorage access.
+- Save key is internal to the utility.
+- Save data includes `version: 1`.
+- Saved permanent progress includes word mastery, unlocked deck ids placeholder, completed deck ids placeholder, and statistics placeholder.
+- Missing, invalid, or incompatible saved data falls back to default progress.
+- Storage read/write failures are caught so the app can continue with in-memory state.
+- Home exposes a `Reset Progress` action.
+- Reset clears saved LocalStorage progress and resets in-memory progress to defaults.
+- LocalStorage does not save gold, HP, shield, shop upgrades, duplicated cards, removed cards, card enchantments, monster state, or current dungeon run state.
 
 Current Dungeon implementation:
 
@@ -226,7 +252,7 @@ Current Dungeon implementation:
 - When player HP reaches 0, the screen shows `Run Failed` and allows restarting the local run.
 - Gold is display-only in this phase.
 - Shield is display-only in this phase.
-- No shop logic, boss logic, run rewards, LocalStorage, backend, API, or permanent mastery updates are connected to dungeon battle yet.
+- No shop logic, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
 
 Current Shop implementation:
 
@@ -282,6 +308,9 @@ Version 1 should not include:
 - Battle systems should be built around card-triggered effects: mini-games select or use vocabulary cards, correct answers trigger the selected card, and incorrect answers do not trigger card effects.
 - Future shop upgrades and enchantments should modify card effects rather than player stats directly.
 - Phase 7 shop item effects are placeholders only until purchase logic exists.
+- LocalStorage saves permanent progress only.
+- Run progress is not persisted.
+- Saved progress uses `version: 1`.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -301,7 +330,7 @@ Permanent progress includes:
 
 Permanent progress should be saved in LocalStorage for Version 1.
 
-Current prototype note: word mastery is currently in-memory only. It behaves like the future permanent progress concept but is not persisted yet.
+Current prototype note: word mastery is persisted in LocalStorage. Other permanent progress categories currently exist as placeholders.
 
 ## Run Progress Rules
 
@@ -426,7 +455,7 @@ Training mini-games:
   - Shows image placeholder or English word prompts.
   - Uses 4 Thai meaning answer choices.
   - Shows correct/wrong feedback and correct answer after selection.
-  - Correct answers increase in-memory word mastery by 1.
+  - Correct answers increase saved word mastery by 1.
 - Match word to meaning
 
 Mini-games should eventually include timers. Difficulty should affect time limit and damage.
@@ -486,8 +515,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 7 is complete.
+Phase 8 is complete.
 
 Recommended next task:
 
-Start Phase 8 when requested: add the LocalStorage save system for permanent progress only. Do not save temporary run upgrades after death.
+Start Phase 9 when requested: add simple UI polish while keeping placeholder art. Do not add backend, boss logic, shop purchase logic, or final art assets unless explicitly requested.

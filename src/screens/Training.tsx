@@ -110,9 +110,8 @@ export function Training({
                 Choose the correct Thai meaning
               </h3>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Training updates in-memory word mastery only. It does not
-                change HP, gold, shield, dungeon progress, shop state, or saved
-                progress.
+                Training saves word mastery only. It does not change HP, gold,
+                shield, dungeon progress, shop state, or current run progress.
               </p>
             </div>
             <div className="rounded-md bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-800">

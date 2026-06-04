@@ -8,33 +8,58 @@ import {
   Shop,
   Training,
 } from "./screens";
-import type { ScreenName, WordMasteryByCardId } from "./types";
+import type { SavedPlayerProgress, ScreenName } from "./types";
+import {
+  createDefaultPlayerProgress,
+  loadPlayerProgress,
+  resetSavedProgress,
+  savePlayerProgress,
+} from "./utils/playerProgressStorage";
 
 const maxWordMastery = 5;
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenName>("home");
-  const [wordMastery, setWordMastery] = useState<WordMasteryByCardId>({});
+  const [playerProgress, setPlayerProgress] =
+    useState<SavedPlayerProgress>(loadPlayerProgress);
+
+  const wordMastery = playerProgress.wordMastery;
 
   function increaseWordMastery(cardId: string) {
-    setWordMastery((currentMastery) => {
+    setPlayerProgress((currentProgress) => {
       const nextMastery = Math.min(
-        (currentMastery[cardId] ?? 0) + 1,
+        (currentProgress.wordMastery[cardId] ?? 0) + 1,
         maxWordMastery,
       );
-
-      return {
-        ...currentMastery,
-        [cardId]: nextMastery,
+      const nextProgress: SavedPlayerProgress = {
+        ...currentProgress,
+        wordMastery: {
+          ...currentProgress.wordMastery,
+          [cardId]: nextMastery,
+        },
       };
+
+      savePlayerProgress(nextProgress);
+
+      return nextProgress;
     });
+  }
+
+  function resetPlayerProgress() {
+    resetSavedProgress();
+    setPlayerProgress(createDefaultPlayerProgress());
   }
 
   return (
     <div className="min-h-screen">
       <AppHeader currentScreen={currentScreen} onNavigate={setCurrentScreen} />
       <main>
-        {currentScreen === "home" && <Home onNavigate={setCurrentScreen} />}
+        {currentScreen === "home" && (
+          <Home
+            onNavigate={setCurrentScreen}
+            onResetProgress={resetPlayerProgress}
+          />
+        )}
         {currentScreen === "deck-review" && (
           <DeckReview wordMastery={wordMastery} />
         )}

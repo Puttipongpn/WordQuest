@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 7 shop presentation is complete. GitHub backup is configured on `origin/main`.
+Phase 8 LocalStorage permanent progress save system is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -92,6 +92,15 @@ Phase 7 shop presentation is complete. GitHub backup is configured on `origin/ma
 - Added shop text explaining upgrades are temporary and affect only the current run.
 - Kept shop buttons as preview-only with no purchase logic, card changes, deck changes, gold changes, or effect changes.
 - Verified the project with `npm run build` after Phase 7.
+- Created a LocalStorage player progress utility in `src/utils/playerProgressStorage.ts`.
+- Added versioned saved progress data with `version: 1`.
+- Persisted permanent progress only: word mastery, unlocked deck ids placeholder, completed deck ids placeholder, and statistics placeholder.
+- Loaded saved word mastery on app start.
+- Saved updated word mastery when Training answers are correct.
+- Kept gold, HP, shield, shop upgrades, duplicated cards, removed cards, card enchantments, monster state, and current dungeon run state out of LocalStorage.
+- Added a Home screen reset progress action that clears saved progress and resets in-memory progress to defaults.
+- Added safe fallback behavior for missing, invalid, or incompatible saved data.
+- Verified the project with `npm run build` after Phase 8.
 
 ## In Progress
 
@@ -99,7 +108,7 @@ Phase 7 shop presentation is complete. GitHub backup is configured on `origin/ma
 
 ## Next Task
 
-Start Phase 8 when requested: add the LocalStorage save system for permanent progress only.
+Start Phase 9 when requested: add simple UI polish while keeping placeholder art.
 
 ## Required Project Documents
 
@@ -136,10 +145,10 @@ The following documents are required and must be updated after every completed t
 - Main branch is `main`
 - Training mode uses `Starter Deck` from `src/data`
 - Word Choice Training uses local React state only
-- Training does not change HP, gold, shield, run state, shop state, dungeon progress, LocalStorage, or permanent mastery
+- Training does not change HP, gold, shield, run state, shop state, or dungeon progress
 - First training prototype uses 10 starter cards and 4 Thai meaning answer choices per question
 - `GAME_DESIGN.md` is the central gameplay design reference
-- Word mastery is currently in-memory only and resets on page refresh
+- Word mastery is saved in LocalStorage as permanent progress
 - Word mastery range is `0` to `5`
 - Correct Training answers increase word mastery by `1`
 - Wrong Training answers do not decrease mastery in the Version 1 prototype
@@ -160,6 +169,10 @@ The following documents are required and must be updated after every completed t
 - Shop items are current-run only
 - Phase 7 shop item effects are placeholders only
 - Phase 7 does not implement purchase logic, boss logic, run rewards, LocalStorage, or permanent battle mastery updates
+- LocalStorage save data is versioned with `version: 1`
+- LocalStorage saves permanent progress only
+- Run progress is not persisted
+- Reset Progress clears saved permanent progress and resets in-memory progress to defaults
 
 ## Important Rules
 
@@ -185,7 +198,6 @@ Keep game playable and simple.
 - More mini-games
 - Full dungeon battle logic
 - Shop purchase logic
-- Save system
-- Persistent mastery storage
+- Save migrations beyond version 1
 - Balancing
 - Mobile polish

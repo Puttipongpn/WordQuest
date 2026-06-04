@@ -42,7 +42,27 @@ Run progress is temporary and is lost on death:
 - Removed cards
 - Run items
 
-Version 1 will eventually save permanent progress with LocalStorage. The current prototype uses in-memory word mastery only.
+Version 1 saves permanent progress with LocalStorage. The current prototype persists word mastery and permanent progress placeholders only.
+
+Current saved data includes:
+
+- Save `version: 1`
+- Word mastery
+- Unlocked deck ids placeholder
+- Completed deck ids placeholder
+- Statistics placeholder
+
+Current saved data intentionally excludes:
+
+- Gold
+- Current HP
+- Shield
+- Shop upgrades
+- Card enchantments
+- Duplicated cards
+- Removed cards
+- Monster state
+- Current dungeon run state
 
 ## Deck System
 
@@ -88,11 +108,11 @@ Current prototype rules:
 - Correct answers in Training increase that word's mastery by `1`.
 - Mastery cannot exceed `5`.
 - Wrong answers do not decrease mastery.
-- Mastery is stored in React state only.
-- Mastery resets when the page refreshes.
-- Mastery is not saved to LocalStorage yet.
+- Mastery is loaded from LocalStorage on app start.
+- Mastery is saved to LocalStorage when Training answers increase mastery.
+- Missing, invalid, or incompatible save data falls back to default progress.
 
-Deck Review displays current in-memory mastery. Training updates in-memory mastery on correct answers.
+Deck Review displays current saved mastery after page refresh. Training updates mastery on correct answers.
 
 ## Training Mode
 
@@ -117,7 +137,7 @@ Current mini-game:
 - Shows correct/wrong feedback
 - Reveals the correct answer after selection
 - Advances with Next or restarts after the final question
-- Updates in-memory word mastery on correct answers
+- Updates saved word mastery on correct answers
 
 ## Dungeon Battle Foundation
 
@@ -150,14 +170,15 @@ Deferred dungeon systems:
 - Run rewards
 - Shop logic
 - Boss logic
-- LocalStorage persistence
 - Permanent mastery updates from battle
+
+Dungeon state is still local React state only. LocalStorage is used for permanent progress, not current run progress.
 
 ## Mini-Game Plan
 
 Training mini-games:
 
-- Word Choice Training: implemented as an in-memory prototype.
+- Word Choice Training: implemented with local question state and saved mastery updates.
 - Match word to meaning: planned.
 
 Battle mini-games:
@@ -245,6 +266,22 @@ Run progress is completely lost on death.
 
 This keeps roguelike tension while preserving vocabulary learning progress.
 
+## Reset Progress
+
+The Home screen includes a simple reset progress action.
+
+Reset progress rules:
+
+- Clear the LocalStorage saved player progress.
+- Reset in-memory progress back to defaults.
+- Do not affect any backend or remote state because none exists in Version 1.
+
+## Save Versioning
+
+Saved player progress includes `version: 1`.
+
+If saved data is missing, invalid, or incompatible with the current version, the app falls back to default progress and does not crash.
+
 ## Version 1 Scope
 
 Version 1 should include:
@@ -276,4 +313,4 @@ Version 1 should include:
 - Sound effects
 - Advanced balancing
 - Advanced element interactions
-- Persistent mastery storage
+- Save migrations beyond version 1
