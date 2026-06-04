@@ -185,6 +185,10 @@ Current battle rules:
 - When a shop checkpoint is reached, Dungeon shows `Shop Available`.
 - Dungeon can route to Shop with a `Go To Shop` button.
 - Shop can route back to Dungeon with a `Back To Dungeon` button.
+- Shop can mutate the current-run deck through Remove Card and Duplicate Card purchases.
+- Removed cards no longer appear in Dungeon mini-games.
+- Duplicated cards are added as extra current-run deck entries and may appear more often.
+- Battle question builders avoid showing the same word twice in a single question, even when duplicates exist in the run deck.
 - After a monster is defeated, the player can spawn the next sample monster.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - After run failure, the player can restart the local run.
@@ -192,7 +196,6 @@ Current battle rules:
 Deferred dungeon systems:
 
 - Run rewards
-- Remaining shop purchase logic for remove and duplicate items
 - Advanced element interactions
 - Boss logic
 - Permanent mastery updates from battle
@@ -216,7 +219,7 @@ Battle mini-games should eventually include timers. Difficulty should affect tim
 
 ## Shop Plan
 
-Shop presentation is implemented. The active shop purchases are `Upgrade Attack`, `Add Shield`, and the four Add Element items.
+Shop presentation is implemented. The active shop purchases are `Upgrade Attack`, `Add Shield`, the four Add Element items, `Remove Card`, and `Duplicate Card`.
 
 The shop appears every 5 monsters during dungeon runs.
 
@@ -253,12 +256,19 @@ Current shop rules:
 - If the player has enough temporary gold, the player can choose one current-run card and add or replace that card's element effect.
 - A card may have one element effect for now.
 - Element effects are display-only in Phase 14 and do not modify damage, weakness, or resistance.
+- `Remove Card` is purchasable.
+- `Remove Card` uses its existing shop item cost.
+- If the player has enough temporary gold and the current-run deck has more than 5 cards, the player can choose one current-run card and remove it.
+- The minimum current-run deck size is 5 cards.
+- `Duplicate Card` is purchasable.
+- `Duplicate Card` uses its existing shop item cost.
+- If the player has enough temporary gold, the player can choose one current-run card and add a unique-id copy of it to the current-run deck.
+- Duplicates preserve current-run upgrades, including upgraded `baseAttack`, shield effects, and element effects.
 - If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback.
-- Remove and duplicate shop items remain preview-only / coming soon.
 - Dungeon can route to Shop when a checkpoint is available.
 - Shop can route back to Dungeon.
 - Shop upgrades modify only current-run cards.
-- Shop upgrades, shield effects, element effects, gold, and current-run deck changes are not saved to LocalStorage.
+- Shop upgrades, shield effects, element effects, remove/duplicate mutations, gold, and current-run deck changes are not saved to LocalStorage.
 
 ## Card Effects
 

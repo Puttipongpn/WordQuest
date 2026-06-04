@@ -13,12 +13,14 @@ import type {
 type ShopProps = {
   currentRunDeck: WordCard[];
   onNavigate: (screen: ScreenName) => void;
+  onPurchaseDuplicateCard: (cardId: string, cost: number) => boolean;
   onPurchaseAttackUpgrade: (cardId: string, cost: number) => boolean;
   onPurchaseElementUpgrade: (
     cardId: string,
     cost: number,
     element: ElementType,
   ) => boolean;
+  onPurchaseRemoveCard: (cardId: string, cost: number) => boolean;
   onPurchaseShieldUpgrade: (cardId: string, cost: number) => boolean;
   runGold: number;
   runProgress: RunProgressState;
@@ -31,8 +33,11 @@ type PurchaseFeedback = {
 
 const upgradeAttackItemId = "upgrade-attack";
 const addShieldItemId = "add-shield";
+const removeCardItemId = "remove-card";
+const duplicateCardItemId = "duplicate-card";
 const attackUpgradeAmount = 2;
 const shieldUpgradeAmount = 3;
+const minimumRunDeckSize = 5;
 
 function formatElementName(element: ElementType) {
   return element.charAt(0).toUpperCase() + element.slice(1);
@@ -55,11 +60,29 @@ function getShopItemElement(item: ShopItem) {
   return item.effect?.type === "element" ? item.effect.element : null;
 }
 
+function getCardEffectSummary(card: WordCard) {
+  const shieldAmount = getCardShieldAmount(card);
+  const element = getCardElement(card);
+  const summary = [`Attack ${card.baseAttack}`];
+
+  if (shieldAmount > 0) {
+    summary.push(`Shield +${shieldAmount}`);
+  }
+
+  if (element) {
+    summary.push(`Element: ${formatElementName(element.element)}`);
+  }
+
+  return summary.join(" / ");
+}
+
 export function Shop({
   currentRunDeck,
   onNavigate,
+  onPurchaseDuplicateCard,
   onPurchaseAttackUpgrade,
   onPurchaseElementUpgrade,
+  onPurchaseRemoveCard,
   onPurchaseShieldUpgrade,
   runGold,
   runProgress,
@@ -68,6 +91,12 @@ export function Shop({
     currentRunDeck[0]?.id ?? "",
   );
   const [selectedShieldCardId, setSelectedShieldCardId] = useState(
+    currentRunDeck[0]?.id ?? "",
+  );
+  const [selectedRemoveCardId, setSelectedRemoveCardId] = useState(
+    currentRunDeck[0]?.id ?? "",
+  );
+  const [selectedDuplicateCardId, setSelectedDuplicateCardId] = useState(
     currentRunDeck[0]?.id ?? "",
   );
   const [selectedElementCardIds, setSelectedElementCardIds] = useState<
@@ -83,6 +112,13 @@ export function Shop({
   const selectedShieldCard = currentRunDeck.find(
     (card) => card.id === selectedShieldCardId,
   );
+  const selectedRemoveCard = currentRunDeck.find(
+    (card) => card.id === selectedRemoveCardId,
+  );
+  const selectedDuplicateCard = currentRunDeck.find(
+    (card) => card.id === selectedDuplicateCardId,
+  );
+  const canRemoveCards = currentRunDeck.length > minimumRunDeckSize;
 
   function handlePurchaseAttackUpgrade(cost: number) {
     if (!selectedAttackCard) {
@@ -178,11 +214,69 @@ export function Shop({
     });
   }
 
+  function handlePurchaseRemoveCard(cost: number) {
+    if (!canRemoveCards) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: `The current-run deck must keep at least ${minimumRunDeckSize} cards.`,
+      });
+      return;
+    }
+
+    if (!selectedRemoveCard) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: "Choose a card before buying Remove Card.",
+      });
+      return;
+    }
+
+    const isPurchased = onPurchaseRemoveCard(selectedRemoveCard.id, cost);
+
+    if (!isPurchased) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: `Not enough gold. Remove Card costs ${cost} gold.`,
+      });
+      return;
+    }
+
+    setPurchaseFeedback({
+      tone: "success",
+      message: `${selectedRemoveCard.word} removed from this run deck.`,
+    });
+  }
+
+  function handlePurchaseDuplicateCard(cost: number) {
+    if (!selectedDuplicateCard) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: "Choose a card before buying Duplicate Card.",
+      });
+      return;
+    }
+
+    const isPurchased = onPurchaseDuplicateCard(selectedDuplicateCard.id, cost);
+
+    if (!isPurchased) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: `Not enough gold. Duplicate Card costs ${cost} gold.`,
+      });
+      return;
+    }
+
+    setPurchaseFeedback({
+      tone: "success",
+      message: `${selectedDuplicateCard.word} duplicated with current-run upgrades preserved.`,
+    });
+  }
+
   return (
     <ScreenShell
       eyebrow="Upgrade"
       title="Current Run Shop"
-      description="Buy temporary current-run upgrades. Attack, Shield, and Element purchases are active in this phase."
+      description="Buy temporary current-run upgrades and mutate the current-run deck."
       framed={false}
     >
       <CardPanel className="mb-6 border-emerald-200 bg-emerald-50">
@@ -194,11 +288,11 @@ export function Shop({
             </p>
             <p className="mt-2 text-sm text-emerald-800">
               Upgrade Attack, Add Shield, and Element items can modify copied
-              current-run cards. Remove and Duplicate remain preview-only for
-              now.
+              current-run cards. Remove and Duplicate now mutate only this run
+              deck.
             </p>
           </div>
-          <div className="grid gap-3 sm:min-w-72 sm:grid-cols-3">
+          <div className="grid gap-3 sm:min-w-72 sm:grid-cols-4">
             <StatCard
               label="Gold"
               value={runGold}
@@ -207,9 +301,15 @@ export function Shop({
             />
             <StatCard
               label="Mode"
-              value="Partial"
-              helper="Attack + Shield + Element"
+              value="Active"
+              helper="Current run"
               tone="emerald"
+            />
+            <StatCard
+              label="Deck Size"
+              value={currentRunDeck.length}
+              helper={`Minimum ${minimumRunDeckSize}`}
+              tone={canRemoveCards ? "sky" : "red"}
             />
             <StatCard
               label="Progress"
@@ -233,9 +333,16 @@ export function Shop({
         {sampleShopItems.map((item) => {
           const isUpgradeAttack = item.id === upgradeAttackItemId;
           const isAddShield = item.id === addShieldItemId;
+          const isRemoveCard = item.id === removeCardItemId;
+          const isDuplicateCard = item.id === duplicateCardItemId;
           const element = getShopItemElement(item);
           const isAddElement = element !== null;
-          const isActivePurchase = isUpgradeAttack || isAddShield || isAddElement;
+          const isActivePurchase =
+            isUpgradeAttack ||
+            isAddShield ||
+            isAddElement ||
+            isRemoveCard ||
+            isDuplicateCard;
           const selectedElementCard = getSelectedElementCard(item.id);
 
           return (
@@ -403,6 +510,95 @@ export function Shop({
                 </div>
               )}
 
+              {isRemoveCard && (
+                <div className="mt-5 rounded-md border border-red-100 bg-red-50 p-3">
+                  <p className="text-sm font-semibold text-red-950">
+                    Choose card to remove
+                  </p>
+                  {!canRemoveCards && (
+                    <p className="mt-2 rounded-md border border-red-200 bg-white p-2 text-sm font-semibold text-red-700">
+                      Current-run deck must keep at least {minimumRunDeckSize} cards.
+                    </p>
+                  )}
+                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
+                    {currentRunDeck.map((card) => {
+                      const isSelected = selectedRemoveCardId === card.id;
+
+                      return (
+                        <button
+                          key={card.id}
+                          type="button"
+                          disabled={!canRemoveCards}
+                          onClick={() => setSelectedRemoveCardId(card.id)}
+                          className={`w-full rounded-md border p-3 text-left transition ${
+                            isSelected
+                              ? "border-red-500 bg-white ring-1 ring-red-200"
+                              : "border-red-100 bg-white/70 hover:border-red-400"
+                          } ${canRemoveCards ? "" : "cursor-not-allowed opacity-60"}`}
+                        >
+                          <div className="flex flex-col gap-1">
+                            <span className="font-semibold capitalize text-slate-950">
+                              {card.word}
+                            </span>
+                            <span className="text-sm text-slate-600">
+                              {getCardEffectSummary(card)}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {selectedRemoveCard && canRemoveCards && (
+                    <p className="mt-3 text-sm font-semibold text-red-900">
+                      Preview: remove {selectedRemoveCard.word}. Deck size{" "}
+                      {currentRunDeck.length} -&gt; {currentRunDeck.length - 1}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {isDuplicateCard && (
+                <div className="mt-5 rounded-md border border-violet-100 bg-violet-50 p-3">
+                  <p className="text-sm font-semibold text-violet-950">
+                    Choose card to duplicate
+                  </p>
+                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
+                    {currentRunDeck.map((card) => {
+                      const isSelected = selectedDuplicateCardId === card.id;
+
+                      return (
+                        <button
+                          key={card.id}
+                          type="button"
+                          onClick={() => setSelectedDuplicateCardId(card.id)}
+                          className={`w-full rounded-md border p-3 text-left transition ${
+                            isSelected
+                              ? "border-violet-500 bg-white ring-1 ring-violet-200"
+                              : "border-violet-100 bg-white/70 hover:border-violet-400"
+                          }`}
+                        >
+                          <div className="flex flex-col gap-1">
+                            <span className="font-semibold capitalize text-slate-950">
+                              {card.word}
+                            </span>
+                            <span className="text-sm text-slate-600">
+                              {getCardEffectSummary(card)}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {selectedDuplicateCard && (
+                    <p className="mt-3 text-sm font-semibold text-violet-900">
+                      Preview: copy {selectedDuplicateCard.word} with{" "}
+                      {getCardEffectSummary(selectedDuplicateCard)}. Deck size{" "}
+                      {currentRunDeck.length} -&gt; {currentRunDeck.length + 1}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="mt-5 border-t border-slate-100 pt-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <p className="text-sm font-semibold text-slate-500">Cost</p>
@@ -434,6 +630,24 @@ export function Shop({
                     onClick={() => handlePurchaseElementUpgrade(item, element)}
                   >
                     Buy {item.name}
+                  </Button>
+                ) : isRemoveCard ? (
+                  <Button
+                    type="button"
+                    className="w-full"
+                    disabled={!selectedRemoveCard || !canRemoveCards}
+                    onClick={() => handlePurchaseRemoveCard(item.cost)}
+                  >
+                    Buy Remove Card
+                  </Button>
+                ) : isDuplicateCard ? (
+                  <Button
+                    type="button"
+                    className="w-full"
+                    disabled={!selectedDuplicateCard}
+                    onClick={() => handlePurchaseDuplicateCard(item.cost)}
+                  >
+                    Buy Duplicate Card
                   </Button>
                 ) : (
                   <Button

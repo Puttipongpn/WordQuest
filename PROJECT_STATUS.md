@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 14 basic element shop items are complete. GitHub backup is configured on `origin/main`.
+Phase 15 Remove Card and Duplicate Card shop purchases are complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -162,6 +162,18 @@ Phase 14 basic element shop items are complete. GitHub backup is configured on `
 - Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
 - Kept remove card, duplicate card, boss logic, run rewards, timers, run persistence, advanced element interactions, and final art assets unimplemented.
 - Verified the project with `npm run build` after Phase 14.
+- Activated Remove Card and Duplicate Card shop purchases.
+- Remove Card lets the player choose one current-run card, spend the existing item cost, and remove that card from the current-run deck.
+- Added a minimum current-run deck size of 5 cards and disabled Remove Card when the deck is too small.
+- Duplicate Card lets the player choose one current-run card, spend the existing item cost, and add a unique-id copy to the current-run deck.
+- Duplicates preserve current-run upgrades, including `baseAttack`, shield effects, and element effects.
+- Updated Shop UI to show current deck size and card attack, shield, and element summaries for Remove/Duplicate previews.
+- Dungeon mini-games continue to use the mutated current-run deck, so removed cards stop appearing and duplicated cards can appear more often.
+- Dungeon question builders avoid showing the same word twice in a single battle question, even when duplicates exist in the run deck.
+- Kept Remove/Duplicate mutations temporary and out of LocalStorage.
+- Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, element effects, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
+- Kept boss logic, run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
+- Verified the project with `npm run build` after Phase 15.
 
 ## In Progress
 
@@ -169,7 +181,7 @@ Phase 14 basic element shop items are complete. GitHub backup is configured on `
 
 ## Next Task
 
-Phase 15 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 16 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -241,7 +253,7 @@ The following documents are required and must be updated after every completed t
 - Phase 9 changed presentation only and did not change gameplay rules
 - Phase 10 added temporary dungeon run progression state
 - Shop checkpoints are available every 5 defeated monsters
-- Shop routing is preview-only and does not mutate run state
+- Shop routing supports current-run purchases that mutate only temporary run gold and the current-run deck
 - Run progression is not persisted to LocalStorage
 - Phase 11 uses a temporary current-run deck copy
 - Upgrade Attack is the first active shop purchase
@@ -256,6 +268,11 @@ The following documents are required and must be updated after every completed t
 - A card may have one element effect for now
 - Element effects are display-only in Phase 14
 - Element effects are temporary current-run card effects and are not persisted
+- Remove Card is an active current-run shop purchase
+- Duplicate Card is an active current-run shop purchase
+- Minimum current-run deck size is 5 cards
+- Duplicates preserve current-run upgrades
+- Remove and Duplicate are temporary run deck mutations
 
 ## Important Rules
 
@@ -280,7 +297,6 @@ Keep game playable and simple.
 - Sound effects
 - More mini-games
 - Full dungeon battle logic
-- Remaining shop purchase logic for remove and duplicate items
 - Boss battles
 - Run rewards
 - Save migrations beyond version 1

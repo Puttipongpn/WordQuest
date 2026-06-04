@@ -86,7 +86,7 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "remove-card",
     name: "Remove Card",
-    description: "Preview: remove one card from the current run deck.",
+    description: "Remove one card from the current run deck.",
     cost: 30,
     type: "remove-card",
     icon: "CUT",
@@ -97,7 +97,7 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "duplicate-card",
     name: "Duplicate Card",
-    description: "Preview: copy one card into the current run deck.",
+    description: "Copy one card into the current run deck.",
     cost: 50,
     type: "duplicate-card",
     icon: "COPY",

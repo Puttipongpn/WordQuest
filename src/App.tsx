@@ -29,6 +29,7 @@ const initialRunGold = 20;
 const monsterGoldReward = 5;
 const attackUpgradeAmount = 2;
 const shieldUpgradeAmount = 3;
+const minimumRunDeckSize = 5;
 
 const initialRunProgress: RunProgressState = {
   monstersDefeated: 0,
@@ -53,6 +54,14 @@ function createRunDeckCopy(): WordCard[] {
     ...card,
     effects: card.effects?.map((effect) => ({ ...effect })),
   }));
+}
+
+function createDuplicateRunCard(card: WordCard): WordCard {
+  return {
+    ...card,
+    id: `${card.id}-copy-${Date.now()}`,
+    effects: card.effects?.map((effect) => ({ ...effect })),
+  };
 }
 
 export default function App() {
@@ -224,6 +233,43 @@ export default function App() {
     return true;
   }
 
+  function purchaseRemoveCard(cardId: string, cost: number) {
+    if (runGold < cost || currentRunDeck.length <= minimumRunDeckSize) {
+      return false;
+    }
+
+    setRunGold((currentGold) => currentGold - cost);
+    setCurrentRunDeck((currentDeck) =>
+      currentDeck.length <= minimumRunDeckSize
+        ? currentDeck
+        : currentDeck.filter((card) => card.id !== cardId),
+    );
+
+    return true;
+  }
+
+  function purchaseDuplicateCard(cardId: string, cost: number) {
+    if (runGold < cost) {
+      return false;
+    }
+
+    setRunGold((currentGold) => currentGold - cost);
+    setCurrentRunDeck((currentDeck) => {
+      const cardToDuplicate = currentDeck.find((card) => card.id === cardId);
+
+      if (!cardToDuplicate) {
+        return currentDeck;
+      }
+
+      return [
+        ...currentDeck,
+        createDuplicateRunCard(cardToDuplicate),
+      ];
+    });
+
+    return true;
+  }
+
   return (
     <div className="min-h-screen">
       <AppHeader currentScreen={currentScreen} onNavigate={setCurrentScreen} />
@@ -257,8 +303,10 @@ export default function App() {
           <Shop
             currentRunDeck={currentRunDeck}
             onNavigate={setCurrentScreen}
+            onPurchaseDuplicateCard={purchaseDuplicateCard}
             onPurchaseAttackUpgrade={purchaseAttackUpgrade}
             onPurchaseElementUpgrade={purchaseElementUpgrade}
+            onPurchaseRemoveCard={purchaseRemoveCard}
             onPurchaseShieldUpgrade={purchaseShieldUpgrade}
             runGold={runGold}
             runProgress={runProgress}

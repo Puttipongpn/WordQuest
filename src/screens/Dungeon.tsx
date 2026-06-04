@@ -77,15 +77,42 @@ function rotateCards(seed: number, deck: WordCard[]) {
   );
 }
 
+function takeUniqueWordCards(cards: WordCard[], count: number) {
+  const usedWords = new Set<string>();
+  const uniqueCards: WordCard[] = [];
+
+  for (const card of cards) {
+    const wordKey = card.word.toLowerCase();
+
+    if (usedWords.has(wordKey)) {
+      continue;
+    }
+
+    usedWords.add(wordKey);
+    uniqueCards.push(card);
+
+    if (uniqueCards.length === count) {
+      break;
+    }
+  }
+
+  return uniqueCards;
+}
+
 function buildChoices(card: WordCard, cardIndex: number, deck: WordCard[]) {
   const distractors = deck
-    .filter((candidate) => candidate.id !== card.id)
+    .filter(
+      (candidate) =>
+        candidate.id !== card.id &&
+        candidate.word.toLowerCase() !== card.word.toLowerCase(),
+    )
     .slice(cardIndex, cardIndex + 3);
 
   if (distractors.length < 3) {
     const fallbackChoices = deck.filter(
       (candidate) =>
         candidate.id !== card.id &&
+        candidate.word.toLowerCase() !== card.word.toLowerCase() &&
         !distractors.some((distractor) => distractor.id === candidate.id),
     );
 
@@ -112,7 +139,7 @@ function buildWordChoiceQuestion(
 }
 
 function buildWordMatchQuestion(seed: number, deck: WordCard[]): WordMatchQuestion {
-  const cards = rotateCards(seed, deck).slice(0, 3);
+  const cards = takeUniqueWordCards(rotateCards(seed, deck), 3);
   const meanings = [...cards].sort((left, right) =>
     seed % 2 === 0
       ? right.meaningTh.localeCompare(left.meaningTh)
@@ -153,7 +180,7 @@ function buildWordScrambleQuestion(
   seed: number,
   deck: WordCard[],
 ): WordScrambleQuestion {
-  const cards = rotateCards(seed + 2, deck).slice(0, 3);
+  const cards = takeUniqueWordCards(rotateCards(seed + 2, deck), 3);
 
   return {
     options: cards.map((card, index) => ({

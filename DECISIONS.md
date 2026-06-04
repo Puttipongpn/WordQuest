@@ -454,6 +454,36 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Element upgrades are run progress and must reset with the current run.
 - Status: Accepted
 
+### 2026-06-04: Remove Card Active Shop Purchase
+
+- Decision: Activate Remove Card as a current-run shop purchase.
+- Reason: Removing cards is a core deckbuilder action and lets players shape the temporary run deck.
+- Status: Accepted
+
+### 2026-06-04: Duplicate Card Active Shop Purchase
+
+- Decision: Activate Duplicate Card as a current-run shop purchase.
+- Reason: Duplicating cards is a core deckbuilder action and lets players increase the chance of seeing upgraded cards.
+- Status: Accepted
+
+### 2026-06-04: Minimum Current-Run Deck Size
+
+- Decision: The current-run deck cannot be reduced below 5 cards.
+- Reason: A minimum deck size prevents battle mini-games from running out of card options and keeps runs playable.
+- Status: Accepted
+
+### 2026-06-04: Duplicates Preserve Current-Run Upgrades
+
+- Decision: Duplicate Card copies the selected card's current-run attack, shield effects, and element effects.
+- Reason: Duplication should reward run-building decisions by copying the card as it exists in the active run.
+- Status: Accepted
+
+### 2026-06-04: Remove and Duplicate Are Temporary Run Deck Mutations
+
+- Decision: Removed cards and duplicated cards affect only the current-run deck and are not saved to LocalStorage.
+- Reason: Deck mutation is run progress and must reset on death, run restart, page refresh, or app reload.
+- Status: Accepted
+
 ### 2026-06-04: Shop Presentation First
 
 - Decision: Build the Shop screen and sample shop item data before implementing purchase logic.

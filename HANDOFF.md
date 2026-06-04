@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 14 complete. Phase 15 has not started yet.
+Current phase: Phase 15 complete. Phase 16 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -168,6 +168,18 @@ GitHub backup is configured:
 - Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
 - Kept remove card, duplicate card, boss logic, run rewards, timers, run persistence, advanced element interactions, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 14.
+- Activated Remove Card and Duplicate Card shop purchases.
+- Remove Card lets the player choose one current-run card, spend the existing item cost, and remove that card from the current-run deck.
+- Added a minimum current-run deck size of 5 cards and disabled Remove Card when the deck is too small.
+- Duplicate Card lets the player choose one current-run card, spend the existing item cost, and add a unique-id copy to the current-run deck.
+- Duplicates preserve current-run upgrades, including `baseAttack`, shield effects, and element effects.
+- Updated Shop UI to show current deck size and card attack, shield, and element summaries for Remove/Duplicate previews.
+- Dungeon mini-games continue to use the mutated current-run deck, so removed cards stop appearing and duplicated cards can appear more often.
+- Dungeon question builders avoid showing the same word twice in a single battle question, even when duplicates exist in the run deck.
+- Kept Remove/Duplicate mutations temporary and out of LocalStorage.
+- Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, element effects, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
+- Kept boss logic, run rewards, deck unlocks, timers, persistent run state, advanced element interactions, and final art assets unimplemented.
+- Verified the project again with `npm run build` after Phase 15.
 
 ## Implemented Screens
 
@@ -177,7 +189,7 @@ The following screens are implemented or stubbed:
 - Deck Review: polished vocabulary presentation screen using `Starter Deck`.
 - Training: polished first Word Choice Training interaction using `Starter Deck`.
 - Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, current-run deck, gold, shield absorption, and shop checkpoint routing.
-- Shop: current-run shop with active Upgrade Attack and Add Shield purchases, preview-only remaining items, and back-to-dungeon routing.
+- Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
 Navigation is controlled by `currentScreen` state in `src/App.tsx`.
@@ -190,7 +202,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, and after Phase 14 basic element shop work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, and after Phase 15 current-run deck mutation work.
 
 The local development server can be started with:
 
@@ -339,11 +351,12 @@ Current Dungeon implementation:
 - Monster attacks reduce shield before damaging player HP.
 - Triggered cards with shield effects add shield while still dealing `baseAttack` damage.
 - Dungeon feedback shows total monster attack, shield absorbed, HP damage taken, shield gained, triggered card, and triggered effects summary.
-- No remove card, duplicate card, boss logic, run rewards, backend, API, advanced element interactions, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
+- No boss logic, run rewards, backend, API, advanced element interactions, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
 - Phase 13 added Word Scramble with typed answer input.
 - Phase 14 added display-only element effects from current-run shop purchases.
+- Phase 15 added current-run deck mutation through Remove Card and Duplicate Card purchases.
 
 Current Shop implementation:
 
@@ -364,11 +377,15 @@ Current Shop implementation:
 - Element purchases add or replace the selected card's single element effect.
 - Element effects are display-only in Phase 14 and do not change damage.
 - The Shop shows success feedback after a purchase and not-enough-gold feedback when gold is insufficient.
-- Remove Card and Duplicate Card have disabled coming-soon actions.
+- Remove Card and Duplicate Card are active purchases.
+- Remove Card uses the existing shop item cost and removes the selected card from the current-run deck.
+- Remove Card is disabled when the current-run deck has 5 or fewer cards.
+- Duplicate Card uses the existing shop item cost and adds a unique-id copy of the selected card to the current-run deck.
+- Duplicated cards preserve current-run upgrades, including upgraded attack, shield effects, and element effects.
 - Phase 7 was presentation-only; Phase 11 added Upgrade Attack and Phase 12 added Add Shield.
 - Phase 9 UI polish made item type, cost, preview-only state, and current-run-only messaging clearer.
 - Phase 10 added `Back To Dungeon` routing.
-- Remove card, duplicate card, advanced element interactions, and balancing are deferred.
+- Advanced element interactions and balancing are deferred.
 
 ## Version 1 Scope
 
@@ -433,6 +450,11 @@ Version 1 should not include:
 - A card may have one element effect for now.
 - Element effects are display-only in Phase 14.
 - Element effects are temporary current-run card effects and are not persisted.
+- Remove Card is an active current-run shop purchase.
+- Duplicate Card is an active current-run shop purchase.
+- Minimum current-run deck size is 5 cards.
+- Duplicates preserve current-run upgrades.
+- Remove and Duplicate are temporary run deck mutations.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -515,7 +537,8 @@ Current battle foundation rules:
 - Upgrade Attack can increase a current-run card's `baseAttack` by +2.
 - Add Shield can add or increase Shield +3 on a current-run card.
 - Element shop purchases can add or replace one display-only element effect on a current-run card.
-- Remove and duplicate shop item purchases are not connected to dungeon runs yet.
+- Remove Card can remove a current-run deck card as long as the deck stays above 5 cards.
+- Duplicate Card can add a unique-id copy of a current-run card, preserving upgrades.
 - Boss appears at monster 20 later.
 - Run rewards are deferred.
 
@@ -625,7 +648,7 @@ Current shop state:
 - Add Shield modifies only current-run card shield effects.
 - Active purchases cost gold and subtract from temporary run gold.
 - Element shop actions are active and display-only in battle summaries.
-- Remove and duplicate shop actions are preview-only / coming soon.
+- Remove and duplicate shop actions are active and mutate only the current-run deck.
 - No shop upgrade is saved to LocalStorage.
 
 ## Required Project Documents
@@ -658,8 +681,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 14 is complete.
+Phase 15 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, remove/duplicate shop purchase logic, run rewards, timers, persistent run state, advanced element interactions, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, run rewards, timers, persistent run state, advanced element interactions, deck unlocks, or final art assets unless explicitly requested.
