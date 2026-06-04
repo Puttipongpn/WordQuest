@@ -586,6 +586,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Manual decks are enough to validate multi-deck app flow without adding data import complexity.
 - Status: Accepted
 
+### 2026-06-04: Starter Deck Unlocked By Default
+
+- Decision: Starter Deck is unlocked by default for all new or reset saves.
+- Reason: Players need an always-available first deck to review, train, and enter dungeon runs.
+- Status: Accepted
+
+### 2026-06-04: Food Deck Unlocks After Starter Deck Completion
+
+- Decision: Food Deck starts locked and unlocks when Starter Deck is completed.
+- Reason: This proves deck unlock progression with existing manual decks before adding Oxford 3000 or broader progression.
+- Status: Accepted
+
+### 2026-06-04: Unlocked Deck Ids Are Permanent Progress
+
+- Decision: `unlockedDeckIds` are saved in LocalStorage permanent progress and reset only through Reset Progress.
+- Reason: Deck access should survive refreshes and failed runs while temporary run state remains unsaved.
+- Status: Accepted
+
+### 2026-06-04: Real Progression Beyond Food Deck Is Deferred
+
+- Decision: Completing Food Deck marks it completed but does not unlock another real deck yet.
+- Reason: Phase 22 should validate unlock persistence without adding more decks, Oxford 3000 imports, or advanced progression design.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

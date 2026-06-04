@@ -19,13 +19,18 @@ import type {
 type DungeonProps = {
   currentRunDeck: WordCard[];
   isSelectedDeckCompleted: boolean;
-  onCompleteSelectedDeck: () => void;
+  onCompleteSelectedDeck: () => CompletionReward;
   onMonsterDefeated: () => void;
   onNavigate: (screen: ScreenName) => void;
   onResetRun: () => void;
   runGold: number;
   runProgress: RunProgressState;
   selectedDeck: VocabularyDeck;
+};
+
+type CompletionReward = {
+  completedMessage: string;
+  unlockMessage: string;
 };
 
 type BattleMiniGameType = "word-choice" | "word-match" | "word-scramble";
@@ -60,6 +65,7 @@ type BattleLog = {
   shieldAbsorbed?: number;
   shieldGained?: number;
   effectsSummary?: string;
+  rewardSummary?: string;
 };
 
 const initialPlayerHp = 30;
@@ -350,16 +356,17 @@ export function Dungeon({
 
     if (nextMonsterHp === 0) {
       if (isBossEncounter) {
-        onCompleteSelectedDeck();
+        const completionReward = onCompleteSelectedDeck();
         setHasCompletedBoss(true);
         setBattleStatus("run-complete");
         setBattleLog({
           tone: "success",
-          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. ${selectedDeck.name} completed. Permanent progress saved.`,
+          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
           triggeredCard: card,
           damageDealt: card.baseAttack,
           shieldGained,
           effectsSummary,
+          rewardSummary: `${completionReward.completedMessage} ${completionReward.unlockMessage}`,
         });
         return;
       }
@@ -831,7 +838,7 @@ export function Dungeon({
               <div className="flex flex-wrap items-center gap-2">
                 <Badge tone="emerald">Run Complete</Badge>
                 <p className="font-black text-emerald-950">
-                  {selectedDeck.name} completed.
+                  {battleLog.rewardSummary ?? `${selectedDeck.name} completed.`}
                 </p>
               </div>
               <p className="mt-2 text-sm font-medium text-emerald-950/75">

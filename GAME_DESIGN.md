@@ -59,13 +59,13 @@ Run progress is temporary and is lost on death:
 - Current floor
 - Next shop checkpoint
 
-Version 1 saves permanent progress with LocalStorage. The current prototype persists word mastery and completed deck progress.
+Version 1 saves permanent progress with LocalStorage. The current prototype persists word mastery, unlocked deck progress, and completed deck progress.
 
 Current saved data includes:
 
 - Save `version: 1`
 - Word mastery
-- Unlocked deck ids placeholder
+- Unlocked deck ids
 - Completed deck ids
 - Statistics placeholder
 
@@ -102,16 +102,22 @@ Current selected deck rules:
 
 - `Starter Deck` is selected by default.
 - Home provides the first deck selection UI.
+- Starter Deck is unlocked by default.
+- Food Deck starts locked.
+- Completing Starter Deck unlocks Food Deck.
+- Completing Food Deck marks it completed but does not unlock another real deck yet.
 - Deck Review uses the selected deck.
 - Training uses the selected deck.
 - Dungeon current-run deck starts as a temporary copy of the selected deck.
 - Shop purchases mutate only the selected deck's current-run copy.
 - Boss defeat marks the selected deck completed in permanent progress.
 - Changing decks starts a fresh temporary run and does not reset word mastery or completed deck ids.
+- Locked decks cannot be selected.
+- If a selected deck is locked or unavailable, the app falls back to Starter Deck.
 
 Decks should target around 20 words each. The long-term source for vocabulary is Oxford 3000, but manual seed data is used first.
 
-Real deck unlock progression and Oxford 3000 import are intentionally deferred.
+Real progression beyond Food Deck and Oxford 3000 import are intentionally deferred.
 
 ## Word Card Structure
 
@@ -228,8 +234,10 @@ Current battle rules:
 - Run Complete shows monsters defeated, current floor, final gold, and current-run deck size.
 - Boss defeat marks the selected deck completed in `completedDeckIds`.
 - Completed deck ids are saved in LocalStorage permanent progress.
+- If Starter Deck is completed, Food Deck is unlocked in `unlockedDeckIds`.
+- If Food Deck is completed, Run Complete shows that the next deck is coming soon.
 - Run Complete shows reward feedback that the selected deck was completed and permanent progress was saved.
-- Boss defeat does not unlock real new decks yet.
+- Boss defeat does not unlock decks beyond Food Deck yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - After run failure, the player can restart the local run.
 
@@ -237,7 +245,7 @@ Deferred dungeon systems:
 
 - Run rewards beyond the selected deck completion marker
 - Advanced element interactions
-- Deck unlocks
+- Real progression beyond Food Deck
 - Permanent mastery updates from battle
 
 Dungeon battle and run progression state are still temporary React state only. LocalStorage is used for permanent progress, not current run progress.

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 21 Deck Selection Foundation is complete. GitHub backup is configured on `origin/main`.
+Phase 22 Deck Unlock Progression Foundation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -238,6 +238,19 @@ Phase 21 Deck Selection Foundation is complete. GitHub backup is configured on `
 - Changing decks now resets temporary run state and current-run deck without resetting word mastery or completed deck ids.
 - Preserved combat rules, shop purchases, run deck mutation, boss battle, permanent-progress-only LocalStorage rules, and Oxford 3000 deferral.
 - Verified the project with `npm run build` after Phase 21.
+- Implemented the first deck unlock progression foundation.
+- Starter Deck is unlocked by default in permanent progress.
+- Food Deck starts locked and appears in Home as a locked deck.
+- Locked decks cannot be selected.
+- Locked Food Deck shows requirement copy: Complete Starter Deck to unlock.
+- Completing Starter Deck now marks Starter Deck completed and unlocks Food Deck.
+- Completing Food Deck marks it completed and shows next-deck-coming-soon reward feedback.
+- `unlockedDeckIds` now persists in LocalStorage permanent progress and is cleared back to Starter-only by Reset Progress.
+- Existing saved progress is normalized so Starter Deck remains unlocked and completed Starter Deck also unlocks Food Deck.
+- Selected deck fallback safety keeps locked or unavailable decks from crashing the app.
+- Preserved selected deck state, Review, Training, Dungeon, Shop, Run Complete, word mastery saves, completed deck saves, current-run resets, and permanent-progress-only LocalStorage rules.
+- No combat rules, timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, or final art assets were added.
+- Verified the project with `npm run build` after Phase 22.
 
 ## In Progress
 
@@ -245,7 +258,7 @@ Phase 21 Deck Selection Foundation is complete. GitHub backup is configured on `
 
 ## Next Task
 
-Phase 22 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 23 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -343,12 +356,16 @@ The following documents are required and must be updated after every completed t
 - Boss defeat creates a Run Complete state
 - Boss defeat marks the current deck completed
 - Completed deck ids are permanent progress saved in LocalStorage
-- Real new deck unlocks are deferred
+- Real progression beyond Food Deck is deferred
 - Run rewards beyond the first deck completion marker are deferred
 - Phase 19 uses placeholder game-style UI, not final art assets
 - Multiple decks are supported through manual sample deck data
 - Selected deck controls Deck Review, Training, Dungeon current-run deck, and Run Complete deck completion reward
 - Changing decks resets only temporary run state
+- Starter Deck is unlocked by default
+- Food Deck unlocks after Starter Deck completion
+- `unlockedDeckIds` are permanent progress saved in LocalStorage
+- Real progression beyond Food Deck is deferred
 - Oxford 3000 import is still deferred
 
 ## Important Rules

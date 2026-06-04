@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 21 complete. Phase 22 has not started yet.
+Current phase: Phase 22 complete. Phase 23 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -242,12 +242,24 @@ GitHub backup is configured:
 - Changing decks resets temporary run state, gold, run progression, and current-run deck while preserving word mastery and completed deck ids.
 - Preserved existing combat rules, shop purchases, run deck mutation, boss behavior, LocalStorage permanent-progress-only rules, and Oxford 3000 deferral.
 - Verified the project again with `npm run build` after Phase 21.
+- Implemented the first deck unlock progression foundation.
+- Starter Deck is unlocked by default.
+- Food Deck starts locked and appears in Home with requirement copy.
+- Locked decks cannot be selected.
+- Completing Starter Deck now marks Starter Deck completed and unlocks Food Deck in LocalStorage permanent progress.
+- Completing Food Deck marks it completed and shows next-deck-coming-soon reward feedback.
+- `unlockedDeckIds` now persists as active permanent progress rather than placeholder-only data.
+- Reset Progress clears unlock progress back to default Starter-only access.
+- Existing saved progress is normalized so Starter Deck remains unlocked and completed Starter Deck unlocks Food Deck.
+- Selected deck fallback safety prevents locked or unavailable decks from crashing the app.
+- Preserved existing selected deck flow, Review, Training, Dungeon, Shop, boss battles, current-run reset rules, and permanent-progress-only LocalStorage rules.
+- Verified the project again with `npm run build` after Phase 22.
 
 ## Implemented Screens
 
 The following screens are implemented or stubbed:
 
-- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, and deck selection for Starter Deck / Food Deck.
+- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
 - Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
 - Training: polished first Word Choice Training interaction using the selected deck.
 - Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
@@ -264,7 +276,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, and after Phase 21 deck selection foundation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, and after Phase 22 deck unlock progression foundation work.
 
 The local development server can be started with:
 
@@ -369,8 +381,9 @@ Current LocalStorage save implementation:
 - `src/utils/playerProgressStorage.ts` owns LocalStorage access.
 - Save key is internal to the utility.
 - Save data includes `version: 1`.
-- Saved permanent progress includes word mastery, unlocked deck ids placeholder, completed deck ids, and statistics placeholder.
+- Saved permanent progress includes word mastery, unlocked deck ids, completed deck ids, and statistics placeholder.
 - `completedDeckIds` stores completed deck ids for both Starter Deck and Food Deck after boss defeat.
+- `unlockedDeckIds` starts with Starter Deck and unlocks Food Deck after Starter Deck completion.
 - Missing, invalid, or incompatible saved data falls back to default progress.
 - Storage read/write failures are caught so the app can continue with in-memory state.
 - Home exposes a `Reset Progress` action.
@@ -422,7 +435,7 @@ Current Dungeon implementation:
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
 - Boss defeat marks the selected deck as completed in permanent LocalStorage progress.
 - Home and Deck Review display selected deck completion status.
-- Real new deck unlocks, backend, API, advanced element interactions, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
+- Real progression beyond Food Deck, backend, API, advanced element interactions, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
 - Phase 13 added Word Scramble with typed answer input.
@@ -617,8 +630,10 @@ Current battle foundation rules:
 - Boss uses the same Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state.
 - Boss defeat marks the selected deck as completed permanent progress.
+- Completing Starter Deck unlocks Food Deck.
+- Completing Food Deck shows next-deck-coming-soon reward feedback.
 - Completed deck ids persist in LocalStorage and are cleared only by Reset Progress.
-- Real new deck unlocks and run rewards beyond deck completion are deferred.
+- Real progression beyond Food Deck and run rewards beyond deck completion are deferred.
 - Phase 18 added QA cleanup for stale shop selections, purchase guards, duplicate id safety, clearer shop warnings, Boss Available copy, and Run Complete actions.
 
 ## Deck System
@@ -631,6 +646,8 @@ Current deck model:
 - `Starter Deck` contains 20 realistic sample word cards.
 - The second sample deck is `Food Deck`.
 - `Food Deck` contains 20 manual food-related word cards.
+- Starter Deck is unlocked by default.
+- Food Deck starts locked and unlocks after Starter Deck completion.
 - App-level selected deck state controls Deck Review, Training, Dungeon current-run deck creation, and Run Complete deck completion.
 - Changing decks starts a fresh temporary run without clearing word mastery or completed deck ids.
 - Seed vocabulary data lives in `src/data`.
@@ -764,8 +781,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 21 is complete.
+Phase 22 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, run rewards, timers, persistent run state, advanced element interactions, deck unlocks, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, run rewards, timers, persistent run state, advanced element interactions, real progression beyond Food Deck, or final art assets unless explicitly requested.

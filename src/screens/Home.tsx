@@ -9,6 +9,7 @@ type HomeProps = {
   onResetProgress: () => void;
   onSelectDeck: (deckId: string) => void;
   selectedDeckId: string;
+  unlockedDeckIds: string[];
 };
 
 export function Home({
@@ -18,6 +19,7 @@ export function Home({
   onResetProgress,
   onSelectDeck,
   selectedDeckId,
+  unlockedDeckIds,
 }: HomeProps) {
   const selectedDeck =
     availableDecks.find((deck) => deck.id === selectedDeckId) ??
@@ -136,7 +138,7 @@ export function Home({
             <p className="mt-2 max-w-2xl text-sm font-bold text-amber-900/75">
               Deck Review, Training, Dungeon battles, shop mutations, and boss
               completion all use the selected deck. Changing decks starts a
-              fresh run.
+              fresh run. Locked decks appear here but cannot be selected yet.
             </p>
           </div>
           <StatCard
@@ -151,17 +153,25 @@ export function Home({
           {availableDecks.map((deck) => {
             const isSelected = deck.id === selectedDeckId;
             const isCompleted = completedDeckIds.includes(deck.id);
+            const isUnlocked = unlockedDeckIds.includes(deck.id);
+            const requirement =
+              deck.id === "food-deck"
+                ? "Complete Starter Deck to unlock."
+                : "Unlocked by default.";
 
             return (
               <button
                 key={deck.id}
                 type="button"
+                disabled={!isUnlocked}
                 onClick={() => onSelectDeck(deck.id)}
                 aria-pressed={isSelected}
                 className={`rounded-xl border-2 p-4 text-left shadow-[0_8px_0_rgba(120,53,15,0.12)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 ${
-                  isSelected
-                    ? "border-amber-700 bg-white ring-2 ring-amber-300"
-                    : "border-amber-900/15 bg-white/70 hover:border-amber-500"
+                  !isUnlocked
+                    ? "cursor-not-allowed border-slate-300 bg-slate-100/80 opacity-75"
+                    : isSelected
+                      ? "border-amber-700 bg-white ring-2 ring-amber-300"
+                      : "border-amber-900/15 bg-white/70 hover:border-amber-500"
                 }`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
@@ -174,8 +184,14 @@ export function Home({
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Badge tone={isSelected ? "amber" : "slate"}>
-                      {isSelected ? "Selected" : "Choose"}
+                    <Badge
+                      tone={!isUnlocked ? "slate" : isSelected ? "amber" : "sky"}
+                    >
+                      {!isUnlocked
+                        ? "Locked"
+                        : isSelected
+                          ? "Selected"
+                          : "Choose"}
                     </Badge>
                     <Badge tone={isCompleted ? "emerald" : "sky"}>
                       {isCompleted ? "Completed" : "In Progress"}
@@ -185,11 +201,17 @@ export function Home({
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   <StatCard label="Cards" value={deck.cards.length} />
                   <StatCard
-                    label="Completion"
-                    value={isCompleted ? "Done" : "Open"}
-                    tone={isCompleted ? "emerald" : "sky"}
+                    label="Access"
+                    value={isUnlocked ? "Unlocked" : "Locked"}
+                    helper={isUnlocked ? "Selectable" : requirement}
+                    tone={isUnlocked ? "emerald" : "slate"}
                   />
                 </div>
+                {!isUnlocked && (
+                  <p className="mt-3 rounded-md border border-slate-300 bg-white/70 px-3 py-2 text-sm font-bold text-slate-700">
+                    {requirement}
+                  </p>
+                )}
               </button>
             );
           })}

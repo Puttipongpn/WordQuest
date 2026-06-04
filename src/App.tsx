@@ -8,7 +8,7 @@ import {
   Shop,
   Training,
 } from "./screens";
-import { availableDecks, starterDeck } from "./data";
+import { availableDecks, foodDeck, starterDeck } from "./data";
 import type {
   ElementType,
   RunProgressState,
@@ -33,6 +33,11 @@ const shieldUpgradeAmount = 3;
 const minimumRunDeckSize = 5;
 const minimumBattleWordOptions = 4;
 let duplicateCardSequence = 0;
+
+type CompletionReward = {
+  completedMessage: string;
+  unlockMessage: string;
+};
 
 const initialRunProgress: RunProgressState = {
   monstersDefeated: 0,
@@ -86,9 +91,14 @@ export default function App() {
   );
 
   const selectedDeck =
-    availableDecks.find((deck) => deck.id === selectedDeckId) ?? starterDeck;
+    availableDecks.find(
+      (deck) =>
+        deck.id === selectedDeckId &&
+        playerProgress.unlockedDeckIds.includes(deck.id),
+    ) ?? starterDeck;
   const wordMastery = playerProgress.wordMastery;
   const completedDeckIds = playerProgress.completedDeckIds;
+  const unlockedDeckIds = playerProgress.unlockedDeckIds;
 
   function increaseWordMastery(cardId: string) {
     setPlayerProgress((currentProgress) => {
@@ -113,26 +123,55 @@ export default function App() {
   function resetPlayerProgress() {
     resetSavedProgress();
     setPlayerProgress(createDefaultPlayerProgress());
+    setSelectedDeckId(starterDeck.id);
+    setRunProgress(initialRunProgress);
+    setRunGold(initialRunGold);
+    setCurrentRunDeck(createRunDeckCopy(starterDeck));
   }
 
-  function markSelectedDeckCompleted() {
+  function markSelectedDeckCompleted(): CompletionReward {
     setPlayerProgress((currentProgress) => {
-      if (currentProgress.completedDeckIds.includes(selectedDeck.id)) {
-        return currentProgress;
+      const completedDeckIds = currentProgress.completedDeckIds.includes(
+        selectedDeck.id,
+      )
+        ? currentProgress.completedDeckIds
+        : [...currentProgress.completedDeckIds, selectedDeck.id];
+      const unlockedDeckIds = new Set(currentProgress.unlockedDeckIds);
+      unlockedDeckIds.add(starterDeck.id);
+
+      if (selectedDeck.id === starterDeck.id) {
+        unlockedDeckIds.add(foodDeck.id);
       }
 
       const nextProgress: SavedPlayerProgress = {
         ...currentProgress,
-        completedDeckIds: [
-          ...currentProgress.completedDeckIds,
-          selectedDeck.id,
-        ],
+        unlockedDeckIds: [...unlockedDeckIds],
+        completedDeckIds,
       };
 
       savePlayerProgress(nextProgress);
 
       return nextProgress;
     });
+
+    if (selectedDeck.id === starterDeck.id) {
+      return {
+        completedMessage: "Starter Deck completed!",
+        unlockMessage: "Food Deck unlocked!",
+      };
+    }
+
+    if (selectedDeck.id === foodDeck.id) {
+      return {
+        completedMessage: "Food Deck completed!",
+        unlockMessage: "Next deck coming soon.",
+      };
+    }
+
+    return {
+      completedMessage: `${selectedDeck.name} completed!`,
+      unlockMessage: "Next deck coming soon.",
+    };
   }
 
   function recordMonsterDefeated() {
@@ -158,7 +197,10 @@ export default function App() {
     const nextDeck =
       availableDecks.find((deck) => deck.id === deckId) ?? starterDeck;
 
-    if (nextDeck.id === selectedDeck.id) {
+    if (
+      nextDeck.id === selectedDeck.id ||
+      !unlockedDeckIds.includes(nextDeck.id)
+    ) {
       return;
     }
 
@@ -349,6 +391,7 @@ export default function App() {
             onResetProgress={resetPlayerProgress}
             onSelectDeck={selectDeck}
             selectedDeckId={selectedDeck.id}
+            unlockedDeckIds={unlockedDeckIds}
           />
         )}
         {currentScreen === "deck-review" && (
