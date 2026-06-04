@@ -1,0 +1,108 @@
+import type { ShopItem } from "../types";
+
+export const sampleShopItems: ShopItem[] = [
+  {
+    id: "upgrade-attack",
+    name: "Upgrade Attack",
+    description: "Preview: increase a selected card's attack for this run.",
+    cost: 35,
+    type: "upgrade-attack",
+    icon: "ATK",
+    effect: {
+      type: "attack",
+      amount: 1,
+      description: "Add +1 attack to a selected word card.",
+    },
+  },
+  {
+    id: "add-fire-element",
+    name: "Add Fire Element",
+    description: "Preview: add fire power to a selected card for this run.",
+    cost: 45,
+    type: "add-element",
+    icon: "FIRE",
+    effect: {
+      type: "element",
+      element: "fire",
+      amount: 1,
+      description: "Add Fire element to a selected word card.",
+    },
+  },
+  {
+    id: "add-water-element",
+    name: "Add Water Element",
+    description: "Preview: add water power to a selected card for this run.",
+    cost: 45,
+    type: "add-element",
+    icon: "WATER",
+    effect: {
+      type: "element",
+      element: "water",
+      amount: 1,
+      description: "Add Water element to a selected word card.",
+    },
+  },
+  {
+    id: "add-wind-element",
+    name: "Add Wind Element",
+    description: "Preview: add wind power to a selected card for this run.",
+    cost: 45,
+    type: "add-element",
+    icon: "WIND",
+    effect: {
+      type: "element",
+      element: "wind",
+      amount: 1,
+      description: "Add Wind element to a selected word card.",
+    },
+  },
+  {
+    id: "add-earth-element",
+    name: "Add Earth Element",
+    description: "Preview: add earth power to a selected card for this run.",
+    cost: 45,
+    type: "add-element",
+    icon: "EARTH",
+    effect: {
+      type: "element",
+      element: "earth",
+      amount: 1,
+      description: "Add Earth element to a selected word card.",
+    },
+  },
+  {
+    id: "add-shield",
+    name: "Add Shield",
+    description: "Preview: give a selected card a shield effect for this run.",
+    cost: 40,
+    type: "add-shield",
+    icon: "SHD",
+    effect: {
+      type: "shield",
+      amount: 2,
+      description: "Add +2 shield to a selected word card.",
+    },
+  },
+  {
+    id: "remove-card",
+    name: "Remove Card",
+    description: "Preview: remove one card from the current run deck.",
+    cost: 30,
+    type: "remove-card",
+    icon: "CUT",
+    effect: {
+      type: "remove-card",
+    },
+  },
+  {
+    id: "duplicate-card",
+    name: "Duplicate Card",
+    description: "Preview: copy one card into the current run deck.",
+    cost: 50,
+    type: "duplicate-card",
+    icon: "COPY",
+    effect: {
+      type: "duplicate-card",
+    },
+  },
+];

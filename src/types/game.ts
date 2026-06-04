@@ -95,10 +95,19 @@ export type Boss = Monster & {
   specialMoveName: string;
 };
 
+export type ShopItemType =
+  | "upgrade-attack"
+  | "add-element"
+  | "add-shield"
+  | "remove-card"
+  | "duplicate-card";
+
 export type ShopItem = {
   id: string;
   name: string;
   description: string;
   cost: number;
-  effect: CardEffect | { type: "remove-card" } | { type: "duplicate-card" };
+  type: ShopItemType;
+  icon: string;
+  effect?: CardEffect | { type: "remove-card" } | { type: "duplicate-card" };
 };

@@ -316,6 +316,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Temporary upgrades preserve roguelike reset rules.
 - Status: Accepted
 
+### 2026-06-04: Shop Presentation First
+
+- Decision: Build the Shop screen and sample shop item data before implementing purchase logic.
+- Reason: The project needs a clear shop UI and data shape before card mutation, gold spending, and run routing are added.
+- Status: Accepted
+
+### 2026-06-04: Shop Items Are Current-Run Only
+
+- Decision: Phase 7 shop item data represents current-run upgrades only.
+- Reason: This keeps shop design aligned with the accepted permanent progress versus run progress split.
+- Status: Accepted
+
+### 2026-06-04: Shop Item Effects Are Placeholders in Phase 7
+
+- Decision: Phase 7 shop item effects are preview placeholders and do not modify cards, decks, gold, run state, or card effects.
+- Reason: Shop presentation should be validated before adding purchase behavior and balancing.
+- Status: Accepted
+
 ### 2026-06-04: Placeholder Art for Version 1
 
 - Decision: Use emoji, CSS, and simple placeholders for Version 1 visuals.

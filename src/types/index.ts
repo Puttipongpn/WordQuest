@@ -8,6 +8,7 @@ export type {
   PlayerProgress,
   RunState,
   ShopItem,
+  ShopItemType,
   VocabularyDeck,
   WordCard,
   WordMastery,

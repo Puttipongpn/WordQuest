@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 6 battle mini-game structure is complete. GitHub backup is configured on `origin/main`.
+Phase 7 shop presentation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -85,6 +85,13 @@ Phase 6 battle mini-game structure is complete. GitHub backup is configured on `
 - Preserved the Card Trigger System for both battle mini-games.
 - Added triggered card, damage dealt, damage taken, and correct/wrong feedback display.
 - Verified the project with `npm run build` after Phase 6.
+- Created sample current-run shop item data in `src/data/shopItems.ts`.
+- Added placeholder shop items for attack upgrades, elements, shield, card removal, and card duplication.
+- Updated the Shop screen to display item cards with icon, name, description, cost, and type.
+- Labeled the shop as `Current Run Shop`.
+- Added shop text explaining upgrades are temporary and affect only the current run.
+- Kept shop buttons as preview-only with no purchase logic, card changes, deck changes, gold changes, or effect changes.
+- Verified the project with `npm run build` after Phase 7.
 
 ## In Progress
 
@@ -92,7 +99,7 @@ Phase 6 battle mini-game structure is complete. GitHub backup is configured on `
 
 ## Next Task
 
-Start Phase 7: build basic shop presentation and current-run shop item placeholders.
+Start Phase 8 when requested: add the LocalStorage save system for permanent progress only.
 
 ## Required Project Documents
 
@@ -149,6 +156,10 @@ The following documents are required and must be updated after every completed t
 - Word Match uses 3 English words and 3 Thai meanings
 - Correct Word Match pairs trigger the selected English word card
 - Phase 6 still does not implement shop logic, boss logic, run rewards, LocalStorage, or permanent mastery updates from battle
+- Shop presentation loads sample data from `src/data/shopItems.ts`
+- Shop items are current-run only
+- Phase 7 shop item effects are placeholders only
+- Phase 7 does not implement purchase logic, boss logic, run rewards, LocalStorage, or permanent battle mastery updates
 
 ## Important Rules
 
@@ -173,7 +184,7 @@ Keep game playable and simple.
 - Sound effects
 - More mini-games
 - Full dungeon battle logic
-- Shop logic
+- Shop purchase logic
 - Save system
 - Persistent mastery storage
 - Balancing

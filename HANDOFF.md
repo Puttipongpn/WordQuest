@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 6 complete. Phase 7 has not started yet.
+Current phase: Phase 7 complete. Phase 8 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -91,6 +91,13 @@ GitHub backup is configured:
 - Preserved Card Trigger System behavior for both battle mini-games.
 - Added visible triggered card, damage dealt, damage taken, and correct/wrong feedback.
 - Verified the project again with `npm run build` after Phase 6.
+- Created sample current-run shop item data in `src/data/shopItems.ts`.
+- Added placeholder shop items for Upgrade Attack, Add Fire Element, Add Water Element, Add Wind Element, Add Earth Element, Add Shield, Remove Card, and Duplicate Card.
+- Updated the Shop screen to render shop item cards from shared data.
+- Labeled the Shop screen as `Current Run Shop`.
+- Added copy explaining shop upgrades are temporary and affect only the current run.
+- Kept shop actions as preview-only buttons with no purchase logic or state mutation.
+- Verified the project again with `npm run build` after Phase 7.
 
 ## Implemented Screens
 
@@ -100,7 +107,7 @@ The following screens are implemented or stubbed:
 - Deck Review: implemented vocabulary presentation screen using `Starter Deck`.
 - Training: implemented first Word Choice Training interaction using `Starter Deck`.
 - Dungeon: implemented first local-state vocabulary card battle foundation.
-- Shop: placeholder current-run upgrade cards.
+- Shop: current-run shop presentation with placeholder item cards and preview-only actions.
 - Run Result: placeholder summary screen with a button back to Home.
 
 Navigation is controlled by `currentScreen` state in `src/App.tsx`.
@@ -113,7 +120,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, and after Phase 6 battle mini-game structure work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, and after Phase 7 shop presentation work.
 
 The local development server can be started with:
 
@@ -151,6 +158,7 @@ Current data files:
 
 - `src/data/starterDeck.ts`: the first sample vocabulary deck.
 - `src/data/monsters.ts`: sample monster list with Slime, Goblin, and Bat.
+- `src/data/shopItems.ts`: sample current-run shop item placeholders.
 - `src/data/index.ts`: data exports.
 
 Repository files:
@@ -220,6 +228,17 @@ Current Dungeon implementation:
 - Shield is display-only in this phase.
 - No shop logic, boss logic, run rewards, LocalStorage, backend, API, or permanent mastery updates are connected to dungeon battle yet.
 
+Current Shop implementation:
+
+- `src/screens/Shop.tsx` imports `sampleShopItems` from `src/data`.
+- `src/data/shopItems.ts` defines current-run placeholder items.
+- The Shop screen is labeled `Current Run Shop`.
+- The screen explains that shop upgrades are temporary and affect only the current run.
+- Each shop item card shows an icon placeholder, name, description, cost, and type.
+- Each shop item has a disabled `Preview Only` button.
+- Phase 7 does not modify cards, deck contents, player gold, run state, or card effects.
+- Purchase logic, shop routing from dungeon, card selection for upgrades, removal, duplication, and balancing are deferred.
+
 ## Version 1 Scope
 
 Version 1 should include:
@@ -262,6 +281,7 @@ Version 1 should not include:
 - Correct answers trigger card attack, shield, or element effects.
 - Battle systems should be built around card-triggered effects: mini-games select or use vocabulary cards, correct answers trigger the selected card, and incorrect answers do not trigger card effects.
 - Future shop upgrades and enchantments should modify card effects rather than player stats directly.
+- Phase 7 shop item effects are placeholders only until purchase logic exists.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -328,6 +348,8 @@ Current battle foundation rules:
 - Shield is display-only for now.
 - Gold is display-only for now.
 - Shop appears every 5 monsters later.
+- The current Shop screen exists as a separate presentation screen only.
+- Shop item purchases are not connected to dungeon runs yet.
 - Boss appears at monster 20 later.
 - Run rewards are deferred.
 
@@ -426,6 +448,14 @@ Planned shop items:
 
 Shop upgrades affect only the current run.
 
+Current Phase 7 shop state:
+
+- Shop presentation is implemented.
+- Shop item data lives in `src/data/shopItems.ts`.
+- Shop actions are preview-only.
+- No purchase logic exists yet.
+- No shop item currently modifies cards, deck contents, gold, run state, or card effects.
+
 ## Required Project Documents
 
 These documents are required project maintenance files:
@@ -456,8 +486,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 7 has not started yet.
+Phase 7 is complete.
 
 Recommended next task:
 
-Build basic shop presentation and current-run shop item placeholders. Do not add boss logic, run rewards, LocalStorage, or permanent battle mastery yet.
+Start Phase 8 when requested: add the LocalStorage save system for permanent progress only. Do not save temporary run upgrades after death.

@@ -170,7 +170,7 @@ Battle mini-games should eventually include timers. Difficulty should affect tim
 
 ## Shop Plan
 
-Shop logic has not started yet.
+Shop presentation is implemented. Shop purchase logic has not started yet.
 
 The shop appears every 5 monsters during dungeon runs.
 
@@ -188,6 +188,16 @@ Planned shop items:
 Shop upgrades affect only the current run.
 
 Future shop upgrades should modify card effects or card behavior rather than directly increasing generic player stats.
+
+Current Phase 7 shop rules:
+
+- Shop item data lives in `src/data/shopItems.ts`.
+- The Shop screen is labeled `Current Run Shop`.
+- Shop upgrades are explained as temporary current-run upgrades.
+- Shop item cards show icon placeholder, name, description, cost, and type.
+- Shop buttons are preview-only.
+- No purchase logic exists yet.
+- No cards, deck contents, player gold, run state, or card effects are modified yet.
 
 ## Card Effects
 
