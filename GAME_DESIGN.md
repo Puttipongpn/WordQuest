@@ -41,6 +41,7 @@ Run progress is temporary and is lost on death:
 - Duplicated cards
 - Removed cards
 - Run items
+- Current run deck copy
 - Monsters defeated
 - Current floor
 - Next shop checkpoint
@@ -64,6 +65,7 @@ Current saved data intentionally excludes:
 - Card enchantments
 - Duplicated cards
 - Removed cards
+- Current run deck copy
 - Monster state
 - Monsters defeated
 - Current floor
@@ -153,6 +155,8 @@ Current battle rules:
 
 - Player has HP, shield display, and gold display.
 - Dungeon run progression tracks monsters defeated, current floor, and next shop checkpoint.
+- The run deck starts as a temporary copy of `Starter Deck`.
+- Dungeon battle questions use the current-run deck copy.
 - Current sample monsters are Slime, Goblin, and Bat.
 - Each monster has name, HP, max HP, and attack.
 - Battle questions use `Starter Deck` vocabulary cards.
@@ -163,10 +167,12 @@ Current battle rules:
 - Correct answers trigger the selected word card.
 - Correct Word Match pairs trigger the selected English word card.
 - Triggered cards deal damage equal to `baseAttack`.
+- If a current-run card has been upgraded in the shop, the upgraded `baseAttack` is used for battle damage.
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack player HP.
 - When monster HP reaches 0, the screen shows `Monster Defeated`.
 - Defeating a monster increases `monstersDefeated` by 1.
+- Defeating a monster grants +5 temporary gold.
 - Shop checkpoints occur every 5 defeated monsters.
 - When a shop checkpoint is reached, Dungeon shows `Shop Available`.
 - Dungeon can route to Shop with a `Go To Shop` button.
@@ -178,9 +184,8 @@ Current battle rules:
 Deferred dungeon systems:
 
 - Shield absorption
-- Gold rewards
 - Run rewards
-- Shop purchase logic
+- Remaining shop purchase logic
 - Boss logic
 - Permanent mastery updates from battle
 
@@ -203,7 +208,7 @@ Battle mini-games should eventually include timers. Difficulty should affect tim
 
 ## Shop Plan
 
-Shop presentation is implemented. Shop purchase logic has not started yet.
+Shop presentation is implemented. The first active shop purchase is `Upgrade Attack`.
 
 The shop appears every 5 monsters during dungeon runs.
 
@@ -228,11 +233,15 @@ Current shop rules:
 - The Shop screen is labeled `Current Run Shop`.
 - Shop upgrades are explained as temporary current-run upgrades.
 - Shop item cards show icon placeholder, name, description, cost, and type.
-- Shop buttons are preview-only.
+- `Upgrade Attack` is purchasable.
+- `Upgrade Attack` uses its existing shop item cost.
+- If the player has enough temporary gold, the player can choose one current-run card and increase its `baseAttack` by +2.
+- If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback.
+- Other shop items remain preview-only / coming soon.
 - Dungeon can route to Shop when a checkpoint is available.
 - Shop can route back to Dungeon.
-- No purchase logic exists yet.
-- No cards, deck contents, player gold, run state, or card effects are modified yet.
+- Shop upgrades modify only current-run cards.
+- Shop upgrades, gold, and current-run deck changes are not saved to LocalStorage.
 
 ## Card Effects
 

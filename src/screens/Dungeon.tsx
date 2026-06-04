@@ -7,13 +7,15 @@ import {
   ProgressBar,
   StatCard,
 } from "../components/ui";
-import { sampleMonsters, starterDeck } from "../data";
+import { sampleMonsters } from "../data";
 import type { Monster, RunProgressState, ScreenName, WordCard } from "../types";
 
 type DungeonProps = {
+  currentRunDeck: WordCard[];
   onMonsterDefeated: () => void;
   onNavigate: (screen: ScreenName) => void;
-  onResetRunProgress: () => void;
+  onResetRun: () => void;
+  runGold: number;
   runProgress: RunProgressState;
 };
 
@@ -40,7 +42,6 @@ type BattleLog = {
 
 const initialPlayerHp = 30;
 const initialShield = 0;
-const initialGold = 0;
 
 function chooseBattleMiniGame(): BattleMiniGameType {
   return Math.random() < 0.5 ? "word-choice" : "word-match";
@@ -50,19 +51,19 @@ function getMonsterForIndex(index: number): Monster {
   return sampleMonsters[index % sampleMonsters.length];
 }
 
-function rotateCards(seed: number) {
-  return starterDeck.cards.map(
-    (_, index) => starterDeck.cards[(seed + index) % starterDeck.cards.length],
+function rotateCards(seed: number, deck: WordCard[]) {
+  return deck.map(
+    (_, index) => deck[(seed + index) % deck.length],
   );
 }
 
-function buildChoices(card: WordCard, cardIndex: number) {
-  const distractors = starterDeck.cards
+function buildChoices(card: WordCard, cardIndex: number, deck: WordCard[]) {
+  const distractors = deck
     .filter((candidate) => candidate.id !== card.id)
     .slice(cardIndex, cardIndex + 3);
 
   if (distractors.length < 3) {
-    const fallbackChoices = starterDeck.cards.filter(
+    const fallbackChoices = deck.filter(
       (candidate) =>
         candidate.id !== card.id &&
         !distractors.some((distractor) => distractor.id === candidate.id),
@@ -76,19 +77,22 @@ function buildChoices(card: WordCard, cardIndex: number) {
   );
 }
 
-function buildWordChoiceQuestion(seed: number): WordChoiceQuestion {
-  const cardIndex = seed % starterDeck.cards.length;
-  const card = starterDeck.cards[cardIndex];
+function buildWordChoiceQuestion(
+  seed: number,
+  deck: WordCard[],
+): WordChoiceQuestion {
+  const cardIndex = seed % deck.length;
+  const card = deck[cardIndex];
 
   return {
     card,
     promptType: seed % 2 === 0 ? "image" : "word",
-    choices: buildChoices(card, cardIndex + 1),
+    choices: buildChoices(card, cardIndex + 1, deck),
   };
 }
 
-function buildWordMatchQuestion(seed: number): WordMatchQuestion {
-  const cards = rotateCards(seed).slice(0, 3);
+function buildWordMatchQuestion(seed: number, deck: WordCard[]): WordMatchQuestion {
+  const cards = rotateCards(seed, deck).slice(0, 3);
   const meanings = [...cards].sort((left, right) =>
     seed % 2 === 0
       ? right.meaningTh.localeCompare(left.meaningTh)
@@ -103,14 +107,15 @@ function formatMiniGameName(miniGameType: BattleMiniGameType) {
 }
 
 export function Dungeon({
+  currentRunDeck,
   onMonsterDefeated,
   onNavigate,
-  onResetRunProgress,
+  onResetRun,
+  runGold,
   runProgress,
 }: DungeonProps) {
   const [playerHp, setPlayerHp] = useState(initialPlayerHp);
   const [shield] = useState(initialShield);
-  const [gold] = useState(initialGold);
   const [monsterIndex, setMonsterIndex] = useState(0);
   const [monsterHp, setMonsterHp] = useState(
     () => getMonsterForIndex(0).maxHp,
@@ -135,12 +140,12 @@ export function Dungeon({
 
   const currentMonster = getMonsterForIndex(monsterIndex);
   const wordChoiceQuestion = useMemo(
-    () => buildWordChoiceQuestion(questionSeed),
-    [questionSeed],
+    () => buildWordChoiceQuestion(questionSeed, currentRunDeck),
+    [currentRunDeck, questionSeed],
   );
   const wordMatchQuestion = useMemo(
-    () => buildWordMatchQuestion(questionSeed),
-    [questionSeed],
+    () => buildWordMatchQuestion(questionSeed, currentRunDeck),
+    [currentRunDeck, questionSeed],
   );
   const featuredCard =
     miniGameType === "word-choice"
@@ -276,7 +281,7 @@ export function Dungeon({
   }
 
   function handleRestartRun() {
-    onResetRunProgress();
+    onResetRun();
     setPlayerHp(initialPlayerHp);
     setMonsterIndex(0);
     setMonsterHp(getMonsterForIndex(0).maxHp);
@@ -393,8 +398,8 @@ export function Dungeon({
             />
             <StatCard
               label="Gold"
-              value={gold}
-              helper="No battle rewards yet"
+              value={runGold}
+              helper="+5 when a monster is defeated"
               tone="amber"
             />
           </div>
@@ -649,7 +654,7 @@ function WordChoiceBattle({
                     ? "border-red-400 bg-red-50"
                     : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
               } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
-                >
+            >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-lg font-semibold text-slate-950">
@@ -738,7 +743,9 @@ function WordMatchBattle({
                         Base attack {card.baseAttack}
                       </p>
                     </div>
-                    {!isAnswered && isSelected && <Badge tone="sky">Selected</Badge>}
+                    {!isAnswered && isSelected && (
+                      <Badge tone="sky">Selected</Badge>
+                    )}
                     {showCorrect && <Badge tone="emerald">Match</Badge>}
                     {showWrong && <Badge tone="red">Wrong</Badge>}
                   </div>
@@ -785,7 +792,9 @@ function WordMatchBattle({
                         {card.partOfSpeech}
                       </p>
                     </div>
-                    {!isAnswered && isSelected && <Badge tone="sky">Selected</Badge>}
+                    {!isAnswered && isSelected && (
+                      <Badge tone="sky">Selected</Badge>
+                    )}
                     {showCorrect && <Badge tone="emerald">Match</Badge>}
                     {showWrong && <Badge tone="red">Wrong</Badge>}
                   </div>

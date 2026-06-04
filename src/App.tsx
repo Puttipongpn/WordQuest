@@ -8,7 +8,13 @@ import {
   Shop,
   Training,
 } from "./screens";
-import type { RunProgressState, SavedPlayerProgress, ScreenName } from "./types";
+import { starterDeck } from "./data";
+import type {
+  RunProgressState,
+  SavedPlayerProgress,
+  ScreenName,
+  WordCard,
+} from "./types";
 import {
   createDefaultPlayerProgress,
   loadPlayerProgress,
@@ -18,6 +24,9 @@ import {
 
 const maxWordMastery = 5;
 const shopInterval = 5;
+const initialRunGold = 20;
+const monsterGoldReward = 5;
+const attackUpgradeAmount = 2;
 
 const initialRunProgress: RunProgressState = {
   monstersDefeated: 0,
@@ -37,12 +46,23 @@ function getNextShopAt(monstersDefeated: number) {
   return Math.ceil(monstersDefeated / shopInterval) * shopInterval;
 }
 
+function createRunDeckCopy(): WordCard[] {
+  return starterDeck.cards.map((card) => ({
+    ...card,
+    effects: card.effects?.map((effect) => ({ ...effect })),
+  }));
+}
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenName>("home");
   const [playerProgress, setPlayerProgress] =
     useState<SavedPlayerProgress>(loadPlayerProgress);
   const [runProgress, setRunProgress] =
     useState<RunProgressState>(initialRunProgress);
+  const [runGold, setRunGold] = useState(initialRunGold);
+  const [currentRunDeck, setCurrentRunDeck] = useState<WordCard[]>(
+    createRunDeckCopy,
+  );
 
   const wordMastery = playerProgress.wordMastery;
 
@@ -72,6 +92,7 @@ export default function App() {
   }
 
   function recordMonsterDefeated() {
+    setRunGold((currentGold) => currentGold + monsterGoldReward);
     setRunProgress((currentProgress) => {
       const monstersDefeated = currentProgress.monstersDefeated + 1;
 
@@ -83,8 +104,30 @@ export default function App() {
     });
   }
 
-  function resetRunProgress() {
+  function resetCurrentRun() {
     setRunProgress(initialRunProgress);
+    setRunGold(initialRunGold);
+    setCurrentRunDeck(createRunDeckCopy());
+  }
+
+  function purchaseAttackUpgrade(cardId: string, cost: number) {
+    if (runGold < cost) {
+      return false;
+    }
+
+    setRunGold((currentGold) => currentGold - cost);
+    setCurrentRunDeck((currentDeck) =>
+      currentDeck.map((card) =>
+        card.id === cardId
+          ? {
+              ...card,
+              baseAttack: card.baseAttack + attackUpgradeAmount,
+            }
+          : card,
+      ),
+    );
+
+    return true;
   }
 
   return (
@@ -108,14 +151,22 @@ export default function App() {
         )}
         {currentScreen === "dungeon" && (
           <Dungeon
+            currentRunDeck={currentRunDeck}
             onMonsterDefeated={recordMonsterDefeated}
             onNavigate={setCurrentScreen}
-            onResetRunProgress={resetRunProgress}
+            onResetRun={resetCurrentRun}
+            runGold={runGold}
             runProgress={runProgress}
           />
         )}
         {currentScreen === "shop" && (
-          <Shop onNavigate={setCurrentScreen} runProgress={runProgress} />
+          <Shop
+            currentRunDeck={currentRunDeck}
+            onNavigate={setCurrentScreen}
+            onPurchaseAttackUpgrade={purchaseAttackUpgrade}
+            runGold={runGold}
+            runProgress={runProgress}
+          />
         )}
         {currentScreen === "run-result" && (
           <RunResult onNavigate={setCurrentScreen} />

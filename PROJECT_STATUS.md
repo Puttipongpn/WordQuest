@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 10 dungeon run progression foundation is complete. GitHub backup is configured on `origin/main`.
+Phase 11 first shop purchase logic is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -121,6 +121,19 @@ Phase 10 dungeon run progression foundation is complete. GitHub backup is config
 - Kept run progress temporary and out of LocalStorage.
 - Preserved Word Choice, Word Match, and the Card Trigger System.
 - Verified the project with `npm run build` after Phase 10.
+- Added a temporary current-run deck copy that starts from `Starter Deck`.
+- Updated Dungeon battle questions to use the current-run deck instead of the source `Starter Deck`.
+- Added temporary run gold starting at 20.
+- Added +5 temporary gold when a monster is defeated.
+- Added active `Upgrade Attack` purchase logic in the Shop.
+- Allowed selecting one current-run card and increasing its `baseAttack` by +2 after purchase.
+- Subtracted the existing Upgrade Attack shop item cost when purchase succeeds.
+- Added not-enough-gold and success feedback for Upgrade Attack.
+- Kept all other shop items preview-only / coming soon.
+- Reset current-run deck, gold, monster state, HP, shield display, and run progression on run restart.
+- Kept shop upgrades, gold, and current-run deck changes out of LocalStorage.
+- Kept element items, shield items, remove card, duplicate card, boss logic, run rewards, deck unlocks, and final art assets unimplemented.
+- Verified the project with `npm run build` after Phase 11.
 
 ## In Progress
 
@@ -128,7 +141,7 @@ Phase 10 dungeon run progression foundation is complete. GitHub backup is config
 
 ## Next Task
 
-Phase 11 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 12 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -175,7 +188,7 @@ The following documents are required and must be updated after every completed t
 - Card Trigger System: correct mini-game answers trigger selected word cards and activate card effects
 - Incorrect answers do not trigger card effects
 - Future shop upgrades and enchantments modify card effects, not player stats directly
-- Dungeon battle state is local React state only
+- Dungeon battle and current-run state are temporary React state only
 - Phase 5 uses sample monsters: Slime, Goblin, and Bat
 - Correct battle answers deal damage equal to the triggered card's `baseAttack`
 - Wrong battle answers make the current monster attack player HP
@@ -199,6 +212,11 @@ The following documents are required and must be updated after every completed t
 - Shop checkpoints are available every 5 defeated monsters
 - Shop routing is preview-only and does not mutate run state
 - Run progression is not persisted to LocalStorage
+- Phase 11 uses a temporary current-run deck copy
+- Upgrade Attack is the first active shop purchase
+- Gold is temporary run progress
+- Shop upgrades are not persisted to LocalStorage
+- Starter Deck seed data is not mutated by shop upgrades
 
 ## Important Rules
 
@@ -223,7 +241,7 @@ Keep game playable and simple.
 - Sound effects
 - More mini-games
 - Full dungeon battle logic
-- Shop purchase logic
+- Remaining shop purchase logic
 - Boss battles
 - Run rewards
 - Save migrations beyond version 1

@@ -364,6 +364,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Temporary upgrades preserve roguelike reset rules.
 - Status: Accepted
 
+### 2026-06-04: Current Run Deck Copy
+
+- Decision: Dungeon runs use a temporary copy of `Starter Deck`, and shop upgrades modify only that current-run copy.
+- Reason: Shop upgrades need to affect battle cards without mutating seed data or permanent vocabulary progress.
+- Status: Accepted
+
+### 2026-06-04: Upgrade Attack Purchase First
+
+- Decision: Implement `Upgrade Attack` as the first active shop purchase before element, shield, remove, or duplicate items.
+- Reason: A simple attack upgrade proves that shop purchases can modify current-run cards and affect battle damage.
+- Status: Accepted
+
+### 2026-06-04: Gold as Temporary Run Progress
+
+- Decision: Gold starts at 20, increases by 5 when a monster is defeated, and is temporary run progress.
+- Reason: Gold is needed to test the first shop purchase while preserving roguelike reset rules.
+- Status: Accepted
+
+### 2026-06-04: Shop Upgrades Are Not Persisted
+
+- Decision: Current-run shop upgrades, gold, and modified run deck cards are not saved to LocalStorage.
+- Reason: Run upgrades should reset on run restart, page refresh, or app reload and should not become permanent learning progress.
+- Status: Accepted
+
 ### 2026-06-04: Shop Presentation First
 
 - Decision: Build the Shop screen and sample shop item data before implementing purchase logic.

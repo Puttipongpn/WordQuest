@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 10 complete. Phase 11 has not started yet.
+Current phase: Phase 11 complete. Phase 12 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -127,6 +127,19 @@ GitHub backup is configured:
 - Kept run progression temporary and out of LocalStorage.
 - Preserved Word Choice, Word Match, and the Card Trigger System.
 - Verified the project again with `npm run build` after Phase 10.
+- Added a temporary current-run deck copy that starts from `Starter Deck`.
+- Updated Dungeon battle questions to use the current-run deck instead of the source `Starter Deck`.
+- Added temporary run gold starting at 20.
+- Added +5 temporary gold when a monster is defeated.
+- Added active `Upgrade Attack` purchase logic in the Shop.
+- Added current-run card selection for Upgrade Attack purchases.
+- Upgrade Attack increases the selected current-run card's `baseAttack` by +2 and subtracts the existing shop item cost.
+- Added success and not-enough-gold shop feedback.
+- Kept all other shop items preview-only / coming soon.
+- Reset current-run deck, gold, monster state, HP, shield display, and run progression on run restart.
+- Kept shop upgrades, gold, and current-run deck changes out of LocalStorage.
+- Kept element items, shield items, remove card, duplicate card, boss logic, run rewards, deck unlocks, and final art assets unimplemented.
+- Verified the project again with `npm run build` after Phase 11.
 
 ## Implemented Screens
 
@@ -135,8 +148,8 @@ The following screens are implemented or stubbed:
 - Home: polished entry screen with flow badges, primary actions, reset progress, and prototype summary.
 - Deck Review: polished vocabulary presentation screen using `Starter Deck`.
 - Training: polished first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: polished local-state vocabulary card battle foundation with temporary run progression and shop checkpoint routing.
-- Shop: polished current-run shop presentation with placeholder item cards, preview-only actions, and back-to-dungeon routing.
+- Dungeon: polished local-state vocabulary card battle foundation with temporary run progression, current-run deck, gold, and shop checkpoint routing.
+- Shop: current-run shop with active Upgrade Attack purchase, preview-only remaining items, and back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
 Navigation is controlled by `currentScreen` state in `src/App.tsx`.
@@ -149,7 +162,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, and after Phase 10 run progression work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, and after Phase 11 first shop purchase work.
 
 The local development server can be started with:
 
@@ -262,12 +275,15 @@ Current LocalStorage save implementation:
 Current Dungeon implementation:
 
 - `src/screens/Dungeon.tsx` uses temporary React state only.
-- `src/screens/Dungeon.tsx` imports `starterDeck` and `sampleMonsters` from `src/data`.
-- `src/App.tsx` owns temporary run progression state so Dungeon can route to Shop and back while preserving checkpoint progress.
+- `src/screens/Dungeon.tsx` imports `sampleMonsters` from `src/data`.
+- `src/App.tsx` owns temporary current-run deck, gold, and run progression state so Dungeon can route to Shop and back while preserving current-run changes.
 - Run progression tracks `monstersDefeated`, `currentFloor`, and `nextShopAt`.
+- The current-run deck starts as a copy of `Starter Deck`.
+- Shop upgrades must not mutate `src/data/starterDeck.ts`.
+- Dungeon battle questions use the current-run deck, not the original seed deck.
 - Player state includes HP, shield display, and gold display.
 - Monster state includes current monster, HP, max HP, and attack.
-- Battle questions use a simple mini-game structure.
+- Battle questions use a simple mini-game structure and the current-run deck.
 - Each battle question randomly selects Word Choice or Word Match.
 - Word Choice shows one prompt card and 4 Thai meaning answer choices.
 - Word Match shows 3 English words and 3 Thai meanings.
@@ -275,19 +291,21 @@ Current Dungeon implementation:
 - Correct Word Choice answers trigger the prompt word card.
 - Correct Word Match pairs trigger the selected English word card.
 - Triggered cards deal damage equal to `baseAttack`.
+- Triggered cards use the current-run card's `baseAttack`, including any Upgrade Attack purchases.
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to damage player HP.
 - Battle feedback shows triggered card, damage dealt, damage taken, and correct/wrong result.
 - When monster HP reaches 0, the screen shows `Monster Defeated` and allows spawning the next sample monster.
 - Defeating a monster increases `monstersDefeated` by 1.
+- Defeating a monster grants +5 temporary gold.
 - Shop checkpoints occur every 5 defeated monsters.
 - At a shop checkpoint, Dungeon shows `Shop Available` and a `Go To Shop` button.
-- Shop routing is presentation-only and does not mutate cards, gold, deck contents, or item effects.
-- Restarting a failed run resets temporary run progression.
+- Shop routing can mutate the current-run deck only through the active Upgrade Attack purchase.
+- Restarting a failed run resets temporary run progression, gold, monster state, HP, shield display, and the current-run deck back to a fresh `Starter Deck` copy.
 - When player HP reaches 0, the screen shows `Run Failed` and allows restarting the local run.
-- Gold is display-only in this phase.
+- Gold starts at 20 and is functional for Upgrade Attack purchases.
 - Shield is display-only in this phase.
-- No shop purchase logic, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
+- No element item effects, shield item effects, remove card, duplicate card, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 
 Current Shop implementation:
@@ -297,11 +315,16 @@ Current Shop implementation:
 - The Shop screen is labeled `Current Run Shop`.
 - The screen explains that shop upgrades are temporary and affect only the current run.
 - Each shop item card shows an icon placeholder, name, description, cost, and type.
-- Each shop item has a disabled `Preview Only` button.
-- Phase 7 does not modify cards, deck contents, player gold, run state, or card effects.
+- Upgrade Attack is the only active purchase.
+- Upgrade Attack uses the existing shop item cost.
+- The player can choose one card from the current-run deck for Upgrade Attack.
+- Upgrade Attack increases the selected card's `baseAttack` by +2 and subtracts gold when the player has enough gold.
+- The Shop shows success feedback after a purchase and not-enough-gold feedback when gold is insufficient.
+- All other shop items have disabled coming-soon actions.
+- Phase 7 was presentation-only; Phase 11 now allows Upgrade Attack to modify current-run card attack and gold only.
 - Phase 9 UI polish made item type, cost, preview-only state, and current-run-only messaging clearer.
 - Phase 10 added `Back To Dungeon` routing.
-- Purchase logic, card selection for upgrades, removal, duplication, and balancing are deferred.
+- Element items, shield items, remove card, duplicate card, and balancing are deferred.
 
 ## Version 1 Scope
 
@@ -351,6 +374,10 @@ Version 1 should not include:
 - Saved progress uses `version: 1`.
 - Phase 10 run progression is temporary and not saved to LocalStorage.
 - Shop checkpoint routing is available every 5 defeated monsters.
+- Phase 11 uses a temporary current-run deck copy.
+- Upgrade Attack is the first active shop purchase.
+- Gold is temporary run progress.
+- Shop upgrades are not persisted to LocalStorage.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -387,6 +414,7 @@ Run progress includes:
 - Duplicated cards
 - Removed cards
 - Run items
+- Current run deck copy
 - Monsters defeated
 - Current floor
 - Next shop checkpoint
@@ -412,6 +440,8 @@ The planned main loop is:
 Current battle foundation rules:
 
 - Player starts with HP, gold, and a current run copy of the selected deck.
+- Current run deck starts as a copy of `Starter Deck`.
+- Gold starts at 20.
 - The player fights monsters one by one.
 - Run progression tracks monsters defeated, current floor, and next shop checkpoint.
 - The current foundation randomly selects Word Choice or Word Match for each battle question.
@@ -420,11 +450,13 @@ Current battle foundation rules:
 - Incorrect answers do not trigger card effects.
 - Wrong answers let the monster attack.
 - Shield is display-only for now.
-- Gold is display-only for now.
+- Gold is functional for Upgrade Attack purchases.
+- Defeating a monster gives +5 gold.
 - Shop checkpoints appear every 5 defeated monsters.
 - Dungeon can route to Shop at a checkpoint.
 - Shop can route back to Dungeon.
-- Shop item purchases are not connected to dungeon runs yet.
+- Upgrade Attack can increase a current-run card's `baseAttack` by +2.
+- Other shop item purchases are not connected to dungeon runs yet.
 - Boss appears at monster 20 later.
 - Run rewards are deferred.
 
@@ -527,9 +559,11 @@ Current shop state:
 
 - Shop presentation is implemented.
 - Shop item data lives in `src/data/shopItems.ts`.
-- Shop actions are preview-only.
-- No purchase logic exists yet.
-- No shop item currently modifies cards, deck contents, gold, run state, or card effects.
+- Upgrade Attack is active.
+- Upgrade Attack modifies only current-run card attack.
+- Upgrade Attack costs gold and subtracts from temporary run gold.
+- Other shop actions are preview-only / coming soon.
+- No shop upgrade is saved to LocalStorage.
 
 ## Required Project Documents
 
@@ -561,8 +595,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 10 is complete.
+Phase 11 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, shop purchase logic, run rewards, deck mutation, element interactions, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, remaining shop purchase logic, run rewards, persistent run state, element interactions, or final art assets unless explicitly requested.
