@@ -15,6 +15,7 @@ Current presentation rules:
 - Use CSS, Tailwind, emoji, and simple placeholder icons only.
 - Make the app feel like a fantasy deckbuilder game before adding final art.
 - Use warm adventure backgrounds, game-like panels, collectible vocabulary cards, battle-style dungeon panels, and fantasy shop cards.
+- Dungeon battle presentation should prioritize monster/boss encounter first, active mini-game second, player HP/status third, and keep trigger-rule explanations in secondary or collapsible areas.
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
 - Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, timers, or advanced element interactions as part of the visual pass.
 

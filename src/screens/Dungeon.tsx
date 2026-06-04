@@ -294,6 +294,11 @@ export function Dungeon({
       : miniGameType === "word-match"
         ? wordMatchQuestion.cards[0]
         : wordScrambleQuestion.options[0].card;
+  const sidePanelCard = battleLog.triggeredCard ?? featuredCard;
+  const sidePanelCardShield = getCardShieldAmount(sidePanelCard);
+  const sidePanelCardElement = sidePanelCard.effects?.find(
+    (effect) => effect.type === "element",
+  );
   const isShopAvailable =
     runProgress.monstersDefeated > 0 &&
     runProgress.monstersDefeated === runProgress.nextShopAt;
@@ -530,20 +535,12 @@ export function Dungeon({
       description="Answer vocabulary mini-games to trigger cards. Run state here is local and temporary."
       framed={false}
     >
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <CardPanel className="border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-amber-950 text-amber-50">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <Badge tone="emerald">Battle Mini-Game</Badge>
-              <h3 className="mt-1 text-3xl font-black text-amber-50">
-                {formatMiniGameName(miniGameType)}
-              </h3>
-              <p className="mt-2 max-w-2xl text-sm font-medium text-amber-100/80">
-                Temporary run flow only. Shop routing, current-run purchases,
-                the first boss encounter, and the first permanent deck
-                completion reward exist. Run state is still not saved.
-              </p>
-            </div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
+        <CardPanel className="border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 text-amber-50">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <Badge tone={isBossEncounter ? "red" : "emerald"}>
+              {encounterLabel} Encounter
+            </Badge>
             <Button
               type="button"
               onClick={() => onNavigate("run-result")}
@@ -553,141 +550,28 @@ export function Dungeon({
             </Button>
           </div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatCard
-              label="Monsters Defeated"
-              value={runProgress.monstersDefeated}
-              helper={`Floor ${runProgress.currentFloor}`}
-              tone="emerald"
-            />
-            <StatCard
-              label="Next Shop"
-              value={isShopAvailable ? "Ready" : runProgress.nextShopAt}
-              helper={
-                isShopAvailable
-                  ? "Shop checkpoint reached"
-                  : `${monstersUntilShop} until shop`
-              }
-              tone={isShopAvailable ? "amber" : "slate"}
-            />
-            <StatCard
-              label="Current Run Progress"
-              value={
-                isShopAvailable
-                  ? "Shop Available"
-                  : `${runProgress.monstersDefeated} / ${runProgress.nextShopAt}`
-              }
-              helper="Temporary run state"
-              tone={isShopAvailable ? "amber" : "sky"}
-            />
-            <StatCard
-              label="Boss"
-              value={
-                hasCompletedBoss
-                  ? "Defeated"
-                  : isBossEncounter
-                    ? "Active"
-                    : isBossAvailable
-                      ? "Available"
-                      : `${runProgress.monstersDefeated} / ${bossMilestone}`
-              }
-              helper="Monster 20 milestone"
-              tone={
-                hasCompletedBoss
-                  ? "emerald"
-                  : isBossAvailable || isBossEncounter
-                    ? "red"
-                    : "slate"
-              }
-            />
-          </div>
-
-          <div className="mt-4 rounded-xl border-2 border-amber-300/20 bg-amber-100/10 p-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <section className="mt-5 rounded-2xl border-2 border-red-300/20 bg-gradient-to-r from-red-950/70 via-stone-950/60 to-amber-950/70 p-5 shadow-inner">
+            <div className="grid gap-5 md:grid-cols-[auto_minmax(0,1fr)_220px] md:items-center">
+              <div className="grid size-28 place-items-center rounded-2xl border-2 border-amber-300/25 bg-amber-50/90 text-7xl shadow-inner">
+                {currentEncounter.imagePlaceholder}
+              </div>
               <div>
-                <Badge
-                  tone={isBossAvailable ? "red" : isShopAvailable ? "amber" : "sky"}
-                >
-                  {isBossAvailable
-                    ? "Boss Available"
-                    : isShopAvailable
-                      ? "Shop Available"
-                      : "Run Progress"}
-                </Badge>
-                <p className="mt-2 text-sm font-bold text-amber-50">
-                  {isBossAvailable
-                    ? `${sampleBoss.name} is ready. You can start the boss battle now or visit the shop first if a checkpoint is available.`
-                    : `Monster Defeated: ${runProgress.monstersDefeated} / ${runProgress.nextShopAt} until Shop`}
+                <p className="text-sm font-extrabold uppercase text-amber-300">
+                  Now Fighting
                 </p>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {isBossAvailable && (
-                  <Button type="button" onClick={handleStartBoss}>
-                    Start Boss Battle
-                  </Button>
-                )}
-                {isShopAvailable && (
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => onNavigate("shop")}
-                  >
-                    Go To Shop
-                  </Button>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <StatCard
-              label="Player HP"
-              value={`${playerHp} / ${initialPlayerHp}`}
-              tone="red"
-            >
-              <ProgressBar
-                value={playerHp}
-                max={initialPlayerHp}
-                tone="red"
-                label="Player HP"
-              />
-            </StatCard>
-            <StatCard
-              label="Shield"
-              value={shield}
-              helper="Absorbs monster damage before HP"
-              tone="sky"
-            />
-            <StatCard
-              label="Gold"
-              value={runGold}
-              helper="+5 when a monster is defeated"
-              tone="amber"
-            />
-          </div>
-
-          <div className="mt-6 rounded-xl border-2 border-red-300/20 bg-gradient-to-r from-red-950/60 to-amber-950/70 p-5 shadow-inner">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                    <span className="grid size-20 place-items-center rounded-xl border border-amber-300/20 bg-amber-50/90 text-5xl shadow-inner">
-                  {currentEncounter.imagePlaceholder}
-                </span>
-                <div>
-                  <p className="text-sm font-extrabold uppercase text-amber-300">
-                    Current {encounterLabel}
-                  </p>
-                  <h4 className="text-3xl font-black text-amber-50">
-                    {currentEncounter.name}
-                  </h4>
-                  <p className="text-sm font-bold text-amber-100/80">
-                    Attack {currentEncounter.attack}
-                  </p>
+                <h3 className="mt-1 text-4xl font-black text-amber-50">
+                  {currentEncounter.name}
+                </h3>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Badge tone="red">{encounterLabel} Attack {currentEncounter.attack}</Badge>
+                  {isBossEncounter && <Badge tone="purple">Boss Battle</Badge>}
                 </div>
               </div>
-              <div className="min-w-44">
-                <p className="text-sm font-bold text-amber-100">
-                  HP {monsterHp} / {currentEncounter.maxHp}
-                </p>
+              <div>
+                <div className="flex items-center justify-between gap-3 text-sm font-black text-amber-100">
+                  <span>Monster HP</span>
+                  <span>{monsterHp} / {currentEncounter.maxHp}</span>
+                </div>
                 <div className="mt-2">
                   <ProgressBar
                     value={monsterHp}
@@ -696,18 +580,20 @@ export function Dungeon({
                     tone={isBossEncounter ? "red" : "emerald"}
                   />
                 </div>
-                <Badge tone="red" className="mt-3">
-                  {encounterLabel} Attack {currentEncounter.attack}
-                </Badge>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div className="mt-6 rounded-xl border-2 border-amber-300/20 bg-amber-50/95 p-5 text-amber-950">
+          <section className="mt-6 rounded-2xl border-2 border-amber-300/25 bg-amber-50/95 p-5 text-amber-950 shadow-[0_10px_0_rgba(120,53,15,0.22)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
-              <p className="text-sm font-medium text-amber-950/70">
-                Correct answers trigger the selected word card.
+              <div>
+                <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
+                <h3 className="mt-2 text-3xl font-black text-amber-950">
+                  Answer to trigger your card
+                </h3>
+              </div>
+              <p className="text-sm font-bold text-amber-900/75">
+                Current question area
               </p>
             </div>
 
@@ -739,15 +625,94 @@ export function Dungeon({
                 onSubmit={handleWordScrambleSubmit}
               />
             )}
-          </div>
+          </section>
 
-          <div
-            className={`mt-5 rounded-lg border p-4 ${
+          <section className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+            <StatCard
+              label="Player HP"
+              value={`${playerHp} / ${initialPlayerHp}`}
+              tone="red"
+            >
+              <ProgressBar
+                value={playerHp}
+                max={initialPlayerHp}
+                tone="red"
+                label="Player HP"
+              />
+            </StatCard>
+            <StatCard label="Shield" value={shield} tone="sky" />
+            <StatCard label="Gold" value={runGold} tone="amber" />
+            <StatCard
+              label="Run"
+              value={`${runProgress.monstersDefeated} / ${runProgress.nextShopAt}`}
+              helper={`Floor ${runProgress.currentFloor}`}
+              tone={isShopAvailable ? "amber" : "slate"}
+            />
+            <StatCard
+              label="Boss"
+              value={
+                hasCompletedBoss
+                  ? "Done"
+                  : isBossEncounter
+                    ? "Active"
+                    : isBossAvailable
+                      ? "Ready"
+                      : `${runProgress.monstersDefeated} / ${bossMilestone}`
+              }
+              tone={
+                hasCompletedBoss
+                  ? "emerald"
+                  : isBossAvailable || isBossEncounter
+                    ? "red"
+                    : "slate"
+              }
+            />
+          </section>
+
+          {(isBossAvailable || isShopAvailable) && (
+            <section className="mt-4 rounded-xl border-2 border-amber-300/20 bg-amber-100/10 p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <Badge
+                    tone={isBossAvailable ? "red" : "amber"}
+                  >
+                    {isBossAvailable ? "Boss Available" : "Shop Available"}
+                  </Badge>
+                  <p className="mt-2 text-sm font-bold text-amber-50">
+                    {isBossAvailable
+                      ? `${sampleBoss.name} is ready. You can start the boss battle now or visit the shop first if a checkpoint is available.`
+                      : `Shop checkpoint reached after ${runProgress.monstersDefeated} monsters.`}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {isBossAvailable && (
+                    <Button type="button" onClick={handleStartBoss}>
+                      Start Boss Battle
+                    </Button>
+                  )}
+                  {isShopAvailable && (
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => onNavigate("shop")}
+                    >
+                      Go To Shop
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </section>
+          )}
+        </CardPanel>
+
+        <aside className="space-y-4 lg:self-start">
+          <section
+            className={`rounded-xl border-2 p-4 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${
               battleLog.tone === "success"
-                ? "border-emerald-200 bg-emerald-50"
+                ? "border-emerald-300 bg-emerald-100"
                 : battleLog.tone === "danger"
-                  ? "border-red-200 bg-red-50"
-              : "border-amber-300/20 bg-amber-50/95"
+                  ? "border-red-300 bg-red-100"
+                  : "border-amber-800/30 bg-amber-50/95"
             }`}
           >
             <div className="flex flex-wrap items-center gap-2">
@@ -768,76 +733,24 @@ export function Dungeon({
                     : "Waiting"}
               </Badge>
             </div>
-            <p className="mt-1 font-medium text-amber-950/80">{battleLog.message}</p>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
-                <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                  Triggered card
-                </p>
-                <p className="mt-1 font-black capitalize text-amber-950">
-                  {battleLog.triggeredCard?.word ?? "None"}
-                </p>
-              </div>
-              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
-                <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                  Damage dealt
-                </p>
-                <p className="mt-1 font-black text-amber-950">
-                  {battleLog.damageDealt ?? 0}
-                </p>
-              </div>
-              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
-                <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                  Damage taken
-                </p>
-                <p className="mt-1 font-black text-amber-950">
-                  {battleLog.damageTaken ?? 0}
-                </p>
-              </div>
-              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
-                <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                  Shield absorbed
-                </p>
-                <p className="mt-1 font-black text-amber-950">
-                  {battleLog.shieldAbsorbed ?? 0}
-                </p>
-              </div>
-              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
-                <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                  HP damage
-                </p>
-                <p className="mt-1 font-black text-amber-950">
-                  {battleLog.hpDamageTaken ?? 0}
-                </p>
-              </div>
-              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
-                <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                  Shield gained
-                </p>
-                <p className="mt-1 font-black text-amber-950">
-                  {battleLog.shieldGained ?? 0}
-                </p>
-              </div>
+            <p className="mt-2 text-sm font-medium text-amber-950/80">
+              {battleLog.message}
+            </p>
+
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <StatCard label="Dealt" value={battleLog.damageDealt ?? 0} tone="emerald" />
+              <StatCard label="Taken" value={battleLog.damageTaken ?? 0} tone="red" />
+              <StatCard label="Shield Block" value={battleLog.shieldAbsorbed ?? 0} tone="sky" />
+              <StatCard label="HP Damage" value={battleLog.hpDamageTaken ?? 0} tone="red" />
             </div>
-            <div className="mt-3 rounded-md border border-amber-900/10 bg-white/70 p-3">
-              <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                Triggered effects
-              </p>
-              <p className="mt-1 font-black text-amber-950">
-                {battleLog.effectsSummary ?? "None"}
-              </p>
-            </div>
+
             {isAnswered && battleStatus === "fighting" && (
-              <Button
-                type="button"
-                onClick={advanceQuestion}
-                className="mt-4"
-              >
+              <Button type="button" onClick={advanceQuestion} className="mt-4 w-full">
                 Next Mini-Game
               </Button>
             )}
             {battleStatus === "monster-defeated" && (
-              <div className="mt-4 flex flex-wrap gap-3">
+              <div className="mt-4 grid gap-2">
                 {!isBossAvailable && (
                   <Button type="button" onClick={handleNextMonster}>
                     Spawn Next Monster
@@ -859,117 +772,101 @@ export function Dungeon({
                 )}
               </div>
             )}
-            {battleStatus === "run-complete" && (
-              <div className="mt-4 rounded-lg border border-emerald-200 bg-white/70 p-4">
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge tone="emerald">Run Complete</Badge>
-                  <p className="font-semibold text-slate-950">
-                    Starter Deck completed. Permanent progress saved.
-                  </p>
-                </div>
-                <p className="mt-2 text-sm text-slate-700">
-                  Next deck unlock coming soon. Temporary run upgrades, gold,
-                  HP, shield, monster state, boss state, and run deck changes
-                  were not saved.
-                </p>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  <StatCard
-                    label="Monsters Defeated"
-                    value={runProgress.monstersDefeated}
-                    tone="emerald"
-                  />
-                  <StatCard
-                    label="Current Floor"
-                    value={runProgress.currentFloor}
-                    tone="sky"
-                  />
-                  <StatCard label="Final Gold" value={runGold} tone="amber" />
-                  <StatCard
-                    label="Run Deck Size"
-                    value={currentRunDeck.length}
-                    tone="slate"
-                  />
-                  <StatCard
-                    label="Deck Reward"
-                    value="Completed"
-                    helper={
-                      isStarterDeckCompleted
-                        ? "Already saved"
-                        : "Saved after boss defeat"
-                    }
-                    tone="emerald"
-                  />
-                </div>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <Button
-                    type="button"
-                    onClick={handleRestartRun}
-                    variant="secondary"
-                  >
-                    Start Fresh Run
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => onNavigate("deck-review")}
-                  >
-                    Review Completed Deck
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => onNavigate("home")}
-                    variant="ghost"
-                  >
-                    Back Home
-                  </Button>
-                </div>
-              </div>
-            )}
             {battleStatus === "run-failed" && (
               <Button
                 type="button"
                 onClick={handleRestartRun}
-                className="mt-4 bg-red-600 hover:bg-red-700"
+                className="mt-4 w-full bg-red-600 hover:bg-red-700"
               >
                 Restart Run
               </Button>
             )}
-          </div>
-        </CardPanel>
+          </section>
 
-        <aside className="rounded-xl border-2 border-amber-800/30 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)] lg:self-start">
-          <Badge tone="emerald">Card Trigger System</Badge>
-          <div className="mt-4 flex items-start gap-4">
-            <span className="grid size-14 place-items-center rounded-md bg-slate-100 text-3xl">
-              {featuredCard.imagePlaceholder}
-            </span>
-            <div>
-              <p className="text-xl font-bold capitalize text-slate-950">
-                {featuredCard.word}
+          <section className="rounded-xl border-2 border-amber-800/30 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)]">
+            <Badge tone="purple">Triggered Card</Badge>
+            <div className="mt-4 flex items-start gap-4">
+              <span className="grid size-16 place-items-center rounded-lg border border-amber-900/15 bg-amber-100 text-4xl shadow-inner">
+                {sidePanelCard.imagePlaceholder}
+              </span>
+              <div>
+                <p className="text-2xl font-black capitalize text-amber-950">
+                  {sidePanelCard.word}
+                </p>
+                <p className="mt-1 text-sm font-bold text-amber-900/75">
+                  Current card attack {sidePanelCard.baseAttack}
+                </p>
+                <p className="mt-1 text-sm font-bold text-amber-900/75">
+                  Shield effect +{sidePanelCardShield}
+                </p>
+                <p className="mt-1 text-sm font-bold text-amber-900/75">
+                  Element{" "}
+                  {sidePanelCardElement
+                    ? sidePanelCardElement.element
+                    : "None"}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 rounded-lg border border-amber-900/15 bg-white/70 p-3">
+              <p className="text-xs font-extrabold uppercase text-amber-800/70">
+                Triggered effects
               </p>
-              <p className="mt-1 text-sm text-slate-600">
-                Base attack {featuredCard.baseAttack}
-              </p>
-              <p className="mt-1 text-sm text-slate-600">
-                Shield effect +{getCardShieldAmount(featuredCard)}
+              <p className="mt-1 font-black text-amber-950">
+                {battleLog.effectsSummary ?? "None yet"}
               </p>
             </div>
-          </div>
-          <div className="mt-5 rounded-md border border-slate-200 p-4">
-            <p className="font-semibold text-slate-950">Current mini-game</p>
-            <p className="mt-1 text-sm text-slate-600">
-              {formatMiniGameName(miniGameType)}
-            </p>
-          </div>
-          <div className="mt-4 rounded-md border border-slate-200 p-4">
-            <p className="font-semibold text-slate-950">Trigger rule</p>
-            <p className="mt-2 text-sm text-slate-600">
+          </section>
+
+          {battleStatus === "run-complete" && (
+            <section className="rounded-xl border-2 border-emerald-300 bg-emerald-100 p-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge tone="emerald">Run Complete</Badge>
+                <p className="font-black text-emerald-950">
+                  Starter Deck completed.
+                </p>
+              </div>
+              <p className="mt-2 text-sm font-medium text-emerald-950/75">
+                Permanent progress saved. Temporary run upgrades, gold, HP,
+                shield, monster state, boss state, and run deck changes were not
+                saved.
+              </p>
+              <div className="mt-4 grid gap-2">
+                <StatCard label="Monsters" value={runProgress.monstersDefeated} tone="emerald" />
+                <StatCard label="Final Gold" value={runGold} tone="amber" />
+                <StatCard label="Run Deck" value={currentRunDeck.length} tone="slate" />
+                <StatCard
+                  label="Deck Reward"
+                  value="Completed"
+                  helper={isStarterDeckCompleted ? "Already saved" : "Saved after boss defeat"}
+                  tone="emerald"
+                />
+              </div>
+              <div className="mt-4 grid gap-2">
+                <Button type="button" onClick={handleRestartRun} variant="secondary">
+                  Start Fresh Run
+                </Button>
+                <Button type="button" onClick={() => onNavigate("deck-review")}>
+                  Review Completed Deck
+                </Button>
+                <Button type="button" onClick={() => onNavigate("home")} variant="ghost">
+                  Back Home
+                </Button>
+              </div>
+            </section>
+          )}
+
+          <details className="rounded-xl border-2 border-amber-800/20 bg-amber-50/90 p-4">
+            <summary className="cursor-pointer font-black text-amber-950">
+              Trigger Rule
+            </summary>
+            <p className="mt-2 text-sm font-medium leading-6 text-amber-950/75">
               Correct answers trigger the selected word card and deal damage
               equal to base attack. Shield effects add player shield when the
               card triggers. Incorrect answers do not trigger card effects and
               cause monster attack damage, with shield absorbing damage before
               HP.
             </p>
-          </div>
+          </details>
         </aside>
       </div>
     </ScreenShell>

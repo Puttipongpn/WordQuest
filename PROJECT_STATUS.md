@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 19 first game-style visual direction pass is complete. GitHub backup is configured on `origin/main`.
+Phase 20 Dungeon battle layout refactor is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -217,6 +217,15 @@ Phase 19 first game-style visual direction pass is complete. GitHub backup is co
 - Kept final art assets, external UI libraries, backend, auth, database, API, Oxford 3000 import, timers, advanced element interactions, and new gameplay systems unimplemented.
 - Verified the project with `npm run build` after Phase 19.
 - Verified the local dev server responded; in-app browser visual QA was unavailable in this session because the browser surface was not available.
+- Refactored Dungeon presentation into a battle-scene hierarchy without changing gameplay rules.
+- Moved the current monster/boss encounter to the top priority area with portrait, name, attack, and HP bar.
+- Made the active mini-game the central visual focus.
+- Moved player HP, shield, gold, run progress, and boss progress into a bottom battle status band.
+- Moved triggered card, damage feedback, shield/HP damage feedback, and trigger-rule explanation into a secondary side panel.
+- Moved verbose trigger-rule text into a collapsible details panel.
+- Preserved Word Choice, Word Match, Word Scramble, shield, elements, shop routing, boss routing, current-run deck, remove/duplicate card behavior, permanent completion reward, and LocalStorage behavior.
+- No gameplay rules, combat math, save logic, deck rules, or progression rules changed in Phase 20.
+- Verified the project with `npm run build` after Phase 20.
 
 ## In Progress
 
@@ -224,7 +233,7 @@ Phase 19 first game-style visual direction pass is complete. GitHub backup is co
 
 ## Next Task
 
-Phase 20 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 21 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
