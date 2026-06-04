@@ -5,28 +5,36 @@ type AppHeaderProps = {
   onNavigate: (screen: ScreenName) => void;
 };
 
-const navItems: Array<{ screen: ScreenName; label: string }> = [
-  { screen: "home", label: "Home" },
-  { screen: "deck-review", label: "Deck Review" },
-  { screen: "training", label: "Training" },
-  { screen: "dungeon", label: "Dungeon" },
-  { screen: "shop", label: "Shop" },
-  { screen: "run-result", label: "Run Result" },
+const navItems: Array<{ screen: ScreenName; label: string; icon: string }> = [
+  { screen: "home", label: "Home", icon: "🏕️" },
+  { screen: "deck-review", label: "Deck", icon: "🃏" },
+  { screen: "training", label: "Training", icon: "📚" },
+  { screen: "dungeon", label: "Dungeon", icon: "⚔️" },
+  { screen: "shop", label: "Shop", icon: "🛒" },
+  { screen: "run-result", label: "Result", icon: "🏆" },
 ];
 
 export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
   return (
-    <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-10 border-b-2 border-emerald-200/20 bg-[#132d28]/95 text-amber-50 shadow-lg backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-            Vocabulary Dungeon
-          </p>
-          <h1 className="text-2xl font-bold text-slate-950">
-            Roguelike Deckbuilder Prototype
-          </h1>
+        <div className="flex items-center gap-3">
+          <span className="grid size-12 place-items-center rounded-lg border border-amber-400/50 bg-amber-300/15 text-3xl shadow-inner">
+            📖
+          </span>
+          <div>
+            <p className="text-sm font-extrabold uppercase text-amber-300">
+              WordQuest
+            </p>
+            <h1 className="text-2xl font-black text-amber-50">
+              Cozy Dungeon Deckbuilder
+            </h1>
+          </div>
         </div>
-        <nav className="flex gap-2 overflow-x-auto pb-1" aria-label="Main screens">
+        <nav
+          className="flex gap-2 overflow-x-auto pb-1"
+          aria-label="Main screens"
+        >
           {navItems.map((item) => {
             const isActive = currentScreen === item.screen;
 
@@ -35,12 +43,15 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
                 key={item.screen}
                 type="button"
                 onClick={() => onNavigate(item.screen)}
-                className={`shrink-0 rounded-md border px-3 py-2 text-sm font-medium transition ${
+                className={`shrink-0 rounded-lg border px-3 py-2 text-sm font-extrabold transition ${
                   isActive
-                    ? "border-slate-950 bg-slate-950 text-white"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-emerald-500 hover:text-emerald-700"
+                    ? "border-amber-300 bg-amber-300 text-amber-950 shadow-[0_4px_0_rgba(120,53,15,0.55)]"
+                    : "border-amber-100/20 bg-amber-50/10 text-amber-100 hover:border-amber-300 hover:bg-amber-100/20"
                 }`}
               >
+                <span className="mr-2" aria-hidden="true">
+                  {item.icon}
+                </span>
                 {item.label}
               </button>
             );

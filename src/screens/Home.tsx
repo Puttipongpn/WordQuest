@@ -28,28 +28,35 @@ export function Home({
 
   return (
     <ScreenShell
-      eyebrow="Start"
-      title="Home"
-      description="Review cards, train vocabulary, then enter the dungeon when you are ready."
+      eyebrow="Campfire Gate"
+      title="WordQuest"
+      description="Review your vocabulary deck, train at camp, then descend into the dungeon."
+      framed={false}
     >
       <div className="grid gap-5 lg:grid-cols-[1.35fr_0.85fr]">
-        <div>
+        <CardPanel className="border-amber-700/40 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
           <div className="flex flex-wrap gap-2">
             <Badge tone="emerald">Vocabulary cards</Badge>
-            <Badge tone="sky">Mini-game battles</Badge>
-            <Badge tone="amber">Local prototype</Badge>
+            <Badge tone="purple">Deckbuilder run</Badge>
+            <Badge tone="amber">Placeholder art</Badge>
           </div>
-          <h3 className="mt-5 max-w-2xl text-2xl font-bold text-slate-950">
-            Build mastery before battle, then trigger cards by answering
-            vocabulary questions.
+          <h3 className="mt-5 max-w-2xl text-5xl font-black text-amber-950">
+            Learn words. Trigger cards. Survive the dungeon.
           </h3>
-          <p className="mt-3 max-w-2xl text-slate-600">
+          <p className="mt-4 max-w-2xl text-lg font-medium leading-8 text-amber-950/80">
             Permanent word mastery is saved locally. Current dungeon runs remain
-            temporary and reset separately.
+            temporary and reset separately, just like a proper little roguelike.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button type="button" onClick={() => onNavigate("deck-review")}>
               Review Deck
+            </Button>
+            <Button
+              type="button"
+              onClick={() => onNavigate("training")}
+              variant="secondary"
+            >
+              Training
             </Button>
             <Button
               type="button"
@@ -66,16 +73,16 @@ export function Home({
               Reset Progress
             </Button>
           </div>
-        </div>
-        <CardPanel className="bg-gradient-to-br from-slate-50 to-emerald-50">
+        </CardPanel>
+        <CardPanel className="border-emerald-800/30 bg-gradient-to-br from-emerald-100 to-amber-50">
           <div className="flex items-center gap-4">
-            <p className="text-5xl" aria-hidden="true">
-              🃏
+            <p className="grid size-16 place-items-center rounded-lg border border-amber-900/20 bg-white/70 text-5xl shadow-inner" aria-hidden="true">
+              🏕️
             </p>
             <div>
-              <p className="font-semibold text-slate-900">Prototype v0.1</p>
-              <p className="mt-1 text-sm text-slate-600">
-                Placeholder visuals only.
+              <p className="font-black text-amber-950">Adventure Status</p>
+              <p className="mt-1 text-sm font-medium text-amber-900/80">
+                Cozy fantasy prototype, CSS-only visuals.
               </p>
             </div>
           </div>

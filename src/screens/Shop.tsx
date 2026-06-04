@@ -353,19 +353,19 @@ export function Shop({
       description="Buy temporary current-run upgrades and mutate the current-run deck."
       framed={false}
     >
-      <CardPanel className="mb-6 border-emerald-200 bg-emerald-50">
+      <CardPanel className="mb-6 border-amber-700/30 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <Badge tone="emerald">Current-run only</Badge>
-            <p className="mt-3 font-semibold text-emerald-950">
+            <p className="mt-3 text-xl font-black text-amber-950">
               Shop upgrades are temporary and affect only the current run.
             </p>
-            <p className="mt-2 text-sm text-emerald-800">
+            <p className="mt-2 text-sm font-medium text-amber-950/75">
               Upgrade Attack, Add Shield, and Element items can modify copied
               current-run cards. Remove and Duplicate now mutate only this run
               deck.
             </p>
-            <p className="mt-2 text-sm font-medium text-emerald-900">
+            <p className="mt-2 text-sm font-bold text-amber-900">
               Run failure, run restart, or page refresh resets these deck
               changes. Word mastery and completed deck status stay permanent.
             </p>
@@ -427,11 +427,13 @@ export function Shop({
             <CardPanel
               key={item.id}
               className={`flex min-h-72 flex-col ${
-                isActivePurchase ? "border-emerald-300" : ""
+                isActivePurchase
+                  ? "border-amber-700/30 bg-gradient-to-br from-amber-50 to-orange-50"
+                  : "opacity-85"
               }`}
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-md bg-slate-100 text-xs font-bold text-slate-700">
+                <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-amber-900/15 bg-amber-100 text-xl font-black text-amber-950 shadow-inner">
                   {item.icon}
                 </div>
                 <Badge tone={isActivePurchase ? "emerald" : "slate"}>
@@ -440,17 +442,17 @@ export function Shop({
               </div>
 
               <div className="mt-4 flex flex-1 flex-col">
-                <h3 className="text-lg font-bold text-slate-950">
+                <h3 className="text-xl font-black text-amber-950">
                   {item.name}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
+                <p className="mt-2 flex-1 text-sm font-medium leading-6 text-amber-950/70">
                   {item.description}
                 </p>
               </div>
 
               {isUpgradeAttack && (
-                <div className="mt-5 rounded-md border border-emerald-100 bg-emerald-50 p-3">
-                  <p className="text-sm font-semibold text-emerald-950">
+                <div className="mt-5 rounded-lg border border-emerald-700/20 bg-emerald-100/70 p-3">
+                  <p className="text-sm font-black text-emerald-950">
                     Choose current-run card
                   </p>
                   <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
@@ -464,8 +466,8 @@ export function Shop({
                           onClick={() => setSelectedAttackCardId(card.id)}
                           className={`w-full rounded-md border p-3 text-left transition ${
                             isSelected
-                              ? "border-emerald-500 bg-white ring-1 ring-emerald-200"
-                              : "border-emerald-100 bg-white/70 hover:border-emerald-400"
+                              ? "border-emerald-600 bg-white ring-1 ring-emerald-300"
+                              : "border-emerald-700/20 bg-white/70 hover:border-emerald-500"
                           }`}
                         >
                           <div className="flex items-center justify-between gap-3">
@@ -492,8 +494,8 @@ export function Shop({
               )}
 
               {isAddShield && (
-                <div className="mt-5 rounded-md border border-sky-100 bg-sky-50 p-3">
-                  <p className="text-sm font-semibold text-sky-950">
+                <div className="mt-5 rounded-lg border border-sky-700/20 bg-sky-100/70 p-3">
+                  <p className="text-sm font-black text-sky-950">
                     Choose current-run card
                   </p>
                   <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
@@ -537,8 +539,8 @@ export function Shop({
               )}
 
               {element && (
-                <div className="mt-5 rounded-md border border-amber-100 bg-amber-50 p-3">
-                  <p className="text-sm font-semibold text-amber-950">
+                <div className="mt-5 rounded-lg border border-amber-700/20 bg-amber-100/80 p-3">
+                  <p className="text-sm font-black text-amber-950">
                     Choose current-run card
                   </p>
                   <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
@@ -589,8 +591,8 @@ export function Shop({
               )}
 
               {isRemoveCard && (
-                <div className="mt-5 rounded-md border border-red-100 bg-red-50 p-3">
-                  <p className="text-sm font-semibold text-red-950">
+                <div className="mt-5 rounded-lg border border-red-700/20 bg-red-100/70 p-3">
+                  <p className="text-sm font-black text-red-950">
                     Choose card to remove
                   </p>
                   {!canRemoveCards && (
@@ -640,8 +642,8 @@ export function Shop({
               )}
 
               {isDuplicateCard && (
-                <div className="mt-5 rounded-md border border-violet-100 bg-violet-50 p-3">
-                  <p className="text-sm font-semibold text-violet-950">
+                <div className="mt-5 rounded-lg border border-violet-700/20 bg-violet-100/70 p-3">
+                  <p className="text-sm font-black text-violet-950">
                     Choose card to duplicate
                   </p>
                   <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
@@ -683,7 +685,7 @@ export function Shop({
 
               <div className="mt-5 border-t border-slate-100 pt-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold text-slate-500">Cost</p>
+                  <p className="text-sm font-black uppercase text-amber-800/70">Cost</p>
                   <Badge tone="amber">{item.cost} gold</Badge>
                 </div>
                 {isUpgradeAttack ? (
@@ -748,16 +750,16 @@ export function Shop({
       </div>
 
       <div
-        className={`mt-5 rounded-lg border p-4 ${
+        className={`mt-5 rounded-xl border-2 p-4 ${
           purchaseFeedback.tone === "success"
-            ? "border-emerald-200 bg-emerald-50"
+            ? "border-emerald-300 bg-emerald-100"
             : purchaseFeedback.tone === "danger"
-              ? "border-red-200 bg-red-50"
-              : "border-slate-200 bg-white"
+              ? "border-red-300 bg-red-100"
+              : "border-amber-700/20 bg-amber-50"
         }`}
       >
-        <p className="font-semibold text-slate-950">Shop Feedback</p>
-        <p className="mt-1 text-sm text-slate-700">
+        <p className="font-black text-amber-950">Shopkeeper Note</p>
+        <p className="mt-1 text-sm font-medium text-amber-950/75">
           {purchaseFeedback.message}
         </p>
       </div>

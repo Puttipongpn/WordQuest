@@ -556,6 +556,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The project should prioritize playable systems before final art.
 - Status: Accepted
 
+### 2026-06-04: Placeholder Game-Style UI Before Final Art
+
+- Decision: Phase 19 applies a cozy fantasy dungeon game-style UI using CSS, Tailwind, emoji, and placeholder icons only.
+- Reason: The prototype should feel more like a game before final art assets are generated or imported.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

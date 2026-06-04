@@ -59,21 +59,21 @@ export function DeckReview({
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
         <div className="space-y-5">
-          <CardPanel>
+          <CardPanel className="border-amber-700/30 bg-gradient-to-br from-amber-100 to-stone-50">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <h3 className="text-2xl font-bold text-slate-950">
+                  <h3 className="text-2xl font-black text-amber-950">
                     {starterDeck.name}
                   </h3>
                   <Badge tone={isStarterDeckCompleted ? "emerald" : "sky"}>
                     {isStarterDeckCompleted ? "Completed" : "In Progress"}
                   </Badge>
                 </div>
-                <p className="mt-2 max-w-2xl text-sm text-slate-600">
+                <p className="mt-2 max-w-2xl text-sm font-medium text-amber-950/75">
                   {starterDeck.description}
                 </p>
-                <p className="mt-2 text-sm font-medium text-slate-700">
+                <p className="mt-2 text-sm font-bold text-amber-900">
                   {isStarterDeckCompleted
                     ? "Starter Deck completed. Permanent progress saved."
                     : "Defeat the boss in Dungeon to mark this deck completed."}
@@ -110,14 +110,14 @@ export function DeckReview({
                   type="button"
                   aria-pressed={isSelected}
                   onClick={() => setSelectedCard(card)}
-                  className={`min-h-44 rounded-lg border bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`min-h-52 rounded-xl border-2 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-4 text-left shadow-[0_8px_0_rgba(120,53,15,0.14)] transition hover:-translate-y-1 hover:border-amber-600 hover:shadow-[0_12px_0_rgba(120,53,15,0.18)] focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                     isSelected
-                      ? "border-emerald-600 ring-2 ring-emerald-100"
-                      : "border-slate-200"
+                      ? "border-amber-700 ring-2 ring-amber-300"
+                      : "border-amber-900/20"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <span className="grid size-14 place-items-center rounded-md bg-slate-100 text-3xl">
+                    <span className="grid size-16 place-items-center rounded-lg border border-amber-900/15 bg-amber-100 text-4xl shadow-inner">
                       {card.imagePlaceholder}
                     </span>
                     <Badge
@@ -133,7 +133,7 @@ export function DeckReview({
                     </Badge>
                   </div>
                   <div className="mt-5">
-                    <p className="text-xl font-bold capitalize text-slate-950">
+                    <p className="text-2xl font-black capitalize text-amber-950">
                       {card.word}
                     </p>
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -150,7 +150,7 @@ export function DeckReview({
                       label={`${card.word} mastery`}
                     />
                   </div>
-                  <p className="mt-2 text-xs font-medium text-slate-500">
+                  <p className="mt-2 text-xs font-extrabold uppercase text-amber-900/70">
                     Mastery {cardMastery} / {masteryTarget}
                   </p>
                 </button>
@@ -159,16 +159,16 @@ export function DeckReview({
           </section>
         </div>
 
-        <aside className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:sticky lg:top-28 lg:self-start">
+        <aside className="rounded-xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-50 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)] lg:sticky lg:top-32 lg:self-start">
           <div className="flex items-start gap-4">
-            <span className="grid size-16 shrink-0 place-items-center rounded-md bg-slate-100 text-4xl">
+            <span className="grid size-20 shrink-0 place-items-center rounded-lg border border-amber-900/20 bg-white/80 text-5xl shadow-inner">
               {selectedCard.imagePlaceholder}
             </span>
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-                Card Detail
+              <p className="text-sm font-extrabold uppercase text-amber-700">
+                Selected Card
               </p>
-              <h3 className="text-3xl font-bold capitalize text-slate-950">
+              <h3 className="text-4xl font-black capitalize text-amber-950">
                 {selectedCard.word}
               </h3>
             </div>
@@ -223,14 +223,14 @@ export function DeckReview({
                     {selectedCard.effects.map((effect) => (
                       <li
                         key={`${effect.type}-${effect.description}`}
-                        className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+                        className="rounded-md border border-amber-900/15 bg-amber-100/70 px-3 py-2 text-sm font-medium text-amber-950"
                       >
                         {formatEffect(effect)}
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+                  <p className="rounded-md border border-amber-900/15 bg-amber-100/70 px-3 py-2 text-sm font-medium text-amber-950/70">
                     No effect
                   </p>
                 )}

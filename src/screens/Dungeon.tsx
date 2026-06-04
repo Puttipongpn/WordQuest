@@ -531,14 +531,14 @@ export function Dungeon({
       framed={false}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <CardPanel>
+        <CardPanel className="border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-amber-950 text-amber-50">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <Badge tone="emerald">Battle Mini-Game</Badge>
-              <h3 className="mt-1 text-2xl font-bold text-slate-950">
+              <h3 className="mt-1 text-3xl font-black text-amber-50">
                 {formatMiniGameName(miniGameType)}
               </h3>
-              <p className="mt-2 max-w-2xl text-sm text-slate-600">
+              <p className="mt-2 max-w-2xl text-sm font-medium text-amber-100/80">
                 Temporary run flow only. Shop routing, current-run purchases,
                 the first boss encounter, and the first permanent deck
                 completion reward exist. Run state is still not saved.
@@ -602,7 +602,7 @@ export function Dungeon({
             />
           </div>
 
-          <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <div className="mt-4 rounded-xl border-2 border-amber-300/20 bg-amber-100/10 p-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <Badge
@@ -614,7 +614,7 @@ export function Dungeon({
                       ? "Shop Available"
                       : "Run Progress"}
                 </Badge>
-                <p className="mt-2 text-sm font-semibold text-slate-950">
+                <p className="mt-2 text-sm font-bold text-amber-50">
                   {isBossAvailable
                     ? `${sampleBoss.name} is ready. You can start the boss battle now or visit the shop first if a checkpoint is available.`
                     : `Monster Defeated: ${runProgress.monstersDefeated} / ${runProgress.nextShopAt} until Shop`}
@@ -666,26 +666,26 @@ export function Dungeon({
             />
           </div>
 
-          <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-5">
+          <div className="mt-6 rounded-xl border-2 border-red-300/20 bg-gradient-to-r from-red-950/60 to-amber-950/70 p-5 shadow-inner">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
-                <span className="grid size-16 place-items-center rounded-md bg-white text-4xl shadow-sm">
+                    <span className="grid size-20 place-items-center rounded-xl border border-amber-300/20 bg-amber-50/90 text-5xl shadow-inner">
                   {currentEncounter.imagePlaceholder}
                 </span>
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-sm font-extrabold uppercase text-amber-300">
                     Current {encounterLabel}
                   </p>
-                  <h4 className="text-2xl font-bold text-slate-950">
+                  <h4 className="text-3xl font-black text-amber-50">
                     {currentEncounter.name}
                   </h4>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm font-bold text-amber-100/80">
                     Attack {currentEncounter.attack}
                   </p>
                 </div>
               </div>
               <div className="min-w-44">
-                <p className="text-sm font-semibold text-slate-700">
+                <p className="text-sm font-bold text-amber-100">
                   HP {monsterHp} / {currentEncounter.maxHp}
                 </p>
                 <div className="mt-2">
@@ -703,10 +703,10 @@ export function Dungeon({
             </div>
           </div>
 
-          <div className="mt-6 rounded-lg border border-slate-200 bg-white p-5">
+          <div className="mt-6 rounded-xl border-2 border-amber-300/20 bg-amber-50/95 p-5 text-amber-950">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm font-medium text-amber-950/70">
                 Correct answers trigger the selected word card.
               </p>
             </div>
@@ -747,11 +747,11 @@ export function Dungeon({
                 ? "border-emerald-200 bg-emerald-50"
                 : battleLog.tone === "danger"
                   ? "border-red-200 bg-red-50"
-                  : "border-slate-200 bg-white"
+              : "border-amber-300/20 bg-amber-50/95"
             }`}
           >
             <div className="flex flex-wrap items-center gap-2">
-              <p className="font-semibold text-slate-950">Battle Feedback</p>
+              <p className="font-black text-amber-950">Battle Feedback</p>
               <Badge
                 tone={
                   battleLog.tone === "success"
@@ -768,62 +768,62 @@ export function Dungeon({
                     : "Waiting"}
               </Badge>
             </div>
-            <p className="mt-1 text-slate-700">{battleLog.message}</p>
+            <p className="mt-1 font-medium text-amber-950/80">{battleLog.message}</p>
             <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="rounded-md bg-white/70 p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
+                <p className="text-xs font-extrabold uppercase text-amber-800/70">
                   Triggered card
                 </p>
-                <p className="mt-1 font-semibold capitalize text-slate-950">
+                <p className="mt-1 font-black capitalize text-amber-950">
                   {battleLog.triggeredCard?.word ?? "None"}
                 </p>
               </div>
-              <div className="rounded-md bg-white/70 p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
+                <p className="text-xs font-extrabold uppercase text-amber-800/70">
                   Damage dealt
                 </p>
-                <p className="mt-1 font-semibold text-slate-950">
+                <p className="mt-1 font-black text-amber-950">
                   {battleLog.damageDealt ?? 0}
                 </p>
               </div>
-              <div className="rounded-md bg-white/70 p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
+                <p className="text-xs font-extrabold uppercase text-amber-800/70">
                   Damage taken
                 </p>
-                <p className="mt-1 font-semibold text-slate-950">
+                <p className="mt-1 font-black text-amber-950">
                   {battleLog.damageTaken ?? 0}
                 </p>
               </div>
-              <div className="rounded-md bg-white/70 p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
+                <p className="text-xs font-extrabold uppercase text-amber-800/70">
                   Shield absorbed
                 </p>
-                <p className="mt-1 font-semibold text-slate-950">
+                <p className="mt-1 font-black text-amber-950">
                   {battleLog.shieldAbsorbed ?? 0}
                 </p>
               </div>
-              <div className="rounded-md bg-white/70 p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
+                <p className="text-xs font-extrabold uppercase text-amber-800/70">
                   HP damage
                 </p>
-                <p className="mt-1 font-semibold text-slate-950">
+                <p className="mt-1 font-black text-amber-950">
                   {battleLog.hpDamageTaken ?? 0}
                 </p>
               </div>
-              <div className="rounded-md bg-white/70 p-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <div className="rounded-md border border-amber-900/10 bg-white/70 p-3">
+                <p className="text-xs font-extrabold uppercase text-amber-800/70">
                   Shield gained
                 </p>
-                <p className="mt-1 font-semibold text-slate-950">
+                <p className="mt-1 font-black text-amber-950">
                   {battleLog.shieldGained ?? 0}
                 </p>
               </div>
             </div>
-            <div className="mt-3 rounded-md bg-white/70 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <div className="mt-3 rounded-md border border-amber-900/10 bg-white/70 p-3">
+              <p className="text-xs font-extrabold uppercase text-amber-800/70">
                 Triggered effects
               </p>
-              <p className="mt-1 font-semibold text-slate-950">
+              <p className="mt-1 font-black text-amber-950">
                 {battleLog.effectsSummary ?? "None"}
               </p>
             </div>
@@ -936,7 +936,7 @@ export function Dungeon({
           </div>
         </CardPanel>
 
-        <aside className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:self-start">
+        <aside className="rounded-xl border-2 border-amber-800/30 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)] lg:self-start">
           <Badge tone="emerald">Card Trigger System</Badge>
           <div className="mt-4 flex items-start gap-4">
             <span className="grid size-14 place-items-center rounded-md bg-slate-100 text-3xl">

@@ -112,14 +112,14 @@ export function Training({
       framed={false}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <CardPanel>
+        <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-50 via-amber-50 to-emerald-50">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <Badge tone="emerald">Word Choice Training</Badge>
-              <h3 className="mt-1 text-2xl font-bold text-slate-950">
+              <h3 className="mt-1 text-2xl font-black text-amber-950">
                 Choose the correct Thai meaning
               </h3>
-              <p className="mt-2 max-w-2xl text-sm text-slate-600">
+              <p className="mt-2 max-w-2xl text-sm font-medium text-amber-950/75">
                 Training saves word mastery only. It does not change HP, gold,
                 shield, dungeon progress, shop state, or current run progress.
               </p>
@@ -127,30 +127,30 @@ export function Training({
             <Badge>Question {questionIndex + 1} / {questions.length}</Badge>
           </div>
 
-          <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-5">
-            <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-              Prompt
+          <div className="mt-6 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white to-sky-100 p-5 shadow-inner">
+            <p className="text-sm font-extrabold uppercase text-sky-800">
+              Practice Prompt
             </p>
             {currentQuestion.promptType === "image" ? (
               <div className="mt-4 flex items-center gap-4">
-                <span className="grid size-20 place-items-center rounded-md bg-white text-5xl shadow-sm">
+                <span className="grid size-24 place-items-center rounded-xl border border-sky-900/15 bg-white text-6xl shadow-inner">
                   {currentQuestion.card.imagePlaceholder}
                 </span>
                 <div>
-                  <p className="font-semibold text-slate-950">
+                  <p className="text-lg font-black text-amber-950">
                     What does this picture represent?
                   </p>
-                  <p className="mt-1 text-sm text-slate-600">
+                  <p className="mt-1 text-sm font-medium text-amber-950/70">
                     Select the matching Thai meaning.
                   </p>
                 </div>
               </div>
             ) : (
               <div className="mt-4">
-                <p className="text-5xl font-bold capitalize text-slate-950">
+                <p className="text-5xl font-black capitalize text-amber-950">
                   {currentQuestion.card.word}
                 </p>
-                <p className="mt-2 text-sm text-slate-600">
+                <p className="mt-2 text-sm font-medium text-amber-950/70">
                   Select the matching Thai meaning.
                 </p>
               </div>
@@ -170,12 +170,12 @@ export function Training({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => handleAnswer(choice)}
-                  className={`min-h-24 rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`min-h-24 rounded-xl border-2 p-4 text-left shadow-sm transition focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                     showCorrect
-                      ? "border-emerald-500 bg-emerald-50 ring-1 ring-emerald-200"
+                      ? "border-emerald-500 bg-emerald-100 ring-1 ring-emerald-200"
                       : showWrong
-                        ? "border-red-400 bg-red-50 ring-1 ring-red-200"
-                        : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
+                        ? "border-red-400 bg-red-100 ring-1 ring-red-200"
+                        : "border-amber-900/15 bg-white hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md"
                   } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -195,7 +195,7 @@ export function Training({
             })}
           </div>
 
-          <div className="mt-5 min-h-28 rounded-lg border border-slate-200 bg-white p-4">
+          <div className="mt-5 min-h-28 rounded-xl border-2 border-amber-900/15 bg-amber-50/90 p-4 shadow-inner">
             {result ? (
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -236,9 +236,9 @@ export function Training({
           </div>
         </CardPanel>
 
-        <aside className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:self-start">
-          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
-            Training Progress
+        <aside className="rounded-xl border-2 border-amber-800/25 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.14)] lg:self-start">
+          <p className="text-sm font-extrabold uppercase text-amber-700">
+            Training Room
           </p>
           <div className="mt-4 grid gap-3">
             <StatCard
@@ -249,17 +249,17 @@ export function Training({
               <StatCard label="Correct" value={correctCount} tone="emerald" />
               <StatCard label="Incorrect" value={incorrectCount} tone="red" />
             </div>
-            <div className="rounded-md border border-slate-200 p-4">
-              <p className="font-semibold text-slate-950">
+            <div className="rounded-lg border border-amber-900/15 bg-white/70 p-4">
+              <p className="font-black text-amber-950">
                 Deck: {starterDeck.name}
               </p>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm font-medium text-amber-950/70">
                 Using {questions.length} of {starterDeck.cards.length} cards for
                 this first training prototype.
               </p>
             </div>
-            <div className="rounded-md border border-slate-200 p-4">
-              <p className="font-semibold capitalize text-slate-950">
+            <div className="rounded-lg border border-amber-900/15 bg-white/70 p-4">
+              <p className="font-black capitalize text-amber-950">
                 {currentQuestion.card.word} mastery
               </p>
               <div className="mt-3">

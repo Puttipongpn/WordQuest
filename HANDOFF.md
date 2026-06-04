@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 18 complete. Phase 19 has not started yet.
+Current phase: Phase 19 complete. Phase 20 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -211,6 +211,19 @@ GitHub backup is configured:
 - Improved Run Complete actions with Start Fresh Run, Review Completed Deck, and Back Home.
 - Verified the local dev server response during QA.
 - Verified the project again with `npm run build` after Phase 18.
+- Applied the first cozy fantasy dungeon visual direction pass using CSS, Tailwind, emoji, and placeholder icons only.
+- Updated the global background, typography feel, reusable panels, badges, buttons, stat cards, and progress bars to feel more game-like.
+- Updated navigation into game menu-style tabs with icons.
+- Updated Home into a WordQuest title/start screen.
+- Updated Deck Review cards to feel more like collectible cards.
+- Updated Training to feel more like a practice mini-game room.
+- Updated Dungeon to feel more like a battle screen.
+- Updated Shop to feel more like a fantasy shop.
+- Updated Run Result placeholder to match the game-style direction.
+- Preserved Phase 18 safety guards, run reset rules, and permanent-progress-only LocalStorage rules.
+- Kept final art assets, external UI libraries, backend, auth, database, API, Oxford 3000 import, timers, advanced element interactions, and new gameplay systems unimplemented.
+- Verified the project again with `npm run build` after Phase 19.
+- Verified the local dev server response; in-app browser visual QA was unavailable in this session because the browser surface was not available.
 
 ## Implemented Screens
 
@@ -233,7 +246,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, and after Phase 18 gameplay flow QA cleanup work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, and after Phase 19 game-style visual direction work.
 
 The local development server can be started with:
 

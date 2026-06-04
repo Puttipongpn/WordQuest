@@ -18,18 +18,20 @@ export function ScreenShell({
   return (
     <section className="mx-auto max-w-6xl px-4 py-7 sm:px-6 lg:px-8">
       <div className="mb-5">
-        <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">
+        <p className="text-sm font-extrabold uppercase text-amber-200 drop-shadow">
           {eyebrow}
         </p>
-        <h2 className="text-3xl font-bold text-slate-950">{title}</h2>
+        <h2 className="text-4xl font-black text-amber-50 drop-shadow-md">
+          {title}
+        </h2>
         {description && (
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+          <p className="mt-2 max-w-3xl rounded-lg border border-amber-900/15 bg-amber-50/80 px-4 py-2 text-sm font-medium leading-6 text-amber-950 shadow-sm">
             {description}
           </p>
         )}
       </div>
       {framed ? (
-        <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="rounded-xl border-2 border-amber-900/25 bg-amber-50/95 p-6 shadow-[0_14px_0_rgba(77,45,20,0.16),0_24px_48px_rgba(46,25,12,0.22)]">
           {children}
         </div>
       ) : (
