@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 3 Deck Review screen is complete.
+Phase 3 Deck Review screen is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -48,6 +48,10 @@ Phase 3 Deck Review screen is complete.
 - Added per-card mastery placeholder as `0 / 5`.
 - Added optional unframed layout support to `ScreenShell` for screens that render their own cards.
 - Verified the project with `npm run build` after Phase 3.
+- Initialized Git for the project.
+- Added `.gitignore` and project README.
+- Added GitHub remote `origin`: `https://github.com/Puttipongpn/WordQuest.git`.
+- Pushed the project backup to `origin/main`.
 
 ## In Progress
 
@@ -87,6 +91,8 @@ The following documents are required and must be updated after every completed t
 - Deck Review loads `Starter Deck` directly from `src/data`
 - Deck Review uses local React state for selected-card detail display
 - Mastery display is a placeholder only: `0 / 5` per card
+- GitHub backup remote is `https://github.com/Puttipongpn/WordQuest.git`
+- Main branch is `main`
 
 ## Important Rules
 

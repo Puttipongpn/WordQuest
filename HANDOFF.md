@@ -14,6 +14,12 @@ Current phase: Phase 3 complete. Phase 4 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
+GitHub backup is configured:
+
+- Remote: `https://github.com/Puttipongpn/WordQuest.git`
+- Remote name: `origin`
+- Main branch: `main`
+
 ## Completed Work
 
 - Created the Vite project scaffold.
@@ -48,6 +54,10 @@ The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple 
 - Added per-card mastery placeholder display as `0 / 5`.
 - Added optional unframed rendering to `ScreenShell` for screens that render their own card layouts.
 - Verified the project again with `npm run build` after Phase 3.
+- Initialized Git for the local project.
+- Added `.gitignore` for generated files and local environment files.
+- Added a proper `README.md` for WordQuest.
+- Pushed the current project backup to GitHub on `origin/main`.
 
 ## Implemented Screens
 
@@ -108,6 +118,11 @@ Current data files:
 
 - `src/data/starterDeck.ts`: the first sample vocabulary deck.
 - `src/data/index.ts`: data exports.
+
+Repository files:
+
+- `.gitignore`: excludes `node_modules/`, `dist/`, environment files, `.DS_Store`, logs, and TypeScript build info.
+- `README.md`: project overview, tech stack, status, planned features, commands, and Version 1 scope.
 
 Current Deck Review implementation:
 
@@ -308,6 +323,23 @@ These documents are required project maintenance files:
 - `DECISIONS.md`: accepted decision log.
 
 After every completed task, update all three documents as needed.
+
+## GitHub Backup
+
+The project is backed up to GitHub:
+
+- Repository: `https://github.com/Puttipongpn/WordQuest.git`
+- Branch: `main`
+- Remote: `origin`
+
+Use normal Git flow for future backups:
+
+```sh
+git status
+git add .
+git commit -m "Describe the change"
+git push
+```
 
 ## Next Recommended Task
 

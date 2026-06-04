@@ -231,3 +231,9 @@ This file records accepted project decisions. Update it when architecture, scope
 - Decision: Maintain `PROJECT_STATUS.md`, `HANDOFF.md`, and `DECISIONS.md` after completed tasks.
 - Reason: The project should be easy for another developer or AI agent to continue without conversation history.
 - Status: Accepted
+
+### 2026-06-04: GitHub Backup Workflow
+
+- Decision: Use Git with `main` as the primary branch and `origin` pointing to `https://github.com/Puttipongpn/WordQuest.git`.
+- Reason: GitHub backup protects the current project state and gives future work a stable collaboration point.
+- Status: Accepted
