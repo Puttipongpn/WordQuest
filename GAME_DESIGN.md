@@ -41,6 +41,9 @@ Run progress is temporary and is lost on death:
 - Duplicated cards
 - Removed cards
 - Run items
+- Monsters defeated
+- Current floor
+- Next shop checkpoint
 
 Version 1 saves permanent progress with LocalStorage. The current prototype persists word mastery and permanent progress placeholders only.
 
@@ -62,6 +65,9 @@ Current saved data intentionally excludes:
 - Duplicated cards
 - Removed cards
 - Monster state
+- Monsters defeated
+- Current floor
+- Next shop checkpoint
 - Current dungeon run state
 
 ## Deck System
@@ -141,11 +147,12 @@ Current mini-game:
 
 ## Dungeon Battle Foundation
 
-The first dungeon battle foundation is implemented with local React state only.
+The first dungeon battle and run progression foundation is implemented with temporary React state only.
 
 Current battle rules:
 
 - Player has HP, shield display, and gold display.
+- Dungeon run progression tracks monsters defeated, current floor, and next shop checkpoint.
 - Current sample monsters are Slime, Goblin, and Bat.
 - Each monster has name, HP, max HP, and attack.
 - Battle questions use `Starter Deck` vocabulary cards.
@@ -159,6 +166,11 @@ Current battle rules:
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack player HP.
 - When monster HP reaches 0, the screen shows `Monster Defeated`.
+- Defeating a monster increases `monstersDefeated` by 1.
+- Shop checkpoints occur every 5 defeated monsters.
+- When a shop checkpoint is reached, Dungeon shows `Shop Available`.
+- Dungeon can route to Shop with a `Go To Shop` button.
+- Shop can route back to Dungeon with a `Back To Dungeon` button.
 - After a monster is defeated, the player can spawn the next sample monster.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - After run failure, the player can restart the local run.
@@ -168,11 +180,11 @@ Deferred dungeon systems:
 - Shield absorption
 - Gold rewards
 - Run rewards
-- Shop logic
+- Shop purchase logic
 - Boss logic
 - Permanent mastery updates from battle
 
-Dungeon state is still local React state only. LocalStorage is used for permanent progress, not current run progress.
+Dungeon battle and run progression state are still temporary React state only. LocalStorage is used for permanent progress, not current run progress.
 
 ## Mini-Game Plan
 
@@ -210,13 +222,15 @@ Shop upgrades affect only the current run.
 
 Future shop upgrades should modify card effects or card behavior rather than directly increasing generic player stats.
 
-Current Phase 7 shop rules:
+Current shop rules:
 
 - Shop item data lives in `src/data/shopItems.ts`.
 - The Shop screen is labeled `Current Run Shop`.
 - Shop upgrades are explained as temporary current-run upgrades.
 - Shop item cards show icon placeholder, name, description, cost, and type.
 - Shop buttons are preview-only.
+- Dungeon can route to Shop when a checkpoint is available.
+- Shop can route back to Dungeon.
 - No purchase logic exists yet.
 - No cards, deck contents, player gold, run state, or card effects are modified yet.
 

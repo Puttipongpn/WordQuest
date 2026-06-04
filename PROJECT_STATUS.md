@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 9 simple UI polish is complete. GitHub backup is configured on `origin/main`.
+Phase 10 dungeon run progression foundation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -111,6 +111,16 @@ Phase 9 simple UI polish is complete. GitHub backup is configured on `origin/mai
 - Improved Run Result placeholder presentation.
 - Kept placeholder visuals only and did not add final art assets.
 - Verified the project with `npm run build` after Phase 9.
+- Added temporary dungeon run progression state for monsters defeated, current floor, and next shop checkpoint.
+- Increased `monstersDefeated` when a monster is defeated.
+- Added Dungeon run progress UI showing monsters defeated, next shop, current floor, and current run progress.
+- Added shop checkpoint detection at 5, 10, 15, and later multiples of 5.
+- Added `Shop Available` display and `Go To Shop` routing from Dungeon.
+- Added `Back To Dungeon` routing from Shop.
+- Kept shop purchases, boss battles, run rewards, deck mutation, and element interactions unimplemented.
+- Kept run progress temporary and out of LocalStorage.
+- Preserved Word Choice, Word Match, and the Card Trigger System.
+- Verified the project with `npm run build` after Phase 10.
 
 ## In Progress
 
@@ -118,7 +128,7 @@ Phase 9 simple UI polish is complete. GitHub backup is configured on `origin/mai
 
 ## Next Task
 
-Phase 10 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 11 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -185,6 +195,10 @@ The following documents are required and must be updated after every completed t
 - Reset Progress clears saved permanent progress and resets in-memory progress to defaults
 - Phase 9 introduced small reusable UI primitives for presentation consistency
 - Phase 9 changed presentation only and did not change gameplay rules
+- Phase 10 added temporary dungeon run progression state
+- Shop checkpoints are available every 5 defeated monsters
+- Shop routing is preview-only and does not mutate run state
+- Run progression is not persisted to LocalStorage
 
 ## Important Rules
 
@@ -210,6 +224,8 @@ Keep game playable and simple.
 - More mini-games
 - Full dungeon battle logic
 - Shop purchase logic
+- Boss battles
+- Run rewards
 - Save migrations beyond version 1
 - Balancing
 - Additional mobile polish

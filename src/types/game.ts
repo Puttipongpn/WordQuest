@@ -92,6 +92,12 @@ export type RunState = {
   isDefeated: boolean;
 };
 
+export type RunProgressState = {
+  monstersDefeated: number;
+  currentFloor: number;
+  nextShopAt: number;
+};
+
 export type Monster = {
   id: string;
   name: string;

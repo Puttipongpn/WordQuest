@@ -8,10 +8,13 @@ import {
   StatCard,
 } from "../components/ui";
 import { sampleMonsters, starterDeck } from "../data";
-import type { Monster, ScreenName, WordCard } from "../types";
+import type { Monster, RunProgressState, ScreenName, WordCard } from "../types";
 
 type DungeonProps = {
+  onMonsterDefeated: () => void;
   onNavigate: (screen: ScreenName) => void;
+  onResetRunProgress: () => void;
+  runProgress: RunProgressState;
 };
 
 type BattleMiniGameType = "word-choice" | "word-match";
@@ -99,7 +102,12 @@ function formatMiniGameName(miniGameType: BattleMiniGameType) {
   return miniGameType === "word-choice" ? "Word Choice" : "Word Match";
 }
 
-export function Dungeon({ onNavigate }: DungeonProps) {
+export function Dungeon({
+  onMonsterDefeated,
+  onNavigate,
+  onResetRunProgress,
+  runProgress,
+}: DungeonProps) {
   const [playerHp, setPlayerHp] = useState(initialPlayerHp);
   const [shield] = useState(initialShield);
   const [gold] = useState(initialGold);
@@ -138,6 +146,14 @@ export function Dungeon({ onNavigate }: DungeonProps) {
     miniGameType === "word-choice"
       ? wordChoiceQuestion.card
       : wordMatchQuestion.cards[0];
+  const isShopAvailable =
+    runProgress.monstersDefeated > 0 &&
+    runProgress.monstersDefeated === runProgress.nextShopAt;
+  const monstersUntilShop = Math.max(
+    runProgress.nextShopAt - runProgress.monstersDefeated,
+    0,
+  );
+
   function resetAnswerState() {
     setSelectedChoiceId(null);
     setSelectedWordId(null);
@@ -161,6 +177,7 @@ export function Dungeon({ onNavigate }: DungeonProps) {
     setMonsterHp(nextMonsterHp);
 
     if (nextMonsterHp === 0) {
+      onMonsterDefeated();
       setBattleStatus("monster-defeated");
       setBattleLog({
         tone: "success",
@@ -259,6 +276,7 @@ export function Dungeon({ onNavigate }: DungeonProps) {
   }
 
   function handleRestartRun() {
+    onResetRunProgress();
     setPlayerHp(initialPlayerHp);
     setMonsterIndex(0);
     setMonsterHp(getMonsterForIndex(0).maxHp);
@@ -288,8 +306,9 @@ export function Dungeon({ onNavigate }: DungeonProps) {
                 {formatMiniGameName(miniGameType)}
               </h3>
               <p className="mt-2 max-w-2xl text-sm text-slate-600">
-                Local battle state only. No shop, boss, rewards, save system, or
-                permanent mastery updates are connected here yet.
+                Temporary run flow only. Shop routing exists, but purchases,
+                boss battles, rewards, save system, and permanent mastery
+                updates are not connected here yet.
               </p>
             </div>
             <Button
@@ -299,6 +318,58 @@ export function Dungeon({ onNavigate }: DungeonProps) {
             >
               End Run
             </Button>
+          </div>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            <StatCard
+              label="Monsters Defeated"
+              value={runProgress.monstersDefeated}
+              helper={`Floor ${runProgress.currentFloor}`}
+              tone="emerald"
+            />
+            <StatCard
+              label="Next Shop"
+              value={isShopAvailable ? "Ready" : runProgress.nextShopAt}
+              helper={
+                isShopAvailable
+                  ? "Shop checkpoint reached"
+                  : `${monstersUntilShop} until shop`
+              }
+              tone={isShopAvailable ? "amber" : "slate"}
+            />
+            <StatCard
+              label="Current Run Progress"
+              value={
+                isShopAvailable
+                  ? "Shop Available"
+                  : `${runProgress.monstersDefeated} / ${runProgress.nextShopAt}`
+              }
+              helper="Temporary run state"
+              tone={isShopAvailable ? "amber" : "sky"}
+            />
+          </div>
+
+          <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <Badge tone={isShopAvailable ? "amber" : "sky"}>
+                  {isShopAvailable ? "Shop Available" : "Run Progress"}
+                </Badge>
+                <p className="mt-2 text-sm font-semibold text-slate-950">
+                  Monster Defeated: {runProgress.monstersDefeated} /{" "}
+                  {runProgress.nextShopAt} until Shop
+                </p>
+              </div>
+              {isShopAvailable && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => onNavigate("shop")}
+                >
+                  Go To Shop
+                </Button>
+              )}
+            </div>
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -456,13 +527,20 @@ export function Dungeon({ onNavigate }: DungeonProps) {
               </Button>
             )}
             {battleStatus === "monster-defeated" && (
-              <Button
-                type="button"
-                onClick={handleNextMonster}
-                className="mt-4"
-              >
-                Spawn Next Monster
-              </Button>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <Button type="button" onClick={handleNextMonster}>
+                  Spawn Next Monster
+                </Button>
+                {isShopAvailable && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => onNavigate("shop")}
+                  >
+                    Go To Shop
+                  </Button>
+                )}
+              </div>
             )}
             {battleStatus === "run-failed" && (
               <Button

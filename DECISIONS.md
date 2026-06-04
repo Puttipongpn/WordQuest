@@ -280,6 +280,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The project needs a small playable battle loop before adding persistence, shop, boss, or reward systems.
 - Status: Accepted
 
+### 2026-06-04: Run Progression Foundation
+
+- Decision: Add a temporary dungeon run progression foundation that tracks monsters defeated, current floor, and next shop checkpoint.
+- Reason: The dungeon needs visible run flow before adding purchases, boss battles, rewards, deck mutation, or element interactions.
+- Status: Accepted
+
+### 2026-06-04: Shop Checkpoint Routing
+
+- Decision: Show a shop checkpoint every 5 defeated monsters and allow Dungeon to route to Shop and back to Dungeon.
+- Reason: This validates the planned dungeon-to-shop pacing without implementing purchase logic.
+- Status: Accepted
+
+### 2026-06-04: Temporary Run Progress
+
+- Decision: Phase 10 run progression is temporary React state and is not saved to LocalStorage.
+- Reason: Run progress should reset on page refresh, death, or future run completion while permanent learning progress remains separate.
+- Status: Accepted
+
 ### 2026-06-04: Sample Monsters First
 
 - Decision: Start dungeon battle with placeholder sample monsters: Slime, Goblin, and Bat.

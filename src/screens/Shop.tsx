@@ -1,8 +1,14 @@
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { sampleShopItems } from "../data";
+import type { RunProgressState, ScreenName } from "../types";
 
-export function Shop() {
+type ShopProps = {
+  onNavigate: (screen: ScreenName) => void;
+  runProgress: RunProgressState;
+};
+
+export function Shop({ onNavigate, runProgress }: ShopProps) {
   return (
     <ScreenShell
       eyebrow="Upgrade"
@@ -23,13 +29,29 @@ export function Shop() {
               duplication.
             </p>
           </div>
-          <StatCard
-            label="Mode"
-            value="Preview"
-            helper="No purchases yet"
-            tone="emerald"
-          />
+          <div className="grid gap-3 sm:min-w-72 sm:grid-cols-2">
+            <StatCard
+              label="Mode"
+              value="Preview"
+              helper="No purchases yet"
+              tone="emerald"
+            />
+            <StatCard
+              label="Progress"
+              value={runProgress.monstersDefeated}
+              helper={`Next shop ${runProgress.nextShopAt}`}
+              tone="amber"
+            />
+          </div>
         </div>
+        <Button
+          type="button"
+          variant="secondary"
+          className="mt-5"
+          onClick={() => onNavigate("dungeon")}
+        >
+          Back To Dungeon
+        </Button>
       </CardPanel>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

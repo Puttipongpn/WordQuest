@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 9 complete. Phase 10 has not started yet.
+Current phase: Phase 10 complete. Phase 11 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -117,6 +117,16 @@ GitHub backup is configured:
 - Improved Run Result placeholder layout.
 - Kept placeholder visuals only and did not add final art assets.
 - Verified the project again with `npm run build` after Phase 9.
+- Added temporary dungeon run progression state for monsters defeated, current floor, and next shop checkpoint.
+- Increased `monstersDefeated` when a monster is defeated.
+- Added Dungeon run progress UI showing monsters defeated, current floor, next shop, and current run progress.
+- Added shop checkpoint detection at 5, 10, 15, and later multiples of 5.
+- Added `Shop Available` display and `Go To Shop` routing from Dungeon.
+- Added `Back To Dungeon` routing from Shop.
+- Kept shop purchases, boss battles, run rewards, deck mutation, and element interactions unimplemented.
+- Kept run progression temporary and out of LocalStorage.
+- Preserved Word Choice, Word Match, and the Card Trigger System.
+- Verified the project again with `npm run build` after Phase 10.
 
 ## Implemented Screens
 
@@ -125,8 +135,8 @@ The following screens are implemented or stubbed:
 - Home: polished entry screen with flow badges, primary actions, reset progress, and prototype summary.
 - Deck Review: polished vocabulary presentation screen using `Starter Deck`.
 - Training: polished first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: polished local-state vocabulary card battle foundation.
-- Shop: polished current-run shop presentation with placeholder item cards and preview-only actions.
+- Dungeon: polished local-state vocabulary card battle foundation with temporary run progression and shop checkpoint routing.
+- Shop: polished current-run shop presentation with placeholder item cards, preview-only actions, and back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
 Navigation is controlled by `currentScreen` state in `src/App.tsx`.
@@ -139,7 +149,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, and after Phase 9 UI polish work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, and after Phase 10 run progression work.
 
 The local development server can be started with:
 
@@ -251,8 +261,10 @@ Current LocalStorage save implementation:
 
 Current Dungeon implementation:
 
-- `src/screens/Dungeon.tsx` uses local React state only.
+- `src/screens/Dungeon.tsx` uses temporary React state only.
 - `src/screens/Dungeon.tsx` imports `starterDeck` and `sampleMonsters` from `src/data`.
+- `src/App.tsx` owns temporary run progression state so Dungeon can route to Shop and back while preserving checkpoint progress.
+- Run progression tracks `monstersDefeated`, `currentFloor`, and `nextShopAt`.
 - Player state includes HP, shield display, and gold display.
 - Monster state includes current monster, HP, max HP, and attack.
 - Battle questions use a simple mini-game structure.
@@ -267,10 +279,15 @@ Current Dungeon implementation:
 - Incorrect answers cause the current monster to damage player HP.
 - Battle feedback shows triggered card, damage dealt, damage taken, and correct/wrong result.
 - When monster HP reaches 0, the screen shows `Monster Defeated` and allows spawning the next sample monster.
+- Defeating a monster increases `monstersDefeated` by 1.
+- Shop checkpoints occur every 5 defeated monsters.
+- At a shop checkpoint, Dungeon shows `Shop Available` and a `Go To Shop` button.
+- Shop routing is presentation-only and does not mutate cards, gold, deck contents, or item effects.
+- Restarting a failed run resets temporary run progression.
 - When player HP reaches 0, the screen shows `Run Failed` and allows restarting the local run.
 - Gold is display-only in this phase.
 - Shield is display-only in this phase.
-- No shop logic, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
+- No shop purchase logic, boss logic, run rewards, backend, API, or permanent mastery updates are connected to dungeon battle yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 
 Current Shop implementation:
@@ -283,7 +300,8 @@ Current Shop implementation:
 - Each shop item has a disabled `Preview Only` button.
 - Phase 7 does not modify cards, deck contents, player gold, run state, or card effects.
 - Phase 9 UI polish made item type, cost, preview-only state, and current-run-only messaging clearer.
-- Purchase logic, shop routing from dungeon, card selection for upgrades, removal, duplication, and balancing are deferred.
+- Phase 10 added `Back To Dungeon` routing.
+- Purchase logic, card selection for upgrades, removal, duplication, and balancing are deferred.
 
 ## Version 1 Scope
 
@@ -331,6 +349,8 @@ Version 1 should not include:
 - LocalStorage saves permanent progress only.
 - Run progress is not persisted.
 - Saved progress uses `version: 1`.
+- Phase 10 run progression is temporary and not saved to LocalStorage.
+- Shop checkpoint routing is available every 5 defeated monsters.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -367,6 +387,9 @@ Run progress includes:
 - Duplicated cards
 - Removed cards
 - Run items
+- Monsters defeated
+- Current floor
+- Next shop checkpoint
 
 If the player dies, permanent progress survives death and run progress is completely lost.
 
@@ -390,6 +413,7 @@ Current battle foundation rules:
 
 - Player starts with HP, gold, and a current run copy of the selected deck.
 - The player fights monsters one by one.
+- Run progression tracks monsters defeated, current floor, and next shop checkpoint.
 - The current foundation randomly selects Word Choice or Word Match for each battle question.
 - Correct answers trigger the selected word card.
 - Triggered word cards deal damage equal to `baseAttack` in the current foundation.
@@ -397,8 +421,9 @@ Current battle foundation rules:
 - Wrong answers let the monster attack.
 - Shield is display-only for now.
 - Gold is display-only for now.
-- Shop appears every 5 monsters later.
-- The current Shop screen exists as a separate presentation screen only.
+- Shop checkpoints appear every 5 defeated monsters.
+- Dungeon can route to Shop at a checkpoint.
+- Shop can route back to Dungeon.
 - Shop item purchases are not connected to dungeon runs yet.
 - Boss appears at monster 20 later.
 - Run rewards are deferred.
@@ -498,7 +523,7 @@ Planned shop items:
 
 Shop upgrades affect only the current run.
 
-Current Phase 7 shop state:
+Current shop state:
 
 - Shop presentation is implemented.
 - Shop item data lives in `src/data/shopItems.ts`.
@@ -536,8 +561,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 9 is complete.
+Phase 10 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, shop purchase logic, run rewards, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, boss logic, shop purchase logic, run rewards, deck mutation, element interactions, or final art assets unless explicitly requested.

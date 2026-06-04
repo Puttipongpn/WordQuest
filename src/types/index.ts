@@ -6,6 +6,7 @@ export type {
   MiniGameType,
   Monster,
   PlayerProgress,
+  RunProgressState,
   RunState,
   SavedPlayerProgress,
   ShopItem,
