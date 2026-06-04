@@ -238,6 +238,60 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: An optional array keeps basic cards lightweight while allowing future cards to carry one or more effects.
 - Status: Accepted
 
+### 2026-06-04: Card Trigger System
+
+- Decision: Correct mini-game answers trigger the selected vocabulary card, and triggered cards activate their effects.
+- Reason: The game is a deckbuilder. Word cards should be the source of combat actions rather than a generic player attack stat.
+- Status: Accepted
+
+### 2026-06-04: Dungeon Battle Local State First
+
+- Decision: The first dungeon battle foundation uses local React state only.
+- Reason: The project needs a small playable battle loop before adding persistence, shop, boss, or reward systems.
+- Status: Accepted
+
+### 2026-06-04: Sample Monsters First
+
+- Decision: Start dungeon battle with placeholder sample monsters: Slime, Goblin, and Bat.
+- Reason: Simple monsters provide enough variety to validate battle flow without building monster progression yet.
+- Status: Accepted
+
+### 2026-06-04: Battle Damage Uses Triggered Card Base Attack
+
+- Decision: Correct battle answers trigger the selected word card and deal damage equal to that card's `baseAttack`.
+- Reason: This implements the Card Trigger System in the simplest playable way.
+- Status: Accepted
+
+### 2026-06-04: No Battle Rewards in Phase 5
+
+- Decision: Phase 5 does not grant run rewards, gold rewards, permanent mastery, or unlocks from battle.
+- Reason: The first dungeon foundation should validate combat flow before adding progression and reward systems.
+- Status: Accepted
+
+### 2026-06-04: No Shop or Boss Logic in Phase 5
+
+- Decision: Phase 5 excludes shop logic and boss logic.
+- Reason: Shop and boss systems should be layered on after the basic monster battle loop is stable.
+- Status: Accepted
+
+### 2026-06-04: Battle Mini-Game Structure
+
+- Decision: Dungeon battle questions use a simple mini-game structure that can render different battle mini-game types.
+- Reason: Combat needs a small extensible surface before adding more battle mini-games and timers.
+- Status: Accepted
+
+### 2026-06-04: Word Match Battle Mini-Game
+
+- Decision: Add Word Match as the first battle mini-game beyond Word Choice, using 3 English words and 3 Thai meanings.
+- Reason: Word Match fits the vocabulary learning goal and exercises the Card Trigger System with a selected word card.
+- Status: Accepted
+
+### 2026-06-04: Random Battle Mini-Game Selection
+
+- Decision: Each battle question randomly selects between Word Choice and Word Match.
+- Reason: Random selection adds early variety while keeping the battle loop simple.
+- Status: Accepted
+
 ### 2026-06-04: Mini-Games Should Use Timers
 
 - Decision: Mini-games should eventually include timers, with difficulty affecting time limits and damage.

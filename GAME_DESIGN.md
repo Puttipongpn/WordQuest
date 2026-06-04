@@ -119,21 +119,39 @@ Current mini-game:
 - Advances with Next or restarts after the final question
 - Updates in-memory word mastery on correct answers
 
-## Dungeon Battle Plan
+## Dungeon Battle Foundation
 
-Dungeon battle logic has not started yet.
+The first dungeon battle foundation is implemented with local React state only.
 
-Planned battle rules:
+Current battle rules:
 
-- Player starts with HP, gold, and a current run copy of the selected deck.
-- Player fights monsters one by one.
-- Each battle uses a random mini-game.
-- Correct answers deal damage.
-- Wrong answers let the monster attack.
-- Shield absorbs damage first.
-- Defeating monsters gives gold.
-- Shop appears every 5 monsters.
-- Boss appears at monster 20.
+- Player has HP, shield display, and gold display.
+- Current sample monsters are Slime, Goblin, and Bat.
+- Each monster has name, HP, max HP, and attack.
+- Battle questions use `Starter Deck` vocabulary cards.
+- Each battle question randomly selects Word Choice or Word Match.
+- Word Choice shows one prompt card and 4 Thai meaning choices.
+- Word Match shows 3 English words and 3 Thai meanings.
+- Word Match asks the player to select one English word and one Thai meaning.
+- Correct answers trigger the selected word card.
+- Correct Word Match pairs trigger the selected English word card.
+- Triggered cards deal damage equal to `baseAttack`.
+- Incorrect answers do not trigger card effects.
+- Incorrect answers cause the current monster to attack player HP.
+- When monster HP reaches 0, the screen shows `Monster Defeated`.
+- After a monster is defeated, the player can spawn the next sample monster.
+- When player HP reaches 0, the screen shows `Run Failed`.
+- After run failure, the player can restart the local run.
+
+Deferred dungeon systems:
+
+- Shield absorption
+- Gold rewards
+- Run rewards
+- Shop logic
+- Boss logic
+- LocalStorage persistence
+- Permanent mastery updates from battle
 
 ## Mini-Game Plan
 
@@ -144,7 +162,8 @@ Training mini-games:
 
 Battle mini-games:
 
-- Word Match
+- Word Choice: implemented.
+- Word Match: implemented.
 - Word Scramble
 
 Battle mini-games should eventually include timers. Difficulty should affect time limit and damage.
@@ -168,6 +187,8 @@ Planned shop items:
 
 Shop upgrades affect only the current run.
 
+Future shop upgrades should modify card effects or card behavior rather than directly increasing generic player stats.
+
 ## Card Effects
 
 Version 1 card effects are based on:
@@ -177,6 +198,23 @@ Version 1 card effects are based on:
 - Element
 
 Card effects are stored as an optional `effects` array on `WordCard`. Simple cards can have no effects. Future cards can have one or more effects.
+
+## Card Trigger System
+
+Mini-games use vocabulary cards.
+
+Rules:
+
+- A correct answer successfully triggers the selected word card.
+- Triggering a word card activates that card's effects.
+- Version 1 effects:
+  - Attack
+  - Shield
+  - Element
+- Incorrect answers do not trigger card effects.
+- Future shop upgrades and enchantments modify card effects, not player stats directly.
+
+The battle system should be built around card-triggered effects rather than a generic player attack stat.
 
 ## Element Concept
 

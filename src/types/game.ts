@@ -3,6 +3,7 @@ export type DifficultyLevel = 1 | 2 | 3;
 export type ElementType = "fire" | "water" | "wind" | "earth";
 
 export type MiniGameType =
+  | "word-choice"
   | "word-match"
   | "word-scramble"
   | "image-choice"
@@ -83,6 +84,7 @@ export type Monster = {
   id: string;
   name: string;
   hp: number;
+  maxHp: number;
   attack: number;
   goldReward: number;
   imagePlaceholder: string;

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 4.5 in-memory Word Mastery system and central game design documentation are complete. GitHub backup is configured on `origin/main`.
+Phase 6 battle mini-game structure is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -66,6 +66,25 @@ Phase 4.5 in-memory Word Mastery system and central game design documentation ar
 - Clamped word mastery to the range `0 / 5`.
 - Kept mastery temporary with no LocalStorage persistence.
 - Verified the project with `npm run build` after Phase 4.5.
+- Documented the Card Trigger System before combat implementation.
+- Created sample monster data in `src/data/monsters.ts`.
+- Built the first local-state Dungeon battle foundation.
+- Added player HP, shield display, and gold display.
+- Added current monster display with HP, max HP, and attack.
+- Connected dungeon battle questions to `Starter Deck` cards.
+- Added 4 Thai meaning answer choices for battle questions.
+- Correct battle answers trigger the selected word card and deal `baseAttack` damage.
+- Incorrect battle answers do not trigger cards and cause monster attack damage.
+- Added Monster Defeated and Run Failed states with next/restart actions.
+- Verified the project with `npm run build` after Phase 5.
+- Refactored Dungeon battle questions into a simple battle mini-game structure.
+- Kept Word Choice as the existing battle question mini-game.
+- Added the first battle Word Match mini-game.
+- Added random mini-game selection between Word Choice and Word Match for each battle question.
+- Added Word Match pair selection with 3 English words and 3 Thai meanings.
+- Preserved the Card Trigger System for both battle mini-games.
+- Added triggered card, damage dealt, damage taken, and correct/wrong feedback display.
+- Verified the project with `npm run build` after Phase 6.
 
 ## In Progress
 
@@ -73,7 +92,7 @@ Phase 4.5 in-memory Word Mastery system and central game design documentation ar
 
 ## Next Task
 
-Start Phase 5: build the first dungeon battle run state and basic monster battle flow.
+Start Phase 7: build basic shop presentation and current-run shop item placeholders.
 
 ## Required Project Documents
 
@@ -117,6 +136,19 @@ The following documents are required and must be updated after every completed t
 - Word mastery range is `0` to `5`
 - Correct Training answers increase word mastery by `1`
 - Wrong Training answers do not decrease mastery in the Version 1 prototype
+- Card Trigger System: correct mini-game answers trigger selected word cards and activate card effects
+- Incorrect answers do not trigger card effects
+- Future shop upgrades and enchantments modify card effects, not player stats directly
+- Dungeon battle state is local React state only
+- Phase 5 uses sample monsters: Slime, Goblin, and Bat
+- Correct battle answers deal damage equal to the triggered card's `baseAttack`
+- Wrong battle answers make the current monster attack player HP
+- Phase 5 does not implement shop logic, boss logic, run rewards, LocalStorage, or permanent mastery updates from battle
+- Dungeon battle supports Word Choice and Word Match mini-game structures
+- Each battle question randomly selects Word Choice or Word Match
+- Word Match uses 3 English words and 3 Thai meanings
+- Correct Word Match pairs trigger the selected English word card
+- Phase 6 still does not implement shop logic, boss logic, run rewards, LocalStorage, or permanent mastery updates from battle
 
 ## Important Rules
 
@@ -140,7 +172,7 @@ Keep game playable and simple.
 - Shopkeeper art
 - Sound effects
 - More mini-games
-- Dungeon battle logic
+- Full dungeon battle logic
 - Shop logic
 - Save system
 - Persistent mastery storage

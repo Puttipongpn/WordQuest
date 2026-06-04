@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 4.5 complete. Phase 5 has not started yet.
+Current phase: Phase 6 complete. Phase 7 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -72,6 +72,25 @@ GitHub backup is configured:
 - Clamped mastery to the range `0` to `5`.
 - Kept mastery temporary with no LocalStorage persistence.
 - Verified the project again with `npm run build` after Phase 4.5.
+- Created sample monster data in `src/data/monsters.ts`.
+- Built the first local-state Dungeon battle foundation.
+- Added player HP, shield display, and gold display.
+- Added current monster display with HP, max HP, and attack.
+- Connected dungeon battle questions to `Starter Deck` cards.
+- Added 4 Thai meaning answer choices for battle questions.
+- Implemented card trigger rule for correct battle answers.
+- Correct answers deal damage equal to the triggered card's `baseAttack`.
+- Incorrect answers do not trigger cards and cause the monster to attack player HP.
+- Added Monster Defeated and Run Failed states with next/restart actions.
+- Verified the project again with `npm run build` after Phase 5.
+- Refactored Dungeon battle questions into a simple battle mini-game structure.
+- Kept Word Choice as the current one-card battle mini-game.
+- Added the first battle Word Match mini-game.
+- Added random battle mini-game selection between Word Choice and Word Match.
+- Added Word Match pair selection with 3 English words and 3 Thai meanings.
+- Preserved Card Trigger System behavior for both battle mini-games.
+- Added visible triggered card, damage dealt, damage taken, and correct/wrong feedback.
+- Verified the project again with `npm run build` after Phase 6.
 
 ## Implemented Screens
 
@@ -80,7 +99,7 @@ The following screens are implemented or stubbed:
 - Home: entry screen with buttons to review a deck or enter the dungeon.
 - Deck Review: implemented vocabulary presentation screen using `Starter Deck`.
 - Training: implemented first Word Choice Training interaction using `Starter Deck`.
-- Dungeon: placeholder battle area with links to Shop and Run Result.
+- Dungeon: implemented first local-state vocabulary card battle foundation.
 - Shop: placeholder current-run upgrade cards.
 - Run Result: placeholder summary screen with a button back to Home.
 
@@ -94,7 +113,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, and after Phase 4 Training work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, and after Phase 6 battle mini-game structure work.
 
 The local development server can be started with:
 
@@ -131,6 +150,7 @@ Current shared type files:
 Current data files:
 
 - `src/data/starterDeck.ts`: the first sample vocabulary deck.
+- `src/data/monsters.ts`: sample monster list with Slime, Goblin, and Bat.
 - `src/data/index.ts`: data exports.
 
 Repository files:
@@ -177,6 +197,29 @@ Current Word Mastery implementation:
 - Mastery is not saved to LocalStorage yet.
 - Mastery resets when the page refreshes.
 
+Current Dungeon implementation:
+
+- `src/screens/Dungeon.tsx` uses local React state only.
+- `src/screens/Dungeon.tsx` imports `starterDeck` and `sampleMonsters` from `src/data`.
+- Player state includes HP, shield display, and gold display.
+- Monster state includes current monster, HP, max HP, and attack.
+- Battle questions use a simple mini-game structure.
+- Each battle question randomly selects Word Choice or Word Match.
+- Word Choice shows one prompt card and 4 Thai meaning answer choices.
+- Word Match shows 3 English words and 3 Thai meanings.
+- Word Match requires selecting one English word and one Thai meaning.
+- Correct Word Choice answers trigger the prompt word card.
+- Correct Word Match pairs trigger the selected English word card.
+- Triggered cards deal damage equal to `baseAttack`.
+- Incorrect answers do not trigger card effects.
+- Incorrect answers cause the current monster to damage player HP.
+- Battle feedback shows triggered card, damage dealt, damage taken, and correct/wrong result.
+- When monster HP reaches 0, the screen shows `Monster Defeated` and allows spawning the next sample monster.
+- When player HP reaches 0, the screen shows `Run Failed` and allows restarting the local run.
+- Gold is display-only in this phase.
+- Shield is display-only in this phase.
+- No shop logic, boss logic, run rewards, LocalStorage, backend, API, or permanent mastery updates are connected to dungeon battle yet.
+
 ## Version 1 Scope
 
 Version 1 should include:
@@ -217,6 +260,8 @@ Version 1 should not include:
 - Dungeon battles use vocabulary mini-games.
 - Version 1 card effects are based on Attack, Shield, and Element.
 - Correct answers trigger card attack, shield, or element effects.
+- Battle systems should be built around card-triggered effects: mini-games select or use vocabulary cards, correct answers trigger the selected card, and incorrect answers do not trigger card effects.
+- Future shop upgrades and enchantments should modify card effects rather than player stats directly.
 - Wrong answers allow monsters to attack.
 - Shop upgrades are inspired by Balatro and other deckbuilder games.
 - Placeholder visuals are preferred for Version 1.
@@ -271,17 +316,20 @@ The planned main loop is:
 8. Every 20 monsters, a boss appears.
 9. Defeating the boss completes the run and unlocks the next deck or another progress reward.
 
-Planned battle rules:
+Current battle foundation rules:
 
 - Player starts with HP, gold, and a current run copy of the selected deck.
 - The player fights monsters one by one.
-- Each monster battle uses a random mini-game.
-- Correct answers deal damage.
+- The current foundation randomly selects Word Choice or Word Match for each battle question.
+- Correct answers trigger the selected word card.
+- Triggered word cards deal damage equal to `baseAttack` in the current foundation.
+- Incorrect answers do not trigger card effects.
 - Wrong answers let the monster attack.
-- Shield absorbs damage first.
-- Defeating monsters gives gold.
-- Shop appears every 5 monsters.
-- Boss appears at monster 20.
+- Shield is display-only for now.
+- Gold is display-only for now.
+- Shop appears every 5 monsters later.
+- Boss appears at monster 20 later.
+- Run rewards are deferred.
 
 ## Deck System
 
@@ -313,6 +361,15 @@ Version 1 card effects should stay simple and be based on:
 
 Card effects are stored as an optional `effects` array on `WordCard`. This keeps simple cards lightweight while allowing cards to gain one or more typed effects later.
 
+Card Trigger System:
+
+- Mini-games use vocabulary cards.
+- Correct answers trigger the selected word card.
+- Triggered cards activate their effects.
+- Version 1 triggered effects are Attack, Shield, and Element.
+- Incorrect answers do not trigger card effects.
+- Future shop upgrades and enchantments modify card effects, not player stats directly.
+
 Difficulty is numeric only:
 
 - `1` = Easy
@@ -325,10 +382,14 @@ Do not introduce CEFR levels yet.
 
 Initial battle mini-games:
 
+- Word Choice
+  - Shows one prompt card.
+  - Shows 4 Thai meaning choices.
+  - Correct answer triggers the prompt word card.
 - Word Match
-  - Show multiple English words and Thai meanings.
-  - Player selects one correct pair.
-  - Selected card triggers attack or effects.
+  - Shows 3 English words and 3 Thai meanings.
+  - Player selects one English word and one Thai meaning.
+  - Correct pair triggers the selected English word card.
 - Word Scramble
   - Show multiple scrambled word choices.
   - Player chooses which word to solve.
@@ -395,8 +456,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 5 has not started yet.
+Phase 7 has not started yet.
 
 Recommended next task:
 
-Build the first dungeon battle run state and basic monster battle flow without adding shop logic yet.
+Build basic shop presentation and current-run shop item placeholders. Do not add boss logic, run rewards, LocalStorage, or permanent battle mastery yet.
