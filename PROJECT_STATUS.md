@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 22 Deck Unlock Progression Foundation is complete. GitHub backup is configured on `origin/main`.
+Phase 23 Learning Mini-game Redesign is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -251,6 +251,17 @@ Phase 22 Deck Unlock Progression Foundation is complete. GitHub backup is config
 - Preserved selected deck state, Review, Training, Dungeon, Shop, Run Complete, word mastery saves, completed deck saves, current-run resets, and permanent-progress-only LocalStorage rules.
 - No combat rules, timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, or final art assets were added.
 - Verified the project with `npm run build` after Phase 22.
+- Redesigned Training question flow to focus on vocabulary recall and context instead of simple picture-to-Thai recognition.
+- Added random Training question types: English Word to Thai Meaning, Thai Meaning to English Word, and Example Sentence Cloze.
+- Training now clearly shows the current question type, prompt, answer choices, correct/wrong feedback, and correct answer reveal.
+- Correct Training answers still increase saved word mastery by 1.
+- Wrong Training answers still do not decrease mastery.
+- Updated Dungeon Word Choice to use English/Thai recall and cloze-style prompts instead of image-only prompts.
+- Preserved Word Match and Word Scramble battle mini-games.
+- Preserved the Card Trigger System: correct Dungeon answers still trigger cards, deal `baseAttack`, apply shield effects, and display element effects.
+- Preserved selected deck, locked/unlocked decks, word mastery saves, completed deck saves, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, and LocalStorage permanent-progress-only rules.
+- No timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop changes, boss changes, deck unlock changes, save rule changes, or final art assets were added.
+- Verified the project with `npm run build` after Phase 23.
 
 ## In Progress
 
@@ -258,7 +269,7 @@ Phase 22 Deck Unlock Progression Foundation is complete. GitHub backup is config
 
 ## Next Task
 
-Phase 23 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 24 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -366,6 +377,9 @@ The following documents are required and must be updated after every completed t
 - Food Deck unlocks after Starter Deck completion
 - `unlockedDeckIds` are permanent progress saved in LocalStorage
 - Real progression beyond Food Deck is deferred
+- Training focuses on recall, not only recognition
+- Cloze questions support contextual vocabulary practice
+- Picture-to-Thai choice is no longer the main training pattern
 - Oxford 3000 import is still deferred
 
 ## Important Rules

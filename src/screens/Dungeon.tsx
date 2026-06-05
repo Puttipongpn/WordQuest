@@ -34,10 +34,14 @@ type CompletionReward = {
 };
 
 type BattleMiniGameType = "word-choice" | "word-match" | "word-scramble";
+type WordChoicePromptType =
+  | "english-to-thai"
+  | "thai-to-english"
+  | "sentence-cloze";
 
 type WordChoiceQuestion = {
   card: WordCard;
-  promptType: "image" | "word";
+  promptType: WordChoicePromptType;
   choices: WordCard[];
 };
 
@@ -75,6 +79,11 @@ const battleMiniGames: BattleMiniGameType[] = [
   "word-choice",
   "word-match",
   "word-scramble",
+];
+const wordChoicePromptTypes: WordChoicePromptType[] = [
+  "thai-to-english",
+  "sentence-cloze",
+  "english-to-thai",
 ];
 
 function chooseBattleMiniGame(): BattleMiniGameType {
@@ -140,6 +149,33 @@ function buildChoices(card: WordCard, cardIndex: number, deck: WordCard[]) {
   );
 }
 
+function chooseWordChoicePromptType(seed: number): WordChoicePromptType {
+  return wordChoicePromptTypes[seed % wordChoicePromptTypes.length];
+}
+
+function formatWordChoicePromptType(promptType: WordChoicePromptType) {
+  if (promptType === "thai-to-english") {
+    return "Thai Meaning → English Word";
+  }
+
+  if (promptType === "sentence-cloze") {
+    return "Example Sentence Cloze";
+  }
+
+  return "English Word → Thai Meaning";
+}
+
+function blankTargetWord(sentence: string, word: string) {
+  const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const wordPattern = new RegExp(`\\b${escapedWord}\\b`, "i");
+
+  if (wordPattern.test(sentence)) {
+    return sentence.replace(wordPattern, "____");
+  }
+
+  return `${sentence} (____ = ${word.length} letters)`;
+}
+
 function buildWordChoiceQuestion(
   seed: number,
   deck: WordCard[],
@@ -149,7 +185,7 @@ function buildWordChoiceQuestion(
 
   return {
     card,
-    promptType: seed % 2 === 0 ? "image" : "word",
+    promptType: chooseWordChoicePromptType(seed),
     choices: buildChoices(card, cardIndex + 1, deck),
   };
 }
@@ -902,29 +938,56 @@ function WordChoiceBattle({
   selectedChoiceId,
   onAnswer,
 }: WordChoiceBattleProps) {
+  const showsEnglishChoices =
+    question.promptType === "thai-to-english" ||
+    question.promptType === "sentence-cloze";
+
   return (
     <div className="mt-5">
-      {question.promptType === "image" ? (
-        <div className="flex flex-col gap-4 rounded-lg bg-slate-50 p-5 sm:flex-row sm:items-center">
-          <span className="grid size-20 place-items-center rounded-md bg-white text-5xl shadow-sm">
-            {question.card.imagePlaceholder}
-          </span>
-          <div>
-            <p className="font-semibold text-slate-950">
-              Which Thai meaning matches this card?
+      <div className="rounded-lg bg-slate-50 p-5">
+        <Badge tone="purple">
+          {formatWordChoicePromptType(question.promptType)}
+        </Badge>
+        {question.promptType === "thai-to-english" ? (
+          <div className="mt-4">
+            <p className="text-4xl font-black text-slate-950">
+              {question.card.meaningTh}
             </p>
-            <p className="mt-1 text-sm text-slate-600">
-              Pick one answer to trigger the prompt card.
+            <p className="mt-2 text-sm text-slate-600">
+              Choose the English word to trigger this card.
             </p>
           </div>
-        </div>
-      ) : (
-        <div className="rounded-lg bg-slate-50 p-5">
-          <p className="text-5xl font-bold capitalize text-slate-950">
-            {question.card.word}
-          </p>
-          <p className="mt-2 text-sm text-slate-600">
-            Choose the correct Thai meaning to trigger this card.
+        ) : question.promptType === "sentence-cloze" ? (
+          <div className="mt-4">
+            <p className="text-3xl font-black leading-tight text-slate-950">
+              {blankTargetWord(
+                question.card.exampleSentence,
+                question.card.word,
+              )}
+            </p>
+            <p className="mt-2 text-sm text-slate-600">
+              Complete the sentence to trigger the hidden word card.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-4">
+            <p className="text-5xl font-bold capitalize text-slate-950">
+              {question.card.word}
+            </p>
+            <p className="mt-2 text-sm text-slate-600">
+              Choose the correct Thai meaning to trigger this card.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {isAnswered && (
+        <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
+          <p className="text-sm font-semibold text-amber-950">
+            Correct answer:{" "}
+            <span className="capitalize">
+              {showsEnglishChoices ? question.card.word : question.card.meaningTh}
+            </span>
           </p>
         </div>
       )}
@@ -953,10 +1016,10 @@ function WordChoiceBattle({
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-lg font-semibold text-slate-950">
-                    {choice.meaningTh}
+                    {showsEnglishChoices ? choice.word : choice.meaningTh}
                   </p>
                   <p className="mt-1 text-sm capitalize text-slate-500">
-                    {choice.partOfSpeech}
+                    {showsEnglishChoices ? choice.partOfSpeech : choice.word}
                   </p>
                 </div>
                 {showCorrect && <Badge tone="emerald">Correct</Badge>}

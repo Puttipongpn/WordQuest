@@ -172,11 +172,14 @@ Training must not change:
 
 Current mini-game:
 
-- Word Choice Training
+- Recall-focused Word Choice Training
 - Uses the selected deck
 - Uses the first 10 cards for the first prototype
-- Shows either image placeholder or English word prompts
-- Shows 4 Thai meaning answer choices
+- Randomly selects between English Word to Thai Meaning, Thai Meaning to English Word, and Example Sentence Cloze question types
+- English-to-Thai questions show an English word and 4 Thai meaning choices
+- Thai-to-English questions show a Thai meaning and 4 English word choices
+- Cloze questions blank the target word from the example sentence and ask for the correct English word
+- Shows the current question type clearly
 - Shows correct/wrong feedback
 - Reveals the correct answer after selection
 - Advances with Next or restarts after the final question
@@ -196,7 +199,9 @@ Current battle rules:
 - Each monster has name, HP, max HP, and attack.
 - Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
-- Word Choice shows one prompt card and 4 Thai meaning choices.
+- Word Choice uses recall-focused prompts instead of image-only prompts.
+- Word Choice can ask English Word to Thai Meaning, Thai Meaning to English Word, or Example Sentence Cloze.
+- Word Choice choices match the prompt direction and reveal the correct answer after selection.
 - Word Match shows 3 English words and 3 Thai meanings.
 - Word Match asks the player to select one English word and one Thai meaning.
 - Word Scramble shows 3 scrambled English word options from the current-run deck.
@@ -254,12 +259,16 @@ Dungeon battle and run progression state are still temporary React state only. L
 
 Training mini-games:
 
-- Word Choice Training: implemented with local question state and saved mastery updates.
+- Recall-focused Word Choice Training: implemented with local question state and saved mastery updates.
+- English Word to Thai Meaning: implemented.
+- Thai Meaning to English Word: implemented.
+- Example Sentence Cloze: implemented.
 - Match word to meaning: planned.
 
 Battle mini-games:
 
 - Word Choice: implemented.
+- Word Choice uses English/Thai recall and cloze-style prompts rather than image-only prompts.
 - Word Match: implemented.
 - Word Scramble: implemented with typed input, 3 scrambled current-run card options, and Card Trigger System effects.
 

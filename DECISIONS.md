@@ -610,6 +610,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Phase 22 should validate unlock persistence without adding more decks, Oxford 3000 imports, or advanced progression design.
 - Status: Accepted
 
+### 2026-06-05: Training Focuses On Recall
+
+- Decision: Training should focus on vocabulary recall and contextual practice, not only recognition.
+- Reason: Recall-oriented questions build stronger learning than simple picture-to-meaning multiple choice.
+- Status: Accepted
+
+### 2026-06-05: Cloze Questions For Context Practice
+
+- Decision: Add Example Sentence Cloze questions that blank the target word and ask the player to choose the correct English word.
+- Reason: Cloze prompts practice vocabulary in sentence context and connect word meaning to real usage.
+- Status: Accepted
+
+### 2026-06-05: Picture-To-Thai Is Not Main Training Pattern
+
+- Decision: Picture-to-Thai choice is no longer the main Training or Dungeon Word Choice pattern.
+- Reason: The format is useful as a light recognition prompt, but the prototype should prioritize English/Thai recall and sentence context.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

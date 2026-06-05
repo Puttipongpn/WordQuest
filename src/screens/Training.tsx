@@ -10,14 +10,23 @@ import {
 import type { VocabularyDeck, WordCard, WordMasteryByCardId } from "../types";
 
 type AnswerResult = "correct" | "wrong";
+type TrainingQuestionType =
+  | "english-to-thai"
+  | "thai-to-english"
+  | "sentence-cloze";
 
 type TrainingQuestion = {
   card: WordCard;
-  promptType: "image" | "word";
+  questionType: TrainingQuestionType;
   choices: WordCard[];
 };
 
 const masteryTarget = 5;
+const trainingQuestionTypes: TrainingQuestionType[] = [
+  "thai-to-english",
+  "sentence-cloze",
+  "english-to-thai",
+];
 
 type TrainingProps = {
   deck: VocabularyDeck;
@@ -45,13 +54,44 @@ function buildChoices(card: WordCard, cardIndex: number, deck: VocabularyDeck) {
   );
 }
 
+function chooseTrainingQuestionType(index: number): TrainingQuestionType {
+  const randomOffset = Math.floor(Math.random() * trainingQuestionTypes.length);
+
+  return trainingQuestionTypes[
+    (index + randomOffset) % trainingQuestionTypes.length
+  ];
+}
+
+function formatQuestionType(questionType: TrainingQuestionType) {
+  if (questionType === "thai-to-english") {
+    return "Thai Meaning → English Word";
+  }
+
+  if (questionType === "sentence-cloze") {
+    return "Example Sentence Cloze";
+  }
+
+  return "English Word → Thai Meaning";
+}
+
+function blankTargetWord(sentence: string, word: string) {
+  const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const wordPattern = new RegExp(`\\b${escapedWord}\\b`, "i");
+
+  if (wordPattern.test(sentence)) {
+    return sentence.replace(wordPattern, "____");
+  }
+
+  return `${sentence} (____ = ${word.length} letters)`;
+}
+
 function buildQuestions(deck: VocabularyDeck) {
   const trainingCards = deck.cards.slice(0, 10);
 
   return trainingCards.map((card, index): TrainingQuestion => {
     return {
       card,
-      promptType: index % 2 === 0 ? "image" : "word",
+      questionType: chooseTrainingQuestionType(index),
       choices: buildChoices(card, index + 1, deck),
     };
   });
@@ -125,35 +165,47 @@ export function Training({
         <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-50 via-amber-50 to-emerald-50">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <Badge tone="emerald">Word Choice Training</Badge>
+              <Badge tone="emerald">Recall Training</Badge>
               <h3 className="mt-1 text-2xl font-black text-amber-950">
-                Choose the correct Thai meaning
+                Build recall with meaning and context
               </h3>
               <p className="mt-2 max-w-2xl text-sm font-medium text-amber-950/75">
                 Training saves word mastery only. It does not change HP, gold,
                 shield, dungeon progress, shop state, or current run progress.
               </p>
             </div>
-            <Badge>Question {questionIndex + 1} / {questions.length}</Badge>
+            <div className="flex flex-wrap gap-2">
+              <Badge tone="purple">
+                {formatQuestionType(currentQuestion.questionType)}
+              </Badge>
+              <Badge>Question {questionIndex + 1} / {questions.length}</Badge>
+            </div>
           </div>
 
           <div className="mt-6 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white to-sky-100 p-5 shadow-inner">
             <p className="text-sm font-extrabold uppercase text-sky-800">
-              Practice Prompt
+              {formatQuestionType(currentQuestion.questionType)}
             </p>
-            {currentQuestion.promptType === "image" ? (
-              <div className="mt-4 flex items-center gap-4">
-                <span className="grid size-24 place-items-center rounded-xl border border-sky-900/15 bg-white text-6xl shadow-inner">
-                  {currentQuestion.card.imagePlaceholder}
-                </span>
-                <div>
-                  <p className="text-lg font-black text-amber-950">
-                    What does this picture represent?
-                  </p>
-                  <p className="mt-1 text-sm font-medium text-amber-950/70">
-                    Select the matching Thai meaning.
-                  </p>
-                </div>
+            {currentQuestion.questionType === "thai-to-english" ? (
+              <div className="mt-4">
+                <p className="text-4xl font-black text-amber-950">
+                  {currentQuestion.card.meaningTh}
+                </p>
+                <p className="mt-2 text-sm font-medium text-amber-950/70">
+                  Choose the English word that matches this Thai meaning.
+                </p>
+              </div>
+            ) : currentQuestion.questionType === "sentence-cloze" ? (
+              <div className="mt-4">
+                <p className="text-3xl font-black leading-tight text-amber-950">
+                  {blankTargetWord(
+                    currentQuestion.card.exampleSentence,
+                    currentQuestion.card.word,
+                  )}
+                </p>
+                <p className="mt-3 text-sm font-medium text-amber-950/70">
+                  Choose the English word that completes the sentence.
+                </p>
               </div>
             ) : (
               <div className="mt-4">
@@ -173,6 +225,9 @@ export function Training({
               const isCorrectChoice = choice.id === currentQuestion.card.id;
               const showCorrect = isAnswered && isCorrectChoice;
               const showWrong = isAnswered && isSelected && !isCorrectChoice;
+              const showEnglishChoice =
+                currentQuestion.questionType === "thai-to-english" ||
+                currentQuestion.questionType === "sentence-cloze";
 
               return (
                 <button
@@ -191,10 +246,10 @@ export function Training({
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-lg font-semibold text-slate-950">
-                        {choice.meaningTh}
+                        {showEnglishChoice ? choice.word : choice.meaningTh}
                       </p>
                       <p className="mt-1 text-sm capitalize text-slate-500">
-                        {choice.partOfSpeech}
+                        {showEnglishChoice ? choice.partOfSpeech : choice.word}
                       </p>
                     </div>
                     {showCorrect && <Badge tone="emerald">Correct</Badge>}
@@ -219,7 +274,9 @@ export function Training({
                   <p className="mt-1 text-slate-700">
                     Correct answer:{" "}
                     <span className="font-semibold text-slate-950">
-                      {currentQuestion.card.meaningTh}
+                      {currentQuestion.questionType === "english-to-thai"
+                        ? currentQuestion.card.meaningTh
+                        : currentQuestion.card.word}
                     </span>
                   </p>
                   <p className="mt-1 text-sm text-slate-500">

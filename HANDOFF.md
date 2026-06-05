@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 22 complete. Phase 23 has not started yet.
+Current phase: Phase 23 complete. Phase 24 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -254,6 +254,14 @@ GitHub backup is configured:
 - Selected deck fallback safety prevents locked or unavailable decks from crashing the app.
 - Preserved existing selected deck flow, Review, Training, Dungeon, Shop, boss battles, current-run reset rules, and permanent-progress-only LocalStorage rules.
 - Verified the project again with `npm run build` after Phase 22.
+- Redesigned Training to focus on recall and contextual practice instead of simple picture-to-Thai recognition.
+- Added random Training question types: English Word to Thai Meaning, Thai Meaning to English Word, and Example Sentence Cloze.
+- Training shows the current question type, prompt, answer choices, correct/wrong feedback, and correct answer reveal.
+- Correct Training answers still increase saved word mastery by 1, and wrong answers still do not decrease mastery.
+- Updated Dungeon Word Choice prompts to prefer English/Thai recall and cloze-style prompts instead of image-only prompts.
+- Preserved Word Match, Word Scramble, the Card Trigger System, selected deck, deck unlock progression, shop purchases, boss battles, Run Complete, and LocalStorage permanent-progress-only rules.
+- Kept timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop rule changes, boss rule changes, save rule changes, and final art assets unimplemented.
+- Verified the project again with `npm run build` after Phase 23.
 
 ## Implemented Screens
 
@@ -261,7 +269,7 @@ The following screens are implemented or stubbed:
 
 - Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
 - Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
-- Training: polished first Word Choice Training interaction using the selected deck.
+- Training: polished recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
 - Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
@@ -276,7 +284,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, and after Phase 22 deck unlock progression foundation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, and after Phase 23 learning mini-game redesign work.
 
 The local development server can be started with:
 
@@ -350,10 +358,13 @@ Current Deck Review implementation:
 Current Training implementation:
 
 - `src/screens/Training.tsx` receives the selected deck from `src/App.tsx`.
-- The first mini-game is Word Choice Training.
+- The current Training mode is recall-focused Word Choice Training.
 - It uses the first 10 cards from the selected deck.
-- Each question shows either the card image placeholder or English word as the prompt.
-- Each question shows 4 Thai meaning answer choices.
+- Each question randomly uses English Word to Thai Meaning, Thai Meaning to English Word, or Example Sentence Cloze.
+- Each question shows the current question type clearly.
+- English-to-Thai questions show an English word and 4 Thai meaning choices.
+- Thai-to-English questions show a Thai meaning and 4 English word choices.
+- Cloze questions blank the target word from the example sentence and ask for the correct English word.
 - Player selection shows correct/wrong feedback and reveals the correct answer.
 - A Next button advances to the next question.
 - The final question shows a Restart button that resets the local training session.
@@ -403,7 +414,8 @@ Current Dungeon implementation:
 - Monster state includes current monster, HP, max HP, and attack.
 - Battle questions use a simple mini-game structure and the current-run deck.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
-- Word Choice shows one prompt card and 4 Thai meaning answer choices.
+- Word Choice shows one prompt card with an English-to-Thai, Thai-to-English, or cloze-style prompt.
+- Word Choice uses answer choices that match the prompt direction and clearly reveals the correct answer after selection.
 - Word Match shows 3 English words and 3 Thai meanings.
 - Word Match requires selecting one English word and one Thai meaning.
 - Word Scramble shows 3 scrambled English word options from the current-run deck.
@@ -443,6 +455,7 @@ Current Dungeon implementation:
 - Phase 15 added current-run deck mutation through Remove Card and Duplicate Card purchases.
 - Phase 16 added Boss Available, Gatekeeper boss battle, and Run Complete state.
 - Phase 17 added the first permanent completion reward; Phase 21 generalized it so boss defeat saves the selected deck id in `completedDeckIds`.
+- Phase 23 redesigned Word Choice prompts for better vocabulary recall and context practice.
 
 Current Shop implementation:
 
@@ -694,8 +707,8 @@ Do not introduce CEFR levels yet.
 Initial battle mini-games:
 
 - Word Choice
-  - Shows one prompt card.
-  - Shows 4 Thai meaning choices.
+  - Shows one prompt card with English-to-Thai, Thai-to-English, or Example Sentence Cloze prompt.
+  - Shows 4 choices matching the prompt direction.
   - Correct answer triggers the prompt word card.
 - Word Match
   - Shows 3 English words and 3 Thai meanings.
@@ -713,8 +726,8 @@ Training mini-games:
 - Word Choice Training
   - Implemented with local state only.
   - Uses the selected deck data.
-  - Shows image placeholder or English word prompts.
-  - Uses 4 Thai meaning answer choices.
+  - Randomly selects English-to-Thai, Thai-to-English, or Example Sentence Cloze prompts.
+  - Uses 4 choices matching the prompt direction.
   - Shows correct/wrong feedback and correct answer after selection.
   - Correct answers increase saved word mastery by 1.
 - Match word to meaning
@@ -781,7 +794,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 22 is complete.
+Phase 23 is complete.
 
 Recommended next task:
 
