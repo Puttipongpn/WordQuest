@@ -688,6 +688,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Phase 26 should prove simple element utility before adding complexity.
 - Status: Accepted
 
+### 2026-06-05: Run Summary Stats Saved After Run Ends
+
+- Decision: Save run summary statistics only when a run completes or fails.
+- Reason: The player should get meaningful run history without persisting active dungeon state.
+- Status: Accepted
+
+### 2026-06-05: Best Run Stats Are Permanent Progress
+
+- Decision: Best monsters defeated, best accuracy, best damage dealt, completed runs, and failed runs are permanent statistics saved in LocalStorage.
+- Reason: These summaries make runs feel meaningful while fitting the accepted permanent progress model.
+- Status: Accepted
+
+### 2026-06-05: Active Run State Remains Unsaved
+
+- Decision: Do not save active HP, shield, gold, current-run deck, monster state, boss state, timer state, or shop upgrades while a run is in progress.
+- Reason: Active dungeon progress is temporary roguelike run state and should reset on death, restart, refresh, or app reload.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

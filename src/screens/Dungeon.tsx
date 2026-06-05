@@ -23,6 +23,7 @@ import {
 import type {
   Monster,
   RunProgressState,
+  RunStatistics,
   ScreenName,
   VocabularyDeck,
   WordCard,
@@ -35,9 +36,15 @@ type DungeonProps = {
   onGainRunGold: (amount: number) => void;
   onMonsterDefeated: () => void;
   onNavigate: (screen: ScreenName) => void;
+  onRecordRunEnded: (
+    outcome: "completed" | "failed",
+    finalRunStatistics: RunStatistics,
+  ) => void;
   onResetRun: () => void;
+  onUpdateRunStatistics: (nextStatistics: RunStatistics) => void;
   runGold: number;
   runProgress: RunProgressState;
+  runStatistics: RunStatistics;
   selectedDeck: VocabularyDeck;
 };
 
@@ -318,6 +325,16 @@ function getCardEffectsSummary(card: WordCard) {
   return [...effects, ...elements].join(" / ");
 }
 
+function calculateRunAccuracy(statistics: RunStatistics) {
+  if (statistics.questionsAnswered === 0) {
+    return 0;
+  }
+
+  return Math.round(
+    (statistics.correctAnswers / statistics.questionsAnswered) * 100,
+  );
+}
+
 export function Dungeon({
   currentRunDeck,
   isSelectedDeckCompleted,
@@ -325,9 +342,12 @@ export function Dungeon({
   onGainRunGold,
   onMonsterDefeated,
   onNavigate,
+  onRecordRunEnded,
   onResetRun,
+  onUpdateRunStatistics,
   runGold,
   runProgress,
+  runStatistics,
   selectedDeck,
 }: DungeonProps) {
   const initialMiniGameType = useMemo(() => chooseBattleMiniGame(), []);
@@ -356,6 +376,9 @@ export function Dungeon({
   const [scrambleAnswer, setScrambleAnswer] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
   const [pendingEarthReduction, setPendingEarthReduction] = useState(0);
+  const [endedRunGold, setEndedRunGold] = useState<number | null>(null);
+  const [endedRunStatistics, setEndedRunStatistics] =
+    useState<RunStatistics | null>(null);
   const [battleLog, setBattleLog] = useState<BattleLog>({
     tone: "neutral",
     message: "Choose a correct answer to trigger a word card.",
@@ -402,6 +425,9 @@ export function Dungeon({
   const miniGameTimeLimit = getMiniGameTimeLimit(miniGameType);
   const isTimerLow = timeRemaining <= 3;
   const isTimerRunning = battleStatus === "fighting" && !isAnswered;
+  const summaryStatistics = endedRunStatistics ?? runStatistics;
+  const summaryGold = endedRunGold ?? runGold;
+  const summaryAccuracy = calculateRunAccuracy(summaryStatistics);
 
   function resetAnswerState() {
     setSelectedChoiceId(null);
@@ -483,9 +509,23 @@ export function Dungeon({
       onGainRunGold(windGoldGained);
     }
 
+    const nextRunStatistics: RunStatistics = {
+      ...runStatistics,
+      questionsAnswered: runStatistics.questionsAnswered + 1,
+      correctAnswers: runStatistics.correctAnswers + 1,
+      bossDefeated: isBossEncounter && isDefeated,
+      totalDamageDealt: runStatistics.totalDamageDealt + totalDamageDealt,
+      totalShieldGained: runStatistics.totalShieldGained + totalShieldGained,
+      goldEarned: runStatistics.goldEarned + windGoldGained,
+    };
+
     if (isDefeated) {
       if (isBossEncounter) {
         const completionReward = onCompleteSelectedDeck();
+        setEndedRunGold(runGold + windGoldGained);
+        setEndedRunStatistics(nextRunStatistics);
+        onRecordRunEnded("completed", nextRunStatistics);
+        onUpdateRunStatistics(nextRunStatistics);
         setHasCompletedBoss(true);
         setBattleStatus("run-complete");
         setBattleLog({
@@ -506,6 +546,7 @@ export function Dungeon({
         return;
       }
 
+      onUpdateRunStatistics(nextRunStatistics);
       onMonsterDefeated();
       setBattleStatus("monster-defeated");
       setBattleLog({
@@ -525,6 +566,7 @@ export function Dungeon({
       return;
     }
 
+    onUpdateRunStatistics(nextRunStatistics);
     setBattleLog({
       tone: "success",
       message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield.` : ""}`,
@@ -541,7 +583,7 @@ export function Dungeon({
     });
   }
 
-  function monsterAttack(reason = "Wrong answer.") {
+  function monsterAttack(reason = "Wrong answer.", isTimeout = false) {
     const attackReduction = Math.min(
       pendingEarthReduction,
       currentEncounter.attack,
@@ -551,12 +593,22 @@ export function Dungeon({
     const hpDamageTaken = reducedAttack - shieldAbsorbed;
     const nextShield = shield - shieldAbsorbed;
     const nextPlayerHp = Math.max(playerHp - hpDamageTaken, 0);
+    const nextRunStatistics: RunStatistics = {
+      ...runStatistics,
+      questionsAnswered: runStatistics.questionsAnswered + 1,
+      wrongAnswers: runStatistics.wrongAnswers + (isTimeout ? 0 : 1),
+      timeouts: runStatistics.timeouts + (isTimeout ? 1 : 0),
+    };
 
     setPendingEarthReduction(0);
     setShield(nextShield);
     setPlayerHp(nextPlayerHp);
 
     if (nextPlayerHp === 0) {
+      setEndedRunGold(runGold);
+      setEndedRunStatistics(nextRunStatistics);
+      onRecordRunEnded("failed", nextRunStatistics);
+      onUpdateRunStatistics(nextRunStatistics);
       setBattleStatus("run-failed");
       setBattleLog({
         tone: "danger",
@@ -569,6 +621,7 @@ export function Dungeon({
       return;
     }
 
+    onUpdateRunStatistics(nextRunStatistics);
     setBattleLog({
       tone: "danger",
       message: `${reason} No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. ${attackReduction > 0 ? `Earth reduced it by ${attackReduction}. ` : ""}Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
@@ -597,7 +650,7 @@ export function Dungeon({
     }
 
     setIsAnswered(true);
-    monsterAttack("Time's up!");
+    monsterAttack("Time's up!", true);
   }, [battleStatus, isAnswered, timeRemaining]);
 
   function handleWordChoiceAnswer(choice: WordCard) {
@@ -715,6 +768,8 @@ export function Dungeon({
     setPlayerHp(PLAYER_MAX_HP);
     setShield(INITIAL_SHIELD);
     setPendingEarthReduction(0);
+    setEndedRunGold(null);
+    setEndedRunStatistics(null);
     setIsBossEncounter(false);
     setHasCompletedBoss(false);
     setMonsterIndex(0);
@@ -1063,9 +1118,17 @@ export function Dungeon({
                 saved.
               </p>
               <div className="mt-4 grid gap-2">
-                <StatCard label="Monsters" value={runProgress.monstersDefeated} tone="emerald" />
-                <StatCard label="Final Gold" value={runGold} tone="amber" />
+                <StatCard label="Deck" value={selectedDeck.name} tone="emerald" />
+                <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
+                <StatCard label="Boss" value={summaryStatistics.bossDefeated ? "Defeated" : "No"} tone="purple" />
+                <StatCard label="Final Gold" value={summaryGold} tone="amber" />
                 <StatCard label="Run Deck" value={currentRunDeck.length} tone="slate" />
+                <StatCard label="Correct" value={summaryStatistics.correctAnswers} tone="emerald" />
+                <StatCard label="Wrong" value={summaryStatistics.wrongAnswers} tone="red" />
+                <StatCard label="Timeouts" value={summaryStatistics.timeouts} tone="amber" />
+                <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
+                <StatCard label="Damage" value={summaryStatistics.totalDamageDealt} tone="red" />
+                <StatCard label="Shield Gained" value={summaryStatistics.totalShieldGained} tone="sky" />
                 <StatCard
                   label="Deck Reward"
                   value="Completed"
@@ -1083,6 +1146,34 @@ export function Dungeon({
                 <Button type="button" onClick={() => onNavigate("home")} variant="ghost">
                   Back Home
                 </Button>
+              </div>
+            </section>
+          )}
+
+          {battleStatus === "run-failed" && (
+            <section className="rounded-xl border-2 border-red-300 bg-red-100 p-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge tone="red">Run Failed</Badge>
+                <p className="font-black text-red-950">
+                  {selectedDeck.name} run ended.
+                </p>
+              </div>
+              <p className="mt-2 text-sm font-medium text-red-950/75">
+                Best run summary was saved. Active HP, shield, gold, monster
+                state, timer state, shop upgrades, and run deck changes were not
+                saved.
+              </p>
+              <div className="mt-4 grid gap-2">
+                <StatCard label="Deck" value={selectedDeck.name} tone="red" />
+                <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
+                <StatCard label="Floor" value={runProgress.currentFloor} tone="slate" />
+                <StatCard label="Final Gold" value={summaryGold} tone="amber" />
+                <StatCard label="Correct" value={summaryStatistics.correctAnswers} tone="emerald" />
+                <StatCard label="Wrong" value={summaryStatistics.wrongAnswers} tone="red" />
+                <StatCard label="Timeouts" value={summaryStatistics.timeouts} tone="amber" />
+                <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
+                <StatCard label="Damage" value={summaryStatistics.totalDamageDealt} tone="red" />
+                <StatCard label="Shield Gained" value={summaryStatistics.totalShieldGained} tone="sky" />
               </div>
             </section>
           )}

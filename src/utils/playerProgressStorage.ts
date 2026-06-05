@@ -15,7 +15,11 @@ export function createDefaultPlayerProgress(): SavedPlayerProgress {
     statistics: {
       totalCorrectAnswers: 0,
       totalWrongAnswers: 0,
-      bestMonsterDefeated: 0,
+      bestMonstersDefeated: 0,
+      bestAccuracy: 0,
+      bestDamageDealt: 0,
+      completedRuns: 0,
+      failedRuns: 0,
     },
   };
 }
@@ -58,18 +62,35 @@ function parseStatistics(
   const statistics = value as Record<string, unknown>;
   const totalCorrectAnswers = statistics.totalCorrectAnswers;
   const totalWrongAnswers = statistics.totalWrongAnswers;
-  const bestMonsterDefeated = statistics.bestMonsterDefeated;
+  const bestMonstersDefeated =
+    statistics.bestMonstersDefeated ?? statistics.bestMonsterDefeated;
+  const bestAccuracy = statistics.bestAccuracy ?? 0;
+  const bestDamageDealt = statistics.bestDamageDealt ?? 0;
+  const completedRuns = statistics.completedRuns ?? 0;
+  const failedRuns = statistics.failedRuns ?? 0;
 
   if (
     typeof totalCorrectAnswers !== "number" ||
     typeof totalWrongAnswers !== "number" ||
-    typeof bestMonsterDefeated !== "number" ||
+    typeof bestMonstersDefeated !== "number" ||
+    typeof bestAccuracy !== "number" ||
+    typeof bestDamageDealt !== "number" ||
+    typeof completedRuns !== "number" ||
+    typeof failedRuns !== "number" ||
     !Number.isFinite(totalCorrectAnswers) ||
     !Number.isFinite(totalWrongAnswers) ||
-    !Number.isFinite(bestMonsterDefeated) ||
+    !Number.isFinite(bestMonstersDefeated) ||
+    !Number.isFinite(bestAccuracy) ||
+    !Number.isFinite(bestDamageDealt) ||
+    !Number.isFinite(completedRuns) ||
+    !Number.isFinite(failedRuns) ||
     totalCorrectAnswers < 0 ||
     totalWrongAnswers < 0 ||
-    bestMonsterDefeated < 0
+    bestMonstersDefeated < 0 ||
+    bestAccuracy < 0 ||
+    bestDamageDealt < 0 ||
+    completedRuns < 0 ||
+    failedRuns < 0
   ) {
     return null;
   }
@@ -77,7 +98,11 @@ function parseStatistics(
   return {
     totalCorrectAnswers,
     totalWrongAnswers,
-    bestMonsterDefeated,
+    bestMonstersDefeated,
+    bestAccuracy,
+    bestDamageDealt,
+    completedRuns,
+    failedRuns,
   };
 }
 

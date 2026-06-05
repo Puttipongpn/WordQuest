@@ -22,6 +22,7 @@ import {
 import type {
   ElementType,
   RunProgressState,
+  RunStatistics,
   SavedPlayerProgress,
   ScreenName,
   VocabularyDeck,
@@ -45,6 +46,22 @@ const initialRunProgress: RunProgressState = {
   monstersDefeated: 0,
   currentFloor: 1,
   nextShopAt: SHOP_INTERVAL,
+};
+
+const initialRunStatistics: RunStatistics = {
+  questionsAnswered: 0,
+  correctAnswers: 0,
+  wrongAnswers: 0,
+  timeouts: 0,
+  monstersDefeated: 0,
+  bossDefeated: false,
+  totalDamageDealt: 0,
+  totalShieldGained: 0,
+  goldEarned: 0,
+  cardsUpgradedCount: 0,
+  cardsRemovedCount: 0,
+  cardsDuplicatedCount: 0,
+  elementsAddedCount: 0,
 };
 
 function getNextShopAt(monstersDefeated: number) {
@@ -80,6 +97,16 @@ function countUniqueWords(deck: WordCard[]) {
   return new Set(deck.map((card) => card.word.toLowerCase())).size;
 }
 
+function calculateAccuracy(statistics: RunStatistics) {
+  if (statistics.questionsAnswered === 0) {
+    return 0;
+  }
+
+  return Math.round(
+    (statistics.correctAnswers / statistics.questionsAnswered) * 100,
+  );
+}
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenName>("home");
   const [selectedDeckId, setSelectedDeckId] = useState(starterDeck.id);
@@ -88,6 +115,8 @@ export default function App() {
   const [runProgress, setRunProgress] =
     useState<RunProgressState>(initialRunProgress);
   const [runGold, setRunGold] = useState(STARTING_GOLD);
+  const [runStatistics, setRunStatistics] =
+    useState<RunStatistics>(initialRunStatistics);
   const [currentRunDeck, setCurrentRunDeck] = useState<WordCard[]>(
     () => createRunDeckCopy(starterDeck),
   );
@@ -101,6 +130,7 @@ export default function App() {
   const wordMastery = playerProgress.wordMastery;
   const completedDeckIds = playerProgress.completedDeckIds;
   const unlockedDeckIds = playerProgress.unlockedDeckIds;
+  const playerStatistics = playerProgress.statistics;
 
   function increaseWordMastery(cardId: string) {
     setPlayerProgress((currentProgress) => {
@@ -128,6 +158,7 @@ export default function App() {
     setSelectedDeckId(starterDeck.id);
     setRunProgress(initialRunProgress);
     setRunGold(STARTING_GOLD);
+    setRunStatistics(initialRunStatistics);
     setCurrentRunDeck(createRunDeckCopy(starterDeck));
   }
 
@@ -178,6 +209,11 @@ export default function App() {
 
   function recordMonsterDefeated() {
     setRunGold((currentGold) => currentGold + GOLD_PER_MONSTER);
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      monstersDefeated: currentStatistics.monstersDefeated + 1,
+      goldEarned: currentStatistics.goldEarned + GOLD_PER_MONSTER,
+    }));
     setRunProgress((currentProgress) => {
       const monstersDefeated = currentProgress.monstersDefeated + 1;
 
@@ -191,11 +227,64 @@ export default function App() {
 
   function gainRunGold(amount: number) {
     setRunGold((currentGold) => currentGold + amount);
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      goldEarned: currentStatistics.goldEarned + amount,
+    }));
+  }
+
+  function updateRunStatistics(nextStatistics: RunStatistics) {
+    setRunStatistics(nextStatistics);
+  }
+
+  function recordRunEnded(
+    outcome: "completed" | "failed",
+    finalRunStatistics: RunStatistics,
+  ) {
+    setPlayerProgress((currentProgress) => {
+      const nextStatistics = {
+        ...currentProgress.statistics,
+        totalCorrectAnswers:
+          currentProgress.statistics.totalCorrectAnswers +
+          finalRunStatistics.correctAnswers,
+        totalWrongAnswers:
+          currentProgress.statistics.totalWrongAnswers +
+          finalRunStatistics.wrongAnswers +
+          finalRunStatistics.timeouts,
+        bestMonstersDefeated: Math.max(
+          currentProgress.statistics.bestMonstersDefeated,
+          finalRunStatistics.monstersDefeated,
+        ),
+        bestAccuracy: Math.max(
+          currentProgress.statistics.bestAccuracy,
+          calculateAccuracy(finalRunStatistics),
+        ),
+        bestDamageDealt: Math.max(
+          currentProgress.statistics.bestDamageDealt,
+          finalRunStatistics.totalDamageDealt,
+        ),
+        completedRuns:
+          currentProgress.statistics.completedRuns +
+          (outcome === "completed" ? 1 : 0),
+        failedRuns:
+          currentProgress.statistics.failedRuns +
+          (outcome === "failed" ? 1 : 0),
+      };
+      const nextProgress: SavedPlayerProgress = {
+        ...currentProgress,
+        statistics: nextStatistics,
+      };
+
+      savePlayerProgress(nextProgress);
+
+      return nextProgress;
+    });
   }
 
   function resetCurrentRun() {
     setRunProgress(initialRunProgress);
     setRunGold(STARTING_GOLD);
+    setRunStatistics(initialRunStatistics);
     setCurrentRunDeck(createRunDeckCopy(selectedDeck));
   }
 
@@ -213,6 +302,7 @@ export default function App() {
     setSelectedDeckId(nextDeck.id);
     setRunProgress(initialRunProgress);
     setRunGold(STARTING_GOLD);
+    setRunStatistics(initialRunStatistics);
     setCurrentRunDeck(createRunDeckCopy(nextDeck));
   }
 
@@ -225,6 +315,10 @@ export default function App() {
     }
 
     setRunGold((currentGold) => currentGold - cost);
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      cardsUpgradedCount: currentStatistics.cardsUpgradedCount + 1,
+    }));
     setCurrentRunDeck((currentDeck) =>
       currentDeck.map((card) =>
         card.id === cardId
@@ -248,6 +342,10 @@ export default function App() {
     }
 
     setRunGold((currentGold) => currentGold - cost);
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      cardsUpgradedCount: currentStatistics.cardsUpgradedCount + 1,
+    }));
     setCurrentRunDeck((currentDeck) =>
       currentDeck.map((card) => {
         if (card.id !== cardId) {
@@ -310,6 +408,10 @@ export default function App() {
     }
 
     setRunGold((currentGold) => currentGold - cost);
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      elementsAddedCount: currentStatistics.elementsAddedCount + 1,
+    }));
     setCurrentRunDeck((currentDeck) =>
       currentDeck.map((card) => {
         if (card.id !== cardId) {
@@ -351,6 +453,10 @@ export default function App() {
     }
 
     setRunGold((currentGold) => currentGold - cost);
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      cardsRemovedCount: currentStatistics.cardsRemovedCount + 1,
+    }));
     setCurrentRunDeck((currentDeck) =>
       currentDeck.length <= MIN_RUN_DECK_SIZE
         ? currentDeck
@@ -369,6 +475,10 @@ export default function App() {
     }
 
     setRunGold((currentGold) => currentGold - cost);
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      cardsDuplicatedCount: currentStatistics.cardsDuplicatedCount + 1,
+    }));
     setCurrentRunDeck((currentDeck) => {
       const cardToDuplicate = currentDeck.find((card) => card.id === cardId);
 
@@ -396,6 +506,7 @@ export default function App() {
             onNavigate={setCurrentScreen}
             onResetProgress={resetPlayerProgress}
             onSelectDeck={selectDeck}
+            playerStatistics={playerStatistics}
             selectedDeckId={selectedDeck.id}
             unlockedDeckIds={unlockedDeckIds}
           />
@@ -423,9 +534,12 @@ export default function App() {
             onGainRunGold={gainRunGold}
             onMonsterDefeated={recordMonsterDefeated}
             onNavigate={setCurrentScreen}
+            onRecordRunEnded={recordRunEnded}
             onResetRun={resetCurrentRun}
+            onUpdateRunStatistics={updateRunStatistics}
             runGold={runGold}
             runProgress={runProgress}
+            runStatistics={runStatistics}
             selectedDeck={selectedDeck}
           />
         )}

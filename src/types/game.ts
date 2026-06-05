@@ -56,13 +56,39 @@ export type WordMastery = {
 
 export type WordMasteryByCardId = Record<string, number>;
 
+export type RunStatistics = {
+  questionsAnswered: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  timeouts: number;
+  monstersDefeated: number;
+  bossDefeated: boolean;
+  totalDamageDealt: number;
+  totalShieldGained: number;
+  goldEarned: number;
+  cardsUpgradedCount: number;
+  cardsRemovedCount: number;
+  cardsDuplicatedCount: number;
+  elementsAddedCount: number;
+};
+
+export type PlayerStatistics = {
+  totalCorrectAnswers: number;
+  totalWrongAnswers: number;
+  bestMonstersDefeated: number;
+  bestAccuracy: number;
+  bestDamageDealt: number;
+  completedRuns: number;
+  failedRuns: number;
+};
+
 export type PlayerProgress = {
   unlockedDeckIds: string[];
   completedDeckIds: string[];
   wordMastery: Record<string, WordMastery>;
   totalCorrectAnswers: number;
   totalWrongAnswers: number;
-  bestMonsterDefeated: number;
+  bestMonstersDefeated: number;
 };
 
 export type SavedPlayerProgress = {
@@ -70,11 +96,7 @@ export type SavedPlayerProgress = {
   unlockedDeckIds: string[];
   completedDeckIds: string[];
   wordMastery: WordMasteryByCardId;
-  statistics: {
-    totalCorrectAnswers: number;
-    totalWrongAnswers: number;
-    bestMonsterDefeated: number;
-  };
+  statistics: PlayerStatistics;
 };
 
 export type RunState = {

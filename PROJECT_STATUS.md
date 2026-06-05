@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 26 Element Interaction Foundation is complete. GitHub backup is configured on `origin/main`.
+Phase 27 Run Stats and Best Run Summary is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -298,6 +298,17 @@ Phase 26 Element Interaction Foundation is complete. GitHub backup is configured
 - Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, timer behavior, Training untimed behavior, balance constants, and LocalStorage permanent-progress-only rules.
 - No Oxford 3000 import, backend, auth, database, API, final art assets, deck unlock changes, save rule changes, new shop items, or advanced weakness/resistance system were added.
 - Verified the project with `npm run build` after Phase 26.
+- Added temporary current-run statistics for questions answered, correct answers, wrong answers, timeouts, monsters defeated, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
+- Updated Dungeon correct, wrong, timeout, defeat, and run-end paths to track run stats without saving active run state.
+- Added improved Run Complete summary with selected deck name, monsters defeated, boss defeated, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Added Run Failed summary with selected deck name, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Added permanent best run statistics to LocalStorage saved progress: best monsters defeated, best accuracy, best damage dealt, completed runs, and failed runs.
+- Kept best run persistence summary-only; HP, shield, gold, current-run deck, monster state, boss state, timer state, and shop upgrades are not saved.
+- Added backward-compatible statistics parsing for older version 1 saves.
+- Added Home Best Run summary showing best monsters defeated, best accuracy, best damage dealt, completed runs, and failed runs.
+- Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, timer behavior, Training untimed behavior, balance constants, element effects, and LocalStorage permanent-progress-only rules.
+- No backend, auth, database, API, Oxford 3000 import, final art assets, new decks, deck unlock changes, combat rule changes, new shop items, or new mini-games were added.
+- Verified the project with `npm run build` after Phase 27.
 
 ## In Progress
 
@@ -305,7 +316,7 @@ Phase 26 Element Interaction Foundation is complete. GitHub backup is configured
 
 ## Next Task
 
-Phase 26 is complete. Continue with the next explicitly requested phase or feature.
+Phase 27 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -423,6 +434,9 @@ The following documents are required and must be updated after every completed t
 - Elements now have simple first-pass gameplay effects during Dungeon battles
 - Element effects remain temporary current-run card effects
 - Advanced elemental weakness and resistance are still deferred
+- Run summary stats are saved only after a run completes or fails
+- Best run stats are permanent progress
+- Active run state remains unsaved
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 26 complete. Phase 27 has not started yet.
+Current phase: Phase 27 complete. Phase 28 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -277,10 +277,10 @@ GitHub backup is configured:
 
 The following screens are implemented or stubbed:
 
-- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
+- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, compact Best Run summary, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
 - Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
 - Training: polished untimed recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
-- Dungeon: polished timed local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, first-pass element effects, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
+- Dungeon: polished timed local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, run statistics, gold, shield absorption, first-pass element effects, shop checkpoint routing, boss encounter, Run Complete state, Run Failed summary, and permanent selected-deck completion reward.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, temporary run gold costs, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, and after Phase 26 element interaction foundation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, and after Phase 27 run stats / best run summary work.
 
 The local development server can be started with:
 
@@ -326,7 +326,7 @@ Expected architecture direction:
 Current shared type files:
 
 - `src/types/navigation.ts`: screen navigation names.
-- `src/types/game.ts`: vocabulary cards, decks, player progress, run state, monsters, bosses, shop items, elements, mini-game types, and mastery data.
+- `src/types/game.ts`: vocabulary cards, decks, player progress, run state, run statistics, player statistics, monsters, bosses, shop items, elements, mini-game types, and mastery data.
 
 Current component files:
 
@@ -423,7 +423,8 @@ Current LocalStorage save implementation:
 - `src/utils/playerProgressStorage.ts` owns LocalStorage access.
 - Save key is internal to the utility.
 - Save data includes `version: 1`.
-- Saved permanent progress includes word mastery, unlocked deck ids, completed deck ids, and statistics placeholder.
+- Saved permanent progress includes word mastery, unlocked deck ids, completed deck ids, and best run statistics.
+- Permanent statistics include total correct answers from ended runs, total wrong answers from ended runs, best monsters defeated, best accuracy, best damage dealt, completed runs, and failed runs.
 - `completedDeckIds` stores completed deck ids for both Starter Deck and Food Deck after boss defeat.
 - `unlockedDeckIds` starts with Starter Deck and unlocks Food Deck after Starter Deck completion.
 - Missing, invalid, or incompatible saved data falls back to default progress.
@@ -431,13 +432,16 @@ Current LocalStorage save implementation:
 - Home exposes a `Reset Progress` action.
 - Reset clears saved LocalStorage progress and resets in-memory progress to defaults.
 - LocalStorage does not save gold, HP, shield, shop upgrades, duplicated cards, removed cards, card enchantments, monster state, or current dungeon run state.
+- Active run statistics are temporary while a run is active. Only completed or failed run summaries update permanent best run stats.
 
 Current Dungeon implementation:
 
 - `src/screens/Dungeon.tsx` uses temporary React state only.
 - `src/screens/Dungeon.tsx` imports `sampleMonsters` from `src/data`.
 - `src/App.tsx` owns temporary current-run deck, gold, and run progression state so Dungeon can route to Shop and back while preserving current-run changes.
+- `src/App.tsx` owns temporary current-run statistics and permanent best run statistics updates.
 - Run progression tracks `monstersDefeated`, `currentFloor`, and `nextShopAt`.
+- Current-run statistics track questions answered, correct answers, wrong answers, timeouts, monsters defeated, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
 - The current-run deck starts as a copy of the selected deck.
 - Shop upgrades must not mutate source deck data in `src/data`.
 - Dungeon battle questions use the current-run deck, not the original seed deck.
@@ -486,8 +490,11 @@ Current Dungeon implementation:
 - The first boss is Gatekeeper with 76 HP and 8 attack.
 - Boss battles use the same mini-games and Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
+- Run Complete summary shows selected deck name, monsters defeated, boss defeated, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
 - Boss defeat marks the selected deck as completed in permanent LocalStorage progress.
 - Home and Deck Review display selected deck completion status.
+- Run Failed summary shows selected deck name, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Completed and failed runs update permanent best run stats only after the run ends.
 - Real progression beyond Food Deck, backend, API, advanced element weakness/resistance, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
@@ -500,6 +507,7 @@ Current Dungeon implementation:
 - Phase 24 added Dungeon-only battle timers and timeout-as-wrong-answer behavior.
 - Phase 25 added shared balance constants, tuned player HP, gold per monster, Dungeon timer limits, and Gatekeeper stats.
 - Phase 26 made elements functional with simple current-run-only Dungeon effects.
+- Phase 27 added current-run statistics, Run Complete / Run Failed summaries, Home Best Run summary, and permanent best run stats saved only after run end.
 
 Current Shop implementation:
 
@@ -618,7 +626,7 @@ Permanent progress includes:
 
 Permanent progress should be saved in LocalStorage for Version 1.
 
-Current prototype note: word mastery is persisted in LocalStorage. Other permanent progress categories currently exist as placeholders.
+Current prototype note: word mastery, deck unlocks, completed decks, and best run summary statistics are persisted in LocalStorage.
 
 ## Run Progress Rules
 
@@ -638,10 +646,13 @@ Run progress includes:
 - Monsters defeated
 - Current floor
 - Next shop checkpoint
+- Active run statistics before completion/failure
 
 If the player dies, permanent progress survives death and run progress is completely lost.
 
 Temporary run upgrades should not be saved as permanent progress after death.
+
+Only summary statistics from completed or failed runs are saved as permanent best run stats.
 
 ## Dungeon Flow
 
@@ -842,7 +853,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 26 is complete.
+Phase 27 is complete.
 
 Recommended next task:
 

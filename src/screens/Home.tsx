@@ -1,7 +1,7 @@
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { BOSS_MONSTER_REQUIREMENT } from "../game/balance";
-import type { ScreenName, VocabularyDeck } from "../types";
+import type { PlayerStatistics, ScreenName, VocabularyDeck } from "../types";
 
 type HomeProps = {
   availableDecks: VocabularyDeck[];
@@ -9,6 +9,7 @@ type HomeProps = {
   onNavigate: (screen: ScreenName) => void;
   onResetProgress: () => void;
   onSelectDeck: (deckId: string) => void;
+  playerStatistics: PlayerStatistics;
   selectedDeckId: string;
   unlockedDeckIds: string[];
 };
@@ -19,6 +20,7 @@ export function Home({
   onNavigate,
   onResetProgress,
   onSelectDeck,
+  playerStatistics,
   selectedDeckId,
   unlockedDeckIds,
 }: HomeProps) {
@@ -124,13 +126,61 @@ export function Home({
             />
             <StatCard
               label="Runs"
-              value="Temp"
-              helper="Not persisted"
+              value={playerStatistics.completedRuns + playerStatistics.failedRuns}
+              helper="Ended runs"
               tone="amber"
             />
           </div>
         </CardPanel>
       </div>
+
+      <CardPanel className="mt-6 border-emerald-800/30 bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <Badge tone="emerald">Best Run</Badge>
+            <h3 className="mt-2 text-2xl font-black text-amber-950">
+              Permanent run summary
+            </h3>
+            <p className="mt-2 max-w-2xl text-sm font-bold text-amber-900/75">
+              Only completed or failed run summaries are saved. Active dungeon
+              state, HP, shield, gold, monster state, and run deck changes stay
+              temporary.
+            </p>
+          </div>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <StatCard
+            label="Best Monsters"
+            value={playerStatistics.bestMonstersDefeated}
+            helper="Ended run"
+            tone="emerald"
+          />
+          <StatCard
+            label="Best Accuracy"
+            value={`${playerStatistics.bestAccuracy}%`}
+            helper="Correct / answered"
+            tone="sky"
+          />
+          <StatCard
+            label="Best Damage"
+            value={playerStatistics.bestDamageDealt}
+            helper="Total dealt"
+            tone="red"
+          />
+          <StatCard
+            label="Completed"
+            value={playerStatistics.completedRuns}
+            helper="Boss defeated"
+            tone="purple"
+          />
+          <StatCard
+            label="Failed"
+            value={playerStatistics.failedRuns}
+            helper="Run ended"
+            tone="amber"
+          />
+        </div>
+      </CardPanel>
 
       <CardPanel className="mt-6 border-amber-700/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
