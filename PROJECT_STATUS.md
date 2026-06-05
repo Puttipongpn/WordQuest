@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 23 Learning Mini-game Redesign is complete. GitHub backup is configured on `origin/main`.
+Phase 24 Dungeon Battle Timer Foundation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -262,6 +262,19 @@ Phase 23 Learning Mini-game Redesign is complete. GitHub backup is configured on
 - Preserved selected deck, locked/unlocked decks, word mastery saves, completed deck saves, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, and LocalStorage permanent-progress-only rules.
 - No timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop changes, boss changes, deck unlock changes, save rule changes, or final art assets were added.
 - Verified the project with `npm run build` after Phase 23.
+- Added the first Dungeon-only battle timer foundation.
+- Word Choice now has a 12-second time limit.
+- Word Match now has an 18-second time limit.
+- Word Scramble now has a 20-second time limit.
+- Dungeon displays remaining time, the current mini-game time limit, and a low-time warning style at 3 seconds or less.
+- Timer starts when a new battle question begins and stops after the player answers.
+- Timer resets on next battle question, next monster, boss battle start, and run restart.
+- Timeout is treated as a wrong answer: no card triggers, monster or boss attacks, and shield absorbs damage before HP.
+- Timer does not run during Monster Defeated, Boss Available before starting boss, Shop routing, Run Failed, Run Complete, Shop, or Training.
+- Training remains untimed for safe learning practice.
+- Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, and LocalStorage permanent-progress-only rules.
+- No Training timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop changes, boss changes, deck unlock changes, save rule changes, or final art assets were added.
+- Verified the project with `npm run build` after Phase 24.
 
 ## In Progress
 
@@ -269,7 +282,7 @@ Phase 23 Learning Mini-game Redesign is complete. GitHub backup is configured on
 
 ## Next Task
 
-Phase 24 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 25 has not been defined yet. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -380,6 +393,9 @@ The following documents are required and must be updated after every completed t
 - Training focuses on recall, not only recognition
 - Cloze questions support contextual vocabulary practice
 - Picture-to-Thai choice is no longer the main training pattern
+- Dungeon mini-games use simple static timers
+- Training remains untimed
+- Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
 
 ## Important Rules

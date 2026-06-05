@@ -628,6 +628,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The format is useful as a light recognition prompt, but the prototype should prioritize English/Thai recall and sentence context.
 - Status: Accepted
 
+### 2026-06-05: Dungeon Mini-Games Use Timers
+
+- Decision: Dungeon Word Choice, Word Match, and Word Scramble use battle timers.
+- Reason: Dungeon battles should create pressure and combat tension, unlike safe practice in Training.
+- Status: Accepted
+
+### 2026-06-05: Training Remains Untimed
+
+- Decision: Do not add timers to Training.
+- Reason: Training is for safe learning and mastery practice without dungeon pressure.
+- Status: Accepted
+
+### 2026-06-05: Timeout Is Wrong Answer
+
+- Decision: A Dungeon timeout is treated as a wrong answer.
+- Reason: Timeout should preserve existing combat rules: no card trigger, monster or boss attacks, and shield absorbs damage before HP.
+- Status: Accepted
+
+### 2026-06-05: Static Timer Values First
+
+- Decision: Use simple static time limits first: Word Choice 12 seconds, Word Match 18 seconds, and Word Scramble 20 seconds.
+- Reason: Static values prove the timer system before difficulty scaling, balancing, or upgrades are introduced.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

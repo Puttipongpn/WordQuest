@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 23 complete. Phase 24 has not started yet.
+Current phase: Phase 24 complete. Phase 25 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -262,6 +262,16 @@ GitHub backup is configured:
 - Preserved Word Match, Word Scramble, the Card Trigger System, selected deck, deck unlock progression, shop purchases, boss battles, Run Complete, and LocalStorage permanent-progress-only rules.
 - Kept timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop rule changes, boss rule changes, save rule changes, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 23.
+- Added the first Dungeon-only battle timer foundation.
+- Added static time limits: Word Choice 12 seconds, Word Match 18 seconds, and Word Scramble 20 seconds.
+- Dungeon now shows remaining time, current mini-game limit, and a low-time warning style at 3 seconds or less.
+- Countdown starts for active Dungeon battle questions and stops after an answer.
+- Timeout is treated as a wrong answer: no card triggers, monster or boss attacks, and shield absorbs damage before HP.
+- Timer resets on next question, next monster, boss battle start, and run restart.
+- Timer does not run during Monster Defeated, Boss Available before starting boss, Shop routing, Run Failed, Run Complete, Shop, or Training.
+- Training remains untimed for safe learning practice.
+- Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, and LocalStorage permanent-progress-only rules.
+- Verified the project again with `npm run build` after Phase 24.
 
 ## Implemented Screens
 
@@ -284,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, and after Phase 23 learning mini-game redesign work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, and after Phase 24 Dungeon battle timer foundation work.
 
 The local development server can be started with:
 
@@ -414,6 +424,10 @@ Current Dungeon implementation:
 - Monster state includes current monster, HP, max HP, and attack.
 - Battle questions use a simple mini-game structure and the current-run deck.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
+- Dungeon battle questions are timed.
+- Current static time limits are Word Choice 12 seconds, Word Match 18 seconds, and Word Scramble 20 seconds.
+- Timer countdown runs only while a Dungeon battle question is active and unanswered.
+- Timeout is treated as a wrong answer and causes the current monster or boss to attack.
 - Word Choice shows one prompt card with an English-to-Thai, Thai-to-English, or cloze-style prompt.
 - Word Choice uses answer choices that match the prompt direction and clearly reveals the correct answer after selection.
 - Word Match shows 3 English words and 3 Thai meanings.
@@ -456,6 +470,7 @@ Current Dungeon implementation:
 - Phase 16 added Boss Available, Gatekeeper boss battle, and Run Complete state.
 - Phase 17 added the first permanent completion reward; Phase 21 generalized it so boss defeat saves the selected deck id in `completedDeckIds`.
 - Phase 23 redesigned Word Choice prompts for better vocabulary recall and context practice.
+- Phase 24 added Dungeon-only battle timers and timeout-as-wrong-answer behavior.
 
 Current Shop implementation:
 
@@ -709,15 +724,18 @@ Initial battle mini-games:
 - Word Choice
   - Shows one prompt card with English-to-Thai, Thai-to-English, or Example Sentence Cloze prompt.
   - Shows 4 choices matching the prompt direction.
+  - Has a 12-second Dungeon battle time limit.
   - Correct answer triggers the prompt word card.
 - Word Match
   - Shows 3 English words and 3 Thai meanings.
   - Player selects one English word and one Thai meaning.
+  - Has an 18-second Dungeon battle time limit.
   - Correct pair triggers the selected English word card.
 - Word Scramble
   - Show multiple scrambled word choices.
   - Player chooses which word to solve.
   - Player types the original English word.
+  - Has a 20-second Dungeon battle time limit.
   - Solving correctly triggers the selected current-run card.
   - Current-run attack and shield upgrades apply through the Card Trigger System.
 
@@ -794,8 +812,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 23 is complete.
+Phase 24 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, run rewards, timers, persistent run state, advanced element interactions, real progression beyond Food Deck, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, run rewards, Training timers, persistent run state, advanced element interactions, real progression beyond Food Deck, or final art assets unless explicitly requested.

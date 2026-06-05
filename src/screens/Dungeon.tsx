@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import {
   Badge,
@@ -254,6 +254,18 @@ function formatMiniGameName(miniGameType: BattleMiniGameType) {
   return "Word Scramble";
 }
 
+function getMiniGameTimeLimit(miniGameType: BattleMiniGameType) {
+  if (miniGameType === "word-choice") {
+    return 12;
+  }
+
+  if (miniGameType === "word-match") {
+    return 18;
+  }
+
+  return 20;
+}
+
 function getCardShieldAmount(card: WordCard) {
   return (
     card.effects?.reduce(
@@ -293,6 +305,7 @@ export function Dungeon({
   runProgress,
   selectedDeck,
 }: DungeonProps) {
+  const initialMiniGameType = useMemo(() => chooseBattleMiniGame(), []);
   const [playerHp, setPlayerHp] = useState(initialPlayerHp);
   const [shield, setShield] = useState(initialShield);
   const [monsterIndex, setMonsterIndex] = useState(0);
@@ -302,8 +315,10 @@ export function Dungeon({
   const [isBossEncounter, setIsBossEncounter] = useState(false);
   const [hasCompletedBoss, setHasCompletedBoss] = useState(false);
   const [questionSeed, setQuestionSeed] = useState(0);
-  const [miniGameType, setMiniGameType] = useState<BattleMiniGameType>(() =>
-    chooseBattleMiniGame(),
+  const [miniGameType, setMiniGameType] =
+    useState<BattleMiniGameType>(initialMiniGameType);
+  const [timeRemaining, setTimeRemaining] = useState(() =>
+    getMiniGameTimeLimit(initialMiniGameType),
   );
   const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(null);
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
@@ -360,6 +375,9 @@ export function Dungeon({
     runProgress.nextShopAt - runProgress.monstersDefeated,
     0,
   );
+  const miniGameTimeLimit = getMiniGameTimeLimit(miniGameType);
+  const isTimerLow = timeRemaining <= 3;
+  const isTimerRunning = battleStatus === "fighting" && !isAnswered;
 
   function resetAnswerState() {
     setSelectedChoiceId(null);
@@ -371,9 +389,12 @@ export function Dungeon({
   }
 
   function advanceQuestion() {
+    const nextMiniGameType = chooseBattleMiniGame();
+
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
-    setMiniGameType(chooseBattleMiniGame());
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
       message: "A new mini-game begins. Choose carefully.",
@@ -430,7 +451,7 @@ export function Dungeon({
     });
   }
 
-  function monsterAttack() {
+  function monsterAttack(reason = "Wrong answer.") {
     const shieldAbsorbed = Math.min(shield, currentEncounter.attack);
     const hpDamageTaken = currentEncounter.attack - shieldAbsorbed;
     const nextShield = shield - shieldAbsorbed;
@@ -443,7 +464,7 @@ export function Dungeon({
       setBattleStatus("run-failed");
       setBattleLog({
         tone: "danger",
-        message: `Wrong answer. No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}. Run Failed.`,
+        message: `${reason} No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}. Run Failed.`,
         damageTaken: currentEncounter.attack,
         hpDamageTaken,
         shieldAbsorbed,
@@ -453,12 +474,33 @@ export function Dungeon({
 
     setBattleLog({
       tone: "danger",
-      message: `Wrong answer. No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
+      message: `${reason} No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
       damageTaken: currentEncounter.attack,
       hpDamageTaken,
       shieldAbsorbed,
     });
   }
+
+  useEffect(() => {
+    if (!isTimerRunning) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setTimeRemaining((currentTime) => Math.max(currentTime - 1, 0));
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [isTimerRunning, miniGameType, questionSeed]);
+
+  useEffect(() => {
+    if (timeRemaining > 0 || isAnswered || battleStatus !== "fighting") {
+      return;
+    }
+
+    setIsAnswered(true);
+    monsterAttack("Time's up!");
+  }, [battleStatus, isAnswered, timeRemaining]);
 
   function handleWordChoiceAnswer(choice: WordCard) {
     if (isAnswered || battleStatus !== "fighting") {
@@ -535,13 +577,15 @@ export function Dungeon({
   function handleNextMonster() {
     const nextMonsterIndex = monsterIndex + 1;
     const nextMonster = getMonsterForIndex(nextMonsterIndex);
+    const nextMiniGameType = chooseBattleMiniGame();
 
     setMonsterIndex(nextMonsterIndex);
     setMonsterHp(nextMonster.maxHp);
     setBattleStatus("fighting");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
-    setMiniGameType(chooseBattleMiniGame());
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
       message: "A new monster appears. A new mini-game begins.",
@@ -549,12 +593,15 @@ export function Dungeon({
   }
 
   function handleStartBoss() {
+    const nextMiniGameType = chooseBattleMiniGame();
+
     setIsBossEncounter(true);
     setMonsterHp(sampleBoss.maxHp);
     setBattleStatus("fighting");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
-    setMiniGameType(chooseBattleMiniGame());
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
       message: `${sampleBoss.name} appears. Defeat the boss to complete the run.`,
@@ -562,6 +609,8 @@ export function Dungeon({
   }
 
   function handleRestartRun() {
+    const nextMiniGameType = chooseBattleMiniGame();
+
     onResetRun();
     setPlayerHp(initialPlayerHp);
     setShield(initialShield);
@@ -572,7 +621,8 @@ export function Dungeon({
     setBattleStatus("fighting");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
-    setMiniGameType(chooseBattleMiniGame());
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
       message: "Run restarted. Choose the correct answer to trigger a card.",
@@ -644,9 +694,24 @@ export function Dungeon({
                   Answer to trigger your card
                 </h3>
               </div>
-              <p className="text-sm font-bold text-amber-900/75">
-                Current question area
-              </p>
+              <div className="min-w-44 rounded-xl border-2 border-amber-900/15 bg-white/80 p-3 shadow-inner">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-extrabold uppercase text-amber-800/70">
+                    Battle Timer
+                  </p>
+                  <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
+                    {timeRemaining}s / {miniGameTimeLimit}s
+                  </Badge>
+                </div>
+                <div className="mt-2">
+                  <ProgressBar
+                    value={timeRemaining}
+                    max={miniGameTimeLimit}
+                    tone={isTimerLow && isTimerRunning ? "red" : "amber"}
+                    label="Battle timer"
+                  />
+                </div>
+              </div>
             </div>
 
             {miniGameType === "word-choice" ? (

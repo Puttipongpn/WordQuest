@@ -169,6 +169,7 @@ Training must not change:
 - Run state
 - Shop state
 - Dungeon progress
+- Timers
 
 Current mini-game:
 
@@ -184,6 +185,7 @@ Current mini-game:
 - Reveals the correct answer after selection
 - Advances with Next or restarts after the final question
 - Updates saved word mastery on correct answers
+- Training is intentionally untimed so players can practice safely.
 
 ## Dungeon Battle Foundation
 
@@ -199,6 +201,12 @@ Current battle rules:
 - Each monster has name, HP, max HP, and attack.
 - Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
+- Dungeon battle questions are timed.
+- Word Choice has a 12-second time limit.
+- Word Match has an 18-second time limit.
+- Word Scramble has a 20-second time limit.
+- Timer countdown runs only while a Dungeon battle question is active and unanswered.
+- If time reaches 0, the result is treated as a wrong answer.
 - Word Choice uses recall-focused prompts instead of image-only prompts.
 - Word Choice can ask English Word to Thai Meaning, Thai Meaning to English Word, or Example Sentence Cloze.
 - Word Choice choices match the prompt direction and reveal the correct answer after selection.
@@ -216,6 +224,7 @@ Current battle rules:
 - Element effects do not change damage, weakness, or resistance in Phase 14.
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack.
+- Timeout does not trigger card effects and causes the current monster or boss to attack.
 - Monster attacks reduce player shield before damaging player HP.
 - Shield starts at 0 each run and is temporary run progress.
 - When monster HP reaches 0, the screen shows `Monster Defeated`.
@@ -255,6 +264,8 @@ Deferred dungeon systems:
 
 Dungeon battle and run progression state are still temporary React state only. LocalStorage is used for permanent progress, not current run progress.
 
+Timer state is temporary Dungeon UI/combat state and is not saved to LocalStorage.
+
 ## Mini-Game Plan
 
 Training mini-games:
@@ -269,10 +280,13 @@ Battle mini-games:
 
 - Word Choice: implemented.
 - Word Choice uses English/Thai recall and cloze-style prompts rather than image-only prompts.
+- Word Choice has a 12-second Dungeon battle timer.
 - Word Match: implemented.
+- Word Match has an 18-second Dungeon battle timer.
 - Word Scramble: implemented with typed input, 3 scrambled current-run card options, and Card Trigger System effects.
+- Word Scramble has a 20-second Dungeon battle timer.
 
-Battle mini-games should eventually include timers. Difficulty should affect time limit and damage.
+Battle mini-game timers currently use simple static values first. Difficulty-based timer scaling is deferred.
 
 ## Shop Plan
 
