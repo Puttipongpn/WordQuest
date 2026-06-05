@@ -648,8 +648,26 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ### 2026-06-05: Static Timer Values First
 
-- Decision: Use simple static time limits first: Word Choice 12 seconds, Word Match 18 seconds, and Word Scramble 20 seconds.
+- Decision: Use simple static time limits first, currently tuned to Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
 - Reason: Static values prove the timer system before difficulty scaling, balancing, or upgrades are introduced.
+- Status: Accepted
+
+### 2026-06-05: Basic Balance Constants
+
+- Decision: Shared first-pass balance values live in `src/game/balance.ts`.
+- Reason: Centralizing common numbers makes future tuning easier and reduces mismatches between UI copy, data, and gameplay logic.
+- Status: Accepted
+
+### 2026-06-05: Current Prototype Balance Targets
+
+- Decision: First-pass tuning should keep Starter Deck approachable, give players enough room to reach the first shop, and make the boss stronger than normal monsters without feeling unfair.
+- Reason: The prototype needs a playable baseline before advanced balancing, scaling, or Oxford 3000 vocabulary import.
+- Status: Accepted
+
+### 2026-06-05: Static Timer Values Remain First-Pass Values
+
+- Decision: Dungeon timer limits remain static first-pass values rather than scaling by deck, difficulty, monster, or mastery.
+- Reason: Static timers keep the current combat loop predictable while the prototype is still validating core learning and run systems.
 - Status: Accepted
 
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments

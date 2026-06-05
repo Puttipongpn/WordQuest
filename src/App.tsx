@@ -9,6 +9,16 @@ import {
   Training,
 } from "./screens";
 import { availableDecks, foodDeck, starterDeck } from "./data";
+import {
+  ADD_SHIELD_AMOUNT,
+  GOLD_PER_MONSTER,
+  MAX_WORD_MASTERY,
+  MIN_DISTINCT_VISIBLE_WORDS,
+  MIN_RUN_DECK_SIZE,
+  SHOP_INTERVAL,
+  STARTING_GOLD,
+  UPGRADE_ATTACK_AMOUNT,
+} from "./game/balance";
 import type {
   ElementType,
   RunProgressState,
@@ -24,14 +34,6 @@ import {
   savePlayerProgress,
 } from "./utils/playerProgressStorage";
 
-const maxWordMastery = 5;
-const shopInterval = 5;
-const initialRunGold = 20;
-const monsterGoldReward = 5;
-const attackUpgradeAmount = 2;
-const shieldUpgradeAmount = 3;
-const minimumRunDeckSize = 5;
-const minimumBattleWordOptions = 4;
 let duplicateCardSequence = 0;
 
 type CompletionReward = {
@@ -42,19 +44,19 @@ type CompletionReward = {
 const initialRunProgress: RunProgressState = {
   monstersDefeated: 0,
   currentFloor: 1,
-  nextShopAt: shopInterval,
+  nextShopAt: SHOP_INTERVAL,
 };
 
 function getNextShopAt(monstersDefeated: number) {
   if (monstersDefeated === 0) {
-    return shopInterval;
+    return SHOP_INTERVAL;
   }
 
-  if (monstersDefeated % shopInterval === 0) {
+  if (monstersDefeated % SHOP_INTERVAL === 0) {
     return monstersDefeated;
   }
 
-  return Math.ceil(monstersDefeated / shopInterval) * shopInterval;
+  return Math.ceil(monstersDefeated / SHOP_INTERVAL) * SHOP_INTERVAL;
 }
 
 function createRunDeckCopy(deck: VocabularyDeck): WordCard[] {
@@ -85,7 +87,7 @@ export default function App() {
     useState<SavedPlayerProgress>(loadPlayerProgress);
   const [runProgress, setRunProgress] =
     useState<RunProgressState>(initialRunProgress);
-  const [runGold, setRunGold] = useState(initialRunGold);
+  const [runGold, setRunGold] = useState(STARTING_GOLD);
   const [currentRunDeck, setCurrentRunDeck] = useState<WordCard[]>(
     () => createRunDeckCopy(starterDeck),
   );
@@ -104,7 +106,7 @@ export default function App() {
     setPlayerProgress((currentProgress) => {
       const nextMastery = Math.min(
         (currentProgress.wordMastery[cardId] ?? 0) + 1,
-        maxWordMastery,
+        MAX_WORD_MASTERY,
       );
       const nextProgress: SavedPlayerProgress = {
         ...currentProgress,
@@ -125,7 +127,7 @@ export default function App() {
     setPlayerProgress(createDefaultPlayerProgress());
     setSelectedDeckId(starterDeck.id);
     setRunProgress(initialRunProgress);
-    setRunGold(initialRunGold);
+    setRunGold(STARTING_GOLD);
     setCurrentRunDeck(createRunDeckCopy(starterDeck));
   }
 
@@ -175,7 +177,7 @@ export default function App() {
   }
 
   function recordMonsterDefeated() {
-    setRunGold((currentGold) => currentGold + monsterGoldReward);
+    setRunGold((currentGold) => currentGold + GOLD_PER_MONSTER);
     setRunProgress((currentProgress) => {
       const monstersDefeated = currentProgress.monstersDefeated + 1;
 
@@ -189,7 +191,7 @@ export default function App() {
 
   function resetCurrentRun() {
     setRunProgress(initialRunProgress);
-    setRunGold(initialRunGold);
+    setRunGold(STARTING_GOLD);
     setCurrentRunDeck(createRunDeckCopy(selectedDeck));
   }
 
@@ -206,7 +208,7 @@ export default function App() {
 
     setSelectedDeckId(nextDeck.id);
     setRunProgress(initialRunProgress);
-    setRunGold(initialRunGold);
+    setRunGold(STARTING_GOLD);
     setCurrentRunDeck(createRunDeckCopy(nextDeck));
   }
 
@@ -224,7 +226,7 @@ export default function App() {
         card.id === cardId
           ? {
               ...card,
-              baseAttack: card.baseAttack + attackUpgradeAmount,
+              baseAttack: card.baseAttack + UPGRADE_ATTACK_AMOUNT,
             }
           : card,
       ),
@@ -267,8 +269,8 @@ export default function App() {
 
               return {
                 ...effect,
-                amount: effect.amount + shieldUpgradeAmount,
-                description: `Gain ${effect.amount + shieldUpgradeAmount} shield when triggered.`,
+                amount: effect.amount + ADD_SHIELD_AMOUNT,
+                description: `Gain ${effect.amount + ADD_SHIELD_AMOUNT} shield when triggered.`,
               };
             }),
           };
@@ -280,8 +282,8 @@ export default function App() {
             ...effects,
             {
               type: "shield",
-              amount: shieldUpgradeAmount,
-              description: `Gain ${shieldUpgradeAmount} shield when triggered.`,
+              amount: ADD_SHIELD_AMOUNT,
+              description: `Gain ${ADD_SHIELD_AMOUNT} shield when triggered.`,
             },
           ],
         };
@@ -336,17 +338,17 @@ export default function App() {
 
     if (
       runGold < cost ||
-      currentRunDeck.length <= minimumRunDeckSize ||
+      currentRunDeck.length <= MIN_RUN_DECK_SIZE ||
       deckAfterRemoval.length === currentRunDeck.length ||
-      deckAfterRemoval.length < minimumRunDeckSize ||
-      countUniqueWords(deckAfterRemoval) < minimumBattleWordOptions
+      deckAfterRemoval.length < MIN_RUN_DECK_SIZE ||
+      countUniqueWords(deckAfterRemoval) < MIN_DISTINCT_VISIBLE_WORDS
     ) {
       return false;
     }
 
     setRunGold((currentGold) => currentGold - cost);
     setCurrentRunDeck((currentDeck) =>
-      currentDeck.length <= minimumRunDeckSize
+      currentDeck.length <= MIN_RUN_DECK_SIZE
         ? currentDeck
         : currentDeck.filter((card) => card.id !== cardId),
     );

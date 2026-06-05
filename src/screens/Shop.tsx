@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { sampleShopItems } from "../data";
+import {
+  ADD_SHIELD_AMOUNT,
+  MIN_DISTINCT_VISIBLE_WORDS,
+  MIN_RUN_DECK_SIZE,
+  UPGRADE_ATTACK_AMOUNT,
+} from "../game/balance";
 import type {
   ElementType,
   RunProgressState,
@@ -35,10 +41,6 @@ const upgradeAttackItemId = "upgrade-attack";
 const addShieldItemId = "add-shield";
 const removeCardItemId = "remove-card";
 const duplicateCardItemId = "duplicate-card";
-const attackUpgradeAmount = 2;
-const shieldUpgradeAmount = 3;
-const minimumRunDeckSize = 5;
-const minimumBattleWordOptions = 4;
 
 function formatElementName(element: ElementType) {
   return element.charAt(0).toUpperCase() + element.slice(1);
@@ -85,8 +87,8 @@ function canRemoveCardWithoutBreakingQuestions(deck: WordCard[], cardId: string)
   const deckAfterRemoval = deck.filter((card) => card.id !== cardId);
 
   return (
-    deckAfterRemoval.length >= minimumRunDeckSize &&
-    countUniqueWords(deckAfterRemoval) >= minimumBattleWordOptions
+    deckAfterRemoval.length >= MIN_RUN_DECK_SIZE &&
+    countUniqueWords(deckAfterRemoval) >= MIN_DISTINCT_VISIBLE_WORDS
   );
 }
 
@@ -132,7 +134,7 @@ export function Shop({
   const selectedDuplicateCard = currentRunDeck.find(
     (card) => card.id === selectedDuplicateCardId,
   );
-  const canRemoveCards = currentRunDeck.length > minimumRunDeckSize;
+  const canRemoveCards = currentRunDeck.length > MIN_RUN_DECK_SIZE;
   const canRemoveSelectedCard =
     Boolean(selectedRemoveCard) &&
     canRemoveCards &&
@@ -207,7 +209,7 @@ export function Shop({
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedAttackCard.word} attack upgraded by +${attackUpgradeAmount} for this run only. This upgrade resets on run restart, failure, or refresh.`,
+      message: `${selectedAttackCard.word} attack upgraded by +${UPGRADE_ATTACK_AMOUNT} for this run only. This upgrade resets on run restart, failure, or refresh.`,
     });
   }
 
@@ -232,7 +234,7 @@ export function Shop({
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedShieldCard.word} gained Shield +${shieldUpgradeAmount} for this run only. This shield effect resets with the run deck.`,
+      message: `${selectedShieldCard.word} gained Shield +${ADD_SHIELD_AMOUNT} for this run only. This shield effect resets with the run deck.`,
     });
   }
 
@@ -284,7 +286,7 @@ export function Shop({
     if (!canRemoveCards) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Remove Card is disabled because the current-run deck must keep at least ${minimumRunDeckSize} cards.`,
+        message: `Remove Card is disabled because the current-run deck must keep at least ${MIN_RUN_DECK_SIZE} cards.`,
       });
       return;
     }
@@ -300,7 +302,7 @@ export function Shop({
     if (!canRemoveSelectedCard) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Choose a different card. Battle questions need at least ${minimumBattleWordOptions} distinct visible words after removal.`,
+        message: `Choose a different card. Battle questions need at least ${MIN_DISTINCT_VISIBLE_WORDS} distinct visible words after removal.`,
       });
       return;
     }
@@ -310,7 +312,7 @@ export function Shop({
     if (!isPurchased) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Unable to buy Remove Card. It costs ${cost} gold, needs a valid current-run card, and cannot reduce the deck below ${minimumRunDeckSize} cards.`,
+        message: `Unable to buy Remove Card. It costs ${cost} gold, needs a valid current-run card, and cannot reduce the deck below ${MIN_RUN_DECK_SIZE} cards.`,
       });
       return;
     }
@@ -366,8 +368,9 @@ export function Shop({
               deck.
             </p>
             <p className="mt-2 text-sm font-bold text-amber-900">
-              Run failure, run restart, or page refresh resets these deck
-              changes. Word mastery and completed deck status stay permanent.
+              Costs spend temporary run gold only. Run failure, run restart, or
+              page refresh resets these deck changes. Word mastery and
+              completed deck status stay permanent.
             </p>
           </div>
           <div className="grid gap-3 sm:min-w-72 sm:grid-cols-4">
@@ -386,7 +389,7 @@ export function Shop({
             <StatCard
               label="Deck Size"
               value={currentRunDeck.length}
-              helper={`Min ${minimumRunDeckSize} cards / ${minimumBattleWordOptions} words`}
+              helper={`Min ${MIN_RUN_DECK_SIZE} cards / ${MIN_DISTINCT_VISIBLE_WORDS} words`}
               tone={canRemoveCards ? "sky" : "red"}
             />
             <StatCard
@@ -476,7 +479,7 @@ export function Shop({
                             </span>
                             <span className="text-sm font-semibold text-slate-600">
                               {card.baseAttack} -&gt;{" "}
-                              {card.baseAttack + attackUpgradeAmount}
+                              {card.baseAttack + UPGRADE_ATTACK_AMOUNT}
                             </span>
                           </div>
                         </button>
@@ -487,7 +490,7 @@ export function Shop({
                     <p className="mt-3 text-sm font-semibold text-emerald-900">
                       Preview: {selectedAttackCard.word}{" "}
                       {selectedAttackCard.baseAttack} -&gt;{" "}
-                      {selectedAttackCard.baseAttack + attackUpgradeAmount}
+                      {selectedAttackCard.baseAttack + UPGRADE_ATTACK_AMOUNT}
                     </p>
                   )}
                 </div>
@@ -520,7 +523,7 @@ export function Shop({
                             </span>
                             <span className="text-sm font-semibold text-slate-600">
                               Shield {currentShield} -&gt;{" "}
-                              {currentShield + shieldUpgradeAmount}
+                              {currentShield + ADD_SHIELD_AMOUNT}
                             </span>
                           </div>
                         </button>
@@ -532,7 +535,7 @@ export function Shop({
                       Preview: {selectedShieldCard.word} Shield{" "}
                       {getCardShieldAmount(selectedShieldCard)} -&gt;{" "}
                       {getCardShieldAmount(selectedShieldCard) +
-                        shieldUpgradeAmount}
+                        ADD_SHIELD_AMOUNT}
                     </p>
                   )}
                 </div>
@@ -598,8 +601,8 @@ export function Shop({
                   {!canRemoveCards && (
                     <p className="mt-2 rounded-md border border-red-200 bg-white p-2 text-sm font-semibold text-red-700">
                       Remove Card is disabled. Current-run deck must keep at
-                      least {minimumRunDeckSize} cards and{" "}
-                      {minimumBattleWordOptions} distinct words so battle
+                      least {MIN_RUN_DECK_SIZE} cards and{" "}
+                      {MIN_DISTINCT_VISIBLE_WORDS} distinct words so battle
                       questions still have enough options.
                     </p>
                   )}
@@ -635,7 +638,7 @@ export function Shop({
                     <p className="mt-3 text-sm font-semibold text-red-900">
                       {canRemoveSelectedCard
                         ? `Preview: remove ${selectedRemoveCard.word}. Deck size ${currentRunDeck.length} -> ${currentRunDeck.length - 1}`
-                        : `Choose a different card. At least ${minimumBattleWordOptions} distinct words must remain for battle questions.`}
+                        : `Choose a different card. At least ${MIN_DISTINCT_VISIBLE_WORDS} distinct words must remain for battle questions.`}
                     </p>
                   )}
                 </div>

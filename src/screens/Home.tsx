@@ -1,5 +1,6 @@
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
+import { BOSS_MONSTER_REQUIREMENT } from "../game/balance";
 import type { ScreenName, VocabularyDeck } from "../types";
 
 type HomeProps = {
@@ -48,6 +49,8 @@ export function Home({
           <div className="flex flex-wrap gap-2">
             <Badge tone="emerald">Vocabulary cards</Badge>
             <Badge tone="purple">Deckbuilder run</Badge>
+            <Badge tone="sky">Training untimed</Badge>
+            <Badge tone="red">Dungeon timed</Badge>
             <Badge tone="amber">Placeholder art</Badge>
           </div>
           <h3 className="mt-5 max-w-2xl text-5xl font-black text-amber-950">
@@ -55,7 +58,8 @@ export function Home({
           </h3>
           <p className="mt-4 max-w-2xl text-lg font-medium leading-8 text-amber-950/80">
             Permanent word mastery is saved locally. Current dungeon runs remain
-            temporary and reset separately, just like a proper little roguelike.
+            temporary and reset separately. Train safely at camp, then face
+            timed battles and a boss after {BOSS_MONSTER_REQUIREMENT} monsters.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button type="button" onClick={() => onNavigate("deck-review")}>

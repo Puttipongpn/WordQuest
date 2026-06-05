@@ -7,6 +7,7 @@ import {
   ProgressBar,
   StatCard,
 } from "../components/ui";
+import { MAX_WORD_MASTERY } from "../game/balance";
 import type { VocabularyDeck, WordCard, WordMasteryByCardId } from "../types";
 
 type AnswerResult = "correct" | "wrong";
@@ -21,7 +22,6 @@ type TrainingQuestion = {
   choices: WordCard[];
 };
 
-const masteryTarget = 5;
 const trainingQuestionTypes: TrainingQuestionType[] = [
   "thai-to-english",
   "sentence-cloze",
@@ -158,7 +158,7 @@ export function Training({
     <ScreenShell
       eyebrow="Practice"
       title="Training"
-      description="Practice outside dungeon runs. Correct answers save word mastery only."
+      description="Practice outside dungeon runs. Training is untimed, and correct answers save word mastery only."
       framed={false}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -166,6 +166,7 @@ export function Training({
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <Badge tone="emerald">Recall Training</Badge>
+              <Badge tone="sky" className="ml-2">Untimed</Badge>
               <h3 className="mt-1 text-2xl font-black text-amber-950">
                 Build recall with meaning and context
               </h3>
@@ -332,12 +333,12 @@ export function Training({
               <div className="mt-3">
                 <ProgressBar
                   value={currentMastery}
-                  max={masteryTarget}
+                  max={MAX_WORD_MASTERY}
                   label={`${currentQuestion.card.word} mastery`}
                 />
               </div>
               <p className="mt-2 text-sm font-semibold text-slate-700">
-                {currentMastery} / {masteryTarget}
+                {currentMastery} / {MAX_WORD_MASTERY}
               </p>
             </div>
           </div>

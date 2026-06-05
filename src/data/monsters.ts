@@ -1,3 +1,4 @@
+import { GOLD_PER_MONSTER } from "../game/balance";
 import type { Monster } from "../types";
 
 export const sampleMonsters: Monster[] = [
@@ -7,7 +8,7 @@ export const sampleMonsters: Monster[] = [
     hp: 18,
     maxHp: 18,
     attack: 4,
-    goldReward: 6,
+    goldReward: GOLD_PER_MONSTER,
     imagePlaceholder: "🟢",
   },
   {
@@ -16,7 +17,7 @@ export const sampleMonsters: Monster[] = [
     hp: 24,
     maxHp: 24,
     attack: 6,
-    goldReward: 9,
+    goldReward: GOLD_PER_MONSTER,
     imagePlaceholder: "👺",
   },
   {
@@ -25,7 +26,7 @@ export const sampleMonsters: Monster[] = [
     hp: 20,
     maxHp: 20,
     attack: 5,
-    goldReward: 7,
+    goldReward: GOLD_PER_MONSTER,
     imagePlaceholder: "🦇",
   },
 ];

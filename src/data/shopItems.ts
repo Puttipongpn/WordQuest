@@ -1,24 +1,33 @@
+import {
+  ADD_SHIELD_AMOUNT,
+  SHOP_ADD_ELEMENT_COST,
+  SHOP_ADD_SHIELD_COST,
+  SHOP_DUPLICATE_CARD_COST,
+  SHOP_REMOVE_CARD_COST,
+  SHOP_UPGRADE_ATTACK_COST,
+  UPGRADE_ATTACK_AMOUNT,
+} from "../game/balance";
 import type { ShopItem } from "../types";
 
 export const sampleShopItems: ShopItem[] = [
   {
     id: "upgrade-attack",
     name: "Upgrade Attack",
-    description: "Increase a selected card's attack by +2 for this run.",
-    cost: 35,
+    description: `Increase a selected card's attack by +${UPGRADE_ATTACK_AMOUNT} for this run.`,
+    cost: SHOP_UPGRADE_ATTACK_COST,
     type: "upgrade-attack",
     icon: "ATK",
     effect: {
       type: "attack",
-      amount: 2,
-      description: "Add +2 attack to a selected word card.",
+      amount: UPGRADE_ATTACK_AMOUNT,
+      description: `Add +${UPGRADE_ATTACK_AMOUNT} attack to a selected word card.`,
     },
   },
   {
     id: "add-fire-element",
     name: "Add Fire Element",
     description: "Add or replace Fire element on a selected card for this run.",
-    cost: 45,
+    cost: SHOP_ADD_ELEMENT_COST,
     type: "add-element",
     icon: "FIRE",
     effect: {
@@ -32,7 +41,7 @@ export const sampleShopItems: ShopItem[] = [
     id: "add-water-element",
     name: "Add Water Element",
     description: "Add or replace Water element on a selected card for this run.",
-    cost: 45,
+    cost: SHOP_ADD_ELEMENT_COST,
     type: "add-element",
     icon: "WATER",
     effect: {
@@ -46,7 +55,7 @@ export const sampleShopItems: ShopItem[] = [
     id: "add-wind-element",
     name: "Add Wind Element",
     description: "Add or replace Wind element on a selected card for this run.",
-    cost: 45,
+    cost: SHOP_ADD_ELEMENT_COST,
     type: "add-element",
     icon: "WIND",
     effect: {
@@ -60,7 +69,7 @@ export const sampleShopItems: ShopItem[] = [
     id: "add-earth-element",
     name: "Add Earth Element",
     description: "Add or replace Earth element on a selected card for this run.",
-    cost: 45,
+    cost: SHOP_ADD_ELEMENT_COST,
     type: "add-element",
     icon: "EARTH",
     effect: {
@@ -73,21 +82,21 @@ export const sampleShopItems: ShopItem[] = [
   {
     id: "add-shield",
     name: "Add Shield",
-    description: "Give a selected card Shield +3 for this run.",
-    cost: 40,
+    description: `Give a selected card Shield +${ADD_SHIELD_AMOUNT} for this run.`,
+    cost: SHOP_ADD_SHIELD_COST,
     type: "add-shield",
     icon: "SHD",
     effect: {
       type: "shield",
-      amount: 3,
-      description: "Add +3 shield to a selected word card.",
+      amount: ADD_SHIELD_AMOUNT,
+      description: `Add +${ADD_SHIELD_AMOUNT} shield to a selected word card.`,
     },
   },
   {
     id: "remove-card",
     name: "Remove Card",
     description: "Remove one card from the current run deck.",
-    cost: 30,
+    cost: SHOP_REMOVE_CARD_COST,
     type: "remove-card",
     icon: "CUT",
     effect: {
@@ -98,7 +107,7 @@ export const sampleShopItems: ShopItem[] = [
     id: "duplicate-card",
     name: "Duplicate Card",
     description: "Copy one card into the current run deck.",
-    cost: 50,
+    cost: SHOP_DUPLICATE_CARD_COST,
     type: "duplicate-card",
     icon: "COPY",
     effect: {

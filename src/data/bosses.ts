@@ -3,9 +3,9 @@ import type { Boss } from "../types";
 export const sampleBoss: Boss = {
   id: "boss-gatekeeper",
   name: "Gatekeeper",
-  hp: 80,
-  maxHp: 80,
-  attack: 9,
+  hp: 76,
+  maxHp: 76,
+  attack: 8,
   goldReward: 0,
   imagePlaceholder: "🚪",
   bossNumber: 1,

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 24 complete. Phase 25 has not started yet.
+Current phase: Phase 25 complete. Phase 26 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -130,7 +130,7 @@ GitHub backup is configured:
 - Added a temporary current-run deck copy that starts from `Starter Deck`.
 - Updated Dungeon battle questions to use the current-run deck instead of the source `Starter Deck`.
 - Added temporary run gold starting at 20.
-- Added +5 temporary gold when a monster is defeated.
+- Added temporary gold when a monster is defeated, currently tuned to +6.
 - Added active `Upgrade Attack` purchase logic in the Shop.
 - Added current-run card selection for Upgrade Attack purchases.
 - Upgrade Attack increases the selected current-run card's `baseAttack` by +2 and subtracts the existing shop item cost.
@@ -263,7 +263,7 @@ GitHub backup is configured:
 - Kept timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop rule changes, boss rule changes, save rule changes, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 23.
 - Added the first Dungeon-only battle timer foundation.
-- Added static time limits: Word Choice 12 seconds, Word Match 18 seconds, and Word Scramble 20 seconds.
+- Added static time limits, currently tuned to Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
 - Dungeon now shows remaining time, current mini-game limit, and a low-time warning style at 3 seconds or less.
 - Countdown starts for active Dungeon battle questions and stops after an answer.
 - Timeout is treated as a wrong answer: no card triggers, monster or boss attacks, and shield absorbs damage before HP.
@@ -279,9 +279,9 @@ The following screens are implemented or stubbed:
 
 - Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
 - Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
-- Training: polished recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
-- Dungeon: polished local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
-- Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, plus back-to-dungeon routing.
+- Training: polished untimed recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
+- Dungeon: polished timed local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
+- Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, temporary run gold costs, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
 Navigation is controlled by `currentScreen` state in `src/App.tsx`.
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, and after Phase 24 Dungeon battle timer foundation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, and after Phase 25 basic balance pass work.
 
 The local development server can be started with:
 
@@ -310,7 +310,7 @@ The app is intentionally small and simple.
 - `src/components`: reusable UI pieces such as the app header, screen layout shell, and small UI primitives.
 - `src/screens`: top-level screen components.
 - `src/types`: shared TypeScript types.
-- `src/game`: reserved for pure game logic.
+- `src/game`: pure game rules and shared balance constants.
 - `src/data`: reserved for seed vocabulary decks and game data.
 - `src/utils`: utility helpers, currently including LocalStorage player progress save/load/reset.
 
@@ -338,6 +338,10 @@ Current utility files:
 
 - `src/utils/playerProgressStorage.ts`: LocalStorage load, save, reset, default progress, save version, and validation fallback helpers.
 
+Current game rule files:
+
+- `src/game/balance.ts`: first-pass balance constants for player HP, shield, gold, shop interval, boss milestone, shop upgrade amounts, deck safety limits, Dungeon timer limits, and shop item costs.
+
 Current data files:
 
 - `src/data/starterDeck.ts`: the first sample vocabulary deck.
@@ -346,6 +350,21 @@ Current data files:
 - `src/data/bosses.ts`: sample boss data with Gatekeeper.
 - `src/data/shopItems.ts`: sample current-run shop item placeholders.
 - `src/data/index.ts`: data exports, including `availableDecks`.
+
+Current balance values:
+
+- Player max HP: `32`
+- Starting gold: `20`
+- Gold per defeated monster: `6`
+- Shop interval: every `5` defeated monsters
+- Boss requirement: `20` defeated monsters
+- Gatekeeper boss: `76` HP and `8` attack
+- Upgrade Attack amount: `+2`
+- Add Shield amount: `+3`
+- Minimum current-run deck size: `5`
+- Minimum distinct visible words for battle questions: `4`
+- Dungeon timers: Word Choice `14s`, Word Match `20s`, Word Scramble `22s`
+- Card baseAttack values were not changed in Phase 25.
 
 Repository files:
 
@@ -379,6 +398,7 @@ Current Training implementation:
 - A Next button advances to the next question.
 - The final question shows a Restart button that resets the local training session.
 - Training progress shows current question, total questions, correct count, and incorrect count.
+- Training is untimed; this is intentional so players can practice safely before timed Dungeon battles.
 - Training receives saved `wordMastery` and an `onIncreaseWordMastery` callback from `src/App.tsx`.
 - Correct answers increase that word's mastery by 1 and save updated permanent progress to LocalStorage.
 - Mastery cannot exceed 5.
@@ -425,7 +445,7 @@ Current Dungeon implementation:
 - Battle questions use a simple mini-game structure and the current-run deck.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Dungeon battle questions are timed.
-- Current static time limits are Word Choice 12 seconds, Word Match 18 seconds, and Word Scramble 20 seconds.
+- Current static time limits are Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
 - Timer countdown runs only while a Dungeon battle question is active and unanswered.
 - Timeout is treated as a wrong answer and causes the current monster or boss to attack.
 - Word Choice shows one prompt card with an English-to-Thai, Thai-to-English, or cloze-style prompt.
@@ -444,19 +464,20 @@ Current Dungeon implementation:
 - Battle feedback shows triggered card, damage dealt, damage taken, shield absorbed, HP damage, shield gained, triggered effects, and correct/wrong result.
 - When monster HP reaches 0, the screen shows `Monster Defeated` and allows spawning the next sample monster.
 - Defeating a monster increases `monstersDefeated` by 1.
-- Defeating a monster grants +5 temporary gold.
+- Defeating a monster grants +6 temporary gold.
 - Shop checkpoints occur every 5 defeated monsters.
 - At a shop checkpoint, Dungeon shows `Shop Available` and a `Go To Shop` button.
 - Shop routing can mutate the current-run deck only through active current-run purchases.
 - Restarting a failed run resets temporary run progression, gold, monster state, HP, shield, and the current-run deck back to a fresh copy of the selected deck.
 - When player HP reaches 0, the screen shows `Run Failed` and allows restarting the local run.
-- Gold starts at 20 and is functional for Upgrade Attack and Add Shield purchases.
+- Gold starts at 20 and is functional for current-run shop purchases.
+- Player max HP is 32 for the first balance pass.
 - Shield starts at 0 and is functional temporary run state.
 - Monster attacks reduce shield before damaging player HP.
 - Triggered cards with shield effects add shield while still dealing `baseAttack` damage.
 - Dungeon feedback shows total monster attack, shield absorbed, HP damage taken, shield gained, triggered card, and triggered effects summary.
 - Boss becomes available after 20 defeated monsters.
-- The first boss is Gatekeeper.
+- The first boss is Gatekeeper with 76 HP and 8 attack.
 - Boss battles use the same mini-games and Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
 - Boss defeat marks the selected deck as completed in permanent LocalStorage progress.
@@ -471,6 +492,7 @@ Current Dungeon implementation:
 - Phase 17 added the first permanent completion reward; Phase 21 generalized it so boss defeat saves the selected deck id in `completedDeckIds`.
 - Phase 23 redesigned Word Choice prompts for better vocabulary recall and context practice.
 - Phase 24 added Dungeon-only battle timers and timeout-as-wrong-answer behavior.
+- Phase 25 added shared balance constants, tuned player HP, gold per monster, Dungeon timer limits, and Gatekeeper stats.
 
 Current Shop implementation:
 
@@ -724,18 +746,18 @@ Initial battle mini-games:
 - Word Choice
   - Shows one prompt card with English-to-Thai, Thai-to-English, or Example Sentence Cloze prompt.
   - Shows 4 choices matching the prompt direction.
-  - Has a 12-second Dungeon battle time limit.
+  - Has a 14-second Dungeon battle time limit.
   - Correct answer triggers the prompt word card.
 - Word Match
   - Shows 3 English words and 3 Thai meanings.
   - Player selects one English word and one Thai meaning.
-  - Has an 18-second Dungeon battle time limit.
+  - Has a 20-second Dungeon battle time limit.
   - Correct pair triggers the selected English word card.
 - Word Scramble
   - Show multiple scrambled word choices.
   - Player chooses which word to solve.
   - Player types the original English word.
-  - Has a 20-second Dungeon battle time limit.
+  - Has a 22-second Dungeon battle time limit.
   - Solving correctly triggers the selected current-run card.
   - Current-run attack and shield upgrades apply through the Card Trigger System.
 
@@ -812,7 +834,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 24 is complete.
+Phase 25 is complete.
 
 Recommended next task:
 

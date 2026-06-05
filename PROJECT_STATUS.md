@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 24 Dungeon Battle Timer Foundation is complete. GitHub backup is configured on `origin/main`.
+Phase 25 Basic Balance Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -124,7 +124,7 @@ Phase 24 Dungeon Battle Timer Foundation is complete. GitHub backup is configure
 - Added a temporary current-run deck copy that starts from `Starter Deck`.
 - Updated Dungeon battle questions to use the current-run deck instead of the source `Starter Deck`.
 - Added temporary run gold starting at 20.
-- Added +5 temporary gold when a monster is defeated.
+- Added temporary gold when a monster is defeated, currently tuned to +6.
 - Added active `Upgrade Attack` purchase logic in the Shop.
 - Allowed selecting one current-run card and increasing its `baseAttack` by +2 after purchase.
 - Subtracted the existing Upgrade Attack shop item cost when purchase succeeds.
@@ -263,9 +263,9 @@ Phase 24 Dungeon Battle Timer Foundation is complete. GitHub backup is configure
 - No timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop changes, boss changes, deck unlock changes, save rule changes, or final art assets were added.
 - Verified the project with `npm run build` after Phase 23.
 - Added the first Dungeon-only battle timer foundation.
-- Word Choice now has a 12-second time limit.
-- Word Match now has an 18-second time limit.
-- Word Scramble now has a 20-second time limit.
+- Word Choice now has a 14-second time limit.
+- Word Match now has a 20-second time limit.
+- Word Scramble now has a 22-second time limit.
 - Dungeon displays remaining time, the current mini-game time limit, and a low-time warning style at 3 seconds or less.
 - Timer starts when a new battle question begins and stops after the player answers.
 - Timer resets on next battle question, next monster, boss battle start, and run restart.
@@ -275,6 +275,18 @@ Phase 24 Dungeon Battle Timer Foundation is complete. GitHub backup is configure
 - Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, and LocalStorage permanent-progress-only rules.
 - No Training timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop changes, boss changes, deck unlock changes, save rule changes, or final art assets were added.
 - Verified the project with `npm run build` after Phase 24.
+- Added first-pass balance constants in `src/game/balance.ts`.
+- Centralized shared balance values for player HP, starting gold, gold per monster, shop interval, boss milestone, shop upgrade amounts, deck safety limits, timer limits, and shop item costs.
+- Tuned player max HP from 30 to 32.
+- Tuned monster defeat gold from +5 to +6.
+- Tuned Dungeon timer limits to Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
+- Tuned Gatekeeper boss stats from 80 HP / 9 attack to 76 HP / 8 attack.
+- Kept card baseAttack values unchanged for this first balance pass.
+- Aligned sample monster `goldReward` data with the shared gold-per-monster balance value.
+- Added small UI copy clarifying that Training is untimed, Dungeon battles are timed, boss appears after 20 monsters, and shop costs spend temporary run gold.
+- Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, timer behavior, Training untimed behavior, and LocalStorage permanent-progress-only rules.
+- No new gameplay systems, advanced element interactions, Oxford 3000 import, backend, auth, database, API, final art assets, save rule changes, or deck unlock changes were added.
+- Verified the project with `npm run build` after Phase 25.
 
 ## In Progress
 
@@ -282,7 +294,7 @@ Phase 24 Dungeon Battle Timer Foundation is complete. GitHub backup is configure
 
 ## Next Task
 
-Phase 25 has not been defined yet. Continue with the next explicitly requested phase or feature.
+Phase 25 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -394,6 +406,9 @@ The following documents are required and must be updated after every completed t
 - Cloze questions support contextual vocabulary practice
 - Picture-to-Thai choice is no longer the main training pattern
 - Dungeon mini-games use simple static timers
+- Basic balance constants live in `src/game/balance.ts`
+- Current prototype balance targets are approachable Starter runs, slightly more room before the first shop, and a boss that is stronger but not unfair
+- Static timer values remain first-pass values and are tuned for beginner learners
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
@@ -423,5 +438,5 @@ Keep game playable and simple.
 - Full dungeon battle logic
 - Run rewards
 - Save migrations beyond version 1
-- Balancing
+- Advanced balancing
 - Additional mobile polish

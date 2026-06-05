@@ -157,6 +157,35 @@ Current prototype rules:
 
 Deck Review displays current saved mastery after page refresh. Training updates mastery on correct answers.
 
+## Basic Balance
+
+First-pass balance values live in `src/game/balance.ts`.
+
+Current prototype targets:
+
+- Starter Deck should feel approachable for early learners.
+- Food Deck can feel slightly more demanding through vocabulary, not new combat rules.
+- A run should leave enough room to reach the first shop without feeling impossible.
+- The boss should feel stronger than regular monsters without being unfair.
+- Dungeon timers should add pressure but remain beginner-friendly.
+
+Current shared values:
+
+- Player max HP: `32`
+- Starting gold: `20`
+- Gold per monster defeated: `6`
+- Shop interval: every `5` defeated monsters
+- Boss requirement: `20` defeated monsters
+- Upgrade Attack amount: `+2`
+- Add Shield amount: `+3`
+- Minimum current-run deck size: `5`
+- Minimum distinct visible words for battle questions: `4`
+- Word Choice timer: `14` seconds
+- Word Match timer: `20` seconds
+- Word Scramble timer: `22` seconds
+
+Card baseAttack values remain unchanged in the first balance pass. Static timer values are still first-pass values; difficulty scaling and advanced balance systems are deferred.
+
 ## Training Mode
 
 Training mode is outside dungeon runs.
@@ -202,9 +231,9 @@ Current battle rules:
 - Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Dungeon battle questions are timed.
-- Word Choice has a 12-second time limit.
-- Word Match has an 18-second time limit.
-- Word Scramble has a 20-second time limit.
+- Word Choice has a 14-second time limit.
+- Word Match has a 20-second time limit.
+- Word Scramble has a 22-second time limit.
 - Timer countdown runs only while a Dungeon battle question is active and unanswered.
 - If time reaches 0, the result is treated as a wrong answer.
 - Word Choice uses recall-focused prompts instead of image-only prompts.
@@ -229,7 +258,7 @@ Current battle rules:
 - Shield starts at 0 each run and is temporary run progress.
 - When monster HP reaches 0, the screen shows `Monster Defeated`.
 - Defeating a monster increases `monstersDefeated` by 1.
-- Defeating a monster grants +5 temporary gold.
+- Defeating a monster grants +6 temporary gold.
 - Shop checkpoints occur every 5 defeated monsters.
 - When a shop checkpoint is reached, Dungeon shows `Shop Available`.
 - Dungeon can route to Shop with a `Go To Shop` button.
@@ -241,7 +270,7 @@ Current battle rules:
 - Remove Card is guarded so battle questions keep enough distinct visible words.
 - After a monster is defeated, the player can spawn the next sample monster.
 - Boss becomes available after 20 defeated monsters.
-- The current sample boss is Gatekeeper.
+- The current sample boss is Gatekeeper, tuned to 76 HP and 8 attack.
 - Boss battles use the same Word Choice, Word Match, Word Scramble, Card Trigger System, current-run deck, attack, shield, and element display behavior as regular monster battles.
 - Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
 - When boss HP reaches 0, the screen shows `Run Complete`.
@@ -280,11 +309,11 @@ Battle mini-games:
 
 - Word Choice: implemented.
 - Word Choice uses English/Thai recall and cloze-style prompts rather than image-only prompts.
-- Word Choice has a 12-second Dungeon battle timer.
+- Word Choice has a 14-second Dungeon battle timer.
 - Word Match: implemented.
-- Word Match has an 18-second Dungeon battle timer.
+- Word Match has a 20-second Dungeon battle timer.
 - Word Scramble: implemented with typed input, 3 scrambled current-run card options, and Card Trigger System effects.
-- Word Scramble has a 20-second Dungeon battle timer.
+- Word Scramble has a 22-second Dungeon battle timer.
 
 Battle mini-game timers currently use simple static values first. Difficulty-based timer scaling is deferred.
 

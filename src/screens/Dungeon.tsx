@@ -8,6 +8,14 @@ import {
   StatCard,
 } from "../components/ui";
 import { sampleBoss, sampleMonsters } from "../data";
+import {
+  BOSS_MONSTER_REQUIREMENT,
+  INITIAL_SHIELD,
+  PLAYER_MAX_HP,
+  WORD_CHOICE_TIME_LIMIT,
+  WORD_MATCH_TIME_LIMIT,
+  WORD_SCRAMBLE_TIME_LIMIT,
+} from "../game/balance";
 import type {
   Monster,
   RunProgressState,
@@ -72,9 +80,6 @@ type BattleLog = {
   rewardSummary?: string;
 };
 
-const initialPlayerHp = 30;
-const initialShield = 0;
-const bossMilestone = 20;
 const battleMiniGames: BattleMiniGameType[] = [
   "word-choice",
   "word-match",
@@ -256,14 +261,14 @@ function formatMiniGameName(miniGameType: BattleMiniGameType) {
 
 function getMiniGameTimeLimit(miniGameType: BattleMiniGameType) {
   if (miniGameType === "word-choice") {
-    return 12;
+    return WORD_CHOICE_TIME_LIMIT;
   }
 
   if (miniGameType === "word-match") {
-    return 18;
+    return WORD_MATCH_TIME_LIMIT;
   }
 
-  return 20;
+  return WORD_SCRAMBLE_TIME_LIMIT;
 }
 
 function getCardShieldAmount(card: WordCard) {
@@ -306,8 +311,8 @@ export function Dungeon({
   selectedDeck,
 }: DungeonProps) {
   const initialMiniGameType = useMemo(() => chooseBattleMiniGame(), []);
-  const [playerHp, setPlayerHp] = useState(initialPlayerHp);
-  const [shield, setShield] = useState(initialShield);
+  const [playerHp, setPlayerHp] = useState(PLAYER_MAX_HP);
+  const [shield, setShield] = useState(INITIAL_SHIELD);
   const [monsterIndex, setMonsterIndex] = useState(0);
   const [monsterHp, setMonsterHp] = useState(
     () => getMonsterForIndex(0).maxHp,
@@ -368,7 +373,7 @@ export function Dungeon({
     runProgress.monstersDefeated > 0 &&
     runProgress.monstersDefeated === runProgress.nextShopAt;
   const isBossAvailable =
-    runProgress.monstersDefeated >= bossMilestone &&
+    runProgress.monstersDefeated >= BOSS_MONSTER_REQUIREMENT &&
     !isBossEncounter &&
     !hasCompletedBoss;
   const monstersUntilShop = Math.max(
@@ -612,8 +617,8 @@ export function Dungeon({
     const nextMiniGameType = chooseBattleMiniGame();
 
     onResetRun();
-    setPlayerHp(initialPlayerHp);
-    setShield(initialShield);
+    setPlayerHp(PLAYER_MAX_HP);
+    setShield(INITIAL_SHIELD);
     setIsBossEncounter(false);
     setHasCompletedBoss(false);
     setMonsterIndex(0);
@@ -633,7 +638,7 @@ export function Dungeon({
     <ScreenShell
       eyebrow="Battle"
       title="Dungeon"
-      description="Answer vocabulary mini-games to trigger cards. Run state here is local and temporary."
+      description="Answer timed vocabulary mini-games to trigger cards. Run state here is local and temporary."
       framed={false}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
@@ -667,6 +672,11 @@ export function Dungeon({
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Badge tone="red">{encounterLabel} Attack {currentEncounter.attack}</Badge>
                   {isBossEncounter && <Badge tone="purple">Boss Battle</Badge>}
+                  {!isBossEncounter && (
+                    <Badge tone="amber">
+                      Boss after {BOSS_MONSTER_REQUIREMENT}
+                    </Badge>
+                  )}
                 </div>
               </div>
               <div>
@@ -693,6 +703,9 @@ export function Dungeon({
                 <h3 className="mt-2 text-3xl font-black text-amber-950">
                   Answer to trigger your card
                 </h3>
+                <p className="mt-1 text-sm font-semibold text-amber-900/70">
+                  Dungeon questions are timed; Training stays untimed for safe practice.
+                </p>
               </div>
               <div className="min-w-44 rounded-xl border-2 border-amber-900/15 bg-white/80 p-3 shadow-inner">
                 <div className="flex items-center justify-between gap-3">
@@ -747,12 +760,12 @@ export function Dungeon({
           <section className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             <StatCard
               label="Player HP"
-              value={`${playerHp} / ${initialPlayerHp}`}
+              value={`${playerHp} / ${PLAYER_MAX_HP}`}
               tone="red"
             >
               <ProgressBar
                 value={playerHp}
-                max={initialPlayerHp}
+                max={PLAYER_MAX_HP}
                 tone="red"
                 label="Player HP"
               />
@@ -774,7 +787,7 @@ export function Dungeon({
                     ? "Active"
                     : isBossAvailable
                       ? "Ready"
-                      : `${runProgress.monstersDefeated} / ${bossMilestone}`
+                      : `${runProgress.monstersDefeated} / ${BOSS_MONSTER_REQUIREMENT}`
               }
               tone={
                 hasCompletedBoss
