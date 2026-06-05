@@ -189,6 +189,10 @@ export default function App() {
     });
   }
 
+  function gainRunGold(amount: number) {
+    setRunGold((currentGold) => currentGold + amount);
+  }
+
   function resetCurrentRun() {
     setRunProgress(initialRunProgress);
     setRunGold(STARTING_GOLD);
@@ -416,6 +420,7 @@ export default function App() {
             currentRunDeck={currentRunDeck}
             isSelectedDeckCompleted={completedDeckIds.includes(selectedDeck.id)}
             onCompleteSelectedDeck={markSelectedDeckCompleted}
+            onGainRunGold={gainRunGold}
             onMonsterDefeated={recordMonsterDefeated}
             onNavigate={setCurrentScreen}
             onResetRun={resetCurrentRun}

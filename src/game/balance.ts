@@ -22,3 +22,8 @@ export const SHOP_ADD_SHIELD_COST = 40;
 export const SHOP_ADD_ELEMENT_COST = 45;
 export const SHOP_REMOVE_CARD_COST = 30;
 export const SHOP_DUPLICATE_CARD_COST = 50;
+
+export const FIRE_BONUS_DAMAGE = 2;
+export const WATER_SHIELD_GAIN = 2;
+export const EARTH_ATTACK_REDUCTION = 2;
+export const WIND_DEFEAT_GOLD_BONUS = 1;

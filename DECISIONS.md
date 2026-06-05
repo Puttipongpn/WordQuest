@@ -488,7 +488,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: Element effects show in battle feedback but do not change damage, weakness, resistance, or other combat math.
 - Reason: The first element phase should validate card modification and UI feedback before adding advanced interactions.
-- Status: Accepted
+- Status: Superseded by Phase 26 first-pass element gameplay effects
 
 ### 2026-06-04: Element Effects Are Temporary Current-Run Card Effects
 
@@ -668,6 +668,24 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: Dungeon timer limits remain static first-pass values rather than scaling by deck, difficulty, monster, or mastery.
 - Reason: Static timers keep the current combat loop predictable while the prototype is still validating core learning and run systems.
+- Status: Accepted
+
+### 2026-06-05: Elements Have First-Pass Gameplay Effects
+
+- Decision: Dungeon element effects are now functional: Fire adds damage, Water grants shield, Wind grants extra gold on defeat, and Earth reduces the next attack.
+- Reason: Elements should matter in combat while staying small enough to balance during the prototype.
+- Status: Accepted
+
+### 2026-06-05: Element Effects Remain Current-Run Only
+
+- Decision: Element effects and their combat benefits remain temporary current-run card effects and are not saved to LocalStorage.
+- Reason: Element upgrades are shop/run progress, not permanent vocabulary learning progress.
+- Status: Accepted
+
+### 2026-06-05: Advanced Element Matchups Deferred
+
+- Decision: Do not add elemental weakness, resistance, matchups, scaling, or advanced balance interactions yet.
+- Reason: Phase 26 should prove simple element utility before adding complexity.
 - Status: Accepted
 
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments

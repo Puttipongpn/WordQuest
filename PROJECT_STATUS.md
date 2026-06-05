@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 25 Basic Balance Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 26 Element Interaction Foundation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -287,6 +287,17 @@ Phase 25 Basic Balance Pass is complete. GitHub backup is configured on `origin/
 - Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, timer behavior, Training untimed behavior, and LocalStorage permanent-progress-only rules.
 - No new gameplay systems, advanced element interactions, Oxford 3000 import, backend, auth, database, API, final art assets, save rule changes, or deck unlock changes were added.
 - Verified the project with `npm run build` after Phase 25.
+- Added first-pass element gameplay constants in `src/game/balance.ts`.
+- Fire element now deals +2 bonus damage when the card triggers.
+- Water element now grants +2 extra shield when the card triggers.
+- Wind element now grants +1 extra temporary gold if the triggered hit defeats the monster or boss.
+- Earth element now reduces the immediate next monster or boss attack by 2.
+- Earth pending reduction resets after it is used, when the battle question advances, when a new monster starts, when boss battle starts, or when the run restarts.
+- Dungeon feedback now shows base damage, element bonus damage, final total damage, card shield, Water shield, Earth reduction, Wind gold, shield block, HP damage, and attack damage taken.
+- Element effects remain temporary current-run card effects and are not saved to LocalStorage.
+- Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, timer behavior, Training untimed behavior, balance constants, and LocalStorage permanent-progress-only rules.
+- No Oxford 3000 import, backend, auth, database, API, final art assets, deck unlock changes, save rule changes, new shop items, or advanced weakness/resistance system were added.
+- Verified the project with `npm run build` after Phase 26.
 
 ## In Progress
 
@@ -294,7 +305,7 @@ Phase 25 Basic Balance Pass is complete. GitHub backup is configured on `origin/
 
 ## Next Task
 
-Phase 25 is complete. Continue with the next explicitly requested phase or feature.
+Phase 26 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -379,7 +390,7 @@ The following documents are required and must be updated after every completed t
 - Shield and shield effects are not persisted to LocalStorage
 - Element shop items are active
 - A card may have one element effect for now
-- Element effects are display-only in Phase 14
+- Element effects started as display-only in Phase 14 and became simple gameplay effects in Phase 26
 - Element effects are temporary current-run card effects and are not persisted
 - Remove Card is an active current-run shop purchase
 - Duplicate Card is an active current-run shop purchase
@@ -409,6 +420,9 @@ The following documents are required and must be updated after every completed t
 - Basic balance constants live in `src/game/balance.ts`
 - Current prototype balance targets are approachable Starter runs, slightly more room before the first shop, and a boss that is stronger but not unfair
 - Static timer values remain first-pass values and are tuned for beginner learners
+- Elements now have simple first-pass gameplay effects during Dungeon battles
+- Element effects remain temporary current-run card effects
+- Advanced elemental weakness and resistance are still deferred
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

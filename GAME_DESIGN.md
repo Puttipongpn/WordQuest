@@ -183,6 +183,10 @@ Current shared values:
 - Word Choice timer: `14` seconds
 - Word Match timer: `20` seconds
 - Word Scramble timer: `22` seconds
+- Fire bonus damage: `+2`
+- Water shield gain: `+2`
+- Earth attack reduction: `2`
+- Wind defeat gold bonus: `+1`
 
 Card baseAttack values remain unchanged in the first balance pass. Static timer values are still first-pass values; difficulty scaling and advanced balance systems are deferred.
 
@@ -249,8 +253,12 @@ Current battle rules:
 - Triggered cards deal damage equal to `baseAttack`.
 - If a current-run card has been upgraded in the shop, the upgraded `baseAttack` is used for battle damage.
 - If a triggered card has a shield effect, the player gains that shield while the card still deals `baseAttack` damage.
-- If a triggered card has an element effect, Dungeon displays that element in the triggered effects summary.
-- Element effects do not change damage, weakness, or resistance in Phase 14.
+- If a triggered card has an element effect, Dungeon applies that element's first-pass gameplay effect.
+- Fire deals +2 bonus damage.
+- Water grants +2 shield.
+- Wind grants +1 extra temporary gold if the triggered hit defeats the monster or boss.
+- Earth reduces the immediate next monster or boss attack by 2.
+- Earth pending reduction resets after it is used, after the battle question advances, when a new monster starts, when boss battle starts, or when the run restarts.
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack.
 - Timeout does not trigger card effects and causes the current monster or boss to attack.
@@ -355,7 +363,7 @@ Current shop rules:
 - Element purchases use each shop item's existing cost.
 - If the player has enough temporary gold, the player can choose one current-run card and add or replace that card's element effect.
 - A card may have one element effect for now.
-- Element effects are display-only in Phase 14 and do not modify damage, weakness, or resistance.
+- Element effects started as display-only in Phase 14 and now apply simple first-pass Dungeon effects from Phase 26.
 - `Remove Card` is purchasable.
 - `Remove Card` uses its existing shop item cost.
 - If the player has enough temporary gold and the current-run deck has more than 5 cards, the player can choose one current-run card and remove it.
@@ -396,7 +404,7 @@ Rules:
   - Element
 - Attack effects currently use the card's `baseAttack` for damage.
 - Shield effects currently add player shield when the card triggers.
-- Element effects currently display in battle feedback only.
+- Element effects now apply simple first-pass gameplay effects during Dungeon battles.
 - Incorrect answers do not trigger card effects.
 - Future shop upgrades and enchantments modify card effects, not player stats directly.
 
@@ -411,7 +419,7 @@ Current element types:
 - Wind
 - Earth
 
-Elements are simple current-run card effect properties in Phase 14.
+Elements are simple current-run card effect properties with first-pass Dungeon gameplay effects.
 
 Current element rules:
 
@@ -419,9 +427,13 @@ Current element rules:
 - Adding a new element to a card replaces the previous element.
 - Element effects are temporary current-run card effects.
 - Element effects are not saved to LocalStorage.
-- Triggered cards display their element in the battle effects summary.
-- Element effects do not change damage yet.
-- Weakness, resistance, bonus damage, and advanced balance rules are deferred.
+- Triggered cards display their element and gameplay effect in the battle effects summary.
+- Fire: deal +2 bonus damage.
+- Water: gain +2 shield.
+- Wind: gain +1 extra temporary gold if the triggered hit defeats the monster or boss.
+- Earth: reduce the immediate next monster or boss attack by 2.
+- Earth does not persist forever; the pending reduction resets after use or when the battle question advances.
+- Weakness, resistance, element matchups, scaling, and advanced balance rules are deferred.
 
 ## Death Rule
 

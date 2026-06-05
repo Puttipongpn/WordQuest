@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 25 complete. Phase 26 has not started yet.
+Current phase: Phase 26 complete. Phase 27 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -164,7 +164,7 @@ GitHub backup is configured:
 - A current-run card may have one element effect for now.
 - Element effects are temporary current-run card effects and are not saved to LocalStorage.
 - Dungeon triggered effects summary now displays element effects, such as `Element: Fire`.
-- Element effects are display-only in Phase 14 and do not change damage, weakness, or resistance.
+- Element effects started as display-only in Phase 14; Phase 26 adds simple current-run-only gameplay effects while weakness and resistance remain deferred.
 - Preserved Word Choice, Word Match, Word Scramble, Upgrade Attack, Add Shield, shield absorption, gold rewards, shop checkpoint routing, and run reset behavior.
 - Kept remove card, duplicate card, boss logic, run rewards, timers, run persistence, advanced element interactions, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 14.
@@ -280,7 +280,7 @@ The following screens are implemented or stubbed:
 - Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
 - Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
 - Training: polished untimed recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
-- Dungeon: polished timed local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
+- Dungeon: polished timed local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, gold, shield absorption, first-pass element effects, shop checkpoint routing, boss encounter, Run Complete state, and permanent selected-deck completion reward.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, temporary run gold costs, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, and after Phase 25 basic balance pass work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, and after Phase 26 element interaction foundation work.
 
 The local development server can be started with:
 
@@ -364,6 +364,7 @@ Current balance values:
 - Minimum current-run deck size: `5`
 - Minimum distinct visible words for battle questions: `4`
 - Dungeon timers: Word Choice `14s`, Word Match `20s`, Word Scramble `22s`
+- Element values: Fire `+2` damage, Water `+2` shield, Earth `-2` next attack, Wind `+1` gold on defeat
 - Card baseAttack values were not changed in Phase 25.
 
 Repository files:
@@ -459,9 +460,14 @@ Current Dungeon implementation:
 - Correct Word Scramble answers trigger the selected scrambled word card.
 - Triggered cards deal damage equal to `baseAttack`.
 - Triggered cards use the current-run card's `baseAttack`, including any Upgrade Attack purchases.
+- Triggered Fire cards deal +2 bonus damage.
+- Triggered Water cards grant +2 extra shield.
+- Triggered Wind cards grant +1 extra temporary gold if the hit defeats the monster or boss.
+- Triggered Earth cards reduce the immediate next monster or boss attack by 2.
+- Earth pending reduction resets after it is used, when the battle question advances, when a new monster starts, when boss battle starts, or when the run restarts.
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack, with shield absorbing damage before HP.
-- Battle feedback shows triggered card, damage dealt, damage taken, shield absorbed, HP damage, shield gained, triggered effects, and correct/wrong result.
+- Battle feedback shows triggered card, base damage, element bonus damage, final total damage, damage taken, shield absorbed, HP damage, card shield gained, Water shield gained, Earth reduction, Wind gold, triggered effects, and correct/wrong result.
 - When monster HP reaches 0, the screen shows `Monster Defeated` and allows spawning the next sample monster.
 - Defeating a monster increases `monstersDefeated` by 1.
 - Defeating a monster grants +6 temporary gold.
@@ -482,7 +488,7 @@ Current Dungeon implementation:
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
 - Boss defeat marks the selected deck as completed in permanent LocalStorage progress.
 - Home and Deck Review display selected deck completion status.
-- Real progression beyond Food Deck, backend, API, advanced element interactions, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
+- Real progression beyond Food Deck, backend, API, advanced element weakness/resistance, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
 - Phase 13 added Word Scramble with typed answer input.
@@ -493,6 +499,7 @@ Current Dungeon implementation:
 - Phase 23 redesigned Word Choice prompts for better vocabulary recall and context practice.
 - Phase 24 added Dungeon-only battle timers and timeout-as-wrong-answer behavior.
 - Phase 25 added shared balance constants, tuned player HP, gold per monster, Dungeon timer limits, and Gatekeeper stats.
+- Phase 26 made elements functional with simple current-run-only Dungeon effects.
 
 Current Shop implementation:
 
@@ -511,7 +518,7 @@ Current Shop implementation:
 - Element purchases use the existing shop item costs.
 - The player can choose one card from the current-run deck for each element purchase.
 - Element purchases add or replace the selected card's single element effect.
-- Element effects are display-only in Phase 14 and do not change damage.
+- Element effects now apply simple current-run-only gameplay effects in Dungeon battles.
 - The Shop shows success feedback after a purchase and not-enough-gold feedback when gold is insufficient.
 - Remove Card and Duplicate Card are active purchases.
 - Remove Card uses the existing shop item cost and removes the selected card from the current-run deck.
@@ -584,7 +591,7 @@ Version 1 should not include:
 - Word Scramble uses the current-run deck and the Card Trigger System.
 - Element shop items are active.
 - A card may have one element effect for now.
-- Element effects are display-only in Phase 14.
+- Element effects started as display-only in Phase 14 and became simple gameplay effects in Phase 26.
 - Element effects are temporary current-run card effects and are not persisted.
 - Remove Card is an active current-run shop purchase.
 - Duplicate Card is an active current-run shop purchase.
@@ -666,13 +673,14 @@ Current battle foundation rules:
 - Wrong answers let the monster attack, and shield absorbs damage before HP.
 - Shield starts at 0 and is temporary run state.
 - Gold is functional for Upgrade Attack and Add Shield purchases.
-- Defeating a monster gives +5 gold.
+- Defeating a monster gives +6 gold.
 - Shop checkpoints appear every 5 defeated monsters.
 - Dungeon can route to Shop at a checkpoint.
 - Shop can route back to Dungeon.
 - Upgrade Attack can increase a current-run card's `baseAttack` by +2.
 - Add Shield can add or increase Shield +3 on a current-run card.
-- Element shop purchases can add or replace one display-only element effect on a current-run card.
+- Element shop purchases can add or replace one simple gameplay element effect on a current-run card.
+- Fire adds +2 damage, Water adds +2 shield, Wind adds +1 gold on defeat, and Earth reduces the next attack by 2.
 - Remove Card can remove a current-run deck card as long as the deck stays above 5 cards.
 - Remove Card also requires at least 4 distinct visible words to remain so battle questions have enough unique options.
 - Duplicate Card can add a unique-id copy of a current-run card, preserving upgrades.
@@ -800,7 +808,7 @@ Current shop state:
 - Upgrade Attack modifies only current-run card attack.
 - Add Shield modifies only current-run card shield effects.
 - Active purchases cost gold and subtract from temporary run gold.
-- Element shop actions are active and display-only in battle summaries.
+- Element shop actions are active and apply simple first-pass Dungeon effects.
 - Remove and duplicate shop actions are active and mutate only the current-run deck.
 - No shop upgrade is saved to LocalStorage.
 
@@ -834,7 +842,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 25 is complete.
+Phase 26 is complete.
 
 Recommended next task:
 

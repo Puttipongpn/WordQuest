@@ -278,7 +278,7 @@ export function Shop({
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedElementCard.word} now has Element: ${formatElementName(element)} for this run only. Element effects are display-only for now.`,
+      message: `${selectedElementCard.word} now has Element: ${formatElementName(element)} for this run only. Element effects apply simple Dungeon bonuses and reset with the run deck.`,
     });
   }
 

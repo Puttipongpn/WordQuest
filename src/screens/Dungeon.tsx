@@ -10,8 +10,12 @@ import {
 import { sampleBoss, sampleMonsters } from "../data";
 import {
   BOSS_MONSTER_REQUIREMENT,
+  EARTH_ATTACK_REDUCTION,
+  FIRE_BONUS_DAMAGE,
   INITIAL_SHIELD,
   PLAYER_MAX_HP,
+  WATER_SHIELD_GAIN,
+  WIND_DEFEAT_GOLD_BONUS,
   WORD_CHOICE_TIME_LIMIT,
   WORD_MATCH_TIME_LIMIT,
   WORD_SCRAMBLE_TIME_LIMIT,
@@ -28,6 +32,7 @@ type DungeonProps = {
   currentRunDeck: WordCard[];
   isSelectedDeckCompleted: boolean;
   onCompleteSelectedDeck: () => CompletionReward;
+  onGainRunGold: (amount: number) => void;
   onMonsterDefeated: () => void;
   onNavigate: (screen: ScreenName) => void;
   onResetRun: () => void;
@@ -71,11 +76,17 @@ type BattleLog = {
   tone: "neutral" | "success" | "danger";
   message: string;
   triggeredCard?: WordCard;
+  baseDamageDealt?: number;
+  elementBonusDamage?: number;
   damageDealt?: number;
   damageTaken?: number;
   hpDamageTaken?: number;
   shieldAbsorbed?: number;
+  cardShieldGained?: number;
+  waterShieldGained?: number;
   shieldGained?: number;
+  earthAttackReduction?: number;
+  windGoldGained?: number;
   effectsSummary?: string;
   rewardSummary?: string;
 };
@@ -280,6 +291,14 @@ function getCardShieldAmount(card: WordCard) {
   );
 }
 
+function getCardElement(card: WordCard) {
+  return card.effects?.find((effect) => effect.type === "element");
+}
+
+function formatElementName(element: string) {
+  return element.charAt(0).toUpperCase() + element.slice(1);
+}
+
 function getCardEffectsSummary(card: WordCard) {
   const shieldAmount = getCardShieldAmount(card);
   const effects = [`Attack ${card.baseAttack}`];
@@ -293,7 +312,7 @@ function getCardEffectsSummary(card: WordCard) {
       ?.filter((effect) => effect.type === "element")
       .map(
         (effect) =>
-          `Element: ${effect.element.charAt(0).toUpperCase()}${effect.element.slice(1)}`,
+          `Element: ${formatElementName(effect.element)}`,
       ) ?? [];
 
   return [...effects, ...elements].join(" / ");
@@ -303,6 +322,7 @@ export function Dungeon({
   currentRunDeck,
   isSelectedDeckCompleted,
   onCompleteSelectedDeck,
+  onGainRunGold,
   onMonsterDefeated,
   onNavigate,
   onResetRun,
@@ -335,6 +355,7 @@ export function Dungeon({
   >(null);
   const [scrambleAnswer, setScrambleAnswer] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
+  const [pendingEarthReduction, setPendingEarthReduction] = useState(0);
   const [battleLog, setBattleLog] = useState<BattleLog>({
     tone: "neutral",
     message: "Choose a correct answer to trigger a word card.",
@@ -366,9 +387,7 @@ export function Dungeon({
         : wordScrambleQuestion.options[0].card;
   const sidePanelCard = battleLog.triggeredCard ?? featuredCard;
   const sidePanelCardShield = getCardShieldAmount(sidePanelCard);
-  const sidePanelCardElement = sidePanelCard.effects?.find(
-    (effect) => effect.type === "element",
-  );
+  const sidePanelCardElement = getCardElement(sidePanelCard);
   const isShopAvailable =
     runProgress.monstersDefeated > 0 &&
     runProgress.monstersDefeated === runProgress.nextShopAt;
@@ -396,6 +415,7 @@ export function Dungeon({
   function advanceQuestion() {
     const nextMiniGameType = chooseBattleMiniGame();
 
+    setPendingEarthReduction(0);
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
     setMiniGameType(nextMiniGameType);
@@ -407,26 +427,79 @@ export function Dungeon({
   }
 
   function triggerCard(card: WordCard) {
-    const shieldGained = getCardShieldAmount(card);
-    const effectsSummary = getCardEffectsSummary(card);
-    const nextMonsterHp = Math.max(monsterHp - card.baseAttack, 0);
+    const cardShieldGained = getCardShieldAmount(card);
+    const element = getCardElement(card);
+    const elementBonusDamage =
+      element?.element === "fire" ? FIRE_BONUS_DAMAGE : 0;
+    const waterShieldGained =
+      element?.element === "water" ? WATER_SHIELD_GAIN : 0;
+    const totalShieldGained = cardShieldGained + waterShieldGained;
+    const totalDamageDealt = card.baseAttack + elementBonusDamage;
+    const nextMonsterHp = Math.max(monsterHp - totalDamageDealt, 0);
+    const isDefeated = nextMonsterHp === 0;
+    const earthAttackReduction =
+      element?.element === "earth" && !isDefeated
+        ? EARTH_ATTACK_REDUCTION
+        : 0;
+    const windGoldGained =
+      element?.element === "wind" && isDefeated
+        ? WIND_DEFEAT_GOLD_BONUS
+        : 0;
+    const elementFeedback =
+      element?.element === "fire"
+        ? `Fire dealt +${FIRE_BONUS_DAMAGE} bonus damage.`
+        : element?.element === "water"
+          ? `Water granted +${WATER_SHIELD_GAIN} shield.`
+          : element?.element === "wind" && windGoldGained > 0
+            ? `Wind bonus: +${WIND_DEFEAT_GOLD_BONUS} gold on defeat.`
+            : element?.element === "wind"
+              ? "Wind waits for a defeating hit to grant bonus gold."
+              : element?.element === "earth" && earthAttackReduction > 0
+                ? `Earth weakened the next attack by ${EARTH_ATTACK_REDUCTION}.`
+                : element?.element === "earth"
+                  ? "Earth did not persist because the encounter was defeated."
+                  : "";
+    const effectsSummary = [
+      `Base damage ${card.baseAttack}`,
+      elementBonusDamage > 0 ? `Fire +${elementBonusDamage}` : null,
+      cardShieldGained > 0 ? `Shield +${cardShieldGained}` : null,
+      waterShieldGained > 0 ? `Water shield +${waterShieldGained}` : null,
+      earthAttackReduction > 0
+        ? `Next attack -${earthAttackReduction}`
+        : null,
+      windGoldGained > 0 ? `Wind gold +${windGoldGained}` : null,
+      element ? `Element: ${formatElementName(element.element)}` : null,
+      `Total damage ${totalDamageDealt}`,
+    ]
+      .filter(Boolean)
+      .join(" / ");
 
     setMonsterHp(nextMonsterHp);
-    if (shieldGained > 0) {
-      setShield((currentShield) => currentShield + shieldGained);
+    setPendingEarthReduction(earthAttackReduction);
+    if (totalShieldGained > 0) {
+      setShield((currentShield) => currentShield + totalShieldGained);
+    }
+    if (windGoldGained > 0) {
+      onGainRunGold(windGoldGained);
     }
 
-    if (nextMonsterHp === 0) {
+    if (isDefeated) {
       if (isBossEncounter) {
         const completionReward = onCompleteSelectedDeck();
         setHasCompletedBoss(true);
         setBattleStatus("run-complete");
         setBattleLog({
           tone: "success",
-          message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
+          message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
           triggeredCard: card,
-          damageDealt: card.baseAttack,
-          shieldGained,
+          baseDamageDealt: card.baseAttack,
+          elementBonusDamage,
+          damageDealt: totalDamageDealt,
+          cardShieldGained,
+          waterShieldGained,
+          shieldGained: totalShieldGained,
+          earthAttackReduction,
+          windGoldGained,
           effectsSummary,
           rewardSummary: `${completionReward.completedMessage} ${completionReward.unlockMessage}`,
         });
@@ -437,10 +510,16 @@ export function Dungeon({
       setBattleStatus("monster-defeated");
       setBattleLog({
         tone: "success",
-        message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}. ${currentEncounter.name} defeated.`,
+        message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated.`,
         triggeredCard: card,
-        damageDealt: card.baseAttack,
-        shieldGained,
+        baseDamageDealt: card.baseAttack,
+        elementBonusDamage,
+        damageDealt: totalDamageDealt,
+        cardShieldGained,
+        waterShieldGained,
+        shieldGained: totalShieldGained,
+        earthAttackReduction,
+        windGoldGained,
         effectsSummary,
       });
       return;
@@ -448,20 +527,32 @@ export function Dungeon({
 
     setBattleLog({
       tone: "success",
-      message: `${card.word} triggered for ${card.baseAttack} damage${shieldGained > 0 ? ` and gained ${shieldGained} shield` : ""}.`,
+      message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield.` : ""}`,
       triggeredCard: card,
-      damageDealt: card.baseAttack,
-      shieldGained,
+      baseDamageDealt: card.baseAttack,
+      elementBonusDamage,
+      damageDealt: totalDamageDealt,
+      cardShieldGained,
+      waterShieldGained,
+      shieldGained: totalShieldGained,
+      earthAttackReduction,
+      windGoldGained,
       effectsSummary,
     });
   }
 
   function monsterAttack(reason = "Wrong answer.") {
-    const shieldAbsorbed = Math.min(shield, currentEncounter.attack);
-    const hpDamageTaken = currentEncounter.attack - shieldAbsorbed;
+    const attackReduction = Math.min(
+      pendingEarthReduction,
+      currentEncounter.attack,
+    );
+    const reducedAttack = Math.max(currentEncounter.attack - attackReduction, 0);
+    const shieldAbsorbed = Math.min(shield, reducedAttack);
+    const hpDamageTaken = reducedAttack - shieldAbsorbed;
     const nextShield = shield - shieldAbsorbed;
     const nextPlayerHp = Math.max(playerHp - hpDamageTaken, 0);
 
+    setPendingEarthReduction(0);
     setShield(nextShield);
     setPlayerHp(nextPlayerHp);
 
@@ -469,20 +560,22 @@ export function Dungeon({
       setBattleStatus("run-failed");
       setBattleLog({
         tone: "danger",
-        message: `${reason} No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}. Run Failed.`,
-        damageTaken: currentEncounter.attack,
+        message: `${reason} No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. ${attackReduction > 0 ? `Earth reduced it by ${attackReduction}. ` : ""}Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}. Run Failed.`,
+        damageTaken: reducedAttack,
         hpDamageTaken,
         shieldAbsorbed,
+        earthAttackReduction: attackReduction,
       });
       return;
     }
 
     setBattleLog({
       tone: "danger",
-      message: `${reason} No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
-      damageTaken: currentEncounter.attack,
+      message: `${reason} No card triggered. ${currentEncounter.name} attacked for ${currentEncounter.attack}. ${attackReduction > 0 ? `Earth reduced it by ${attackReduction}. ` : ""}Shield absorbed ${shieldAbsorbed}; HP took ${hpDamageTaken}.`,
+      damageTaken: reducedAttack,
       hpDamageTaken,
       shieldAbsorbed,
+      earthAttackReduction: attackReduction,
     });
   }
 
@@ -586,6 +679,7 @@ export function Dungeon({
 
     setMonsterIndex(nextMonsterIndex);
     setMonsterHp(nextMonster.maxHp);
+    setPendingEarthReduction(0);
     setBattleStatus("fighting");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
@@ -602,6 +696,7 @@ export function Dungeon({
 
     setIsBossEncounter(true);
     setMonsterHp(sampleBoss.maxHp);
+    setPendingEarthReduction(0);
     setBattleStatus("fighting");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
@@ -619,6 +714,7 @@ export function Dungeon({
     onResetRun();
     setPlayerHp(PLAYER_MAX_HP);
     setShield(INITIAL_SHIELD);
+    setPendingEarthReduction(0);
     setIsBossEncounter(false);
     setHasCompletedBoss(false);
     setMonsterIndex(0);
@@ -868,10 +964,16 @@ export function Dungeon({
             </p>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
-              <StatCard label="Dealt" value={battleLog.damageDealt ?? 0} tone="emerald" />
+              <StatCard label="Base DMG" value={battleLog.baseDamageDealt ?? 0} tone="emerald" />
+              <StatCard label="Element DMG" value={battleLog.elementBonusDamage ?? 0} tone="purple" />
+              <StatCard label="Total DMG" value={battleLog.damageDealt ?? 0} tone="emerald" />
               <StatCard label="Taken" value={battleLog.damageTaken ?? 0} tone="red" />
               <StatCard label="Shield Block" value={battleLog.shieldAbsorbed ?? 0} tone="sky" />
               <StatCard label="HP Damage" value={battleLog.hpDamageTaken ?? 0} tone="red" />
+              <StatCard label="Card Shield" value={battleLog.cardShieldGained ?? 0} tone="sky" />
+              <StatCard label="Water Shield" value={battleLog.waterShieldGained ?? 0} tone="sky" />
+              <StatCard label="Earth Reduce" value={battleLog.earthAttackReduction ?? 0} tone="amber" />
+              <StatCard label="Wind Gold" value={battleLog.windGoldGained ?? 0} tone="amber" />
             </div>
 
             {isAnswered && battleStatus === "fighting" && (
@@ -932,7 +1034,7 @@ export function Dungeon({
                 <p className="mt-1 text-sm font-bold text-amber-900/75">
                   Element{" "}
                   {sidePanelCardElement
-                    ? sidePanelCardElement.element
+                    ? formatElementName(sidePanelCardElement.element)
                     : "None"}
                 </p>
               </div>
@@ -992,9 +1094,11 @@ export function Dungeon({
             <p className="mt-2 text-sm font-medium leading-6 text-amber-950/75">
               Correct answers trigger the selected word card and deal damage
               equal to base attack. Shield effects add player shield when the
-              card triggers. Incorrect answers do not trigger card effects and
-              cause monster attack damage, with shield absorbing damage before
-              HP.
+              card triggers. Element effects add first-pass bonuses: Fire deals
+              bonus damage, Water grants shield, Wind grants extra gold on
+              defeat, and Earth reduces the next attack. Incorrect answers do
+              not trigger card effects and cause monster attack damage, with
+              shield absorbing damage before HP.
             </p>
           </details>
         </aside>
