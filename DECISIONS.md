@@ -736,6 +736,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Elites are combat encounters and should move the run forward like normal monsters.
 - Status: Accepted
 
+### 2026-06-05: Events Do Not Chain Immediately
+
+- Decision: After resolving an Event, the next generated encounter cannot be another Event.
+- Reason: Events should add variety without causing long non-combat chains or delaying the normal dungeon battle rhythm too much.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

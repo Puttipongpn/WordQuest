@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 28 Elite Encounters and Event Encounters Foundation is complete. GitHub backup is configured on `origin/main`.
+Phase 29 Full Run Playtest and Tuning Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -322,6 +322,14 @@ Phase 28 Elite Encounters and Event Encounters Foundation is complete. GitHub ba
 - Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, timer behavior, run statistics, LocalStorage permanent-progress-only rules, balance constants, and element effects.
 - No new decks, Oxford 3000 import, backend, auth, database, API, final art assets, save architecture changes, combat redesign, advanced element interactions, new shop item types, or new mini-games were added.
 - Verified the project with `npm run build` after Phase 28.
+- Performed a full-flow code-path playtest audit across Home, deck selection, Deck Review, Training, Dungeon monster/elite/event flow, Shop routing, Boss, Run Complete, Run Failed, Best Run summary, and Reset Progress.
+- Verified locked/unlocked deck behavior, selected deck reset behavior, current-run deck reset, Training mastery save, Dungeon timers, timeout handling, element effects, elite rewards, event choices, shop purchases, Remove/Duplicate guards, boss availability, run summaries, permanent statistics, and permanent-progress-only LocalStorage rules by inspection and build.
+- Fixed Event encounter flow so resolving an Event cannot immediately generate another Event, keeping dungeon progression from becoming a chain of non-combat encounters.
+- Fixed Healing Shrine shield choice so it contributes to `totalShieldGained` in temporary run statistics and run summaries.
+- Kept balance constants unchanged in Phase 29 after review.
+- Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, timer behavior, run statistics, LocalStorage permanent-progress-only rules, balance constants, and element effects.
+- No new major gameplay systems, decks, Oxford 3000 import, backend, auth, database, API, final art assets, combat redesign, advanced element interactions, new shop item types, or new mini-games were added.
+- Verified the project with `npm run build` after Phase 29.
 
 ## In Progress
 
@@ -329,7 +337,7 @@ Phase 28 Elite Encounters and Event Encounters Foundation is complete. GitHub ba
 
 ## Next Task
 
-Phase 28 is complete. Continue with the next explicitly requested phase or feature.
+Phase 29 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -453,6 +461,7 @@ The following documents are required and must be updated after every completed t
 - Elite encounters are temporary run content and count as monster defeats
 - Event encounters are temporary run content and do not count toward boss progression
 - Event rewards remain current-run only and never bypass roguelike reset rules
+- Events do not chain immediately after resolving an event
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

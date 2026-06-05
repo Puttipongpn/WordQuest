@@ -258,6 +258,7 @@ Current battle rules:
 - Event encounters are non-combat choices.
 - Events do not count as defeated monsters and do not advance boss progression.
 - Event rewards are temporary current-run rewards and are not saved to LocalStorage.
+- After resolving an Event, the next generated encounter cannot be another Event.
 - Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Dungeon battle questions are timed.
@@ -294,6 +295,7 @@ Current battle rules:
 - Defeating a monster increases `monstersDefeated` by 1.
 - Defeating a monster grants +6 temporary gold.
 - Current-run statistics track questions answered, correct answers, wrong answers, timeouts, monsters defeated, elite defeated, events visited, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
+- Healing Shrine shield rewards count toward total shield gained in run summaries.
 - Shop checkpoints occur every 5 defeated monsters.
 - When a shop checkpoint is reached, Dungeon shows `Shop Available`.
 - Dungeon can route to Shop with a `Go To Shop` button.

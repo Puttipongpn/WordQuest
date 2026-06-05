@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 28 complete. Phase 29 has not started yet.
+Current phase: Phase 29 complete. Phase 30 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, and after Phase 28 elite/event encounter foundation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, and after Phase 29 full run playtest/tuning work.
 
 The local development server can be started with:
 
@@ -445,6 +445,7 @@ Current Dungeon implementation:
 - `src/App.tsx` owns temporary current-run statistics and permanent best run statistics updates.
 - Run progression tracks `monstersDefeated`, `currentFloor`, and `nextShopAt`.
 - Current-run statistics track questions answered, correct answers, wrong answers, timeouts, monsters defeated, elites defeated, events visited, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
+- Healing Shrine shield rewards count toward total shield gained.
 - The current-run deck starts as a copy of the selected deck.
 - Shop upgrades must not mutate source deck data in `src/data`.
 - Dungeon battle questions use the current-run deck, not the original seed deck.
@@ -456,6 +457,7 @@ Current Dungeon implementation:
 - Elite encounters count as monster defeats for shop checkpoints and boss progression.
 - Event encounters are non-combat choices and do not count as monster defeats.
 - Event rewards are temporary current-run rewards and are not saved to LocalStorage.
+- Event encounters cannot generate another Event immediately after resolution.
 - Current events are Treasure Chest, Healing Shrine, and Strange Altar.
 - Battle questions use a simple mini-game structure and the current-run deck.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
@@ -519,6 +521,7 @@ Current Dungeon implementation:
 - Phase 26 made elements functional with simple current-run-only Dungeon effects.
 - Phase 27 added current-run statistics, Run Complete / Run Failed summaries, Home Best Run summary, and permanent best run stats saved only after run end.
 - Phase 28 added Monster/Elite/Event encounter types, weighted encounter generation, three initial events, elite rewards, and run summary tracking for elites/events.
+- Phase 29 audited the full run flow, prevented immediate Event-to-Event chains, kept balance values unchanged, and fixed Healing Shrine shield stat tracking.
 
 Current Shop implementation:
 
@@ -868,7 +871,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 28 is complete.
+Phase 29 is complete.
 
 Recommended next task:
 

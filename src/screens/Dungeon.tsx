@@ -202,7 +202,7 @@ function chooseBattleMiniGame(): BattleMiniGameType {
   return battleMiniGames[randomIndex];
 }
 
-function chooseEncounterType(): EncounterType {
+function chooseEncounterType(options?: { allowEvent?: boolean }): EncounterType {
   const totalWeight =
     MONSTER_ENCOUNTER_WEIGHT + EVENT_ENCOUNTER_WEIGHT + ELITE_ENCOUNTER_WEIGHT;
   const roll = Math.random() * totalWeight;
@@ -211,7 +211,10 @@ function chooseEncounterType(): EncounterType {
     return "monster";
   }
 
-  if (roll < MONSTER_ENCOUNTER_WEIGHT + EVENT_ENCOUNTER_WEIGHT) {
+  if (
+    options?.allowEvent !== false &&
+    roll < MONSTER_ENCOUNTER_WEIGHT + EVENT_ENCOUNTER_WEIGHT
+  ) {
     return "event";
   }
 
@@ -901,7 +904,7 @@ export function Dungeon({
     const nextMonsterIndex = monsterIndex + 1;
     const nextMonster = getMonsterForIndex(nextMonsterIndex);
     const nextMiniGameType = chooseBattleMiniGame();
-    const nextEncounterType = chooseEncounterType();
+    const nextEncounterType = chooseEncounterType({ allowEvent: false });
     const nextEliteMonster = createEliteMonster(nextMonster);
     const isNextEvent = nextEncounterType === "event";
 
@@ -967,6 +970,11 @@ export function Dungeon({
 
     if (currentEvent.id === "healing-shrine" && optionId === "shield") {
       setShield((currentShield) => currentShield + SHRINE_SHIELD_GAIN);
+      onUpdateRunStatistics({
+        ...nextRunStatistics,
+        totalShieldGained:
+          nextRunStatistics.totalShieldGained + SHRINE_SHIELD_GAIN,
+      });
       continueAfterEvent(`Healing Shrine: gained ${SHRINE_SHIELD_GAIN} shield.`);
       return;
     }
