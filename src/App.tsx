@@ -11,6 +11,7 @@ import {
 import { availableDecks, foodDeck, starterDeck } from "./data";
 import {
   ADD_SHIELD_AMOUNT,
+  EVENT_ATTACK_UPGRADE_AMOUNT,
   GOLD_PER_MONSTER,
   MAX_WORD_MASTERY,
   MIN_DISTINCT_VISIBLE_WORDS,
@@ -54,6 +55,8 @@ const initialRunStatistics: RunStatistics = {
   wrongAnswers: 0,
   timeouts: 0,
   monstersDefeated: 0,
+  eliteDefeated: 0,
+  eventsVisited: 0,
   bossDefeated: false,
   totalDamageDealt: 0,
   totalShieldGained: 0,
@@ -96,6 +99,8 @@ function createDuplicateRunCard(card: WordCard): WordCard {
 function countUniqueWords(deck: WordCard[]) {
   return new Set(deck.map((card) => card.word.toLowerCase())).size;
 }
+
+const elementTypes: ElementType[] = ["fire", "water", "wind", "earth"];
 
 function calculateAccuracy(statistics: RunStatistics) {
   if (statistics.questionsAnswered === 0) {
@@ -207,12 +212,16 @@ export default function App() {
     };
   }
 
-  function recordMonsterDefeated() {
-    setRunGold((currentGold) => currentGold + GOLD_PER_MONSTER);
+  function recordMonsterDefeated(options?: { isElite?: boolean; bonusGold?: number }) {
+    const bonusGold = options?.bonusGold ?? 0;
+
+    setRunGold((currentGold) => currentGold + GOLD_PER_MONSTER + bonusGold);
     setRunStatistics((currentStatistics) => ({
       ...currentStatistics,
       monstersDefeated: currentStatistics.monstersDefeated + 1,
-      goldEarned: currentStatistics.goldEarned + GOLD_PER_MONSTER,
+      eliteDefeated:
+        currentStatistics.eliteDefeated + (options?.isElite ? 1 : 0),
+      goldEarned: currentStatistics.goldEarned + GOLD_PER_MONSTER + bonusGold,
     }));
     setRunProgress((currentProgress) => {
       const monstersDefeated = currentProgress.monstersDefeated + 1;
@@ -231,6 +240,74 @@ export default function App() {
       ...currentStatistics,
       goldEarned: currentStatistics.goldEarned + amount,
     }));
+  }
+
+  function upgradeRandomRunCardAttack(amount = EVENT_ATTACK_UPGRADE_AMOUNT) {
+    if (currentRunDeck.length === 0) {
+      return null;
+    }
+
+    const randomIndex = Math.floor(Math.random() * currentRunDeck.length);
+    const selectedCard = currentRunDeck[randomIndex];
+
+    setCurrentRunDeck((currentDeck) =>
+      currentDeck.map((card) =>
+        card.id === selectedCard.id
+          ? {
+              ...card,
+              baseAttack: card.baseAttack + amount,
+            }
+          : card,
+      ),
+    );
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      cardsUpgradedCount: currentStatistics.cardsUpgradedCount + 1,
+    }));
+
+    return selectedCard.word;
+  }
+
+  function addRandomElementToRunCard() {
+    if (currentRunDeck.length === 0) {
+      return null;
+    }
+
+    const randomCardIndex = Math.floor(Math.random() * currentRunDeck.length);
+    const randomElementIndex = Math.floor(Math.random() * elementTypes.length);
+    const selectedCard = currentRunDeck[randomCardIndex];
+    const element = elementTypes[randomElementIndex];
+
+    setCurrentRunDeck((currentDeck) =>
+      currentDeck.map((card) => {
+        if (card.id !== selectedCard.id) {
+          return card;
+        }
+
+        const effectsWithoutElement =
+          card.effects?.filter((effect) => effect.type !== "element") ?? [];
+
+        return {
+          ...card,
+          effects: [
+            ...effectsWithoutElement,
+            {
+              type: "element",
+              element,
+              amount: 1,
+              description: `Element: ${element}`,
+            },
+          ],
+        };
+      }),
+    );
+
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      elementsAddedCount: currentStatistics.elementsAddedCount + 1,
+    }));
+
+    return { word: selectedCard.word, element };
   }
 
   function updateRunStatistics(nextStatistics: RunStatistics) {
@@ -536,6 +613,8 @@ export default function App() {
             onNavigate={setCurrentScreen}
             onRecordRunEnded={recordRunEnded}
             onResetRun={resetCurrentRun}
+            onUpgradeRandomRunCardAttack={upgradeRandomRunCardAttack}
+            onAddRandomElementToRunCard={addRandomElementToRunCard}
             onUpdateRunStatistics={updateRunStatistics}
             runGold={runGold}
             runProgress={runProgress}

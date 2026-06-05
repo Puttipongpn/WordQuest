@@ -27,3 +27,17 @@ export const FIRE_BONUS_DAMAGE = 2;
 export const WATER_SHIELD_GAIN = 2;
 export const EARTH_ATTACK_REDUCTION = 2;
 export const WIND_DEFEAT_GOLD_BONUS = 1;
+
+export const MONSTER_ENCOUNTER_WEIGHT = 70;
+export const EVENT_ENCOUNTER_WEIGHT = 20;
+export const ELITE_ENCOUNTER_WEIGHT = 10;
+
+export const ELITE_HP_MULTIPLIER = 1.5;
+export const ELITE_ATTACK_BONUS = 2;
+export const ELITE_GOLD_BONUS = 10;
+
+export const TREASURE_GOLD_REWARD = 10;
+export const EVENT_ATTACK_UPGRADE_AMOUNT = 1;
+export const SHRINE_HEAL_AMOUNT = 5;
+export const SHRINE_SHIELD_GAIN = 5;
+export const ALTAR_HP_COST = 5;

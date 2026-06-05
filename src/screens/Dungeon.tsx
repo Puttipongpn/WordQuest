@@ -9,11 +9,22 @@ import {
 } from "../components/ui";
 import { sampleBoss, sampleMonsters } from "../data";
 import {
+  ALTAR_HP_COST,
   BOSS_MONSTER_REQUIREMENT,
   EARTH_ATTACK_REDUCTION,
+  ELITE_ATTACK_BONUS,
+  ELITE_ENCOUNTER_WEIGHT,
+  ELITE_GOLD_BONUS,
+  ELITE_HP_MULTIPLIER,
+  EVENT_ATTACK_UPGRADE_AMOUNT,
+  EVENT_ENCOUNTER_WEIGHT,
   FIRE_BONUS_DAMAGE,
   INITIAL_SHIELD,
+  MONSTER_ENCOUNTER_WEIGHT,
   PLAYER_MAX_HP,
+  SHRINE_HEAL_AMOUNT,
+  SHRINE_SHIELD_GAIN,
+  TREASURE_GOLD_REWARD,
   WATER_SHIELD_GAIN,
   WIND_DEFEAT_GOLD_BONUS,
   WORD_CHOICE_TIME_LIMIT,
@@ -33,14 +44,16 @@ type DungeonProps = {
   currentRunDeck: WordCard[];
   isSelectedDeckCompleted: boolean;
   onCompleteSelectedDeck: () => CompletionReward;
+  onAddRandomElementToRunCard: () => { word: string; element: string } | null;
   onGainRunGold: (amount: number) => void;
-  onMonsterDefeated: () => void;
+  onMonsterDefeated: (options?: { isElite?: boolean; bonusGold?: number }) => void;
   onNavigate: (screen: ScreenName) => void;
   onRecordRunEnded: (
     outcome: "completed" | "failed",
     finalRunStatistics: RunStatistics,
   ) => void;
   onResetRun: () => void;
+  onUpgradeRandomRunCardAttack: (amount?: number) => string | null;
   onUpdateRunStatistics: (nextStatistics: RunStatistics) => void;
   runGold: number;
   runProgress: RunProgressState;
@@ -54,6 +67,8 @@ type CompletionReward = {
 };
 
 type BattleMiniGameType = "word-choice" | "word-match" | "word-scramble";
+type EncounterType = "monster" | "elite" | "event";
+type DungeonEventId = "treasure-chest" | "healing-shrine" | "strange-altar";
 type WordChoicePromptType =
   | "english-to-thai"
   | "thai-to-english"
@@ -98,6 +113,18 @@ type BattleLog = {
   rewardSummary?: string;
 };
 
+type DungeonEvent = {
+  id: DungeonEventId;
+  icon: string;
+  title: string;
+  description: string;
+  options: Array<{
+    id: string;
+    label: string;
+    description: string;
+  }>;
+};
+
 const battleMiniGames: BattleMiniGameType[] = [
   "word-choice",
   "word-match",
@@ -109,14 +136,108 @@ const wordChoicePromptTypes: WordChoicePromptType[] = [
   "english-to-thai",
 ];
 
+const dungeonEvents: DungeonEvent[] = [
+  {
+    id: "treasure-chest",
+    icon: "✨",
+    title: "Treasure Chest",
+    description:
+      "A warm golden chest hums beside the dungeon path. The lock opens when you approach.",
+    options: [
+      {
+        id: "gold",
+        label: "Take the coins",
+        description: `Gain +${TREASURE_GOLD_REWARD} temporary gold.`,
+      },
+      {
+        id: "attack",
+        label: "Polish a card",
+        description: `Upgrade a random current-run card attack by +${EVENT_ATTACK_UPGRADE_AMOUNT}.`,
+      },
+    ],
+  },
+  {
+    id: "healing-shrine",
+    icon: "✨",
+    title: "Healing Shrine",
+    description:
+      "A quiet shrine glows with gentle blue light. It offers a small blessing before the next encounter.",
+    options: [
+      {
+        id: "heal",
+        label: "Recover HP",
+        description: `Recover ${SHRINE_HEAL_AMOUNT} HP.`,
+      },
+      {
+        id: "shield",
+        label: "Raise ward",
+        description: `Gain ${SHRINE_SHIELD_GAIN} shield.`,
+      },
+    ],
+  },
+  {
+    id: "strange-altar",
+    icon: "✨",
+    title: "Strange Altar",
+    description:
+      "A strange altar offers unstable magic. Its runes promise power, but the price is real.",
+    options: [
+      {
+        id: "element",
+        label: "Touch the altar",
+        description: `Lose ${ALTAR_HP_COST} HP and add a random element to a random current-run card.`,
+      },
+      {
+        id: "leave",
+        label: "Leave",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+];
+
 function chooseBattleMiniGame(): BattleMiniGameType {
   const randomIndex = Math.floor(Math.random() * battleMiniGames.length);
 
   return battleMiniGames[randomIndex];
 }
 
+function chooseEncounterType(): EncounterType {
+  const totalWeight =
+    MONSTER_ENCOUNTER_WEIGHT + EVENT_ENCOUNTER_WEIGHT + ELITE_ENCOUNTER_WEIGHT;
+  const roll = Math.random() * totalWeight;
+
+  if (roll < MONSTER_ENCOUNTER_WEIGHT) {
+    return "monster";
+  }
+
+  if (roll < MONSTER_ENCOUNTER_WEIGHT + EVENT_ENCOUNTER_WEIGHT) {
+    return "event";
+  }
+
+  return "elite";
+}
+
 function getMonsterForIndex(index: number): Monster {
   return sampleMonsters[index % sampleMonsters.length];
+}
+
+function createEliteMonster(monster: Monster): Monster {
+  const eliteMaxHp = Math.round(monster.maxHp * ELITE_HP_MULTIPLIER);
+
+  return {
+    ...monster,
+    id: `elite-${monster.id}`,
+    name: `Elite ${monster.name}`,
+    hp: eliteMaxHp,
+    maxHp: eliteMaxHp,
+    attack: monster.attack + ELITE_ATTACK_BONUS,
+    imagePlaceholder: `👑 ${monster.imagePlaceholder}`,
+  };
+}
+
+function chooseDungeonEvent(seed: number) {
+  return dungeonEvents[seed % dungeonEvents.length];
 }
 
 function rotateCards(seed: number, deck: WordCard[]) {
@@ -339,11 +460,13 @@ export function Dungeon({
   currentRunDeck,
   isSelectedDeckCompleted,
   onCompleteSelectedDeck,
+  onAddRandomElementToRunCard,
   onGainRunGold,
   onMonsterDefeated,
   onNavigate,
   onRecordRunEnded,
   onResetRun,
+  onUpgradeRandomRunCardAttack,
   onUpdateRunStatistics,
   runGold,
   runProgress,
@@ -354,6 +477,9 @@ export function Dungeon({
   const [playerHp, setPlayerHp] = useState(PLAYER_MAX_HP);
   const [shield, setShield] = useState(INITIAL_SHIELD);
   const [monsterIndex, setMonsterIndex] = useState(0);
+  const [encounterType, setEncounterType] =
+    useState<EncounterType>("monster");
+  const [eventIndex, setEventIndex] = useState(0);
   const [monsterHp, setMonsterHp] = useState(
     () => getMonsterForIndex(0).maxHp,
   );
@@ -384,12 +510,25 @@ export function Dungeon({
     message: "Choose a correct answer to trigger a word card.",
   });
   const [battleStatus, setBattleStatus] = useState<
-    "fighting" | "monster-defeated" | "run-failed" | "run-complete"
+    "fighting" | "event" | "monster-defeated" | "run-failed" | "run-complete"
   >("fighting");
 
   const currentMonster = getMonsterForIndex(monsterIndex);
-  const currentEncounter = isBossEncounter ? sampleBoss : currentMonster;
-  const encounterLabel = isBossEncounter ? "Boss" : "Monster";
+  const eliteMonster = createEliteMonster(currentMonster);
+  const currentEncounter = isBossEncounter
+    ? sampleBoss
+    : encounterType === "elite"
+      ? eliteMonster
+      : currentMonster;
+  const currentEvent = chooseDungeonEvent(eventIndex);
+  const isEventEncounter = battleStatus === "event";
+  const encounterLabel = isBossEncounter
+    ? "Boss"
+    : encounterType === "elite"
+      ? "Elite"
+      : isEventEncounter
+        ? "Event"
+        : "Monster";
   const wordChoiceQuestion = useMemo(
     () => buildWordChoiceQuestion(questionSeed, currentRunDeck),
     [currentRunDeck, questionSeed],
@@ -547,11 +686,14 @@ export function Dungeon({
       }
 
       onUpdateRunStatistics(nextRunStatistics);
-      onMonsterDefeated();
+      onMonsterDefeated({
+        isElite: encounterType === "elite",
+        bonusGold: encounterType === "elite" ? ELITE_GOLD_BONUS : 0,
+      });
       setBattleStatus("monster-defeated");
       setBattleLog({
         tone: "success",
-        message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated.`,
+        message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated.${encounterType === "elite" ? ` Elite bonus: +${ELITE_GOLD_BONUS} gold.` : ""}`,
         triggeredCard: card,
         baseDamageDealt: card.baseAttack,
         elementBonusDamage,
@@ -729,25 +871,140 @@ export function Dungeon({
     const nextMonsterIndex = monsterIndex + 1;
     const nextMonster = getMonsterForIndex(nextMonsterIndex);
     const nextMiniGameType = chooseBattleMiniGame();
+    const nextEncounterType = chooseEncounterType();
+    const nextEliteMonster = createEliteMonster(nextMonster);
+    const isNextEvent = nextEncounterType === "event";
 
     setMonsterIndex(nextMonsterIndex);
-    setMonsterHp(nextMonster.maxHp);
+    setEncounterType(nextEncounterType);
+    setMonsterHp(
+      nextEncounterType === "elite" ? nextEliteMonster.maxHp : nextMonster.maxHp,
+    );
     setPendingEarthReduction(0);
-    setBattleStatus("fighting");
+    setBattleStatus(isNextEvent ? "event" : "fighting");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
+    if (isNextEvent) {
+      setEventIndex((current) => current + 1);
+    }
     setMiniGameType(nextMiniGameType);
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
-      message: "A new monster appears. A new mini-game begins.",
+      message: isNextEvent
+        ? "A dungeon event appears. Choose one option to continue."
+        : `${nextEncounterType === "elite" ? "An elite monster" : "A new monster"} appears. A new mini-game begins.`,
     });
+  }
+
+  function continueAfterEvent(message: string) {
+    const nextMonsterIndex = monsterIndex + 1;
+    const nextMonster = getMonsterForIndex(nextMonsterIndex);
+    const nextMiniGameType = chooseBattleMiniGame();
+    const nextEncounterType = chooseEncounterType();
+    const nextEliteMonster = createEliteMonster(nextMonster);
+    const isNextEvent = nextEncounterType === "event";
+
+    setMonsterIndex(nextMonsterIndex);
+    setEncounterType(nextEncounterType);
+    setMonsterHp(
+      nextEncounterType === "elite" ? nextEliteMonster.maxHp : nextMonster.maxHp,
+    );
+    setPendingEarthReduction(0);
+    setBattleStatus(isNextEvent ? "event" : "fighting");
+    resetAnswerState();
+    setQuestionSeed((current) => current + 1);
+    if (isNextEvent) {
+      setEventIndex((current) => current + 1);
+    }
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
+    setBattleLog({
+      tone: "neutral",
+      message: `${message} ${
+        isNextEvent
+          ? "Another event waits ahead."
+          : nextEncounterType === "elite"
+            ? "An elite encounter begins."
+            : "A monster encounter begins."
+      }`,
+    });
+  }
+
+  function handleEventOption(optionId: string) {
+    const nextRunStatistics = {
+      ...runStatistics,
+      eventsVisited: runStatistics.eventsVisited + 1,
+    };
+
+    onUpdateRunStatistics(nextRunStatistics);
+
+    if (currentEvent.id === "treasure-chest" && optionId === "gold") {
+      onGainRunGold(TREASURE_GOLD_REWARD);
+      continueAfterEvent(`Treasure Chest: gained ${TREASURE_GOLD_REWARD} gold.`);
+      return;
+    }
+
+    if (currentEvent.id === "treasure-chest" && optionId === "attack") {
+      const upgradedWord = onUpgradeRandomRunCardAttack(
+        EVENT_ATTACK_UPGRADE_AMOUNT,
+      );
+      continueAfterEvent(
+        upgradedWord
+          ? `Treasure Chest: ${upgradedWord} gained +${EVENT_ATTACK_UPGRADE_AMOUNT} attack.`
+          : "Treasure Chest: no card was available to upgrade.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "healing-shrine" && optionId === "heal") {
+      const nextHp = Math.min(playerHp + SHRINE_HEAL_AMOUNT, PLAYER_MAX_HP);
+
+      setPlayerHp(nextHp);
+      continueAfterEvent(`Healing Shrine: recovered ${nextHp - playerHp} HP.`);
+      return;
+    }
+
+    if (currentEvent.id === "healing-shrine" && optionId === "shield") {
+      setShield((currentShield) => currentShield + SHRINE_SHIELD_GAIN);
+      continueAfterEvent(`Healing Shrine: gained ${SHRINE_SHIELD_GAIN} shield.`);
+      return;
+    }
+
+    if (currentEvent.id === "strange-altar" && optionId === "element") {
+      const nextPlayerHp = Math.max(playerHp - ALTAR_HP_COST, 0);
+      const elementReward = onAddRandomElementToRunCard();
+
+      setPlayerHp(nextPlayerHp);
+
+      if (nextPlayerHp === 0) {
+        setEndedRunGold(runGold);
+        setEndedRunStatistics(nextRunStatistics);
+        onRecordRunEnded("failed", nextRunStatistics);
+        setBattleStatus("run-failed");
+        setBattleLog({
+          tone: "danger",
+          message: `Strange Altar: lost ${ALTAR_HP_COST} HP and the run failed.`,
+        });
+        return;
+      }
+
+      continueAfterEvent(
+        elementReward
+          ? `Strange Altar: lost ${ALTAR_HP_COST} HP. ${elementReward.word} gained ${formatElementName(elementReward.element)}.`
+          : `Strange Altar: lost ${ALTAR_HP_COST} HP, but no card was available.`,
+      );
+      return;
+    }
+
+    continueAfterEvent("Strange Altar: you left the altar untouched.");
   }
 
   function handleStartBoss() {
     const nextMiniGameType = chooseBattleMiniGame();
 
     setIsBossEncounter(true);
+    setEncounterType("monster");
     setMonsterHp(sampleBoss.maxHp);
     setPendingEarthReduction(0);
     setBattleStatus("fighting");
@@ -772,6 +1029,8 @@ export function Dungeon({
     setEndedRunStatistics(null);
     setIsBossEncounter(false);
     setHasCompletedBoss(false);
+    setEncounterType("monster");
+    setEventIndex(0);
     setMonsterIndex(0);
     setMonsterHp(getMonsterForIndex(0).maxHp);
     setBattleStatus("fighting");
@@ -795,8 +1054,22 @@ export function Dungeon({
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
         <CardPanel className="border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 text-amber-50">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <Badge tone={isBossEncounter ? "red" : "emerald"}>
-              {encounterLabel} Encounter
+            <Badge
+              tone={
+                isBossEncounter || encounterType === "elite"
+                  ? "red"
+                  : isEventEncounter
+                    ? "purple"
+                    : "emerald"
+              }
+            >
+              {isBossEncounter
+                ? "⚔ Boss"
+                : encounterType === "elite"
+                  ? "👑 Elite"
+                  : isEventEncounter
+                    ? "✨ Event"
+                    : "⚔ Monster"}
             </Badge>
             <Badge tone="purple">{selectedDeck.name}</Badge>
             <Button
@@ -809,76 +1082,128 @@ export function Dungeon({
           </div>
 
           <section className="mt-5 rounded-2xl border-2 border-red-300/20 bg-gradient-to-r from-red-950/70 via-stone-950/60 to-amber-950/70 p-5 shadow-inner">
-            <div className="grid gap-5 md:grid-cols-[auto_minmax(0,1fr)_220px] md:items-center">
-              <div className="grid size-28 place-items-center rounded-2xl border-2 border-amber-300/25 bg-amber-50/90 text-7xl shadow-inner">
-                {currentEncounter.imagePlaceholder}
-              </div>
-              <div>
-                <p className="text-sm font-extrabold uppercase text-amber-300">
-                  Now Fighting
-                </p>
-                <h3 className="mt-1 text-4xl font-black text-amber-50">
-                  {currentEncounter.name}
-                </h3>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <Badge tone="red">{encounterLabel} Attack {currentEncounter.attack}</Badge>
-                  {isBossEncounter && <Badge tone="purple">Boss Battle</Badge>}
-                  {!isBossEncounter && (
-                    <Badge tone="amber">
-                      Boss after {BOSS_MONSTER_REQUIREMENT}
-                    </Badge>
-                  )}
+            {isEventEncounter ? (
+              <div className="grid gap-5 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
+                <div className="grid size-28 place-items-center rounded-2xl border-2 border-amber-300/25 bg-amber-50/90 text-7xl shadow-inner">
+                  {currentEvent.icon}
+                </div>
+                <div>
+                  <p className="text-sm font-extrabold uppercase text-amber-300">
+                    Event Encounter
+                  </p>
+                  <h3 className="mt-1 text-4xl font-black text-amber-50">
+                    {currentEvent.title}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-100">
+                    {currentEvent.description}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Badge tone="purple">No Combat</Badge>
+                    <Badge tone="amber">Does Not Count For Boss</Badge>
+                  </div>
                 </div>
               </div>
-              <div>
-                <div className="flex items-center justify-between gap-3 text-sm font-black text-amber-100">
-                  <span>Monster HP</span>
-                  <span>{monsterHp} / {currentEncounter.maxHp}</span>
+            ) : (
+              <div className="grid gap-5 md:grid-cols-[auto_minmax(0,1fr)_220px] md:items-center">
+                <div className="grid size-28 place-items-center rounded-2xl border-2 border-amber-300/25 bg-amber-50/90 text-7xl shadow-inner">
+                  {currentEncounter.imagePlaceholder}
                 </div>
-                <div className="mt-2">
-                  <ProgressBar
-                    value={monsterHp}
-                    max={currentEncounter.maxHp}
-                    label={`${currentEncounter.name} HP`}
-                    tone={isBossEncounter ? "red" : "emerald"}
-                  />
+                <div>
+                  <p className="text-sm font-extrabold uppercase text-amber-300">
+                    Now Fighting
+                  </p>
+                  <h3 className="mt-1 text-4xl font-black text-amber-50">
+                    {currentEncounter.name}
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <Badge tone="red">{encounterLabel} Attack {currentEncounter.attack}</Badge>
+                    {isBossEncounter && <Badge tone="purple">Boss Battle</Badge>}
+                    {encounterType === "elite" && (
+                      <Badge tone="amber">Elite Bonus +{ELITE_GOLD_BONUS} gold</Badge>
+                    )}
+                    {!isBossEncounter && (
+                      <Badge tone="amber">
+                        Boss after {BOSS_MONSTER_REQUIREMENT}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center justify-between gap-3 text-sm font-black text-amber-100">
+                    <span>Monster HP</span>
+                    <span>{monsterHp} / {currentEncounter.maxHp}</span>
+                  </div>
+                  <div className="mt-2">
+                    <ProgressBar
+                      value={monsterHp}
+                      max={currentEncounter.maxHp}
+                      label={`${currentEncounter.name} HP`}
+                      tone={isBossEncounter || encounterType === "elite" ? "red" : "emerald"}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </section>
 
           <section className="mt-6 rounded-2xl border-2 border-amber-300/25 bg-amber-50/95 p-5 text-amber-950 shadow-[0_10px_0_rgba(120,53,15,0.22)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
+                <Badge tone={isEventEncounter ? "purple" : "emerald"}>
+                  {isEventEncounter ? "Event Choice" : formatMiniGameName(miniGameType)}
+                </Badge>
                 <h3 className="mt-2 text-3xl font-black text-amber-950">
-                  Answer to trigger your card
+                  {isEventEncounter
+                    ? "Choose one event option"
+                    : "Answer to trigger your card"}
                 </h3>
                 <p className="mt-1 text-sm font-semibold text-amber-900/70">
-                  Dungeon questions are timed; Training stays untimed for safe practice.
+                  {isEventEncounter
+                    ? "Events are not battles. Their rewards stay temporary for the current run."
+                    : "Dungeon questions are timed; Training stays untimed for safe practice."}
                 </p>
               </div>
-              <div className="min-w-44 rounded-xl border-2 border-amber-900/15 bg-white/80 p-3 shadow-inner">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                    Battle Timer
-                  </p>
-                  <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
-                    {timeRemaining}s / {miniGameTimeLimit}s
-                  </Badge>
+              {!isEventEncounter && (
+                <div className="min-w-44 rounded-xl border-2 border-amber-900/15 bg-white/80 p-3 shadow-inner">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs font-extrabold uppercase text-amber-800/70">
+                      Battle Timer
+                    </p>
+                    <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
+                      {timeRemaining}s / {miniGameTimeLimit}s
+                    </Badge>
+                  </div>
+                  <div className="mt-2">
+                    <ProgressBar
+                      value={timeRemaining}
+                      max={miniGameTimeLimit}
+                      tone={isTimerLow && isTimerRunning ? "red" : "amber"}
+                      label="Battle timer"
+                    />
+                  </div>
                 </div>
-                <div className="mt-2">
-                  <ProgressBar
-                    value={timeRemaining}
-                    max={miniGameTimeLimit}
-                    tone={isTimerLow && isTimerRunning ? "red" : "amber"}
-                    label="Battle timer"
-                  />
-                </div>
-              </div>
+              )}
             </div>
 
-            {miniGameType === "word-choice" ? (
+            {isEventEncounter ? (
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {currentEvent.options.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => handleEventOption(option.id)}
+                    className="rounded-xl border-2 border-amber-900/15 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  >
+                    <p className="text-lg font-black text-amber-950">
+                      {option.label}
+                    </p>
+                    <p className="mt-2 text-sm font-semibold leading-6 text-amber-900/70">
+                      {option.description}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            ) : miniGameType === "word-choice" ? (
               <WordChoiceBattle
                 isAnswered={isAnswered}
                 question={wordChoiceQuestion}
@@ -1120,6 +1445,8 @@ export function Dungeon({
               <div className="mt-4 grid gap-2">
                 <StatCard label="Deck" value={selectedDeck.name} tone="emerald" />
                 <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
+                <StatCard label="Elites" value={summaryStatistics.eliteDefeated} tone="red" />
+                <StatCard label="Events" value={summaryStatistics.eventsVisited} tone="purple" />
                 <StatCard label="Boss" value={summaryStatistics.bossDefeated ? "Defeated" : "No"} tone="purple" />
                 <StatCard label="Final Gold" value={summaryGold} tone="amber" />
                 <StatCard label="Run Deck" value={currentRunDeck.length} tone="slate" />
@@ -1166,6 +1493,8 @@ export function Dungeon({
               <div className="mt-4 grid gap-2">
                 <StatCard label="Deck" value={selectedDeck.name} tone="red" />
                 <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
+                <StatCard label="Elites" value={summaryStatistics.eliteDefeated} tone="red" />
+                <StatCard label="Events" value={summaryStatistics.eventsVisited} tone="purple" />
                 <StatCard label="Floor" value={runProgress.currentFloor} tone="slate" />
                 <StatCard label="Final Gold" value={summaryGold} tone="amber" />
                 <StatCard label="Correct" value={summaryStatistics.correctAnswers} tone="emerald" />

@@ -196,6 +196,15 @@ Current shared values:
 - Water shield gain: `+2`
 - Earth attack reduction: `2`
 - Wind defeat gold bonus: `+1`
+- Encounter weights: Monster `70`, Event `20`, Elite `10`
+- Elite HP multiplier: `1.5`
+- Elite attack bonus: `+2`
+- Elite bonus gold: `+10`
+- Treasure Chest gold: `+10`
+- Event attack upgrade: `+1`
+- Healing Shrine HP recovery: `5`
+- Healing Shrine shield gain: `5`
+- Strange Altar HP cost: `5`
 
 Card baseAttack values remain unchanged in the first balance pass. Static timer values are still first-pass values; difficulty scaling and advanced balance systems are deferred.
 
@@ -241,6 +250,14 @@ Current battle rules:
 - Dungeon battle questions use the current-run deck copy.
 - Current sample monsters are Slime, Goblin, and Bat.
 - Each monster has name, HP, max HP, and attack.
+- Current encounter types are Monster, Elite, and Event.
+- Monster encounters use existing battle rules.
+- Elite encounters use stronger versions of existing sample monsters.
+- Elite monsters have 1.5x normal monster HP, normal attack +2, stronger styling, and +10 bonus current-run gold on defeat.
+- Elite encounters count as monster defeats for shop and boss progression.
+- Event encounters are non-combat choices.
+- Events do not count as defeated monsters and do not advance boss progression.
+- Event rewards are temporary current-run rewards and are not saved to LocalStorage.
 - Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Dungeon battle questions are timed.
@@ -276,7 +293,7 @@ Current battle rules:
 - When monster HP reaches 0, the screen shows `Monster Defeated`.
 - Defeating a monster increases `monstersDefeated` by 1.
 - Defeating a monster grants +6 temporary gold.
-- Current-run statistics track questions answered, correct answers, wrong answers, timeouts, monsters defeated, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
+- Current-run statistics track questions answered, correct answers, wrong answers, timeouts, monsters defeated, elite defeated, events visited, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
 - Shop checkpoints occur every 5 defeated monsters.
 - When a shop checkpoint is reached, Dungeon shows `Shop Available`.
 - Dungeon can route to Shop with a `Go To Shop` button.
@@ -293,6 +310,7 @@ Current battle rules:
 - Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
 - When boss HP reaches 0, the screen shows `Run Complete`.
 - Run Complete shows selected deck name, monsters defeated, boss defeated, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Run Complete also shows elites defeated and events visited.
 - Boss defeat marks the selected deck completed in `completedDeckIds`.
 - Completed deck ids are saved in LocalStorage permanent progress.
 - If Starter Deck is completed, Food Deck is unlocked in `unlockedDeckIds`.
@@ -301,6 +319,7 @@ Current battle rules:
 - Boss defeat does not unlock decks beyond Food Deck yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - Run Failed shows selected deck name, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Run Failed also shows elites defeated and events visited.
 - Completed and failed run summaries update permanent best run stats in LocalStorage.
 - After run failure, the player can restart the local run.
 
@@ -316,6 +335,18 @@ Dungeon battle and run progression state are still temporary React state only. L
 Timer state is temporary Dungeon UI/combat state and is not saved to LocalStorage.
 
 Run statistics are temporary while a run is active. Only end-of-run summary records update permanent best run stats.
+
+Current Event encounters:
+
+- Treasure Chest
+  - Gain +10 gold, or
+  - Upgrade a random current-run card attack by +1
+- Healing Shrine
+  - Recover 5 HP, or
+  - Gain 5 shield
+- Strange Altar
+  - Lose 5 HP and add a random element to a random current-run card, or
+  - Leave
 
 ## Mini-Game Plan
 

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 27 complete. Phase 28 has not started yet.
+Current phase: Phase 28 complete. Phase 29 has not started yet.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -280,7 +280,7 @@ The following screens are implemented or stubbed:
 - Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, compact Best Run summary, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
 - Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
 - Training: polished untimed recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
-- Dungeon: polished timed local-state vocabulary card battle foundation with Word Choice, Word Match, Word Scramble, temporary run progression, selected-deck current-run copy, run statistics, gold, shield absorption, first-pass element effects, shop checkpoint routing, boss encounter, Run Complete state, Run Failed summary, and permanent selected-deck completion reward.
+- Dungeon: polished timed local-state vocabulary card battle foundation with Monster, Elite, and Event encounters; Word Choice, Word Match, Word Scramble; temporary run progression; selected-deck current-run copy; run statistics; gold; shield absorption; first-pass element effects; shop checkpoint routing; boss encounter; Run Complete state; Run Failed summary; and permanent selected-deck completion reward.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, temporary run gold costs, plus back-to-dungeon routing.
 - Run Result: polished placeholder summary screen with a button back to Home.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, and after Phase 27 run stats / best run summary work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, and after Phase 28 elite/event encounter foundation work.
 
 The local development server can be started with:
 
@@ -365,6 +365,9 @@ Current balance values:
 - Minimum distinct visible words for battle questions: `4`
 - Dungeon timers: Word Choice `14s`, Word Match `20s`, Word Scramble `22s`
 - Element values: Fire `+2` damage, Water `+2` shield, Earth `-2` next attack, Wind `+1` gold on defeat
+- Encounter weights: Monster `70`, Event `20`, Elite `10`
+- Elite rules: `1.5x` HP, `+2` attack, `+10` bonus current-run gold
+- Event rewards: Treasure +10 gold or +1 random card attack, Shrine +5 HP or +5 shield, Altar -5 HP plus random element or leave
 - Card baseAttack values were not changed in Phase 25.
 
 Repository files:
@@ -441,12 +444,19 @@ Current Dungeon implementation:
 - `src/App.tsx` owns temporary current-run deck, gold, and run progression state so Dungeon can route to Shop and back while preserving current-run changes.
 - `src/App.tsx` owns temporary current-run statistics and permanent best run statistics updates.
 - Run progression tracks `monstersDefeated`, `currentFloor`, and `nextShopAt`.
-- Current-run statistics track questions answered, correct answers, wrong answers, timeouts, monsters defeated, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
+- Current-run statistics track questions answered, correct answers, wrong answers, timeouts, monsters defeated, elites defeated, events visited, boss defeated, total damage dealt, total shield gained, gold earned, cards upgraded, cards removed, cards duplicated, and elements added.
 - The current-run deck starts as a copy of the selected deck.
 - Shop upgrades must not mutate source deck data in `src/data`.
 - Dungeon battle questions use the current-run deck, not the original seed deck.
 - Player state includes HP, functional shield, and gold display.
 - Monster state includes current monster, HP, max HP, and attack.
+- Dungeon encounter state supports Monster, Elite, and Event encounters.
+- Monster encounters use existing battle behavior.
+- Elite encounters are generated from existing sample monsters with 1.5x HP, +2 attack, elite styling, and +10 bonus current-run gold on defeat.
+- Elite encounters count as monster defeats for shop checkpoints and boss progression.
+- Event encounters are non-combat choices and do not count as monster defeats.
+- Event rewards are temporary current-run rewards and are not saved to LocalStorage.
+- Current events are Treasure Chest, Healing Shrine, and Strange Altar.
 - Battle questions use a simple mini-game structure and the current-run deck.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Dungeon battle questions are timed.
@@ -490,10 +500,10 @@ Current Dungeon implementation:
 - The first boss is Gatekeeper with 76 HP and 8 attack.
 - Boss battles use the same mini-games and Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
-- Run Complete summary shows selected deck name, monsters defeated, boss defeated, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Run Complete summary shows selected deck name, monsters defeated, elites defeated, events visited, boss defeated, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
 - Boss defeat marks the selected deck as completed in permanent LocalStorage progress.
 - Home and Deck Review display selected deck completion status.
-- Run Failed summary shows selected deck name, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Run Failed summary shows selected deck name, monsters defeated, elites defeated, events visited, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
 - Completed and failed runs update permanent best run stats only after the run ends.
 - Real progression beyond Food Deck, backend, API, advanced element weakness/resistance, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
@@ -508,6 +518,7 @@ Current Dungeon implementation:
 - Phase 25 added shared balance constants, tuned player HP, gold per monster, Dungeon timer limits, and Gatekeeper stats.
 - Phase 26 made elements functional with simple current-run-only Dungeon effects.
 - Phase 27 added current-run statistics, Run Complete / Run Failed summaries, Home Best Run summary, and permanent best run stats saved only after run end.
+- Phase 28 added Monster/Elite/Event encounter types, weighted encounter generation, three initial events, elite rewards, and run summary tracking for elites/events.
 
 Current Shop implementation:
 
@@ -646,6 +657,10 @@ Run progress includes:
 - Monsters defeated
 - Current floor
 - Next shop checkpoint
+- Encounter state
+- Active event state
+- Elite state
+- Temporary event rewards
 - Active run statistics before completion/failure
 
 If the player dies, permanent progress survives death and run progress is completely lost.
@@ -853,7 +868,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 27 is complete.
+Phase 28 is complete.
 
 Recommended next task:
 

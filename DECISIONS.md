@@ -706,6 +706,36 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Active dungeon progress is temporary roguelike run state and should reset on death, restart, refresh, or app reload.
 - Status: Accepted
 
+### 2026-06-05: Elite Encounters Are Temporary Run Content
+
+- Decision: Elite encounters use stronger versions of existing sample monsters and provide current-run-only bonus gold.
+- Reason: Elites add variety and risk during runs without adding permanent rewards or new progression systems.
+- Status: Accepted
+
+### 2026-06-05: Event Encounters Are Temporary Run Content
+
+- Decision: Event encounters are non-combat current-run choices with temporary rewards or costs.
+- Reason: Events make dungeon progression less repetitive without changing combat rules or save architecture.
+- Status: Accepted
+
+### 2026-06-05: Event Rewards Follow Roguelike Reset Rules
+
+- Decision: Event rewards never bypass run reset rules and are not saved as permanent progress.
+- Reason: Event rewards affect only the current run, matching shop upgrades, gold, shield, and run deck mutation rules.
+- Status: Accepted
+
+### 2026-06-05: Events Do Not Count Toward Boss Progression
+
+- Decision: Event encounters do not count as monster defeats and do not advance shop or boss progression.
+- Reason: Events are non-combat variety nodes, not combat victories.
+- Status: Accepted
+
+### 2026-06-05: Elite Encounters Count As Monster Defeats
+
+- Decision: Defeating an Elite counts as a monster defeat for shop checkpoints and boss progression.
+- Reason: Elites are combat encounters and should move the run forward like normal monsters.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

@@ -62,6 +62,8 @@ export type RunStatistics = {
   wrongAnswers: number;
   timeouts: number;
   monstersDefeated: number;
+  eliteDefeated: number;
+  eventsVisited: number;
   bossDefeated: boolean;
   totalDamageDealt: number;
   totalShieldGained: number;

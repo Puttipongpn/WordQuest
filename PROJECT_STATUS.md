@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 27 Run Stats and Best Run Summary is complete. GitHub backup is configured on `origin/main`.
+Phase 28 Elite Encounters and Event Encounters Foundation is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -309,6 +309,19 @@ Phase 27 Run Stats and Best Run Summary is complete. GitHub backup is configured
 - Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, Run Complete, timer behavior, Training untimed behavior, balance constants, element effects, and LocalStorage permanent-progress-only rules.
 - No backend, auth, database, API, Oxford 3000 import, final art assets, new decks, deck unlock changes, combat rule changes, new shop items, or new mini-games were added.
 - Verified the project with `npm run build` after Phase 27.
+- Added Dungeon encounter type support for Monster, Elite, and Event encounters.
+- Created Elite encounters from existing sample monsters using first-pass rules: 1.5x HP, +2 attack, elite icon/name styling, and +10 current-run bonus gold on defeat.
+- Elite encounters count as monster defeats for shop and boss progression.
+- Added weighted encounter generation constants: Monster 70, Event 20, Elite 10.
+- Added lightweight non-combat Event encounters: Treasure Chest, Healing Shrine, and Strange Altar.
+- Treasure Chest can grant +10 gold or upgrade a random current-run card attack by +1.
+- Healing Shrine can recover 5 HP or grant 5 shield.
+- Strange Altar can lose 5 HP to add a random element to a random current-run card, or leave.
+- Events do not count as defeated monsters and do not advance boss progression.
+- Extended temporary run statistics with `eliteDefeated` and `eventsVisited`, and included both in Run Complete and Run Failed summaries.
+- Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, timer behavior, run statistics, LocalStorage permanent-progress-only rules, balance constants, and element effects.
+- No new decks, Oxford 3000 import, backend, auth, database, API, final art assets, save architecture changes, combat redesign, advanced element interactions, new shop item types, or new mini-games were added.
+- Verified the project with `npm run build` after Phase 28.
 
 ## In Progress
 
@@ -316,7 +329,7 @@ Phase 27 Run Stats and Best Run Summary is complete. GitHub backup is configured
 
 ## Next Task
 
-Phase 27 is complete. Continue with the next explicitly requested phase or feature.
+Phase 28 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -437,6 +450,9 @@ The following documents are required and must be updated after every completed t
 - Run summary stats are saved only after a run completes or fails
 - Best run stats are permanent progress
 - Active run state remains unsaved
+- Elite encounters are temporary run content and count as monster defeats
+- Event encounters are temporary run content and do not count toward boss progression
+- Event rewards remain current-run only and never bypass roguelike reset rules
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
