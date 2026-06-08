@@ -459,6 +459,58 @@ function calculateRunAccuracy(statistics: RunStatistics) {
   );
 }
 
+function getBattleFeedbackLabel(tone: BattleLog["tone"], message: string) {
+  if (message.toLowerCase().includes("time's up")) {
+    return "Time Out";
+  }
+
+  if (tone === "success") {
+    return "Card Triggered";
+  }
+
+  if (tone === "danger") {
+    return "Enemy Hit";
+  }
+
+  return "Awaiting Move";
+}
+
+function getBattleFeedbackIcon(tone: BattleLog["tone"], message: string) {
+  if (message.toLowerCase().includes("time's up")) {
+    return "⏳";
+  }
+
+  if (tone === "success") {
+    return "✨";
+  }
+
+  if (tone === "danger") {
+    return "💥";
+  }
+
+  return "🎴";
+}
+
+function getTimerStateLabel(
+  isTimerRunning: boolean,
+  isTimerLow: boolean,
+  timeRemaining: number,
+) {
+  if (timeRemaining === 0) {
+    return "Time Out";
+  }
+
+  if (!isTimerRunning) {
+    return "Paused";
+  }
+
+  if (isTimerLow) {
+    return "Hurry";
+  }
+
+  return "Counting";
+}
+
 export function Dungeon({
   currentRunDeck,
   isSelectedDeckCompleted,
@@ -567,9 +619,42 @@ export function Dungeon({
   const miniGameTimeLimit = getMiniGameTimeLimit(miniGameType);
   const isTimerLow = timeRemaining <= 3;
   const isTimerRunning = battleStatus === "fighting" && !isAnswered;
+  const timerStateLabel = getTimerStateLabel(
+    isTimerRunning,
+    isTimerLow,
+    timeRemaining,
+  );
   const summaryStatistics = endedRunStatistics ?? runStatistics;
   const summaryGold = endedRunGold ?? runGold;
   const summaryAccuracy = calculateRunAccuracy(summaryStatistics);
+  const battleFeedbackLabel = getBattleFeedbackLabel(
+    battleLog.tone,
+    battleLog.message,
+  );
+  const battleFeedbackIcon = getBattleFeedbackIcon(
+    battleLog.tone,
+    battleLog.message,
+  );
+  const encounterStageClass = isEventEncounter
+    ? "border-violet-300/40 bg-gradient-to-br from-violet-950 via-stone-950 to-amber-950"
+    : isBossEncounter
+      ? "border-red-300/50 bg-gradient-to-br from-red-950 via-stone-950 to-violet-950"
+      : encounterType === "elite"
+        ? "border-amber-300/50 bg-gradient-to-br from-red-950 via-stone-950 to-amber-950"
+        : "border-emerald-300/35 bg-gradient-to-br from-stone-950 via-emerald-950 to-stone-900";
+  const encounterPortraitClass = isEventEncounter
+    ? "border-violet-200/40 bg-violet-100 text-violet-950 shadow-[0_0_34px_rgba(216,180,254,0.24)]"
+    : isBossEncounter
+      ? "border-red-200/50 bg-red-100 text-red-950 shadow-[0_0_42px_rgba(248,113,113,0.3)]"
+      : encounterType === "elite"
+        ? "border-amber-200/50 bg-amber-100 text-red-950 shadow-[0_0_34px_rgba(251,191,36,0.28)]"
+        : "border-emerald-200/40 bg-emerald-100 text-emerald-950 shadow-[0_0_28px_rgba(52,211,153,0.18)]";
+  const battleFeedbackClass =
+    battleLog.tone === "success"
+      ? "border-emerald-300 bg-gradient-to-br from-emerald-100 to-amber-50"
+      : battleLog.tone === "danger"
+        ? "border-red-300 bg-gradient-to-br from-red-100 to-amber-50"
+        : "border-amber-800/30 bg-gradient-to-br from-amber-50 to-stone-100";
 
   function resetAnswerState() {
     setSelectedChoiceId(null);
@@ -924,7 +1009,7 @@ export function Dungeon({
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
-      message: `${message} ${
+      message: `Event result: ${message} Temporary run impact only. ${
         isNextEvent
           ? "Another event waits ahead."
           : nextEncounterType === "elite"
@@ -944,7 +1029,9 @@ export function Dungeon({
 
     if (currentEvent.id === "treasure-chest" && optionId === "gold") {
       onGainRunGold(TREASURE_GOLD_REWARD);
-      continueAfterEvent(`Treasure Chest: gained ${TREASURE_GOLD_REWARD} gold.`);
+      continueAfterEvent(
+        `Chose Take the coins. Reward: +${TREASURE_GOLD_REWARD} gold.`,
+      );
       return;
     }
 
@@ -954,8 +1041,8 @@ export function Dungeon({
       );
       continueAfterEvent(
         upgradedWord
-          ? `Treasure Chest: ${upgradedWord} gained +${EVENT_ATTACK_UPGRADE_AMOUNT} attack.`
-          : "Treasure Chest: no card was available to upgrade.",
+          ? `Chose Polish a card. Reward: ${upgradedWord} gained +${EVENT_ATTACK_UPGRADE_AMOUNT} attack.`
+          : "Chose Polish a card. No card was available to upgrade.",
       );
       return;
     }
@@ -964,7 +1051,9 @@ export function Dungeon({
       const nextHp = Math.min(playerHp + SHRINE_HEAL_AMOUNT, PLAYER_MAX_HP);
 
       setPlayerHp(nextHp);
-      continueAfterEvent(`Healing Shrine: recovered ${nextHp - playerHp} HP.`);
+      continueAfterEvent(
+        `Chose Recover HP. Reward: recovered ${nextHp - playerHp} HP.`,
+      );
       return;
     }
 
@@ -975,7 +1064,9 @@ export function Dungeon({
         totalShieldGained:
           nextRunStatistics.totalShieldGained + SHRINE_SHIELD_GAIN,
       });
-      continueAfterEvent(`Healing Shrine: gained ${SHRINE_SHIELD_GAIN} shield.`);
+      continueAfterEvent(
+        `Chose Raise ward. Reward: gained ${SHRINE_SHIELD_GAIN} shield.`,
+      );
       return;
     }
 
@@ -999,13 +1090,13 @@ export function Dungeon({
 
       continueAfterEvent(
         elementReward
-          ? `Strange Altar: lost ${ALTAR_HP_COST} HP. ${elementReward.word} gained ${formatElementName(elementReward.element)}.`
-          : `Strange Altar: lost ${ALTAR_HP_COST} HP, but no card was available.`,
+          ? `Chose Touch the altar. Cost: -${ALTAR_HP_COST} HP. Reward: ${elementReward.word} gained ${formatElementName(elementReward.element)}.`
+          : `Chose Touch the altar. Cost: -${ALTAR_HP_COST} HP, but no card was available.`,
       );
       return;
     }
 
-    continueAfterEvent("Strange Altar: you left the altar untouched.");
+    continueAfterEvent("Chose Leave. No reward or cost.");
   }
 
   function handleStartBoss() {
@@ -1059,8 +1150,8 @@ export function Dungeon({
       description="Answer timed vocabulary mini-games to trigger cards. Run state here is local and temporary."
       framed={false}
     >
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_330px]">
-        <CardPanel className="border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 text-amber-50">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_350px]">
+        <CardPanel className="overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 text-amber-50">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Badge
               tone={
@@ -1089,15 +1180,38 @@ export function Dungeon({
             </Button>
           </div>
 
-          <section className="mt-5 rounded-2xl border-2 border-red-300/20 bg-gradient-to-r from-red-950/70 via-stone-950/60 to-amber-950/70 p-5 shadow-inner">
+          <section
+            className={`relative mt-5 overflow-hidden rounded-3xl border-2 p-5 shadow-[inset_0_0_55px_rgba(0,0,0,0.28)] ${encounterStageClass}`}
+          >
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/10 to-transparent" />
+            <div className="relative mb-4 flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-amber-200/80">
+                Encounter Stage
+              </p>
+              <Badge
+                tone={
+                  isBossEncounter
+                    ? "red"
+                    : encounterType === "elite"
+                      ? "amber"
+                      : isEventEncounter
+                        ? "purple"
+                        : "emerald"
+                }
+              >
+                {encounterLabel}
+              </Badge>
+            </div>
             {isEventEncounter ? (
-              <div className="grid gap-5 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
-                <div className="grid size-28 place-items-center rounded-2xl border-2 border-amber-300/25 bg-amber-50/90 text-7xl shadow-inner">
+              <div className="relative grid gap-5 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
+                <div
+                  className={`grid size-32 place-items-center rounded-3xl border-4 text-7xl ${encounterPortraitClass}`}
+                >
                   {currentEvent.icon}
                 </div>
                 <div>
-                  <p className="text-sm font-extrabold uppercase text-amber-300">
-                    Event Encounter
+                  <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-violet-200">
+                    Non-Combat Choice
                   </p>
                   <h3 className="mt-1 text-4xl font-black text-amber-50">
                     {currentEvent.title}
@@ -1112,20 +1226,35 @@ export function Dungeon({
                 </div>
               </div>
             ) : (
-              <div className="grid gap-5 md:grid-cols-[auto_minmax(0,1fr)_220px] md:items-center">
-                <div className="grid size-28 place-items-center rounded-2xl border-2 border-amber-300/25 bg-amber-50/90 text-7xl shadow-inner">
-                  {currentEncounter.imagePlaceholder}
+              <div className="relative grid gap-5 md:grid-cols-[minmax(0,180px)_minmax(0,1fr)_minmax(0,240px)] md:items-center">
+                <div className="rounded-3xl border border-amber-100/10 bg-black/15 p-3 text-center">
+                  <p className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-amber-200/75">
+                    Enemy
+                  </p>
+                  <div
+                    className={`mx-auto grid size-32 place-items-center rounded-3xl border-4 text-7xl ${encounterPortraitClass}`}
+                  >
+                    {currentEncounter.imagePlaceholder}
+                  </div>
                 </div>
                 <div>
-                  <p className="text-sm font-extrabold uppercase text-amber-300">
-                    Now Fighting
+                  <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-amber-300">
+                    {isBossEncounter
+                      ? "Boss Encounter"
+                      : encounterType === "elite"
+                        ? "Elite Encounter"
+                        : "Monster Encounter"}
                   </p>
-                  <h3 className="mt-1 text-4xl font-black text-amber-50">
+                  <h3 className="mt-1 text-5xl font-black leading-none text-amber-50 drop-shadow">
                     {currentEncounter.name}
                   </h3>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-100/85">
+                    Win vocabulary mini-games to trigger cards. A wrong answer
+                    or timeout lets this encounter strike back.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
                     <Badge tone="red">{encounterLabel} Attack {currentEncounter.attack}</Badge>
-                    {isBossEncounter && <Badge tone="purple">Boss Battle</Badge>}
+                    {isBossEncounter && <Badge tone="purple">Major Fight</Badge>}
                     {encounterType === "elite" && (
                       <Badge tone="amber">Elite Bonus +{ELITE_GOLD_BONUS} gold</Badge>
                     )}
@@ -1136,12 +1265,12 @@ export function Dungeon({
                     )}
                   </div>
                 </div>
-                <div>
+                <div className="rounded-2xl border-2 border-amber-200/20 bg-black/25 p-4">
                   <div className="flex items-center justify-between gap-3 text-sm font-black text-amber-100">
-                    <span>Monster HP</span>
+                    <span>Enemy HP</span>
                     <span>{monsterHp} / {currentEncounter.maxHp}</span>
                   </div>
-                  <div className="mt-2">
+                  <div className="mt-3">
                     <ProgressBar
                       value={monsterHp}
                       max={currentEncounter.maxHp}
@@ -1149,18 +1278,26 @@ export function Dungeon({
                       tone={isBossEncounter || encounterType === "elite" ? "red" : "emerald"}
                     />
                   </div>
+                  <div className="mt-4 rounded-xl border border-red-200/20 bg-red-950/30 p-3">
+                    <p className="text-xs font-black uppercase text-red-100/70">
+                      Threat
+                    </p>
+                    <p className="mt-1 text-3xl font-black text-red-100">
+                      {currentEncounter.attack}
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
           </section>
 
-          <section className="mt-6 rounded-2xl border-2 border-amber-300/25 bg-amber-50/95 p-5 text-amber-950 shadow-[0_10px_0_rgba(120,53,15,0.22)]">
+          <section className="mt-6 rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-5 text-amber-950 shadow-[0_10px_0_rgba(120,53,15,0.22)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <Badge tone={isEventEncounter ? "purple" : "emerald"}>
                   {isEventEncounter ? "Event Choice" : formatMiniGameName(miniGameType)}
                 </Badge>
-                <h3 className="mt-2 text-3xl font-black text-amber-950">
+                <h3 className="mt-2 text-4xl font-black leading-tight text-amber-950">
                   {isEventEncounter
                     ? "Choose one event option"
                     : "Answer to trigger your card"}
@@ -1172,15 +1309,29 @@ export function Dungeon({
                 </p>
               </div>
               {!isEventEncounter && (
-                <div className="min-w-44 rounded-xl border-2 border-amber-900/15 bg-white/80 p-3 shadow-inner">
+                <div
+                  className={`min-w-48 rounded-2xl border-2 p-4 shadow-inner ${
+                    timeRemaining === 0
+                      ? "border-red-400 bg-red-100"
+                      : isTimerLow && isTimerRunning
+                        ? "border-red-400 bg-red-50 motion-safe:animate-pulse"
+                        : "border-amber-900/15 bg-white/85"
+                  }`}
+                >
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-xs font-extrabold uppercase text-amber-800/70">
                       Battle Timer
                     </p>
                     <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
-                      {timeRemaining}s / {miniGameTimeLimit}s
+                      {timerStateLabel}
                     </Badge>
                   </div>
+                  <p className="mt-1 text-4xl font-black text-amber-950">
+                    {timeRemaining}s
+                    <span className="ml-1 text-base text-amber-900/60">
+                      / {miniGameTimeLimit}s
+                    </span>
+                  </p>
                   <div className="mt-2">
                     <ProgressBar
                       value={timeRemaining}
@@ -1241,7 +1392,14 @@ export function Dungeon({
             )}
           </section>
 
-          <section className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <section className="mt-6 rounded-3xl border-2 border-amber-200/20 bg-black/20 p-4">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-amber-200/80">
+                Player Side
+              </p>
+              <Badge tone="sky">Current Run</Badge>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             <StatCard
               label="Player HP"
               value={`${playerHp} / ${PLAYER_MAX_HP}`}
@@ -1278,9 +1436,10 @@ export function Dungeon({
                   ? "emerald"
                   : isBossAvailable || isBossEncounter
                     ? "red"
-                    : "slate"
+                  : "slate"
               }
             />
+            </div>
           </section>
 
           {(isBossAvailable || isShopAvailable) && (
@@ -1321,16 +1480,13 @@ export function Dungeon({
 
         <aside className="space-y-4 lg:self-start">
           <section
-            className={`rounded-xl border-2 p-4 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${
-              battleLog.tone === "success"
-                ? "border-emerald-300 bg-emerald-100"
-                : battleLog.tone === "danger"
-                  ? "border-red-300 bg-red-100"
-                  : "border-amber-800/30 bg-amber-50/95"
-            }`}
+            className={`rounded-2xl border-2 p-4 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${battleFeedbackClass}`}
           >
             <div className="flex flex-wrap items-center gap-2">
-              <p className="font-black text-amber-950">Battle Feedback</p>
+              <span className="text-3xl" aria-hidden="true">
+                {battleFeedbackIcon}
+              </span>
+              <p className="font-black text-amber-950">Battle Log</p>
               <Badge
                 tone={
                   battleLog.tone === "success"
@@ -1340,16 +1496,55 @@ export function Dungeon({
                       : "slate"
                 }
               >
-                {battleLog.tone === "success"
-                  ? "Correct"
-                  : battleLog.tone === "danger"
-                    ? "Wrong"
-                    : "Waiting"}
+                {battleFeedbackLabel}
               </Badge>
             </div>
             <p className="mt-2 text-sm font-medium text-amber-950/80">
               {battleLog.message}
             </p>
+
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {(battleLog.damageDealt ?? 0) > 0 && (
+                <div className="rounded-2xl border-2 border-emerald-400 bg-emerald-950 px-4 py-3 text-emerald-50 shadow-[0_5px_0_rgba(6,78,59,0.4)]">
+                  <p className="text-xs font-black uppercase text-emerald-200/80">
+                    Damage Burst
+                  </p>
+                  <p className="mt-1 text-4xl font-black">
+                    -{battleLog.damageDealt}
+                  </p>
+                </div>
+              )}
+              {(battleLog.damageTaken ?? 0) > 0 && (
+                <div className="rounded-2xl border-2 border-red-400 bg-red-950 px-4 py-3 text-red-50 shadow-[0_5px_0_rgba(127,29,29,0.42)]">
+                  <p className="text-xs font-black uppercase text-red-200/80">
+                    Incoming Hit
+                  </p>
+                  <p className="mt-1 text-4xl font-black">
+                    -{battleLog.damageTaken}
+                  </p>
+                </div>
+              )}
+              {(battleLog.shieldGained ?? 0) > 0 && (
+                <div className="rounded-2xl border-2 border-sky-300 bg-sky-950 px-4 py-3 text-sky-50 shadow-[0_5px_0_rgba(12,74,110,0.35)]">
+                  <p className="text-xs font-black uppercase text-sky-200/80">
+                    Ward Raised
+                  </p>
+                  <p className="mt-1 text-4xl font-black">
+                    +{battleLog.shieldGained}
+                  </p>
+                </div>
+              )}
+              {(battleLog.shieldAbsorbed ?? 0) > 0 && (
+                <div className="rounded-2xl border-2 border-sky-300 bg-white px-4 py-3 text-sky-950 shadow-[0_5px_0_rgba(12,74,110,0.16)]">
+                  <p className="text-xs font-black uppercase text-sky-900/70">
+                    Shield Blocked
+                  </p>
+                  <p className="mt-1 text-4xl font-black">
+                    {battleLog.shieldAbsorbed}
+                  </p>
+                </div>
+              )}
+            </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
               <StatCard label="Base DMG" value={battleLog.baseDamageDealt ?? 0} tone="emerald" />
@@ -1403,10 +1598,15 @@ export function Dungeon({
             )}
           </section>
 
-          <section className="rounded-xl border-2 border-amber-800/30 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)]">
-            <Badge tone="purple">Triggered Card</Badge>
+          <section className="rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)]">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <Badge tone="purple">Card Trigger</Badge>
+              <Badge tone={battleLog.triggeredCard ? "emerald" : "slate"}>
+                {battleLog.triggeredCard ? "Active" : "Preview"}
+              </Badge>
+            </div>
             <div className="mt-4 flex items-start gap-4">
-              <span className="grid size-16 place-items-center rounded-lg border border-amber-900/15 bg-amber-100 text-4xl shadow-inner">
+              <span className="grid size-20 place-items-center rounded-2xl border-2 border-amber-900/15 bg-amber-100 text-5xl shadow-inner">
                 {sidePanelCard.imagePlaceholder}
               </span>
               <div>
@@ -1427,13 +1627,49 @@ export function Dungeon({
                 </p>
               </div>
             </div>
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              <div className="rounded-xl border border-red-200 bg-red-50 p-3">
+                <p className="text-xs font-black uppercase text-red-800/70">
+                  Attack
+                </p>
+                <p className="mt-1 text-2xl font-black text-red-950">
+                  {sidePanelCard.baseAttack}
+                </p>
+              </div>
+              <div className="rounded-xl border border-sky-200 bg-sky-50 p-3">
+                <p className="text-xs font-black uppercase text-sky-800/70">
+                  Shield
+                </p>
+                <p className="mt-1 text-2xl font-black text-sky-950">
+                  +{sidePanelCardShield}
+                </p>
+              </div>
+              <div className="rounded-xl border border-violet-200 bg-violet-50 p-3">
+                <p className="text-xs font-black uppercase text-violet-800/70">
+                  Element
+                </p>
+                <p className="mt-1 text-lg font-black text-violet-950">
+                  {sidePanelCardElement
+                    ? formatElementName(sidePanelCardElement.element)
+                    : "None"}
+                </p>
+              </div>
+            </div>
             <div className="mt-4 rounded-lg border border-amber-900/15 bg-white/70 p-3">
               <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                Triggered effects
+                Final trigger result
               </p>
               <p className="mt-1 font-black text-amber-950">
                 {battleLog.effectsSummary ?? "None yet"}
               </p>
+              {(battleLog.damageDealt ?? 0) > 0 && (
+                <p className="mt-2 text-sm font-black text-emerald-800">
+                  Final damage: {battleLog.damageDealt}
+                  {(battleLog.elementBonusDamage ?? 0) > 0
+                    ? ` including +${battleLog.elementBonusDamage} element damage`
+                    : ""}
+                </p>
+              )}
             </div>
           </section>
 
@@ -1554,37 +1790,37 @@ function WordChoiceBattle({
 
   return (
     <div className="mt-5">
-      <div className="rounded-lg bg-slate-50 p-5">
+      <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
         <Badge tone="purple">
           {formatWordChoicePromptType(question.promptType)}
         </Badge>
         {question.promptType === "thai-to-english" ? (
           <div className="mt-4">
-            <p className="text-4xl font-black text-slate-950">
+            <p className="text-4xl font-black text-amber-950">
               {question.card.meaningTh}
             </p>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm font-semibold text-amber-900/65">
               Choose the English word to trigger this card.
             </p>
           </div>
         ) : question.promptType === "sentence-cloze" ? (
           <div className="mt-4">
-            <p className="text-3xl font-black leading-tight text-slate-950">
+            <p className="text-3xl font-black leading-tight text-amber-950">
               {blankTargetWord(
                 question.card.exampleSentence,
                 question.card.word,
               )}
             </p>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm font-semibold text-amber-900/65">
               Complete the sentence to trigger the hidden word card.
             </p>
           </div>
         ) : (
           <div className="mt-4">
-            <p className="text-5xl font-bold capitalize text-slate-950">
+            <p className="text-5xl font-black capitalize text-amber-950">
               {question.card.word}
             </p>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm font-semibold text-amber-900/65">
               Choose the correct Thai meaning to trigger this card.
             </p>
           </div>
@@ -1615,12 +1851,12 @@ function WordChoiceBattle({
               type="button"
               disabled={isAnswered}
               onClick={() => onAnswer(choice)}
-              className={`min-h-20 rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`min-h-20 rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 showCorrect
-                  ? "border-emerald-500 bg-emerald-50"
+                  ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                   : showWrong
-                    ? "border-red-400 bg-red-50"
-                    : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
+                    ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
+                    : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
               } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
             >
               <div className="flex items-start justify-between gap-3">
@@ -1664,18 +1900,18 @@ function WordMatchBattle({
 }: WordMatchBattleProps) {
   return (
     <div className="mt-5">
-      <div className="rounded-lg bg-slate-50 p-5">
-        <p className="font-semibold text-slate-950">
+      <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
+        <p className="font-black text-amber-950">
           Match one English word with its Thai meaning.
         </p>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm font-semibold text-amber-900/65">
           A correct pair triggers the selected English word card.
         </p>
       </div>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <p className="text-sm font-black uppercase tracking-wide text-amber-800/70">
             English words
           </p>
           <div className="mt-2 grid gap-3">
@@ -1692,14 +1928,14 @@ function WordMatchBattle({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => onSelectWord(card.id)}
-                  className={`rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                     showCorrect
-                      ? "border-emerald-500 bg-emerald-50"
+                      ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
-                        ? "border-red-400 bg-red-50"
+                        ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
                         : isSelected
-                          ? "border-emerald-500 bg-white"
-                          : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
+                          ? "border-emerald-500 bg-white shadow-md"
+                          : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -1724,7 +1960,7 @@ function WordMatchBattle({
         </div>
 
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <p className="text-sm font-black uppercase tracking-wide text-amber-800/70">
             Thai meanings
           </p>
           <div className="mt-2 grid gap-3">
@@ -1741,14 +1977,14 @@ function WordMatchBattle({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => onSelectMeaning(card.id)}
-                  className={`rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                     showCorrect
-                      ? "border-emerald-500 bg-emerald-50"
+                      ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
-                        ? "border-red-400 bg-red-50"
+                        ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
                         : isSelected
-                          ? "border-emerald-500 bg-white"
-                          : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
+                          ? "border-emerald-500 bg-white shadow-md"
+                          : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -1815,11 +2051,11 @@ function WordScrambleBattle({
 
   return (
     <div className="mt-5">
-      <div className="rounded-lg bg-slate-50 p-5">
-        <p className="font-semibold text-slate-950">
+      <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
+        <p className="font-black text-amber-950">
           Choose one scrambled word, then type the original English word.
         </p>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm font-semibold text-amber-900/65">
           A correct typed answer triggers the selected current-run card.
         </p>
       </div>
@@ -1836,14 +2072,14 @@ function WordScrambleBattle({
               type="button"
               disabled={isAnswered}
               onClick={() => onSelectCard(option.card.id)}
-              className={`rounded-lg border p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 showCorrect
-                  ? "border-emerald-500 bg-emerald-50"
+                  ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                   : showWrong
-                    ? "border-red-400 bg-red-50"
+                    ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
                     : isSelected
-                      ? "border-emerald-500 bg-white"
-                      : "border-slate-200 bg-white hover:border-emerald-500 hover:shadow-sm"
+                      ? "border-emerald-500 bg-white shadow-md"
+                      : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
               }`}
             >
               <div className="flex items-start justify-between gap-3">
@@ -1867,7 +2103,7 @@ function WordScrambleBattle({
         })}
       </div>
 
-      <div className="mt-5 rounded-lg border border-slate-200 bg-white p-4">
+      <div className="mt-5 rounded-2xl border-2 border-amber-900/10 bg-white p-4 shadow-inner">
         <div className="flex flex-col gap-4 md:flex-row md:items-end">
           <div className="flex-1">
             <label

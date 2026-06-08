@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 29 complete. Phase 30 has not started yet.
+Current phase: Phase 30 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, and after Phase 29 full run playtest/tuning work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, and after Phase 30 Dungeon battle presentation work.
 
 The local development server can be started with:
 
@@ -484,6 +484,9 @@ Current Dungeon implementation:
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack, with shield absorbing damage before HP.
 - Battle feedback shows triggered card, base damage, element bonus damage, final total damage, damage taken, shield absorbed, HP damage, card shield gained, Water shield gained, Earth reduction, Wind gold, triggered effects, and correct/wrong result.
+- Current Dungeon presentation uses a game-style battle stage: encounter stage at the top, mini-game action arena in the center, player-side status band below, and battle log / card trigger feedback in the side panel.
+- Monster, Elite, Boss, and Event encounters have distinct placeholder visual treatment. This is presentation only and does not alter encounter logic.
+- Timer feedback uses normal, hurry, paused, and timeout labels with larger countdown display.
 - When monster HP reaches 0, the screen shows `Monster Defeated` and allows spawning the next sample monster.
 - Defeating a monster increases `monstersDefeated` by 1.
 - Defeating a monster grants +6 temporary gold.
@@ -522,6 +525,10 @@ Current Dungeon implementation:
 - Phase 27 added current-run statistics, Run Complete / Run Failed summaries, Home Best Run summary, and permanent best run stats saved only after run end.
 - Phase 28 added Monster/Elite/Event encounter types, weighted encounter generation, three initial events, elite rewards, and run summary tracking for elites/events.
 - Phase 29 audited the full run flow, prevented immediate Event-to-Event chains, kept balance values unchanged, and fixed Healing Shrine shield stat tracking.
+- Phase 30 improved Dungeon battle presentation only, without changing combat math, save rules, deck rules, shop rules, timer rules, or encounter rules.
+- Phase 30 reorganized the Dungeon screen around a clearer encounter stage, action arena, player-side status band, battle log, and card trigger feedback panel.
+- Phase 30 made Monster, Elite, Boss, and Event encounters more visually distinct using Tailwind utility classes, emoji, and placeholder visuals only.
+- Phase 30 improved combat feedback for damage dealt, incoming hits, shield gained, shield absorbed, timeout state, card triggers, and event results.
 
 Current Shop implementation:
 
@@ -871,7 +878,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 29 is complete.
+Phase 30 is complete.
 
 Recommended next task:
 

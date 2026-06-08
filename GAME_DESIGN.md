@@ -16,8 +16,11 @@ Current presentation rules:
 - Make the app feel like a fantasy deckbuilder game before adding final art.
 - Use warm adventure backgrounds, game-like panels, collectible vocabulary cards, battle-style dungeon panels, and fantasy shop cards.
 - Dungeon battle presentation should prioritize monster/boss encounter first, active mini-game second, player HP/status third, and keep trigger-rule explanations in secondary or collapsible areas.
+- Phase 30 Dungeon presentation uses a battle-stage structure: encounter stage, action arena, player-side status band, battle log, and card trigger feedback panel.
+- Monster, Elite, Boss, and Event encounters should feel visually distinct while using placeholder assets only.
+- Combat feedback should make damage, hits, shield gain, shield absorption, timeout state, and triggered card effects easy to scan.
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
-- Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, timers, or advanced element interactions as part of the visual pass.
+- Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual passes.
 
 ## Core Loop
 

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 29 Full Run Playtest and Tuning Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 30 Game Feel / Battle Presentation Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -330,6 +330,15 @@ Phase 29 Full Run Playtest and Tuning Pass is complete. GitHub backup is configu
 - Preserved selected deck, deck unlock progression, word mastery save, completed deck save, current-run deck, shop purchases, remove/duplicate card, boss battle, timer behavior, run statistics, LocalStorage permanent-progress-only rules, balance constants, and element effects.
 - No new major gameplay systems, decks, Oxford 3000 import, backend, auth, database, API, final art assets, combat redesign, advanced element interactions, new shop item types, or new mini-games were added.
 - Verified the project with `npm run build` after Phase 29.
+- Applied Phase 30 Dungeon battle presentation improvements using Tailwind, CSS utility classes, emoji, and existing placeholder visuals only.
+- Reworked the Dungeon layout into a clearer game battle stage with encounter stage, action arena, player-side run status, and battle log side panel.
+- Made Monster, Elite, Boss, and Event encounters visually more distinct through different stage tones, portrait frames, badges, and threat/readability treatment.
+- Improved timer visibility with large countdown text, normal/warning/timeout labels, and low-time warning styling.
+- Improved combat feedback with larger damage, incoming hit, shield gained, and shield absorbed callouts.
+- Improved card trigger feedback with active/preview state, attack, shield, element, final trigger result, and final damage display.
+- Improved event result feedback copy to show chosen option, reward or cost, and temporary current-run impact.
+- Kept combat math, save rules, deck rules, shop rules, timer values, encounter rules, and all existing systems unchanged.
+- Verified the project with `npm run build` after Phase 30.
 
 ## In Progress
 
@@ -337,7 +346,7 @@ Phase 29 Full Run Playtest and Tuning Pass is complete. GitHub backup is configu
 
 ## Next Task
 
-Phase 29 is complete. Continue with the next explicitly requested phase or feature.
+Phase 30 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -462,6 +471,7 @@ The following documents are required and must be updated after every completed t
 - Event encounters are temporary run content and do not count toward boss progression
 - Event rewards remain current-run only and never bypass roguelike reset rules
 - Events do not chain immediately after resolving an event
+- Phase 30 improves Dungeon game feel using CSS, Tailwind utility classes, emoji, and placeholder assets only
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

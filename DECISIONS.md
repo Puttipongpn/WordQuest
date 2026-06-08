@@ -742,6 +742,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Events should add variety without causing long non-combat chains or delaying the normal dungeon battle rhythm too much.
 - Status: Accepted
 
+### 2026-06-06: Phase 30 Placeholder Battle Presentation
+
+- Decision: Phase 30 improves Dungeon game feel using CSS, Tailwind utility classes, emoji, and placeholder assets only.
+- Reason: The prototype needs a stronger playable battle-scene feel before final art assets, while preserving current combat math, save rules, deck rules, shop rules, timer rules, and encounter rules.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
