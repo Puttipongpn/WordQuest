@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 30 Game Feel / Battle Presentation Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 31 Expanded Deck Progression is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -244,7 +244,7 @@ Phase 30 Game Feel / Battle Presentation Pass is complete. GitHub backup is conf
 - Locked decks cannot be selected.
 - Locked Food Deck shows requirement copy: Complete Starter Deck to unlock.
 - Completing Starter Deck now marks Starter Deck completed and unlocks Food Deck.
-- Completing Food Deck marks it completed and shows next-deck-coming-soon reward feedback.
+- Completing Food Deck originally showed next-deck-coming-soon reward feedback before Phase 31 expanded manual deck progression.
 - `unlockedDeckIds` now persists in LocalStorage permanent progress and is cleared back to Starter-only by Reset Progress.
 - Existing saved progress is normalized so Starter Deck remains unlocked and completed Starter Deck also unlocks Food Deck.
 - Selected deck fallback safety keeps locked or unavailable decks from crashing the app.
@@ -339,6 +339,16 @@ Phase 30 Game Feel / Battle Presentation Pass is complete. GitHub backup is conf
 - Improved event result feedback copy to show chosen option, reward or cost, and temporary current-run impact.
 - Kept combat math, save rules, deck rules, shop rules, timer values, encounter rules, and all existing systems unchanged.
 - Verified the project with `npm run build` after Phase 30.
+- Added `Travel Deck` with 20 manual travel-themed vocabulary cards.
+- Added `Nature Deck` with 20 manual nature-themed vocabulary cards.
+- Exported Starter, Food, Travel, and Nature through `availableDecks`.
+- Added deck progression helpers in `src/game/deckProgression.ts` for the manual unlock chain.
+- Expanded the unlock chain to Starter Deck → Food Deck → Travel Deck → Nature Deck.
+- Updated Run Complete rewards so completing Food unlocks Travel, completing Travel unlocks Nature, and completing Nature shows more-decks-coming-soon copy.
+- Updated saved-progress normalization so existing completed decks unlock their next manual deck without changing the LocalStorage data shape.
+- Improved Home deck progression display with locked, unlocked, completed, requirement text, and next unlock target.
+- Preserved Training, Dungeon, Shop, Boss, Elements, Timers, Run statistics, save rules, and LocalStorage structure.
+- Verified the project with `npm run build` after Phase 31.
 
 ## In Progress
 
@@ -346,7 +356,7 @@ Phase 30 Game Feel / Battle Presentation Pass is complete. GitHub backup is conf
 
 ## Next Task
 
-Phase 30 is complete. Continue with the next explicitly requested phase or feature.
+Phase 31 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -444,7 +454,7 @@ The following documents are required and must be updated after every completed t
 - Boss defeat creates a Run Complete state
 - Boss defeat marks the current deck completed
 - Completed deck ids are permanent progress saved in LocalStorage
-- Real progression beyond Food Deck is deferred
+- Manual deck progression currently extends through Nature Deck
 - Run rewards beyond the first deck completion marker are deferred
 - Phase 19 uses placeholder game-style UI, not final art assets
 - Multiple decks are supported through manual sample deck data
@@ -452,8 +462,10 @@ The following documents are required and must be updated after every completed t
 - Changing decks resets only temporary run state
 - Starter Deck is unlocked by default
 - Food Deck unlocks after Starter Deck completion
+- Travel Deck unlocks after Food Deck completion
+- Nature Deck unlocks after Travel Deck completion
 - `unlockedDeckIds` are permanent progress saved in LocalStorage
-- Real progression beyond Food Deck is deferred
+- Real Oxford 3000 progression beyond manual sample decks is deferred
 - Training focuses on recall, not only recognition
 - Cloze questions support contextual vocabulary practice
 - Picture-to-Thai choice is no longer the main training pattern

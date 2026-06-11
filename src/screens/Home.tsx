@@ -1,6 +1,10 @@
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { BOSS_MONSTER_REQUIREMENT } from "../game/balance";
+import {
+  getDeckRequirementText,
+  getNextUnlockTarget,
+} from "../game/deckProgression";
 import type { PlayerStatistics, ScreenName, VocabularyDeck } from "../types";
 
 type HomeProps = {
@@ -28,6 +32,7 @@ export function Home({
     availableDecks.find((deck) => deck.id === selectedDeckId) ??
     availableDecks[0];
   const isSelectedDeckCompleted = completedDeckIds.includes(selectedDeck.id);
+  const nextUnlockTarget = getNextUnlockTarget(completedDeckIds, availableDecks);
 
   function handleResetProgress() {
     const shouldReset = window.confirm(
@@ -194,11 +199,14 @@ export function Home({
               completion all use the selected deck. Changing decks starts a
               fresh run. Locked decks appear here but cannot be selected yet.
             </p>
+            <p className="mt-3 rounded-lg border border-amber-900/10 bg-white/70 px-3 py-2 text-sm font-black text-amber-950">
+              Next unlock target: {nextUnlockTarget}
+            </p>
           </div>
           <StatCard
             label="Available Decks"
             value={availableDecks.length}
-            helper="Manual sample data"
+            helper={nextUnlockTarget}
             tone="emerald"
           />
         </div>
@@ -208,10 +216,12 @@ export function Home({
             const isSelected = deck.id === selectedDeckId;
             const isCompleted = completedDeckIds.includes(deck.id);
             const isUnlocked = unlockedDeckIds.includes(deck.id);
-            const requirement =
-              deck.id === "food-deck"
-                ? "Complete Starter Deck to unlock."
-                : "Unlocked by default.";
+            const requirement = getDeckRequirementText(deck.id, availableDecks);
+            const statusLabel = isCompleted
+              ? "Completed"
+              : isUnlocked
+                ? "Unlocked"
+                : "Locked";
 
             return (
               <button
@@ -239,13 +249,17 @@ export function Home({
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Badge
-                      tone={!isUnlocked ? "slate" : isSelected ? "amber" : "sky"}
+                      tone={
+                        isCompleted
+                          ? "emerald"
+                          : !isUnlocked
+                            ? "slate"
+                            : isSelected
+                              ? "amber"
+                              : "sky"
+                      }
                     >
-                      {!isUnlocked
-                        ? "Locked"
-                        : isSelected
-                          ? "Selected"
-                          : "Choose"}
+                      {isSelected && isUnlocked ? "Selected" : statusLabel}
                     </Badge>
                     <Badge tone={isCompleted ? "emerald" : "sky"}>
                       {isCompleted ? "Completed" : "In Progress"}
@@ -256,16 +270,22 @@ export function Home({
                   <StatCard label="Cards" value={deck.cards.length} />
                   <StatCard
                     label="Access"
-                    value={isUnlocked ? "Unlocked" : "Locked"}
+                    value={statusLabel}
                     helper={isUnlocked ? "Selectable" : requirement}
                     tone={isUnlocked ? "emerald" : "slate"}
                   />
                 </div>
-                {!isUnlocked && (
-                  <p className="mt-3 rounded-md border border-slate-300 bg-white/70 px-3 py-2 text-sm font-bold text-slate-700">
-                    {requirement}
-                  </p>
-                )}
+                <p
+                  className={`mt-3 rounded-md border px-3 py-2 text-sm font-bold ${
+                    isUnlocked
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                      : "border-slate-300 bg-white/70 text-slate-700"
+                  }`}
+                >
+                  {isCompleted
+                    ? "Completed. You can still replay this deck."
+                    : requirement}
+                </p>
               </button>
             );
           })}

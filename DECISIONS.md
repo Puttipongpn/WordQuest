@@ -564,7 +564,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ### 2026-06-04: Multiple Decks Supported
 
-- Decision: Support multiple manual sample decks through `availableDecks`, starting with Starter Deck and Food Deck.
+- Decision: Support multiple manual sample decks through `availableDecks`, currently Starter Deck, Food Deck, Travel Deck, and Nature Deck.
 - Reason: The app needs to prove the multi-deck flow before importing Oxford 3000 or building advanced unlock progression.
 - Status: Accepted
 
@@ -604,10 +604,22 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Deck access should survive refreshes and failed runs while temporary run state remains unsaved.
 - Status: Accepted
 
-### 2026-06-04: Real Progression Beyond Food Deck Is Deferred
+### 2026-06-04: Real Progression Beyond Food Deck Was Deferred In Phase 22
 
 - Decision: Completing Food Deck marks it completed but does not unlock another real deck yet.
 - Reason: Phase 22 should validate unlock persistence without adding more decks, Oxford 3000 imports, or advanced progression design.
+- Status: Superseded by Phase 31
+
+### 2026-06-11: Expanded Manual Deck Progression
+
+- Decision: The manual deck unlock chain is Starter Deck → Food Deck → Travel Deck → Nature Deck, with Nature completion showing more-decks-coming-soon copy.
+- Reason: The prototype needs longer-term deck progression content before Oxford 3000 import or advanced progression systems.
+- Status: Accepted
+
+### 2026-06-11: Deck Progression Helpers
+
+- Decision: Store manual deck progression rules in `src/game/deckProgression.ts` while keeping the existing LocalStorage data shape.
+- Reason: A shared helper keeps unlock requirements, Home copy, Run Complete rewards, and saved-progress normalization consistent without redesigning the save system.
 - Status: Accepted
 
 ### 2026-06-05: Training Focuses On Recall

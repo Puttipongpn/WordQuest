@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 30 complete.
+Current phase: Phase 31 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -247,7 +247,7 @@ GitHub backup is configured:
 - Food Deck starts locked and appears in Home with requirement copy.
 - Locked decks cannot be selected.
 - Completing Starter Deck now marks Starter Deck completed and unlocks Food Deck in LocalStorage permanent progress.
-- Completing Food Deck marks it completed and shows next-deck-coming-soon reward feedback.
+- Completing Food Deck originally showed next-deck-coming-soon reward feedback before Phase 31 expanded manual deck progression.
 - `unlockedDeckIds` now persists as active permanent progress rather than placeholder-only data.
 - Reset Progress clears unlock progress back to default Starter-only access.
 - Existing saved progress is normalized so Starter Deck remains unlocked and completed Starter Deck unlocks Food Deck.
@@ -277,7 +277,7 @@ GitHub backup is configured:
 
 The following screens are implemented or stubbed:
 
-- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, compact Best Run summary, and deck selection with locked/unlocked states for Starter Deck / Food Deck.
+- Home: polished entry screen with flow badges, primary actions, reset progress, prototype summary, selected deck completion status, compact Best Run summary, and deck selection with locked/unlocked/completed states for Starter Deck, Food Deck, Travel Deck, and Nature Deck.
 - Deck Review: polished vocabulary presentation screen using the selected deck, including mastery and deck completion status.
 - Training: polished untimed recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
 - Dungeon: polished timed local-state vocabulary card battle foundation with Monster, Elite, and Event encounters; Word Choice, Word Match, Word Scramble; temporary run progression; selected-deck current-run copy; run statistics; gold; shield absorption; first-pass element effects; shop checkpoint routing; boss encounter; Run Complete state; Run Failed summary; and permanent selected-deck completion reward.
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, and after Phase 30 Dungeon battle presentation work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, and after Phase 31 expanded deck progression work.
 
 The local development server can be started with:
 
@@ -428,8 +428,9 @@ Current LocalStorage save implementation:
 - Save data includes `version: 1`.
 - Saved permanent progress includes word mastery, unlocked deck ids, completed deck ids, and best run statistics.
 - Permanent statistics include total correct answers from ended runs, total wrong answers from ended runs, best monsters defeated, best accuracy, best damage dealt, completed runs, and failed runs.
-- `completedDeckIds` stores completed deck ids for both Starter Deck and Food Deck after boss defeat.
-- `unlockedDeckIds` starts with Starter Deck and unlocks Food Deck after Starter Deck completion.
+- `completedDeckIds` stores completed deck ids for Starter Deck, Food Deck, Travel Deck, and Nature Deck after boss defeat.
+- `unlockedDeckIds` starts with Starter Deck and unlocks the next manual deck after each completed deck in the current chain.
+- Existing saves are normalized from `completedDeckIds` so completed Starter unlocks Food, completed Food unlocks Travel, and completed Travel unlocks Nature without changing the save data shape.
 - Missing, invalid, or incompatible saved data falls back to default progress.
 - Storage read/write failures are caught so the app can continue with in-memory state.
 - Home exposes a `Reset Progress` action.
@@ -510,7 +511,7 @@ Current Dungeon implementation:
 - Home and Deck Review display selected deck completion status.
 - Run Failed summary shows selected deck name, monsters defeated, elites defeated, events visited, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
 - Completed and failed runs update permanent best run stats only after the run ends.
-- Real progression beyond Food Deck, backend, API, advanced element weakness/resistance, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
+- Real Oxford 3000 progression beyond the manual sample decks, backend, API, advanced element weakness/resistance, and permanent mastery updates from battle are not connected yet. Dungeon run state is not saved to LocalStorage.
 - Phase 9 UI polish added clearer player HP, monster HP, monster attack, mini-game type, triggered card, damage dealt, damage taken, and correct/wrong feedback presentation.
 - Phase 12 added functional shield combat feedback.
 - Phase 13 added Word Scramble with typed answer input.
@@ -529,6 +530,10 @@ Current Dungeon implementation:
 - Phase 30 reorganized the Dungeon screen around a clearer encounter stage, action arena, player-side status band, battle log, and card trigger feedback panel.
 - Phase 30 made Monster, Elite, Boss, and Event encounters more visually distinct using Tailwind utility classes, emoji, and placeholder visuals only.
 - Phase 30 improved combat feedback for damage dealt, incoming hits, shield gained, shield absorbed, timeout state, card triggers, and event results.
+- Phase 31 added Travel Deck and Nature Deck as manual sample decks with 20 cards each.
+- Phase 31 expanded the permanent unlock chain to Starter Deck → Food Deck → Travel Deck → Nature Deck.
+- Phase 31 added `src/game/deckProgression.ts` for deck progression helpers without changing the LocalStorage save shape.
+- Phase 31 improved Home deck progression display with locked, unlocked, completed, requirement text, and next unlock target.
 
 Current Shop implementation:
 
@@ -725,9 +730,11 @@ Current battle foundation rules:
 - Boss defeat creates a Run Complete state.
 - Boss defeat marks the selected deck as completed permanent progress.
 - Completing Starter Deck unlocks Food Deck.
-- Completing Food Deck shows next-deck-coming-soon reward feedback.
+- Completing Food Deck unlocks Travel Deck.
+- Completing Travel Deck unlocks Nature Deck.
+- Completing Nature Deck shows more-decks-coming-soon reward feedback.
 - Completed deck ids persist in LocalStorage and are cleared only by Reset Progress.
-- Real progression beyond Food Deck and run rewards beyond deck completion are deferred.
+- Real Oxford 3000 progression beyond the manual sample decks and run rewards beyond deck completion are deferred.
 - Phase 18 added QA cleanup for stale shop selections, purchase guards, duplicate id safety, clearer shop warnings, Boss Available copy, and Run Complete actions.
 
 ## Deck System
@@ -740,8 +747,14 @@ Current deck model:
 - `Starter Deck` contains 20 realistic sample word cards.
 - The second sample deck is `Food Deck`.
 - `Food Deck` contains 20 manual food-related word cards.
+- The third sample deck is `Travel Deck`.
+- `Travel Deck` contains 20 manual travel-related word cards.
+- The fourth sample deck is `Nature Deck`.
+- `Nature Deck` contains 20 manual nature-related word cards.
 - Starter Deck is unlocked by default.
 - Food Deck starts locked and unlocks after Starter Deck completion.
+- Travel Deck starts locked and unlocks after Food Deck completion.
+- Nature Deck starts locked and unlocks after Travel Deck completion.
 - App-level selected deck state controls Deck Review, Training, Dungeon current-run deck creation, and Run Complete deck completion.
 - Changing decks starts a fresh temporary run without clearing word mastery or completed deck ids.
 - Seed vocabulary data lives in `src/data`.
@@ -878,8 +891,8 @@ git push
 
 ## Next Recommended Task
 
-Phase 30 is complete.
+Phase 31 is complete.
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, run rewards, Training timers, persistent run state, advanced element interactions, real progression beyond Food Deck, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

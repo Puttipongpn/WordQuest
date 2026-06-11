@@ -107,8 +107,12 @@ Current decks:
 - Stored in `src/data/starterDeck.ts`
 - `Food Deck`
 - Stored in `src/data/foodDeck.ts`
-- Both decks contain 20 manual sample vocabulary cards
-- Both decks are exported through `availableDecks` from `src/data`
+- `Travel Deck`
+- Stored in `src/data/travelDeck.ts`
+- `Nature Deck`
+- Stored in `src/data/natureDeck.ts`
+- Each deck contains 20 manual sample vocabulary cards
+- All decks are exported through `availableDecks` from `src/data`
 
 Current selected deck rules:
 
@@ -116,8 +120,12 @@ Current selected deck rules:
 - Home provides the first deck selection UI.
 - Starter Deck is unlocked by default.
 - Food Deck starts locked.
+- Travel Deck starts locked.
+- Nature Deck starts locked.
 - Completing Starter Deck unlocks Food Deck.
-- Completing Food Deck marks it completed but does not unlock another real deck yet.
+- Completing Food Deck unlocks Travel Deck.
+- Completing Travel Deck unlocks Nature Deck.
+- Completing Nature Deck marks it completed and shows `More decks coming soon`.
 - Deck Review uses the selected deck.
 - Training uses the selected deck.
 - Dungeon current-run deck starts as a temporary copy of the selected deck.
@@ -129,7 +137,7 @@ Current selected deck rules:
 
 Decks should target around 20 words each. The long-term source for vocabulary is Oxford 3000, but manual seed data is used first.
 
-Real progression beyond Food Deck and Oxford 3000 import are intentionally deferred.
+Real Oxford 3000 import and progression beyond the current manual sample chain are intentionally deferred.
 
 ## Word Card Structure
 
@@ -177,6 +185,7 @@ Current prototype targets:
 
 - Starter Deck should feel approachable for early learners.
 - Food Deck can feel slightly more demanding through vocabulary, not new combat rules.
+- Travel Deck and Nature Deck extend progression through vocabulary themes, not new combat rules.
 - A run should leave enough room to reach the first shop without feeling impossible.
 - The boss should feel stronger than regular monsters without being unfair.
 - Dungeon timers should add pressure but remain beginner-friendly.
@@ -319,9 +328,11 @@ Current battle rules:
 - Boss defeat marks the selected deck completed in `completedDeckIds`.
 - Completed deck ids are saved in LocalStorage permanent progress.
 - If Starter Deck is completed, Food Deck is unlocked in `unlockedDeckIds`.
-- If Food Deck is completed, Run Complete shows that the next deck is coming soon.
+- If Food Deck is completed, Travel Deck is unlocked in `unlockedDeckIds`.
+- If Travel Deck is completed, Nature Deck is unlocked in `unlockedDeckIds`.
+- If Nature Deck is completed, Run Complete shows that more decks are coming soon.
 - Run Complete shows reward feedback that the selected deck was completed and permanent progress was saved.
-- Boss defeat does not unlock decks beyond Food Deck yet.
+- Boss defeat does not unlock decks beyond Nature Deck yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - Run Failed shows selected deck name, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
 - Run Failed also shows elites defeated and events visited.
@@ -332,7 +343,7 @@ Deferred dungeon systems:
 
 - Run rewards beyond the selected deck completion marker
 - Advanced element interactions
-- Real progression beyond Food Deck
+- Real Oxford 3000 progression beyond the manual sample decks
 - Permanent mastery updates from battle
 
 Dungeon battle and run progression state are still temporary React state only. LocalStorage is used for permanent progress, not current run progress.

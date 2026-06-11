@@ -1,15 +1,17 @@
+import {
+  defaultUnlockedDeckIds,
+  getUnlockedDeckIdsForCompletedDecks,
+} from "../game/deckProgression";
 import type { SavedPlayerProgress, WordMasteryByCardId } from "../types";
 
 const saveKey = "wordquest.playerProgress";
-const starterDeckId = "starter-deck";
-const foodDeckId = "food-deck";
 
 export const saveVersion = 1;
 
 export function createDefaultPlayerProgress(): SavedPlayerProgress {
   return {
     version: saveVersion,
-    unlockedDeckIds: [starterDeckId],
+    unlockedDeckIds: defaultUnlockedDeckIds,
     completedDeckIds: [],
     wordMastery: {},
     statistics: {
@@ -131,16 +133,14 @@ function parseSavedProgress(value: unknown): SavedPlayerProgress | null {
     return null;
   }
 
-  const normalizedUnlockedDeckIds = new Set(unlockedDeckIds);
-  normalizedUnlockedDeckIds.add(starterDeckId);
-
-  if (completedDeckIds.includes(starterDeckId)) {
-    normalizedUnlockedDeckIds.add(foodDeckId);
-  }
+  const normalizedUnlockedDeckIds = getUnlockedDeckIdsForCompletedDecks(
+    completedDeckIds,
+    unlockedDeckIds,
+  );
 
   return {
     version: saveVersion,
-    unlockedDeckIds: [...normalizedUnlockedDeckIds],
+    unlockedDeckIds: normalizedUnlockedDeckIds,
     completedDeckIds,
     wordMastery,
     statistics,

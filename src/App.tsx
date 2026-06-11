@@ -8,7 +8,7 @@ import {
   Shop,
   Training,
 } from "./screens";
-import { availableDecks, foodDeck, starterDeck } from "./data";
+import { availableDecks, starterDeck } from "./data";
 import {
   ADD_SHIELD_AMOUNT,
   EVENT_ATTACK_UPGRADE_AMOUNT,
@@ -20,6 +20,10 @@ import {
   STARTING_GOLD,
   UPGRADE_ATTACK_AMOUNT,
 } from "./game/balance";
+import {
+  getNextUnlockedDeckId,
+  getUnlockedDeckIdsForCompletedDecks,
+} from "./game/deckProgression";
 import type {
   ElementType,
   RunProgressState,
@@ -126,15 +130,17 @@ export default function App() {
     () => createRunDeckCopy(starterDeck),
   );
 
+  const wordMastery = playerProgress.wordMastery;
+  const completedDeckIds = playerProgress.completedDeckIds;
+  const unlockedDeckIds = getUnlockedDeckIdsForCompletedDecks(
+    completedDeckIds,
+    playerProgress.unlockedDeckIds,
+  );
   const selectedDeck =
     availableDecks.find(
       (deck) =>
-        deck.id === selectedDeckId &&
-        playerProgress.unlockedDeckIds.includes(deck.id),
+        deck.id === selectedDeckId && unlockedDeckIds.includes(deck.id),
     ) ?? starterDeck;
-  const wordMastery = playerProgress.wordMastery;
-  const completedDeckIds = playerProgress.completedDeckIds;
-  const unlockedDeckIds = playerProgress.unlockedDeckIds;
   const playerStatistics = playerProgress.statistics;
 
   function increaseWordMastery(cardId: string) {
@@ -174,16 +180,14 @@ export default function App() {
       )
         ? currentProgress.completedDeckIds
         : [...currentProgress.completedDeckIds, selectedDeck.id];
-      const unlockedDeckIds = new Set(currentProgress.unlockedDeckIds);
-      unlockedDeckIds.add(starterDeck.id);
-
-      if (selectedDeck.id === starterDeck.id) {
-        unlockedDeckIds.add(foodDeck.id);
-      }
+      const unlockedDeckIds = getUnlockedDeckIdsForCompletedDecks(
+        completedDeckIds,
+        currentProgress.unlockedDeckIds,
+      );
 
       const nextProgress: SavedPlayerProgress = {
         ...currentProgress,
-        unlockedDeckIds: [...unlockedDeckIds],
+        unlockedDeckIds,
         completedDeckIds,
       };
 
@@ -192,23 +196,16 @@ export default function App() {
       return nextProgress;
     });
 
-    if (selectedDeck.id === starterDeck.id) {
-      return {
-        completedMessage: "Starter Deck completed!",
-        unlockMessage: "Food Deck unlocked!",
-      };
-    }
-
-    if (selectedDeck.id === foodDeck.id) {
-      return {
-        completedMessage: "Food Deck completed!",
-        unlockMessage: "Next deck coming soon.",
-      };
-    }
+    const nextUnlockedDeckId = getNextUnlockedDeckId(selectedDeck.id);
+    const nextUnlockedDeck = availableDecks.find(
+      (deck) => deck.id === nextUnlockedDeckId,
+    );
 
     return {
       completedMessage: `${selectedDeck.name} completed!`,
-      unlockMessage: "Next deck coming soon.",
+      unlockMessage: nextUnlockedDeck
+        ? `${nextUnlockedDeck.name} unlocked!`
+        : "More decks coming soon.",
     };
   }
 
