@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 31 Expanded Deck Progression is complete. GitHub backup is configured on `origin/main`.
+Phase 32 Encounter Intro + Pause System is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -349,6 +349,17 @@ Phase 31 Expanded Deck Progression is complete. GitHub backup is configured on `
 - Improved Home deck progression display with locked, unlocked, completed, requirement text, and next unlock target.
 - Preserved Training, Dungeon, Shop, Boss, Elements, Timers, Run statistics, save rules, and LocalStorage structure.
 - Verified the project with `npm run build` after Phase 31.
+- Added an Encounter Intro state for Monster, Elite, and Boss encounters before active combat begins.
+- Added Start Battle flow so timers and active questions begin only after the player starts combat.
+- Added encounter flavor text for Slime, Goblin, Bat, Elite encounters, and Gatekeeper.
+- Kept Event encounters immediate with their existing choices and no Start Battle step.
+- Added a Pause button during active combat.
+- Pause stops the timer, disables question interaction, and shows a PAUSED overlay with Resume and Leave Run actions.
+- Resume continues the active battle timer.
+- Leave Run from pause ends the run through the existing Run Failed flow without saving temporary run state.
+- Updated timer rules so timers do not run during Encounter Intro, Events, Pause, Shop routing, Boss Available, Run Complete, Run Failed, or Training.
+- Preserved combat math, elements, shop, deck unlocks, LocalStorage, run progression, statistics, mastery, Training, and all balance values.
+- Verified the project with `npm run build` after Phase 32.
 
 ## In Progress
 
@@ -356,7 +367,7 @@ Phase 31 Expanded Deck Progression is complete. GitHub backup is configured on `
 
 ## Next Task
 
-Phase 31 is complete. Continue with the next explicitly requested phase or feature.
+Phase 32 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -484,6 +495,8 @@ The following documents are required and must be updated after every completed t
 - Event rewards remain current-run only and never bypass roguelike reset rules
 - Events do not chain immediately after resolving an event
 - Phase 30 improves Dungeon game feel using CSS, Tailwind utility classes, emoji, and placeholder assets only
+- Combat encounters use Encounter Intro before timers begin
+- Pause stops Dungeon battle timers and disables question interaction until Resume
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

@@ -69,6 +69,13 @@ type CompletionReward = {
 type BattleMiniGameType = "word-choice" | "word-match" | "word-scramble";
 type EncounterType = "monster" | "elite" | "event";
 type DungeonEventId = "treasure-chest" | "healing-shrine" | "strange-altar";
+type BattleStatus =
+  | "encounter-intro"
+  | "fighting"
+  | "event"
+  | "monster-defeated"
+  | "run-failed"
+  | "run-complete";
 type WordChoicePromptType =
   | "english-to-thai"
   | "thai-to-english"
@@ -511,6 +518,35 @@ function getTimerStateLabel(
   return "Counting";
 }
 
+function getEncounterFlavorText(
+  encounter: Monster,
+  options: { isBossEncounter: boolean; encounterType: EncounterType },
+) {
+  if (options.isBossEncounter) {
+    return "The guardian of forgotten words stands before you.";
+  }
+
+  if (options.encounterType === "elite") {
+    return `${encounter.name} studies your deck with dangerous confidence.`;
+  }
+
+  const baseName = encounter.name.toLowerCase();
+
+  if (baseName.includes("slime")) {
+    return "A weak slime blocks your path.";
+  }
+
+  if (baseName.includes("goblin")) {
+    return "A sneaky goblin jumps from the shadows.";
+  }
+
+  if (baseName.includes("bat")) {
+    return "A fluttering bat circles above the dungeon path.";
+  }
+
+  return `${encounter.name} blocks your path.`;
+}
+
 export function Dungeon({
   currentRunDeck,
   isSelectedDeckCompleted,
@@ -560,13 +596,13 @@ export function Dungeon({
   const [endedRunGold, setEndedRunGold] = useState<number | null>(null);
   const [endedRunStatistics, setEndedRunStatistics] =
     useState<RunStatistics | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const [battleLog, setBattleLog] = useState<BattleLog>({
     tone: "neutral",
-    message: "Choose a correct answer to trigger a word card.",
+    message: "Inspect the encounter, then start battle when ready.",
   });
-  const [battleStatus, setBattleStatus] = useState<
-    "fighting" | "event" | "monster-defeated" | "run-failed" | "run-complete"
-  >("fighting");
+  const [battleStatus, setBattleStatus] =
+    useState<BattleStatus>("encounter-intro");
 
   const currentMonster = getMonsterForIndex(monsterIndex);
   const eliteMonster = createEliteMonster(currentMonster);
@@ -577,6 +613,7 @@ export function Dungeon({
       : currentMonster;
   const currentEvent = chooseDungeonEvent(eventIndex);
   const isEventEncounter = battleStatus === "event";
+  const isEncounterIntro = battleStatus === "encounter-intro";
   const encounterLabel = isBossEncounter
     ? "Boss"
     : encounterType === "elite"
@@ -618,7 +655,12 @@ export function Dungeon({
   );
   const miniGameTimeLimit = getMiniGameTimeLimit(miniGameType);
   const isTimerLow = timeRemaining <= 3;
-  const isTimerRunning = battleStatus === "fighting" && !isAnswered;
+  const isTimerRunning = battleStatus === "fighting" && !isPaused && !isAnswered;
+  const canPauseBattle = battleStatus === "fighting" && !isPaused && !isAnswered;
+  const encounterFlavorText = getEncounterFlavorText(currentEncounter, {
+    isBossEncounter,
+    encounterType,
+  });
   const timerStateLabel = getTimerStateLabel(
     isTimerRunning,
     isTimerLow,
@@ -668,6 +710,7 @@ export function Dungeon({
   function advanceQuestion() {
     const nextMiniGameType = chooseBattleMiniGame();
 
+    setIsPaused(false);
     setPendingEarthReduction(0);
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
@@ -676,6 +719,53 @@ export function Dungeon({
     setBattleLog({
       tone: "neutral",
       message: "A new mini-game begins. Choose carefully.",
+    });
+  }
+
+  function startBattleFromIntro() {
+    const nextMiniGameType = chooseBattleMiniGame();
+
+    setIsPaused(false);
+    resetAnswerState();
+    setQuestionSeed((current) => current + 1);
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
+    setBattleStatus("fighting");
+    setBattleLog({
+      tone: "neutral",
+      message: `${currentEncounter.name} battle started. Answer before the timer runs out.`,
+    });
+  }
+
+  function pauseBattle() {
+    if (!canPauseBattle) {
+      return;
+    }
+
+    setIsPaused(true);
+    setBattleLog({
+      tone: "neutral",
+      message: "Battle paused. Timer and question input are stopped.",
+    });
+  }
+
+  function resumeBattle() {
+    setIsPaused(false);
+    setBattleLog({
+      tone: "neutral",
+      message: "Battle resumed. Answer before the timer runs out.",
+    });
+  }
+
+  function leaveRunFromPause() {
+    setIsPaused(false);
+    setEndedRunGold(runGold);
+    setEndedRunStatistics(runStatistics);
+    onRecordRunEnded("failed", runStatistics);
+    setBattleStatus("run-failed");
+    setBattleLog({
+      tone: "danger",
+      message: "Run abandoned from pause. Temporary run state was not saved.",
     });
   }
 
@@ -875,16 +965,21 @@ export function Dungeon({
   }, [isTimerRunning, miniGameType, questionSeed]);
 
   useEffect(() => {
-    if (timeRemaining > 0 || isAnswered || battleStatus !== "fighting") {
+    if (
+      timeRemaining > 0 ||
+      isAnswered ||
+      isPaused ||
+      battleStatus !== "fighting"
+    ) {
       return;
     }
 
     setIsAnswered(true);
     monsterAttack("Time's up!", true);
-  }, [battleStatus, isAnswered, timeRemaining]);
+  }, [battleStatus, isAnswered, isPaused, timeRemaining]);
 
   function handleWordChoiceAnswer(choice: WordCard) {
-    if (isAnswered || battleStatus !== "fighting") {
+    if (isAnswered || isPaused || battleStatus !== "fighting") {
       return;
     }
 
@@ -902,6 +997,7 @@ export function Dungeon({
   function handleWordMatchSubmit() {
     if (
       isAnswered ||
+      isPaused ||
       battleStatus !== "fighting" ||
       selectedWordId === null ||
       selectedMeaningId === null
@@ -928,6 +1024,7 @@ export function Dungeon({
   function handleWordScrambleSubmit() {
     if (
       isAnswered ||
+      isPaused ||
       battleStatus !== "fighting" ||
       selectedScrambleCardId === null ||
       scrambleAnswer.trim() === ""
@@ -969,7 +1066,8 @@ export function Dungeon({
       nextEncounterType === "elite" ? nextEliteMonster.maxHp : nextMonster.maxHp,
     );
     setPendingEarthReduction(0);
-    setBattleStatus(isNextEvent ? "event" : "fighting");
+    setIsPaused(false);
+    setBattleStatus(isNextEvent ? "event" : "encounter-intro");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
     if (isNextEvent) {
@@ -981,7 +1079,7 @@ export function Dungeon({
       tone: "neutral",
       message: isNextEvent
         ? "A dungeon event appears. Choose one option to continue."
-        : `${nextEncounterType === "elite" ? "An elite monster" : "A new monster"} appears. A new mini-game begins.`,
+        : `${nextEncounterType === "elite" ? "An elite monster" : "A new monster"} appears. Inspect the encounter before battle.`,
     });
   }
 
@@ -999,7 +1097,8 @@ export function Dungeon({
       nextEncounterType === "elite" ? nextEliteMonster.maxHp : nextMonster.maxHp,
     );
     setPendingEarthReduction(0);
-    setBattleStatus(isNextEvent ? "event" : "fighting");
+    setIsPaused(false);
+    setBattleStatus(isNextEvent ? "event" : "encounter-intro");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
     if (isNextEvent) {
@@ -1013,8 +1112,8 @@ export function Dungeon({
         isNextEvent
           ? "Another event waits ahead."
           : nextEncounterType === "elite"
-            ? "An elite encounter begins."
-            : "A monster encounter begins."
+            ? "An elite encounter appears. Inspect it before battle."
+            : "A monster encounter appears. Inspect it before battle."
       }`,
     });
   }
@@ -1106,14 +1205,15 @@ export function Dungeon({
     setEncounterType("monster");
     setMonsterHp(sampleBoss.maxHp);
     setPendingEarthReduction(0);
-    setBattleStatus("fighting");
+    setIsPaused(false);
+    setBattleStatus("encounter-intro");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
     setMiniGameType(nextMiniGameType);
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
-      message: `${sampleBoss.name} appears. Defeat the boss to complete the run.`,
+      message: `${sampleBoss.name} appears. Inspect the boss before battle.`,
     });
   }
 
@@ -1132,14 +1232,15 @@ export function Dungeon({
     setEventIndex(0);
     setMonsterIndex(0);
     setMonsterHp(getMonsterForIndex(0).maxHp);
-    setBattleStatus("fighting");
+    setIsPaused(false);
+    setBattleStatus("encounter-intro");
     resetAnswerState();
     setQuestionSeed((current) => current + 1);
     setMiniGameType(nextMiniGameType);
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
-      message: "Run restarted. Choose the correct answer to trigger a card.",
+      message: "Run restarted. Inspect the encounter, then start battle when ready.",
     });
   }
 
@@ -1151,7 +1252,7 @@ export function Dungeon({
       framed={false}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_350px]">
-        <CardPanel className="overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 text-amber-50">
+        <CardPanel className="relative overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 text-amber-50">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Badge
               tone={
@@ -1171,13 +1272,20 @@ export function Dungeon({
                     : "⚔ Monster"}
             </Badge>
             <Badge tone="purple">{selectedDeck.name}</Badge>
-            <Button
-              type="button"
-              onClick={() => onNavigate("run-result")}
-              variant="secondary"
-            >
-              End Run
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              {canPauseBattle && (
+                <Button type="button" onClick={pauseBattle} variant="secondary">
+                  Pause
+                </Button>
+              )}
+              <Button
+                type="button"
+                onClick={() => onNavigate("run-result")}
+                variant="secondary"
+              >
+                End Run
+              </Button>
+            </div>
           </div>
 
           <section
@@ -1249,8 +1357,9 @@ export function Dungeon({
                     {currentEncounter.name}
                   </h3>
                   <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-100/85">
-                    Win vocabulary mini-games to trigger cards. A wrong answer
-                    or timeout lets this encounter strike back.
+                    {isEncounterIntro
+                      ? encounterFlavorText
+                      : "Win vocabulary mini-games to trigger cards. A wrong answer or timeout lets this encounter strike back."}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     <Badge tone="red">{encounterLabel} Attack {currentEncounter.attack}</Badge>
@@ -1294,21 +1403,37 @@ export function Dungeon({
           <section className="mt-6 rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-5 text-amber-950 shadow-[0_10px_0_rgba(120,53,15,0.22)]">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <Badge tone={isEventEncounter ? "purple" : "emerald"}>
-                  {isEventEncounter ? "Event Choice" : formatMiniGameName(miniGameType)}
+                <Badge
+                  tone={
+                    isEventEncounter
+                      ? "purple"
+                      : isEncounterIntro
+                        ? "amber"
+                        : "emerald"
+                  }
+                >
+                  {isEventEncounter
+                    ? "Event Choice"
+                    : isEncounterIntro
+                      ? "Encounter Intro"
+                      : formatMiniGameName(miniGameType)}
                 </Badge>
                 <h3 className="mt-2 text-4xl font-black leading-tight text-amber-950">
                   {isEventEncounter
                     ? "Choose one event option"
+                    : isEncounterIntro
+                      ? "Prepare before the timer starts"
                     : "Answer to trigger your card"}
                 </h3>
                 <p className="mt-1 text-sm font-semibold text-amber-900/70">
                   {isEventEncounter
                     ? "Events are not battles. Their rewards stay temporary for the current run."
+                    : isEncounterIntro
+                      ? "The timer is stopped. Inspect the enemy, then start battle when ready."
                     : "Dungeon questions are timed; Training stays untimed for safe practice."}
                 </p>
               </div>
-              {!isEventEncounter && (
+              {!isEventEncounter && !isEncounterIntro && (
                 <div
                   className={`min-w-48 rounded-2xl border-2 p-4 shadow-inner ${
                     timeRemaining === 0
@@ -1344,7 +1469,35 @@ export function Dungeon({
               )}
             </div>
 
-            {isEventEncounter ? (
+            {isEncounterIntro ? (
+              <div className="mt-5 rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
+                <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_220px] md:items-center">
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-[0.2em] text-amber-800/70">
+                      Encounter Intel
+                    </p>
+                    <h4 className="mt-2 text-3xl font-black text-amber-950">
+                      {currentEncounter.name}
+                    </h4>
+                    <p className="mt-3 text-sm font-bold leading-6 text-amber-900/75">
+                      {encounterFlavorText}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Badge tone="red">HP {currentEncounter.maxHp}</Badge>
+                      <Badge tone="amber">Attack {currentEncounter.attack}</Badge>
+                      <Badge tone="sky">Timer starts after Start Battle</Badge>
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    onClick={startBattleFromIntro}
+                    className="w-full"
+                  >
+                    Start Battle
+                  </Button>
+                </div>
+              </div>
+            ) : isEventEncounter ? (
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {currentEvent.options.map((option) => (
                   <button
@@ -1475,6 +1628,25 @@ export function Dungeon({
                 </div>
               </div>
             </section>
+          )}
+          {isPaused && (
+            <div className="absolute inset-0 z-20 grid place-items-center bg-stone-950/80 p-5 backdrop-blur-sm">
+              <div className="w-full max-w-md rounded-3xl border-2 border-amber-300 bg-amber-50 p-6 text-center text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)]">
+                <Badge tone="amber">Paused</Badge>
+                <h3 className="mt-3 text-5xl font-black">PAUSED</h3>
+                <p className="mt-3 text-sm font-bold leading-6 text-amber-900/75">
+                  Timer stopped. Question inputs are disabled until you resume.
+                </p>
+                <div className="mt-6 grid gap-3">
+                  <Button type="button" onClick={resumeBattle}>
+                    Resume
+                  </Button>
+                  <Button type="button" onClick={leaveRunFromPause} variant="danger">
+                    Leave Run
+                  </Button>
+                </div>
+              </div>
+            </div>
           )}
         </CardPanel>
 

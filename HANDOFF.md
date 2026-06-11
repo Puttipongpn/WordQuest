@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 31 complete.
+Current phase: Phase 32 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, and after Phase 31 expanded deck progression work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, and after Phase 32 Encounter Intro / Pause System work.
 
 The local development server can be started with:
 
@@ -462,9 +462,14 @@ Current Dungeon implementation:
 - Current events are Treasure Chest, Healing Shrine, and Strange Altar.
 - Battle questions use a simple mini-game structure and the current-run deck.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
+- Monster, Elite, and Boss encounters first enter `Encounter Intro` before battle questions or timers begin.
+- Encounter Intro shows encounter information, HP, attack, and flavor text with a `Start Battle` button.
+- Events do not use Encounter Intro and continue to show choices immediately.
 - Dungeon battle questions are timed.
 - Current static time limits are Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
-- Timer countdown runs only while a Dungeon battle question is active and unanswered.
+- Timer countdown runs only while a Dungeon battle question is active, unpaused, and unanswered.
+- Pause is available during active Monster, Elite, or Boss combat. It stops the timer and blocks question interaction until Resume.
+- Leave Run from Pause ends the run through the existing Run Failed flow and does not save temporary run state.
 - Timeout is treated as a wrong answer and causes the current monster or boss to attack.
 - Word Choice shows one prompt card with an English-to-Thai, Thai-to-English, or cloze-style prompt.
 - Word Choice uses answer choices that match the prompt direction and clearly reveals the correct answer after selection.
@@ -534,6 +539,10 @@ Current Dungeon implementation:
 - Phase 31 expanded the permanent unlock chain to Starter Deck → Food Deck → Travel Deck → Nature Deck.
 - Phase 31 added `src/game/deckProgression.ts` for deck progression helpers without changing the LocalStorage save shape.
 - Phase 31 improved Home deck progression display with locked, unlocked, completed, requirement text, and next unlock target.
+- Phase 32 added Encounter Intro before Monster, Elite, and Boss combat.
+- Phase 32 added Start Battle so timers and active questions begin only after the player chooses to start combat.
+- Phase 32 added a Pause overlay during active combat with Resume and Leave Run actions.
+- Phase 32 preserved Events as immediate non-combat choice encounters.
 
 Current Shop implementation:
 
@@ -891,7 +900,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 31 is complete.
+Phase 32 is complete.
 
 Recommended next task:
 

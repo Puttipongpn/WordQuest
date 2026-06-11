@@ -273,11 +273,19 @@ Current battle rules:
 - After resolving an Event, the next generated encounter cannot be another Event.
 - Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
+- Monster, Elite, and Boss encounters enter Encounter Intro before active combat.
+- Encounter Intro shows encounter information, HP, attack, and flavor text.
+- Encounter Intro does not start the timer and does not allow battle actions.
+- Pressing Start Battle begins the existing battle mini-game flow.
+- Event encounters do not use Encounter Intro and show choices immediately.
 - Dungeon battle questions are timed.
 - Word Choice has a 14-second time limit.
 - Word Match has a 20-second time limit.
 - Word Scramble has a 22-second time limit.
-- Timer countdown runs only while a Dungeon battle question is active and unanswered.
+- Timer countdown runs only while a Dungeon battle question is active, unpaused, and unanswered.
+- Pause is available during active Monster, Elite, and Boss combat.
+- Pause stops the timer and disables question interaction until Resume.
+- Leave Run from Pause ends the current run through the existing Run Failed flow without saving temporary run state.
 - If time reaches 0, the result is treated as a wrong answer.
 - Word Choice uses recall-focused prompts instead of image-only prompts.
 - Word Choice can ask English Word to Thai Meaning, Thai Meaning to English Word, or Example Sentence Cloze.
@@ -348,7 +356,7 @@ Deferred dungeon systems:
 
 Dungeon battle and run progression state are still temporary React state only. LocalStorage is used for permanent progress, not current run progress.
 
-Timer state is temporary Dungeon UI/combat state and is not saved to LocalStorage.
+Timer and pause state are temporary Dungeon UI/combat state and are not saved to LocalStorage.
 
 Run statistics are temporary while a run is active. Only end-of-run summary records update permanent best run stats.
 

@@ -760,6 +760,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The prototype needs a stronger playable battle-scene feel before final art assets, while preserving current combat math, save rules, deck rules, shop rules, timer rules, and encounter rules.
 - Status: Accepted
 
+### 2026-06-11: Combat Encounter Intro Before Timers
+
+- Decision: Combat encounters use Encounter Intro before timers begin.
+- Reason: Players should be able to inspect Monster, Elite, and Boss encounters before a timed vocabulary question starts.
+- Status: Accepted
+
+### 2026-06-11: Pause Stops Active Dungeon Combat
+
+- Decision: Pausing active Dungeon combat stops the timer and disables question interaction until Resume.
+- Reason: Pause should be a true interruption state without changing combat math, save rules, or balance values.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
