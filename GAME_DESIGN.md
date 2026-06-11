@@ -174,8 +174,14 @@ Current prototype rules:
 - Mastery is loaded from LocalStorage on app start.
 - Mastery is saved to LocalStorage when Training answers increase mastery.
 - Missing, invalid, or incompatible save data falls back to default progress.
+- Permanent mastery grants small Dungeon damage bonuses when the mastered word card triggers correctly.
+- Mastery 0 grants no Dungeon damage bonus.
+- Mastery 1-2 grants +1 Dungeon damage.
+- Mastery 3-4 grants +2 Dungeon damage.
+- Mastery 5 grants +3 Dungeon damage.
+- Mastery bonuses do not mutate the current-run deck and do not save active run state.
 
-Deck Review displays current saved mastery after page refresh. Training updates mastery on correct answers.
+Deck Review displays current saved mastery after page refresh and shows the current mastery bonus. Training updates mastery on correct answers and shows mastery before/after feedback.
 
 ## Basic Balance
 
@@ -299,6 +305,7 @@ Current battle rules:
 - Correct Word Scramble answers trigger the selected scrambled word card.
 - Triggered cards deal damage equal to `baseAttack`.
 - If a current-run card has been upgraded in the shop, the upgraded `baseAttack` is used for battle damage.
+- If a triggered card has saved word mastery, its permanent mastery damage bonus is added to final damage.
 - If a triggered card has a shield effect, the player gains that shield while the card still deals `baseAttack` damage.
 - If a triggered card has an element effect, Dungeon applies that element's first-pass gameplay effect.
 - Fire deals +2 bonus damage.

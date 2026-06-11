@@ -31,6 +31,11 @@ import {
   WORD_MATCH_TIME_LIMIT,
   WORD_SCRAMBLE_TIME_LIMIT,
 } from "../game/balance";
+import {
+  getMasteryDamageBonus,
+  getMasterySourceCardId,
+  getMasteryStatusLabel,
+} from "../game/mastery";
 import type {
   Monster,
   RunProgressState,
@@ -38,6 +43,7 @@ import type {
   ScreenName,
   VocabularyDeck,
   WordCard,
+  WordMasteryByCardId,
 } from "../types";
 
 type DungeonProps = {
@@ -59,6 +65,7 @@ type DungeonProps = {
   runProgress: RunProgressState;
   runStatistics: RunStatistics;
   selectedDeck: VocabularyDeck;
+  wordMastery: WordMasteryByCardId;
 };
 
 type CompletionReward = {
@@ -108,6 +115,8 @@ type BattleLog = {
   baseDamageDealt?: number;
   elementBonusDamage?: number;
   damageDealt?: number;
+  masteryLevel?: number;
+  masteryBonusDamage?: number;
   damageTaken?: number;
   hpDamageTaken?: number;
   shieldAbsorbed?: number;
@@ -563,6 +572,7 @@ export function Dungeon({
   runProgress,
   runStatistics,
   selectedDeck,
+  wordMastery,
 }: DungeonProps) {
   const initialMiniGameType = useMemo(() => chooseBattleMiniGame(), []);
   const [playerHp, setPlayerHp] = useState(PLAYER_MAX_HP);
@@ -640,6 +650,9 @@ export function Dungeon({
         ? wordMatchQuestion.cards[0]
         : wordScrambleQuestion.options[0].card;
   const sidePanelCard = battleLog.triggeredCard ?? featuredCard;
+  const sidePanelMastery =
+    wordMastery[getMasterySourceCardId(sidePanelCard.id)] ?? 0;
+  const sidePanelMasteryBonus = getMasteryDamageBonus(sidePanelMastery);
   const sidePanelCardShield = getCardShieldAmount(sidePanelCard);
   const sidePanelCardElement = getCardElement(sidePanelCard);
   const isShopAvailable =
@@ -772,12 +785,15 @@ export function Dungeon({
   function triggerCard(card: WordCard) {
     const cardShieldGained = getCardShieldAmount(card);
     const element = getCardElement(card);
+    const masteryLevel = wordMastery[getMasterySourceCardId(card.id)] ?? 0;
+    const masteryBonusDamage = getMasteryDamageBonus(masteryLevel);
     const elementBonusDamage =
       element?.element === "fire" ? FIRE_BONUS_DAMAGE : 0;
     const waterShieldGained =
       element?.element === "water" ? WATER_SHIELD_GAIN : 0;
     const totalShieldGained = cardShieldGained + waterShieldGained;
-    const totalDamageDealt = card.baseAttack + elementBonusDamage;
+    const totalDamageDealt =
+      card.baseAttack + elementBonusDamage + masteryBonusDamage;
     const nextMonsterHp = Math.max(monsterHp - totalDamageDealt, 0);
     const isDefeated = nextMonsterHp === 0;
     const earthAttackReduction =
@@ -805,6 +821,7 @@ export function Dungeon({
     const effectsSummary = [
       `Base damage ${card.baseAttack}`,
       elementBonusDamage > 0 ? `Fire +${elementBonusDamage}` : null,
+      masteryBonusDamage > 0 ? `Mastery +${masteryBonusDamage}` : null,
       cardShieldGained > 0 ? `Shield +${cardShieldGained}` : null,
       waterShieldGained > 0 ? `Water shield +${waterShieldGained}` : null,
       earthAttackReduction > 0
@@ -847,10 +864,12 @@ export function Dungeon({
         setBattleStatus("run-complete");
         setBattleLog({
           tone: "success",
-          message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
+          message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
           triggeredCard: card,
           baseDamageDealt: card.baseAttack,
           elementBonusDamage,
+          masteryLevel,
+          masteryBonusDamage,
           damageDealt: totalDamageDealt,
           cardShieldGained,
           waterShieldGained,
@@ -871,10 +890,12 @@ export function Dungeon({
       setBattleStatus("monster-defeated");
       setBattleLog({
         tone: "success",
-        message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated.${encounterType === "elite" ? ` Elite bonus: +${ELITE_GOLD_BONUS} gold.` : ""}`,
+        message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated.${encounterType === "elite" ? ` Elite bonus: +${ELITE_GOLD_BONUS} gold.` : ""}`,
         triggeredCard: card,
         baseDamageDealt: card.baseAttack,
         elementBonusDamage,
+        masteryLevel,
+        masteryBonusDamage,
         damageDealt: totalDamageDealt,
         cardShieldGained,
         waterShieldGained,
@@ -889,10 +910,12 @@ export function Dungeon({
     onUpdateRunStatistics(nextRunStatistics);
     setBattleLog({
       tone: "success",
-      message: `${card.word} triggered for ${totalDamageDealt} total damage. ${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield.` : ""}`,
+      message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield.` : ""}`,
       triggeredCard: card,
       baseDamageDealt: card.baseAttack,
       elementBonusDamage,
+      masteryLevel,
+      masteryBonusDamage,
       damageDealt: totalDamageDealt,
       cardShieldGained,
       waterShieldGained,
@@ -1721,6 +1744,7 @@ export function Dungeon({
             <div className="mt-4 grid grid-cols-2 gap-2">
               <StatCard label="Base DMG" value={battleLog.baseDamageDealt ?? 0} tone="emerald" />
               <StatCard label="Element DMG" value={battleLog.elementBonusDamage ?? 0} tone="purple" />
+              <StatCard label="Mastery DMG" value={battleLog.masteryBonusDamage ?? 0} tone="amber" />
               <StatCard label="Total DMG" value={battleLog.damageDealt ?? 0} tone="emerald" />
               <StatCard label="Taken" value={battleLog.damageTaken ?? 0} tone="red" />
               <StatCard label="Shield Block" value={battleLog.shieldAbsorbed ?? 0} tone="sky" />
@@ -1776,6 +1800,9 @@ export function Dungeon({
               <Badge tone={battleLog.triggeredCard ? "emerald" : "slate"}>
                 {battleLog.triggeredCard ? "Active" : "Preview"}
               </Badge>
+              <Badge tone={sidePanelMastery >= 5 ? "emerald" : "amber"}>
+                {getMasteryStatusLabel(sidePanelMastery)}
+              </Badge>
             </div>
             <div className="mt-4 flex items-start gap-4">
               <span className="grid size-20 place-items-center rounded-2xl border-2 border-amber-900/15 bg-amber-100 text-5xl shadow-inner">
@@ -1827,6 +1854,24 @@ export function Dungeon({
                 </p>
               </div>
             </div>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
+                <p className="text-xs font-black uppercase text-amber-800/70">
+                  Mastery
+                </p>
+                <p className="mt-1 text-2xl font-black text-amber-950">
+                  {sidePanelMastery} / 5
+                </p>
+              </div>
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
+                <p className="text-xs font-black uppercase text-emerald-800/70">
+                  Mastery Bonus
+                </p>
+                <p className="mt-1 text-2xl font-black text-emerald-950">
+                  +{sidePanelMasteryBonus} DMG
+                </p>
+              </div>
+            </div>
             <div className="mt-4 rounded-lg border border-amber-900/15 bg-white/70 p-3">
               <p className="text-xs font-extrabold uppercase text-amber-800/70">
                 Final trigger result
@@ -1837,8 +1882,9 @@ export function Dungeon({
               {(battleLog.damageDealt ?? 0) > 0 && (
                 <p className="mt-2 text-sm font-black text-emerald-800">
                   Final damage: {battleLog.damageDealt}
-                  {(battleLog.elementBonusDamage ?? 0) > 0
-                    ? ` including +${battleLog.elementBonusDamage} element damage`
+                  {(battleLog.elementBonusDamage ?? 0) > 0 ||
+                  (battleLog.masteryBonusDamage ?? 0) > 0
+                    ? ` including +${battleLog.elementBonusDamage ?? 0} element and +${battleLog.masteryBonusDamage ?? 0} mastery damage`
                     : ""}
                 </p>
               )}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, CardPanel, ProgressBar, StatCard } from "../components/ui";
+import { getMasteryDamageBonus } from "../game/mastery";
 import type {
   CardEffect,
   DifficultyLevel,
@@ -52,6 +53,7 @@ export function DeckReview({
   }, [deck]);
 
   const selectedMastery = wordMastery[selectedCard.id] ?? 0;
+  const selectedMasteryBonus = getMasteryDamageBonus(selectedMastery);
   const totalMastery = deck.cards.reduce(
     (sum, card) => sum + (wordMastery[card.id] ?? 0),
     0,
@@ -86,6 +88,10 @@ export function DeckReview({
                     ? `${deck.name} completed. Permanent progress saved.`
                     : "Defeat the boss in Dungeon to mark this deck completed."}
                 </p>
+                <p className="mt-2 text-sm font-bold text-emerald-800">
+                  Mastery grants small Dungeon damage bonuses when a word card
+                  triggers correctly.
+                </p>
               </div>
               <div className="grid grid-cols-2 gap-3 text-sm sm:min-w-64">
                 <StatCard label="Total cards" value={deck.cards.length} />
@@ -111,6 +117,7 @@ export function DeckReview({
             {deck.cards.map((card) => {
               const isSelected = selectedCard.id === card.id;
               const cardMastery = wordMastery[card.id] ?? 0;
+              const isMastered = cardMastery >= masteryTarget;
 
               return (
                 <button
@@ -148,6 +155,9 @@ export function DeckReview({
                       <Badge tone="slate">ATK {card.baseAttack}</Badge>
                       <Badge tone={card.effects?.length ? "purple" : "slate"}>
                         {card.effects?.length ?? 0} effects
+                      </Badge>
+                      <Badge tone={isMastered ? "emerald" : "amber"}>
+                        {isMastered ? "Mastered" : `Mastery ${cardMastery}/5`}
                       </Badge>
                     </div>
                   </div>
@@ -220,6 +230,12 @@ export function DeckReview({
                 }
               />
               <StatCard label="Base attack" value={selectedCard.baseAttack} />
+              <StatCard
+                label="Mastery bonus"
+                value={`+${selectedMasteryBonus}`}
+                helper="Dungeon damage"
+                tone={selectedMasteryBonus > 0 ? "emerald" : "slate"}
+              />
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -257,6 +273,14 @@ export function DeckReview({
                 <p className="mt-2 font-semibold text-slate-950">
                   {selectedMastery} / {masteryTarget}
                 </p>
+                <p className="mt-1 text-sm font-bold text-emerald-800">
+                  Dungeon mastery bonus: +{selectedMasteryBonus} damage
+                </p>
+                {selectedMastery >= masteryTarget && (
+                  <Badge tone="emerald" className="mt-2">
+                    Mastered
+                  </Badge>
+                )}
               </dd>
             </div>
           </dl>

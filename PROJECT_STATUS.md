@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 32 Encounter Intro + Pause System is complete. GitHub backup is configured on `origin/main`.
+Phase 33 Mastery System Gameplay Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -360,6 +360,16 @@ Phase 32 Encounter Intro + Pause System is complete. GitHub backup is configured
 - Updated timer rules so timers do not run during Encounter Intro, Events, Pause, Shop routing, Boss Available, Run Complete, Run Failed, or Training.
 - Preserved combat math, elements, shop, deck unlocks, LocalStorage, run progression, statistics, mastery, Training, and all balance values.
 - Verified the project with `npm run build` after Phase 32.
+- Added mastery damage bonus constants in `src/game/balance.ts`.
+- Added shared mastery helpers in `src/game/mastery.ts`.
+- Dungeon now reads permanent word mastery when a word card triggers correctly.
+- Mastery bonuses add Dungeon damage only: Mastery 0 = +0, Mastery 1-2 = +1, Mastery 3-4 = +2, Mastery 5 = +3.
+- Mastery bonuses do not mutate current-run cards and do not save any run state.
+- Dungeon card trigger feedback now shows mastery level, mastery bonus damage, and final damage.
+- Training correct-answer feedback now shows mastery before/after, Mastery increased, and Mastered at 5/5.
+- Deck Review now makes mastery easier to scan with Mastered status and Dungeon mastery bonus copy.
+- Preserved selected deck, deck unlock progression, Training rules, Dungeon flow, Encounter Intro, Pause, timers, timeout, elements, shop, boss, events, elites, run statistics, and LocalStorage permanent-progress-only rules.
+- Verified the project with `npm run build` after Phase 33.
 
 ## In Progress
 
@@ -367,7 +377,7 @@ Phase 32 Encounter Intro + Pause System is complete. GitHub backup is configured
 
 ## Next Task
 
-Phase 32 is complete. Continue with the next explicitly requested phase or feature.
+Phase 33 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -409,6 +419,7 @@ The following documents are required and must be updated after every completed t
 - `GAME_DESIGN.md` is the central gameplay design reference
 - Word mastery is saved in LocalStorage as permanent progress
 - Word mastery range is `0` to `5`
+- Permanent word mastery can grant small Dungeon combat bonuses
 - Correct Training answers increase word mastery by `1`
 - Wrong Training answers do not decrease mastery in the Version 1 prototype
 - Card Trigger System: correct mini-game answers trigger selected word cards and activate card effects

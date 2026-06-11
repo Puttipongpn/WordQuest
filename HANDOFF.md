@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 32 complete.
+Current phase: Phase 33 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, and after Phase 32 Encounter Intro / Pause System work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, and after Phase 33 Mastery System Gameplay Pass work.
 
 The local development server can be started with:
 
@@ -383,7 +383,7 @@ Current Deck Review implementation:
 - All cards render in a responsive grid.
 - Clicking a card stores the selected card in local React state.
 - The selected card detail panel shows word, Thai meaning, part of speech, example sentence, difficulty, base attack, effects, and mastery placeholder.
-- Mastery displays persisted values from `0 / 5`.
+- Mastery displays persisted values from `0 / 5`, mastered status, and the current Dungeon mastery damage bonus.
 - Deck summary shows deck name, total cards, and current total saved mastery.
 - Deck Review does not mutate mastery and has no persistence, save logic, battle logic, shop logic, or training interaction logic.
 - Phase 9 UI polish added clearer badges, stat cards, and progress bars for scanability.
@@ -399,6 +399,7 @@ Current Training implementation:
 - Thai-to-English questions show a Thai meaning and 4 English word choices.
 - Cloze questions blank the target word from the example sentence and ask for the correct English word.
 - Player selection shows correct/wrong feedback and reveals the correct answer.
+- Correct-answer feedback shows mastery before/after, Mastery increased, and Mastered at 5/5.
 - A Next button advances to the next question.
 - The final question shows a Restart button that resets the local training session.
 - Training progress shows current question, total questions, correct count, and incorrect count.
@@ -420,6 +421,11 @@ Current Word Mastery implementation:
 - Mastery is loaded from LocalStorage on app start.
 - Mastery is saved to LocalStorage after correct Training answers.
 - Deck Review shows saved mastery after page refresh.
+- Permanent mastery grants small Dungeon damage bonuses when a mastered word card triggers correctly.
+- Current mastery damage bonus rules are: mastery 0 = +0 damage, mastery 1-2 = +1 damage, mastery 3-4 = +2 damage, mastery 5 = +3 damage.
+- Mastery bonuses are read from permanent progress and do not mutate the current-run deck.
+- Mastery bonuses do not save active run state.
+- Dungeon card trigger feedback shows mastery level, mastery bonus damage, and final damage.
 
 Current LocalStorage save implementation:
 
@@ -543,6 +549,8 @@ Current Dungeon implementation:
 - Phase 32 added Start Battle so timers and active questions begin only after the player chooses to start combat.
 - Phase 32 added a Pause overlay during active combat with Resume and Leave Run actions.
 - Phase 32 preserved Events as immediate non-combat choice encounters.
+- Phase 33 made permanent word mastery useful in Dungeon battles through small triggered-card damage bonuses.
+- Phase 33 improved mastery visibility in Training, Deck Review, and Dungeon card trigger feedback.
 
 Current Shop implementation:
 
@@ -900,7 +908,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 32 is complete.
+Phase 33 is complete.
 
 Recommended next task:
 

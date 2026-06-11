@@ -772,6 +772,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Pause should be a true interruption state without changing combat math, save rules, or balance values.
 - Status: Accepted
 
+### 2026-06-11: Permanent Mastery Grants Small Dungeon Bonuses
+
+- Decision: Permanent word mastery can grant small Dungeon combat bonuses.
+- Reason: Mastery should feel useful in battle while remaining a permanent learning bonus that does not mutate current-run decks or save active run state.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

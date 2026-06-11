@@ -108,16 +108,24 @@ export function Training({
   const [result, setResult] = useState<AnswerResult | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
+  const [masteryBeforeAnswer, setMasteryBeforeAnswer] = useState<number | null>(
+    null,
+  );
 
   const currentQuestion = questions[questionIndex];
   const isAnswered = result !== null;
   const isLastQuestion = questionIndex === questions.length - 1;
   const currentMastery = wordMastery[currentQuestion.card.id] ?? 0;
+  const masteryAfterCorrectAnswer =
+    masteryBeforeAnswer === null
+      ? currentMastery
+      : Math.min(masteryBeforeAnswer + 1, MAX_WORD_MASTERY);
 
   useEffect(() => {
     setQuestionIndex(0);
     setSelectedCardId(null);
     setResult(null);
+    setMasteryBeforeAnswer(null);
     setCorrectCount(0);
     setIncorrectCount(0);
   }, [deck.id]);
@@ -129,6 +137,7 @@ export function Training({
 
     const isCorrect = choice.id === currentQuestion.card.id;
 
+    setMasteryBeforeAnswer(currentMastery);
     setSelectedCardId(choice.id);
     setResult(isCorrect ? "correct" : "wrong");
 
@@ -143,6 +152,7 @@ export function Training({
   function handleNext() {
     setSelectedCardId(null);
     setResult(null);
+    setMasteryBeforeAnswer(null);
 
     if (isLastQuestion) {
       setQuestionIndex(0);
@@ -283,6 +293,24 @@ export function Training({
                   <p className="mt-1 text-sm text-slate-500">
                     {currentQuestion.card.exampleSentence}
                   </p>
+                  {result === "correct" && masteryBeforeAnswer !== null && (
+                    <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
+                      <p className="text-sm font-black text-emerald-900">
+                        {masteryAfterCorrectAnswer > masteryBeforeAnswer
+                          ? "Mastery increased"
+                          : "Mastery already at max"}
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-emerald-800">
+                        {masteryBeforeAnswer} / {MAX_WORD_MASTERY} →{" "}
+                        {masteryAfterCorrectAnswer} / {MAX_WORD_MASTERY}
+                      </p>
+                      {masteryAfterCorrectAnswer === MAX_WORD_MASTERY && (
+                        <Badge tone="emerald" className="mt-2">
+                          Mastered!
+                        </Badge>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <Button
                   type="button"

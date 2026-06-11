@@ -1,4 +1,7 @@
 export const MAX_WORD_MASTERY = 5;
+export const MASTERY_LOW_DAMAGE_BONUS = 1;
+export const MASTERY_MEDIUM_DAMAGE_BONUS = 2;
+export const MASTERY_MAX_DAMAGE_BONUS = 3;
 
 export const PLAYER_MAX_HP = 32;
 export const INITIAL_SHIELD = 0;

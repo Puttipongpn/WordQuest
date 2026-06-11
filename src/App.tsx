@@ -617,6 +617,7 @@ export default function App() {
             runProgress={runProgress}
             runStatistics={runStatistics}
             selectedDeck={selectedDeck}
+            wordMastery={wordMastery}
           />
         )}
         {currentScreen === "shop" && (
