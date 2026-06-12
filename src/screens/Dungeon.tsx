@@ -417,6 +417,18 @@ function formatMiniGameName(miniGameType: BattleMiniGameType) {
   return "Word Scramble";
 }
 
+function getMiniGameInstruction(miniGameType: BattleMiniGameType) {
+  if (miniGameType === "word-choice") {
+    return "เลือกคำตอบที่ถูกต้อง";
+  }
+
+  if (miniGameType === "word-match") {
+    return "จับคู่คำอังกฤษกับความหมายไทย";
+  }
+
+  return "เลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก";
+}
+
 function getMiniGameTimeLimit(miniGameType: BattleMiniGameType) {
   if (miniGameType === "word-choice") {
     return WORD_CHOICE_TIME_LIMIT;
@@ -463,6 +475,12 @@ function getCardEffectsSummary(card: WordCard) {
       ) ?? [];
 
   return [...effects, ...elements].join(" / ");
+}
+
+function getCardMasteryBonus(card: WordCard, wordMastery: WordMasteryByCardId) {
+  const mastery = wordMastery[getMasterySourceCardId(card.id)] ?? 0;
+
+  return getMasteryDamageBonus(mastery);
 }
 
 function calculateRunAccuracy(statistics: RunStatistics) {
@@ -670,6 +688,7 @@ export function Dungeon({
   const isTimerLow = timeRemaining <= 3;
   const isTimerRunning = battleStatus === "fighting" && !isPaused && !isAnswered;
   const canPauseBattle = battleStatus === "fighting" && !isPaused && !isAnswered;
+  const canShowTriggeredCardDetails = battleLog.triggeredCard !== undefined;
   const encounterFlavorText = getEncounterFlavorText(currentEncounter, {
     isBossEncounter,
     encounterType,
@@ -710,6 +729,7 @@ export function Dungeon({
       : battleLog.tone === "danger"
         ? "border-red-300 bg-gradient-to-br from-red-100 to-amber-50"
         : "border-amber-800/30 bg-gradient-to-br from-amber-50 to-stone-100";
+  const canAdvanceAfterAnswer = isAnswered && battleStatus === "fighting";
 
   function resetAnswerState() {
     setSelectedChoiceId(null);
@@ -1273,387 +1293,349 @@ export function Dungeon({
       title="Dungeon"
       description="Answer timed vocabulary mini-games to trigger cards. Run state here is local and temporary."
       framed={false}
+      wide
+      gameMode
     >
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_350px]">
-        <CardPanel className="relative overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 text-amber-50">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <Badge
-              tone={
-                isBossEncounter || encounterType === "elite"
-                  ? "red"
-                  : isEventEncounter
-                    ? "purple"
-                    : "emerald"
-              }
-            >
-              {isBossEncounter
-                ? "⚔ Boss"
-                : encounterType === "elite"
-                  ? "👑 Elite"
-                  : isEventEncounter
-                    ? "✨ Event"
-                    : "⚔ Monster"}
-            </Badge>
-            <Badge tone="purple">{selectedDeck.name}</Badge>
-            <div className="flex flex-wrap gap-2">
-              {canPauseBattle && (
-                <Button type="button" onClick={pauseBattle} variant="secondary">
-                  Pause
-                </Button>
-              )}
-              <Button
-                type="button"
-                onClick={() => onNavigate("run-result")}
-                variant="secondary"
-              >
-                End Run
-              </Button>
-            </div>
-          </div>
-
+      {isEncounterIntro ? (
+        <CardPanel className="mx-auto grid h-full max-w-5xl place-items-center overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-4 text-amber-50">
           <section
-            className={`relative mt-5 overflow-hidden rounded-3xl border-2 p-5 shadow-[inset_0_0_55px_rgba(0,0,0,0.28)] ${encounterStageClass}`}
+            className={`relative w-full overflow-hidden rounded-3xl border-2 p-6 text-center shadow-[inset_0_0_55px_rgba(0,0,0,0.28)] ${encounterStageClass}`}
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/10 to-transparent" />
-            <div className="relative mb-4 flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-amber-200/80">
-                Encounter Stage
-              </p>
+            <div className="relative mx-auto max-w-3xl">
               <Badge
                 tone={
                   isBossEncounter
                     ? "red"
                     : encounterType === "elite"
                       ? "amber"
-                      : isEventEncounter
-                        ? "purple"
-                        : "emerald"
+                      : "emerald"
                 }
               >
                 {encounterLabel}
               </Badge>
+              <div
+                className={`mx-auto mt-4 grid size-28 place-items-center rounded-3xl border-4 text-6xl shadow-lg ${encounterPortraitClass}`}
+              >
+                {currentEncounter.imagePlaceholder}
+              </div>
+              <h3 className="mt-4 text-5xl font-black leading-none text-amber-50 drop-shadow">
+                {currentEncounter.name}
+              </h3>
+              <p className="mx-auto mt-4 max-w-2xl text-base font-bold leading-7 text-amber-100/90">
+                {encounterFlavorText}
+              </p>
+              <div className="mx-auto mt-5 grid max-w-xl gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border-2 border-red-200/20 bg-black/30 p-4">
+                  <p className="text-xs font-black uppercase text-red-100/70">
+                    HP
+                  </p>
+                  <p className="mt-1 text-4xl font-black text-red-100">
+                    {currentEncounter.maxHp}
+                  </p>
+                </div>
+                <div className="rounded-2xl border-2 border-amber-200/20 bg-black/30 p-4">
+                  <p className="text-xs font-black uppercase text-amber-100/70">
+                    Attack
+                  </p>
+                  <p className="mt-1 text-4xl font-black text-amber-100">
+                    {currentEncounter.attack}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 flex flex-wrap justify-center gap-2">
+                <Badge tone="sky">Timer starts after Start Battle</Badge>
+                {isBossEncounter && <Badge tone="purple">Major Fight</Badge>}
+                {encounterType === "elite" && (
+                  <Badge tone="amber">
+                    Elite Bonus +{ELITE_GOLD_BONUS} gold
+                  </Badge>
+                )}
+              </div>
+              <Button
+                type="button"
+                onClick={startBattleFromIntro}
+                className="mt-7 min-w-64 px-8 py-3 text-lg"
+              >
+                Start Battle
+              </Button>
             </div>
-            {isEventEncounter ? (
-              <div className="relative grid gap-5 md:grid-cols-[auto_minmax(0,1fr)] md:items-center">
-                <div
-                  className={`grid size-32 place-items-center rounded-3xl border-4 text-7xl ${encounterPortraitClass}`}
-                >
-                  {currentEvent.icon}
-                </div>
-                <div>
-                  <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-violet-200">
-                    Non-Combat Choice
-                  </p>
-                  <h3 className="mt-1 text-4xl font-black text-amber-50">
-                    {currentEvent.title}
-                  </h3>
-                  <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-100">
-                    {currentEvent.description}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <Badge tone="purple">No Combat</Badge>
-                    <Badge tone="amber">Does Not Count For Boss</Badge>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="relative grid gap-5 md:grid-cols-[minmax(0,180px)_minmax(0,1fr)_minmax(0,240px)] md:items-center">
-                <div className="rounded-3xl border border-amber-100/10 bg-black/15 p-3 text-center">
-                  <p className="mb-2 text-xs font-black uppercase tracking-[0.18em] text-amber-200/75">
-                    Enemy
-                  </p>
-                  <div
-                    className={`mx-auto grid size-32 place-items-center rounded-3xl border-4 text-7xl ${encounterPortraitClass}`}
-                  >
-                    {currentEncounter.imagePlaceholder}
-                  </div>
-                </div>
-                <div>
-                  <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-amber-300">
-                    {isBossEncounter
-                      ? "Boss Encounter"
-                      : encounterType === "elite"
-                        ? "Elite Encounter"
-                        : "Monster Encounter"}
-                  </p>
-                  <h3 className="mt-1 text-5xl font-black leading-none text-amber-50 drop-shadow">
-                    {currentEncounter.name}
-                  </h3>
-                  <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-100/85">
-                    {isEncounterIntro
-                      ? encounterFlavorText
-                      : "Win vocabulary mini-games to trigger cards. A wrong answer or timeout lets this encounter strike back."}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Badge tone="red">{encounterLabel} Attack {currentEncounter.attack}</Badge>
-                    {isBossEncounter && <Badge tone="purple">Major Fight</Badge>}
-                    {encounterType === "elite" && (
-                      <Badge tone="amber">Elite Bonus +{ELITE_GOLD_BONUS} gold</Badge>
-                    )}
-                    {!isBossEncounter && (
-                      <Badge tone="amber">
-                        Boss after {BOSS_MONSTER_REQUIREMENT}
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-                <div className="rounded-2xl border-2 border-amber-200/20 bg-black/25 p-4">
-                  <div className="flex items-center justify-between gap-3 text-sm font-black text-amber-100">
-                    <span>Enemy HP</span>
-                    <span>{monsterHp} / {currentEncounter.maxHp}</span>
-                  </div>
-                  <div className="mt-3">
-                    <ProgressBar
-                      value={monsterHp}
-                      max={currentEncounter.maxHp}
-                      label={`${currentEncounter.name} HP`}
-                      tone={isBossEncounter || encounterType === "elite" ? "red" : "emerald"}
-                    />
-                  </div>
-                  <div className="mt-4 rounded-xl border border-red-200/20 bg-red-950/30 p-3">
-                    <p className="text-xs font-black uppercase text-red-100/70">
-                      Threat
-                    </p>
-                    <p className="mt-1 text-3xl font-black text-red-100">
-                      {currentEncounter.attack}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
           </section>
-
-          <section className="mt-6 rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-5 text-amber-950 shadow-[0_10px_0_rgba(120,53,15,0.22)]">
+        </CardPanel>
+      ) : (
+      <div className="grid h-full min-h-0 gap-3 xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]">
+        <CardPanel className="relative h-full min-h-0 overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-3 text-amber-50">
+          <div className="flex h-full min-h-0 flex-col gap-3">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+              <div className="flex flex-wrap gap-2">
                 <Badge
                   tone={
-                    isEventEncounter
-                      ? "purple"
-                      : isEncounterIntro
-                        ? "amber"
+                    isBossEncounter || encounterType === "elite"
+                      ? "red"
+                      : isEventEncounter
+                        ? "purple"
                         : "emerald"
                   }
                 >
-                  {isEventEncounter
-                    ? "Event Choice"
-                    : isEncounterIntro
-                      ? "Encounter Intro"
-                      : formatMiniGameName(miniGameType)}
+                  {isBossEncounter
+                    ? "⚔ Boss"
+                    : encounterType === "elite"
+                      ? "👑 Elite"
+                      : isEventEncounter
+                        ? "✨ Event"
+                        : "⚔ Monster"}
                 </Badge>
-                <h3 className="mt-2 text-4xl font-black leading-tight text-amber-950">
-                  {isEventEncounter
-                    ? "Choose one event option"
-                    : isEncounterIntro
-                      ? "Prepare before the timer starts"
-                    : "Answer to trigger your card"}
-                </h3>
-                <p className="mt-1 text-sm font-semibold text-amber-900/70">
-                  {isEventEncounter
-                    ? "Events are not battles. Their rewards stay temporary for the current run."
-                    : isEncounterIntro
-                      ? "The timer is stopped. Inspect the enemy, then start battle when ready."
-                    : "Dungeon questions are timed; Training stays untimed for safe practice."}
-                </p>
+                <Badge tone="purple">{selectedDeck.name}</Badge>
               </div>
-              {!isEventEncounter && !isEncounterIntro && (
-                <div
-                  className={`min-w-48 rounded-2xl border-2 p-4 shadow-inner ${
-                    timeRemaining === 0
-                      ? "border-red-400 bg-red-100"
-                      : isTimerLow && isTimerRunning
-                        ? "border-red-400 bg-red-50 motion-safe:animate-pulse"
-                        : "border-amber-900/15 bg-white/85"
-                  }`}
+              <div className="flex flex-wrap gap-2">
+                {canPauseBattle && (
+                  <Button type="button" onClick={pauseBattle} variant="secondary">
+                    Pause
+                  </Button>
+                )}
+                <Button
+                  type="button"
+                  onClick={() => onNavigate("run-result")}
+                  variant="secondary"
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                      Battle Timer
-                    </p>
-                    <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
-                      {timerStateLabel}
-                    </Badge>
-                  </div>
-                  <p className="mt-1 text-4xl font-black text-amber-950">
-                    {timeRemaining}s
-                    <span className="ml-1 text-base text-amber-900/60">
-                      / {miniGameTimeLimit}s
-                    </span>
-                  </p>
-                  <div className="mt-2">
+                  End Run
+                </Button>
+              </div>
+            </div>
+
+            <section
+              className={`rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] ${encounterStageClass}`}
+            >
+              <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.78fr)] lg:items-center">
+                <div className="grid gap-2 sm:grid-cols-[1.25fr_0.7fr_0.7fr_0.7fr_0.9fr]">
+                  <div className="rounded-xl border border-red-100/15 bg-red-950/25 px-3 py-1.5">
+                    <div className="flex items-center justify-between text-sm font-black text-red-50">
+                      <span>Player HP</span>
+                      <span>{playerHp} / {PLAYER_MAX_HP}</span>
+                    </div>
                     <ProgressBar
-                      value={timeRemaining}
-                      max={miniGameTimeLimit}
-                      tone={isTimerLow && isTimerRunning ? "red" : "amber"}
-                      label="Battle timer"
+                      value={playerHp}
+                      max={PLAYER_MAX_HP}
+                      tone="red"
+                      label="Player HP"
                     />
                   </div>
-                </div>
-              )}
-            </div>
-
-            {isEncounterIntro ? (
-              <div className="mt-5 rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
-                <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_220px] md:items-center">
-                  <div>
-                    <p className="text-sm font-black uppercase tracking-[0.2em] text-amber-800/70">
-                      Encounter Intel
+                  <div className="rounded-xl border border-sky-100/15 bg-sky-950/25 px-3 py-1.5">
+                    <p className="text-xs font-black uppercase text-sky-100/70">
+                      Shield
                     </p>
-                    <h4 className="mt-2 text-3xl font-black text-amber-950">
-                      {currentEncounter.name}
-                    </h4>
-                    <p className="mt-3 text-sm font-bold leading-6 text-amber-900/75">
-                      {encounterFlavorText}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <Badge tone="red">HP {currentEncounter.maxHp}</Badge>
-                      <Badge tone="amber">Attack {currentEncounter.attack}</Badge>
-                      <Badge tone="sky">Timer starts after Start Battle</Badge>
-                    </div>
+                    <p className="text-xl font-black text-sky-50">{shield}</p>
                   </div>
-                  <Button
-                    type="button"
-                    onClick={startBattleFromIntro}
-                    className="w-full"
-                  >
-                    Start Battle
-                  </Button>
-                </div>
-              </div>
-            ) : isEventEncounter ? (
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {currentEvent.options.map((option) => (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => handleEventOption(option.id)}
-                    className="rounded-xl border-2 border-amber-900/15 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  >
-                    <p className="text-lg font-black text-amber-950">
-                      {option.label}
+                  <div className="rounded-xl border border-amber-100/15 bg-amber-950/25 px-3 py-1.5">
+                    <p className="text-xs font-black uppercase text-amber-100/70">
+                      Gold
                     </p>
-                    <p className="mt-2 text-sm font-semibold leading-6 text-amber-900/70">
-                      {option.description}
+                    <p className="text-xl font-black text-amber-50">{runGold}</p>
+                  </div>
+                  <div className="rounded-xl border border-stone-100/15 bg-stone-950/25 px-3 py-1.5">
+                    <p className="text-xs font-black uppercase text-stone-100/70">
+                      Floor
                     </p>
-                  </button>
-                ))}
-              </div>
-            ) : miniGameType === "word-choice" ? (
-              <WordChoiceBattle
-                isAnswered={isAnswered}
-                question={wordChoiceQuestion}
-                selectedChoiceId={selectedChoiceId}
-                onAnswer={handleWordChoiceAnswer}
-              />
-            ) : miniGameType === "word-match" ? (
-              <WordMatchBattle
-                isAnswered={isAnswered}
-                question={wordMatchQuestion}
-                selectedMeaningId={selectedMeaningId}
-                selectedWordId={selectedWordId}
-                onSelectMeaning={setSelectedMeaningId}
-                onSelectWord={setSelectedWordId}
-                onSubmit={handleWordMatchSubmit}
-              />
-            ) : (
-              <WordScrambleBattle
-                answer={scrambleAnswer}
-                isAnswered={isAnswered}
-                question={wordScrambleQuestion}
-                selectedCardId={selectedScrambleCardId}
-                onAnswerChange={setScrambleAnswer}
-                onSelectCard={setSelectedScrambleCardId}
-                onSubmit={handleWordScrambleSubmit}
-              />
-            )}
-          </section>
-
-          <section className="mt-6 rounded-3xl border-2 border-amber-200/20 bg-black/20 p-4">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-amber-200/80">
-                Player Side
-              </p>
-              <Badge tone="sky">Current Run</Badge>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-            <StatCard
-              label="Player HP"
-              value={`${playerHp} / ${PLAYER_MAX_HP}`}
-              tone="red"
-            >
-              <ProgressBar
-                value={playerHp}
-                max={PLAYER_MAX_HP}
-                tone="red"
-                label="Player HP"
-              />
-            </StatCard>
-            <StatCard label="Shield" value={shield} tone="sky" />
-            <StatCard label="Gold" value={runGold} tone="amber" />
-            <StatCard
-              label="Run"
-              value={`${runProgress.monstersDefeated} / ${runProgress.nextShopAt}`}
-              helper={`Floor ${runProgress.currentFloor}`}
-              tone={isShopAvailable ? "amber" : "slate"}
-            />
-            <StatCard
-              label="Boss"
-              value={
-                hasCompletedBoss
-                  ? "Done"
-                  : isBossEncounter
-                    ? "Active"
-                    : isBossAvailable
-                      ? "Ready"
-                      : `${runProgress.monstersDefeated} / ${BOSS_MONSTER_REQUIREMENT}`
-              }
-              tone={
-                hasCompletedBoss
-                  ? "emerald"
-                  : isBossAvailable || isBossEncounter
-                    ? "red"
-                  : "slate"
-              }
-            />
-            </div>
-          </section>
-
-          {(isBossAvailable || isShopAvailable) && (
-            <section className="mt-4 rounded-xl border-2 border-amber-300/20 bg-amber-100/10 p-4">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <Badge
-                    tone={isBossAvailable ? "red" : "amber"}
-                  >
-                    {isBossAvailable ? "Boss Available" : "Shop Available"}
-                  </Badge>
-                  <p className="mt-2 text-sm font-bold text-amber-50">
-                    {isBossAvailable
-                      ? `${sampleBoss.name} is ready. You can start the boss battle now or visit the shop first if a checkpoint is available.`
-                      : `Shop checkpoint reached after ${runProgress.monstersDefeated} monsters.`}
-                  </p>
+                    <p className="text-xl font-black text-stone-50">
+                      {runProgress.currentFloor}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-emerald-100/15 bg-emerald-950/25 px-3 py-1.5">
+                    <p className="text-xs font-black uppercase text-emerald-100/70">
+                      Progress
+                    </p>
+                    <p className="text-base font-black text-emerald-50">
+                      {runProgress.monstersDefeated} / {runProgress.nextShopAt}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {isBossAvailable && (
-                    <Button type="button" onClick={handleStartBoss}>
-                      Start Boss Battle
-                    </Button>
-                  )}
-                  {isShopAvailable && (
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      onClick={() => onNavigate("shop")}
-                    >
-                      Go To Shop
-                    </Button>
-                  )}
+
+                <div className="grid gap-2 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center">
+                  <div
+                    className={`grid size-12 place-items-center rounded-xl border-4 text-3xl shadow-lg ${encounterPortraitClass}`}
+                  >
+                    {isEventEncounter
+                      ? currentEvent.icon
+                      : currentEncounter.imagePlaceholder}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <Badge
+                        tone={
+                          isBossEncounter
+                            ? "red"
+                            : encounterType === "elite"
+                              ? "amber"
+                              : isEventEncounter
+                                ? "purple"
+                                : "emerald"
+                        }
+                      >
+                        {encounterLabel}
+                      </Badge>
+                      {!isEventEncounter && (
+                        <Badge tone="red">ATK {currentEncounter.attack}</Badge>
+                      )}
+                      <Badge
+                        tone={
+                          hasCompletedBoss
+                            ? "emerald"
+                            : isBossAvailable || isBossEncounter
+                              ? "red"
+                              : "slate"
+                        }
+                      >
+                        Boss{" "}
+                        {hasCompletedBoss
+                          ? "Done"
+                          : isBossEncounter
+                            ? "Active"
+                            : isBossAvailable
+                              ? "Ready"
+                              : `${runProgress.monstersDefeated}/${BOSS_MONSTER_REQUIREMENT}`}
+                      </Badge>
+                    </div>
+                    <div className="mt-1 flex items-center justify-between gap-3">
+                      <h3 className="truncate text-2xl font-black leading-none text-amber-50 drop-shadow">
+                        {isEventEncounter ? currentEvent.title : currentEncounter.name}
+                      </h3>
+                      {!isEventEncounter && (
+                        <span className="shrink-0 text-sm font-black text-amber-100">
+                          {monsterHp} / {currentEncounter.maxHp}
+                        </span>
+                      )}
+                    </div>
+                    {!isEventEncounter && (
+                      <ProgressBar
+                        value={monsterHp}
+                        max={currentEncounter.maxHp}
+                        label={`${currentEncounter.name} HP`}
+                        tone={
+                          isBossEncounter || encounterType === "elite"
+                            ? "red"
+                            : "emerald"
+                        }
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </section>
-          )}
+
+            <section className="grid h-10 shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-amber-200/15 bg-black/20 px-3">
+              <div className="flex items-center gap-2 text-sm font-black text-sky-100">
+                <span className="grid size-7 place-items-center rounded-full border border-sky-200/30 bg-sky-100/15">
+                  🧙
+                </span>
+                Player
+              </div>
+              <div className="relative h-2 rounded-full bg-amber-100/20">
+                <span className="absolute inset-y-0 left-2 right-2 rounded-full border-t border-dashed border-amber-100/45" />
+              </div>
+              <div className="flex items-center gap-2 text-sm font-black text-red-100">
+                <span className="grid size-7 place-items-center rounded-full border border-red-200/30 bg-red-100/15">
+                  {isEventEncounter ? "✨" : currentEncounter.imagePlaceholder}
+                </span>
+                {isEventEncounter ? "Event" : currentEncounter.name}
+              </div>
+            </section>
+
+            <section className="flex min-h-0 flex-1 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-2 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)]">
+              <div className="min-h-0 flex-1 rounded-2xl border-2 border-amber-900/10 bg-white/80 p-2 shadow-inner">
+                {isEventEncounter ? (
+                  <div className="grid h-full min-h-[260px] content-center gap-3 sm:grid-cols-2">
+                    {currentEvent.options.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => handleEventOption(option.id)}
+                        className="rounded-xl border-2 border-amber-900/15 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-400"
+                      >
+                        <p className="text-lg font-black text-amber-950">
+                          {option.label}
+                        </p>
+                        <p className="mt-2 text-sm font-semibold leading-6 text-amber-900/70">
+                          {option.description}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                ) : miniGameType === "word-choice" ? (
+                  <WordChoiceBattle
+                    isAnswered={isAnswered}
+                    question={wordChoiceQuestion}
+                    selectedChoiceId={selectedChoiceId}
+                    onAnswer={handleWordChoiceAnswer}
+                    onNext={canAdvanceAfterAnswer ? advanceQuestion : undefined}
+                    battleLog={battleLog}
+                    wordMastery={wordMastery}
+                  />
+                ) : miniGameType === "word-match" ? (
+                  <WordMatchBattle
+                    isAnswered={isAnswered}
+                    question={wordMatchQuestion}
+                    selectedMeaningId={selectedMeaningId}
+                    selectedWordId={selectedWordId}
+                    onSelectMeaning={setSelectedMeaningId}
+                    onSelectWord={setSelectedWordId}
+                    onSubmit={handleWordMatchSubmit}
+                    onNext={canAdvanceAfterAnswer ? advanceQuestion : undefined}
+                    battleLog={battleLog}
+                    wordMastery={wordMastery}
+                  />
+                ) : (
+                  <WordScrambleBattle
+                    answer={scrambleAnswer}
+                    isAnswered={isAnswered}
+                    question={wordScrambleQuestion}
+                    selectedCardId={selectedScrambleCardId}
+                    onAnswerChange={setScrambleAnswer}
+                    onSelectCard={setSelectedScrambleCardId}
+                    onSubmit={handleWordScrambleSubmit}
+                    onNext={canAdvanceAfterAnswer ? advanceQuestion : undefined}
+                    battleLog={battleLog}
+                    wordMastery={wordMastery}
+                  />
+                )}
+              </div>
+            </section>
+
+            {(isBossAvailable || isShopAvailable) && (
+              <section className="rounded-xl border-2 border-amber-300/20 bg-amber-100/10 p-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <Badge tone={isBossAvailable ? "red" : "amber"}>
+                      {isBossAvailable ? "Boss Available" : "Shop Available"}
+                    </Badge>
+                    <p className="mt-1 text-sm font-bold text-amber-50">
+                      {isBossAvailable
+                        ? `${sampleBoss.name} is ready.`
+                        : `Shop checkpoint reached after ${runProgress.monstersDefeated} monsters.`}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {isBossAvailable && (
+                      <Button type="button" onClick={handleStartBoss}>
+                        Start Boss Battle
+                      </Button>
+                    )}
+                    {isShopAvailable && (
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => onNavigate("shop")}
+                      >
+                        Go To Shop
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </section>
+            )}
+          </div>
+
           {isPaused && (
-            <div className="absolute inset-0 z-20 grid place-items-center bg-stone-950/80 p-5 backdrop-blur-sm">
+            <div className="absolute inset-0 z-20 grid place-items-center bg-stone-950/70 p-5 backdrop-blur-sm">
               <div className="w-full max-w-md rounded-3xl border-2 border-amber-300 bg-amber-50 p-6 text-center text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)]">
                 <Badge tone="amber">Paused</Badge>
                 <h3 className="mt-3 text-5xl font-black">PAUSED</h3>
@@ -1673,11 +1655,56 @@ export function Dungeon({
           )}
         </CardPanel>
 
-        <aside className="space-y-4 lg:self-start">
-          <section
-            className={`rounded-2xl border-2 p-4 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${battleFeedbackClass}`}
+        <aside className="grid min-h-0 gap-3 lg:grid-cols-2 xl:block xl:h-full xl:space-y-3 xl:overflow-hidden">
+          {!isEventEncounter && (
+            <section
+              className={`rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${
+                timeRemaining === 0
+                  ? "border-red-400 bg-red-100"
+                  : isTimerLow && isTimerRunning
+                    ? "border-red-400 bg-red-50 motion-safe:animate-pulse"
+                    : "border-amber-800/30 bg-gradient-to-br from-amber-50 to-stone-100"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
+                  <p className="mt-2 text-sm font-black leading-5 text-amber-950">
+                    {getMiniGameInstruction(miniGameType)}
+                  </p>
+                </div>
+                <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
+                  {timerStateLabel}
+                </Badge>
+              </div>
+              <div className="mt-3 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs font-extrabold uppercase text-amber-800/70">
+                    Timer
+                  </p>
+                  <p className="text-3xl font-black leading-none text-amber-950">
+                    {timeRemaining}s
+                  </p>
+                </div>
+                <p className="text-sm font-black text-amber-900/60">
+                  / {miniGameTimeLimit}s
+                </p>
+              </div>
+              <div className="mt-2">
+                <ProgressBar
+                  value={timeRemaining}
+                  max={miniGameTimeLimit}
+                  tone={isTimerLow && isTimerRunning ? "red" : "amber"}
+                  label="Battle timer"
+                />
+              </div>
+            </section>
+          )}
+
+          <details
+            className={`rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${battleFeedbackClass}`}
           >
-            <div className="flex flex-wrap items-center gap-2">
+            <summary className="flex cursor-pointer flex-wrap items-center gap-2">
               <span className="text-3xl" aria-hidden="true">
                 {battleFeedbackIcon}
               </span>
@@ -1693,130 +1720,84 @@ export function Dungeon({
               >
                 {battleFeedbackLabel}
               </Badge>
-            </div>
-            <p className="mt-2 text-sm font-medium text-amber-950/80">
+            </summary>
+            <p className="mt-2 line-clamp-3 text-sm font-medium text-amber-950/80">
               {battleLog.message}
             </p>
 
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              {(battleLog.damageDealt ?? 0) > 0 && (
-                <div className="rounded-2xl border-2 border-emerald-400 bg-emerald-950 px-4 py-3 text-emerald-50 shadow-[0_5px_0_rgba(6,78,59,0.4)]">
-                  <p className="text-xs font-black uppercase text-emerald-200/80">
-                    Damage Burst
-                  </p>
-                  <p className="mt-1 text-4xl font-black">
-                    -{battleLog.damageDealt}
-                  </p>
-                </div>
-              )}
-              {(battleLog.damageTaken ?? 0) > 0 && (
-                <div className="rounded-2xl border-2 border-red-400 bg-red-950 px-4 py-3 text-red-50 shadow-[0_5px_0_rgba(127,29,29,0.42)]">
-                  <p className="text-xs font-black uppercase text-red-200/80">
-                    Incoming Hit
-                  </p>
-                  <p className="mt-1 text-4xl font-black">
-                    -{battleLog.damageTaken}
-                  </p>
-                </div>
-              )}
-              {(battleLog.shieldGained ?? 0) > 0 && (
-                <div className="rounded-2xl border-2 border-sky-300 bg-sky-950 px-4 py-3 text-sky-50 shadow-[0_5px_0_rgba(12,74,110,0.35)]">
-                  <p className="text-xs font-black uppercase text-sky-200/80">
-                    Ward Raised
-                  </p>
-                  <p className="mt-1 text-4xl font-black">
-                    +{battleLog.shieldGained}
-                  </p>
-                </div>
-              )}
-              {(battleLog.shieldAbsorbed ?? 0) > 0 && (
-                <div className="rounded-2xl border-2 border-sky-300 bg-white px-4 py-3 text-sky-950 shadow-[0_5px_0_rgba(12,74,110,0.16)]">
-                  <p className="text-xs font-black uppercase text-sky-900/70">
-                    Shield Blocked
-                  </p>
-                  <p className="mt-1 text-4xl font-black">
-                    {battleLog.shieldAbsorbed}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <StatCard label="Base DMG" value={battleLog.baseDamageDealt ?? 0} tone="emerald" />
-              <StatCard label="Element DMG" value={battleLog.elementBonusDamage ?? 0} tone="purple" />
-              <StatCard label="Mastery DMG" value={battleLog.masteryBonusDamage ?? 0} tone="amber" />
+            <div className="mt-3 grid grid-cols-2 gap-2 [&>div]:p-2 [&_p:first-child]:text-xs [&_p:nth-child(2)]:text-xl">
               <StatCard label="Total DMG" value={battleLog.damageDealt ?? 0} tone="emerald" />
               <StatCard label="Taken" value={battleLog.damageTaken ?? 0} tone="red" />
               <StatCard label="Shield Block" value={battleLog.shieldAbsorbed ?? 0} tone="sky" />
-              <StatCard label="HP Damage" value={battleLog.hpDamageTaken ?? 0} tone="red" />
-              <StatCard label="Card Shield" value={battleLog.cardShieldGained ?? 0} tone="sky" />
-              <StatCard label="Water Shield" value={battleLog.waterShieldGained ?? 0} tone="sky" />
-              <StatCard label="Earth Reduce" value={battleLog.earthAttackReduction ?? 0} tone="amber" />
-              <StatCard label="Wind Gold" value={battleLog.windGoldGained ?? 0} tone="amber" />
+              <StatCard label="Shield Gain" value={battleLog.shieldGained ?? 0} tone="sky" />
             </div>
+          </details>
 
-            {isAnswered && battleStatus === "fighting" && (
-              <Button type="button" onClick={advanceQuestion} className="mt-4 w-full">
-                Next Mini-Game
-              </Button>
-            )}
-            {battleStatus === "monster-defeated" && (
-              <div className="mt-4 grid gap-2">
-                {!isBossAvailable && (
-                  <Button type="button" onClick={handleNextMonster}>
-                    Spawn Next Monster
-                  </Button>
-                )}
-                {isBossAvailable && (
-                  <Button type="button" onClick={handleStartBoss}>
-                    Start Boss Battle
-                  </Button>
-                )}
-                {isShopAvailable && (
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => onNavigate("shop")}
-                  >
-                    Go To Shop
-                  </Button>
-                )}
-              </div>
-            )}
-            {battleStatus === "run-failed" && (
-              <Button
-                type="button"
-                onClick={handleRestartRun}
-                className="mt-4 w-full bg-red-600 hover:bg-red-700"
-              >
-                Restart Run
-              </Button>
-            )}
-          </section>
+          {(isAnswered && battleStatus === "fighting") ||
+          battleStatus === "monster-defeated" ||
+          battleStatus === "run-failed" ? (
+            <section className="rounded-2xl border-2 border-amber-800/20 bg-amber-50/95 p-3 shadow-[0_6px_0_rgba(120,53,15,0.12)]">
+              {isAnswered && battleStatus === "fighting" && (
+                <Button type="button" onClick={advanceQuestion} className="w-full">
+                  Next Mini-Game
+                </Button>
+              )}
+              {battleStatus === "monster-defeated" && (
+                <div className="grid gap-2">
+                  {!isBossAvailable && (
+                    <Button type="button" onClick={handleNextMonster}>
+                      Spawn Next Monster
+                    </Button>
+                  )}
+                  {isBossAvailable && (
+                    <Button type="button" onClick={handleStartBoss}>
+                      Start Boss Battle
+                    </Button>
+                  )}
+                  {isShopAvailable && (
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => onNavigate("shop")}
+                    >
+                      Go To Shop
+                    </Button>
+                  )}
+                </div>
+              )}
+              {battleStatus === "run-failed" && (
+                <Button
+                  type="button"
+                  onClick={handleRestartRun}
+                  className="w-full bg-red-600 hover:bg-red-700"
+                >
+                  Restart Run
+                </Button>
+              )}
+            </section>
+          ) : null}
 
-          <section className="rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)]">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <Badge tone="purple">Card Trigger</Badge>
-              <Badge tone={battleLog.triggeredCard ? "emerald" : "slate"}>
-                {battleLog.triggeredCard ? "Active" : "Preview"}
-              </Badge>
+          {canShowTriggeredCardDetails && (
+          <details className="rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-3 shadow-[0_10px_0_rgba(120,53,15,0.16)]" open>
+            <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2">
+              <span className="flex flex-wrap gap-2">
+                <Badge tone="purple">Card Trigger</Badge>
+                <Badge tone="emerald">Resolved</Badge>
+              </span>
               <Badge tone={sidePanelMastery >= 5 ? "emerald" : "amber"}>
                 {getMasteryStatusLabel(sidePanelMastery)}
               </Badge>
-            </div>
-            <div className="mt-4 flex items-start gap-4">
-              <span className="grid size-20 place-items-center rounded-2xl border-2 border-amber-900/15 bg-amber-100 text-5xl shadow-inner">
+            </summary>
+            <div className="mt-3 flex items-start gap-3">
+              <span className="grid size-12 shrink-0 place-items-center rounded-2xl border-2 border-amber-900/15 bg-amber-100 text-3xl shadow-inner">
                 {sidePanelCard.imagePlaceholder}
               </span>
-              <div>
-                <p className="text-2xl font-black capitalize text-amber-950">
+              <div className="min-w-0">
+                <p className="truncate text-xl font-black capitalize text-amber-950">
                   {sidePanelCard.word}
                 </p>
                 <p className="mt-1 text-sm font-bold text-amber-900/75">
-                  Current card attack {sidePanelCard.baseAttack}
-                </p>
-                <p className="mt-1 text-sm font-bold text-amber-900/75">
-                  Shield effect +{sidePanelCardShield}
+                  Attack {sidePanelCard.baseAttack} · Shield +{sidePanelCardShield}
                 </p>
                 <p className="mt-1 text-sm font-bold text-amber-900/75">
                   Element{" "}
@@ -1826,70 +1807,61 @@ export function Dungeon({
                 </p>
               </div>
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-2">
-              <div className="rounded-xl border border-red-200 bg-red-50 p-3">
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="rounded-xl border border-red-200 bg-red-50 p-2">
                 <p className="text-xs font-black uppercase text-red-800/70">
-                  Attack
+                  Base
                 </p>
-                <p className="mt-1 text-2xl font-black text-red-950">
-                  {sidePanelCard.baseAttack}
-                </p>
-              </div>
-              <div className="rounded-xl border border-sky-200 bg-sky-50 p-3">
-                <p className="text-xs font-black uppercase text-sky-800/70">
-                  Shield
-                </p>
-                <p className="mt-1 text-2xl font-black text-sky-950">
-                  +{sidePanelCardShield}
+                <p className="text-xl font-black text-red-950">
+                  {battleLog.baseDamageDealt ?? sidePanelCard.baseAttack}
                 </p>
               </div>
-              <div className="rounded-xl border border-violet-200 bg-violet-50 p-3">
+              <div className="rounded-xl border border-violet-200 bg-violet-50 p-2">
                 <p className="text-xs font-black uppercase text-violet-800/70">
                   Element
                 </p>
-                <p className="mt-1 text-lg font-black text-violet-950">
-                  {sidePanelCardElement
-                    ? formatElementName(sidePanelCardElement.element)
-                    : "None"}
+                <p className="text-xl font-black text-violet-950">
+                  +{battleLog.elementBonusDamage ?? 0}
                 </p>
               </div>
-            </div>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-2">
                 <p className="text-xs font-black uppercase text-amber-800/70">
                   Mastery
                 </p>
-                <p className="mt-1 text-2xl font-black text-amber-950">
-                  {sidePanelMastery} / 5
-                </p>
-              </div>
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
-                <p className="text-xs font-black uppercase text-emerald-800/70">
-                  Mastery Bonus
-                </p>
-                <p className="mt-1 text-2xl font-black text-emerald-950">
-                  +{sidePanelMasteryBonus} DMG
+                <p className="text-xl font-black text-amber-950">
+                  +{sidePanelMasteryBonus}
                 </p>
               </div>
             </div>
-            <div className="mt-4 rounded-lg border border-amber-900/15 bg-white/70 p-3">
+            <div className="mt-3 rounded-lg border border-amber-900/15 bg-white/70 p-3">
               <p className="text-xs font-extrabold uppercase text-amber-800/70">
                 Final trigger result
               </p>
-              <p className="mt-1 font-black text-amber-950">
+              <p className="mt-1 line-clamp-2 font-black text-amber-950">
                 {battleLog.effectsSummary ?? "None yet"}
               </p>
               {(battleLog.damageDealt ?? 0) > 0 && (
                 <p className="mt-2 text-sm font-black text-emerald-800">
                   Final damage: {battleLog.damageDealt}
-                  {(battleLog.elementBonusDamage ?? 0) > 0 ||
-                  (battleLog.masteryBonusDamage ?? 0) > 0
-                    ? ` including +${battleLog.elementBonusDamage ?? 0} element and +${battleLog.masteryBonusDamage ?? 0} mastery damage`
-                    : ""}
                 </p>
               )}
+              <p className="mt-2 text-sm font-bold text-amber-900/70">
+                Mastery: {sidePanelMastery} / 5
+              </p>
             </div>
-          </section>
+          </details>
+          )}
+
+          <details className="rounded-xl border-2 border-amber-800/20 bg-amber-50/90 p-3">
+            <summary className="cursor-pointer font-black text-amber-950">
+              Learning Info
+            </summary>
+            <p className="mt-2 text-sm font-medium leading-6 text-amber-950/75">
+              Correct answers trigger the selected word card. Incorrect answers
+              and timeouts let the encounter attack, with shield absorbing
+              damage before HP.
+            </p>
+          </details>
 
           {battleStatus === "run-complete" && (
             <section className="rounded-xl border-2 border-emerald-300 bg-emerald-100 p-4">
@@ -1900,11 +1872,9 @@ export function Dungeon({
                 </p>
               </div>
               <p className="mt-2 text-sm font-medium text-emerald-950/75">
-                Permanent progress saved. Temporary run upgrades, gold, HP,
-                shield, monster state, boss state, and run deck changes were not
-                saved.
+                Permanent progress saved. Temporary run state was not saved.
               </p>
-              <div className="mt-4 grid gap-2">
+              <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
                 <StatCard label="Deck" value={selectedDeck.name} tone="emerald" />
                 <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
                 <StatCard label="Elites" value={summaryStatistics.eliteDefeated} tone="red" />
@@ -1912,18 +1882,9 @@ export function Dungeon({
                 <StatCard label="Boss" value={summaryStatistics.bossDefeated ? "Defeated" : "No"} tone="purple" />
                 <StatCard label="Final Gold" value={summaryGold} tone="amber" />
                 <StatCard label="Run Deck" value={currentRunDeck.length} tone="slate" />
-                <StatCard label="Correct" value={summaryStatistics.correctAnswers} tone="emerald" />
-                <StatCard label="Wrong" value={summaryStatistics.wrongAnswers} tone="red" />
-                <StatCard label="Timeouts" value={summaryStatistics.timeouts} tone="amber" />
                 <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
                 <StatCard label="Damage" value={summaryStatistics.totalDamageDealt} tone="red" />
                 <StatCard label="Shield Gained" value={summaryStatistics.totalShieldGained} tone="sky" />
-                <StatCard
-                  label="Deck Reward"
-                  value="Completed"
-                  helper={isSelectedDeckCompleted ? "Already saved" : "Saved after boss defeat"}
-                  tone="emerald"
-                />
               </div>
               <div className="mt-4 grid gap-2">
                 <Button type="button" onClick={handleRestartRun} variant="secondary">
@@ -1948,20 +1909,15 @@ export function Dungeon({
                 </p>
               </div>
               <p className="mt-2 text-sm font-medium text-red-950/75">
-                Best run summary was saved. Active HP, shield, gold, monster
-                state, timer state, shop upgrades, and run deck changes were not
-                saved.
+                Best run summary was saved. Active run state was not saved.
               </p>
-              <div className="mt-4 grid gap-2">
+              <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
                 <StatCard label="Deck" value={selectedDeck.name} tone="red" />
                 <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
                 <StatCard label="Elites" value={summaryStatistics.eliteDefeated} tone="red" />
                 <StatCard label="Events" value={summaryStatistics.eventsVisited} tone="purple" />
                 <StatCard label="Floor" value={runProgress.currentFloor} tone="slate" />
                 <StatCard label="Final Gold" value={summaryGold} tone="amber" />
-                <StatCard label="Correct" value={summaryStatistics.correctAnswers} tone="emerald" />
-                <StatCard label="Wrong" value={summaryStatistics.wrongAnswers} tone="red" />
-                <StatCard label="Timeouts" value={summaryStatistics.timeouts} tone="amber" />
                 <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
                 <StatCard label="Damage" value={summaryStatistics.totalDamageDealt} tone="red" />
                 <StatCard label="Shield Gained" value={summaryStatistics.totalShieldGained} tone="sky" />
@@ -1969,94 +1925,181 @@ export function Dungeon({
             </section>
           )}
 
-          <details className="rounded-xl border-2 border-amber-800/20 bg-amber-50/90 p-4">
-            <summary className="cursor-pointer font-black text-amber-950">
-              Trigger Rule
-            </summary>
-            <p className="mt-2 text-sm font-medium leading-6 text-amber-950/75">
-              Correct answers trigger the selected word card and deal damage
-              equal to base attack. Shield effects add player shield when the
-              card triggers. Element effects add first-pass bonuses: Fire deals
-              bonus damage, Water grants shield, Wind grants extra gold on
-              defeat, and Earth reduces the next attack. Incorrect answers do
-              not trigger card effects and cause monster attack damage, with
-              shield absorbing damage before HP.
-            </p>
-          </details>
         </aside>
       </div>
+      )}
     </ScreenShell>
   );
 }
 
 type WordChoiceBattleProps = {
+  battleLog: BattleLog;
   isAnswered: boolean;
+  onNext?: () => void;
   question: WordChoiceQuestion;
   selectedChoiceId: string | null;
   onAnswer: (choice: WordCard) => void;
+  wordMastery: WordMasteryByCardId;
 };
 
+function CardStatChips({
+  card,
+  wordMastery,
+}: {
+  card: WordCard;
+  wordMastery: WordMasteryByCardId;
+}) {
+  const shieldAmount = getCardShieldAmount(card);
+  const element = getCardElement(card);
+  const masteryBonus = getCardMasteryBonus(card, wordMastery);
+
+  return (
+    <div className="flex shrink-0 flex-wrap justify-end gap-1">
+      <span className="rounded-full border border-red-200 bg-red-50 px-1.5 py-0.5 text-[10px] font-black uppercase text-red-800">
+        ATK {card.baseAttack}
+      </span>
+      {shieldAmount > 0 && (
+        <span className="rounded-full border border-sky-200 bg-sky-50 px-1.5 py-0.5 text-[10px] font-black uppercase text-sky-800">
+          SHD +{shieldAmount}
+        </span>
+      )}
+      {element && (
+        <span className="rounded-full border border-violet-200 bg-violet-50 px-1.5 py-0.5 text-[10px] font-black uppercase text-violet-800">
+          {formatElementName(element.element)}
+        </span>
+      )}
+      {masteryBonus > 0 && (
+        <span className="rounded-full border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-black uppercase text-amber-800">
+          M+{masteryBonus}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function BattleResultOverlay({
+  battleLog,
+  correctAnswer,
+  isAnswered,
+  isCorrect,
+  isTimeout,
+  onNext,
+}: {
+  battleLog: BattleLog;
+  correctAnswer: string;
+  isAnswered: boolean;
+  isCorrect: boolean;
+  isTimeout?: boolean;
+  onNext?: () => void;
+}) {
+  if (!isAnswered) {
+    return null;
+  }
+
+  const toneClass = isCorrect
+    ? "border-emerald-400 bg-emerald-50 text-emerald-950"
+    : isTimeout
+      ? "border-amber-400 bg-amber-50 text-amber-950"
+      : "border-red-400 bg-red-50 text-red-950";
+  const title = isCorrect ? "Correct!" : isTimeout ? "Timeout!" : "Wrong!";
+  const resultLines = isCorrect
+    ? [
+        battleLog.damageDealt !== undefined
+          ? `+${battleLog.damageDealt} Damage`
+          : null,
+        battleLog.shieldGained ? `Shield +${battleLog.shieldGained}` : null,
+        battleLog.effectsSummary ? battleLog.effectsSummary : null,
+      ].filter(Boolean)
+    : [
+        battleLog.damageTaken !== undefined
+          ? `Enemy attacks for ${battleLog.damageTaken}`
+          : null,
+        battleLog.shieldAbsorbed ? `Shield blocked ${battleLog.shieldAbsorbed}` : null,
+        battleLog.hpDamageTaken ? `HP -${battleLog.hpDamageTaken}` : null,
+      ].filter(Boolean);
+
+  return (
+    <div className="absolute inset-0 z-10 grid place-items-center rounded-2xl bg-stone-950/35 p-3 backdrop-blur-[1px]">
+      <div className={`pointer-events-auto w-full max-w-xs rounded-2xl border-2 p-4 text-center shadow-2xl ${toneClass}`}>
+        <p className="text-2xl font-black">{title}</p>
+        {resultLines.length > 0 && (
+          <div className="mt-2 grid gap-1">
+            {resultLines.slice(0, 3).map((line) => (
+              <p key={line} className="text-sm font-black">
+                {line}
+              </p>
+            ))}
+          </div>
+        )}
+        <p className="mt-2 text-xs font-bold leading-5 opacity-80">
+          Correct answer: {correctAnswer}
+        </p>
+        {onNext && (
+          <Button type="button" onClick={onNext} className="mt-3 w-full">
+            Next Mini-Game
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function WordChoiceBattle({
+  battleLog,
   isAnswered,
   question,
   selectedChoiceId,
   onAnswer,
+  onNext,
+  wordMastery,
 }: WordChoiceBattleProps) {
   const showsEnglishChoices =
     question.promptType === "thai-to-english" ||
     question.promptType === "sentence-cloze";
 
   return (
-    <div className="mt-5">
-      <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
+    <div className="relative h-full">
+      <BattleResultOverlay
+        battleLog={battleLog}
+        correctAnswer={
+          showsEnglishChoices
+            ? `${question.card.word} = ${question.card.meaningTh}`
+            : question.card.meaningTh
+        }
+        isAnswered={isAnswered}
+        isCorrect={selectedChoiceId === question.card.id}
+        isTimeout={selectedChoiceId === null}
+        onNext={onNext}
+      />
+      <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-2 shadow-inner">
         <Badge tone="purple">
           {formatWordChoicePromptType(question.promptType)}
         </Badge>
         {question.promptType === "thai-to-english" ? (
-          <div className="mt-4">
-            <p className="text-4xl font-black text-amber-950">
+          <div className="mt-1">
+            <p className="text-3xl font-black leading-tight text-amber-950">
               {question.card.meaningTh}
-            </p>
-            <p className="mt-2 text-sm font-semibold text-amber-900/65">
-              Choose the English word to trigger this card.
             </p>
           </div>
         ) : question.promptType === "sentence-cloze" ? (
-          <div className="mt-4">
-            <p className="text-3xl font-black leading-tight text-amber-950">
+          <div className="mt-1">
+            <p className="text-2xl font-black leading-tight text-amber-950">
               {blankTargetWord(
                 question.card.exampleSentence,
                 question.card.word,
               )}
             </p>
-            <p className="mt-2 text-sm font-semibold text-amber-900/65">
-              Complete the sentence to trigger the hidden word card.
-            </p>
           </div>
         ) : (
-          <div className="mt-4">
-            <p className="text-5xl font-black capitalize text-amber-950">
+          <div className="mt-1">
+            <p className="text-4xl font-black capitalize leading-tight text-amber-950">
               {question.card.word}
-            </p>
-            <p className="mt-2 text-sm font-semibold text-amber-900/65">
-              Choose the correct Thai meaning to trigger this card.
             </p>
           </div>
         )}
       </div>
 
-      {isAnswered && (
-        <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3">
-          <p className="text-sm font-semibold text-amber-950">
-            Correct answer:{" "}
-            <span className="capitalize">
-              {showsEnglishChoices ? question.card.word : question.card.meaningTh}
-            </span>
-          </p>
-        </div>
-      )}
-
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+      <div className="mt-2 grid gap-2 sm:grid-cols-2">
         {question.choices.map((choice) => {
           const isSelected = selectedChoiceId === choice.id;
           const isCorrectChoice = choice.id === question.card.id;
@@ -2069,7 +2112,7 @@ function WordChoiceBattle({
               type="button"
               disabled={isAnswered}
               onClick={() => onAnswer(choice)}
-              className={`min-h-20 rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`min-h-12 rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 showCorrect
                   ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                   : showWrong
@@ -2077,17 +2120,20 @@ function WordChoiceBattle({
                     : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
               } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-lg font-semibold text-slate-950">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate text-base font-semibold text-slate-950">
                     {showsEnglishChoices ? choice.word : choice.meaningTh}
                   </p>
-                  <p className="mt-1 text-sm capitalize text-slate-500">
+                  <p className="truncate text-xs capitalize text-slate-500">
                     {showsEnglishChoices ? choice.partOfSpeech : choice.word}
                   </p>
                 </div>
-                {showCorrect && <Badge tone="emerald">Correct</Badge>}
-                {showWrong && <Badge tone="red">Wrong</Badge>}
+                <div className="flex shrink-0 items-center gap-2">
+                  <CardStatChips card={choice} wordMastery={wordMastery} />
+                  {showCorrect && <Badge tone="emerald">Correct</Badge>}
+                  {showWrong && <Badge tone="red">Wrong</Badge>}
+                </div>
               </div>
             </button>
           );
@@ -2098,16 +2144,20 @@ function WordChoiceBattle({
 }
 
 type WordMatchBattleProps = {
+  battleLog: BattleLog;
   isAnswered: boolean;
+  onNext?: () => void;
   question: WordMatchQuestion;
   selectedMeaningId: string | null;
   selectedWordId: string | null;
   onSelectMeaning: (cardId: string) => void;
   onSelectWord: (cardId: string) => void;
   onSubmit: () => void;
+  wordMastery: WordMasteryByCardId;
 };
 
 function WordMatchBattle({
+  battleLog,
   isAnswered,
   question,
   selectedMeaningId,
@@ -2115,24 +2165,39 @@ function WordMatchBattle({
   onSelectMeaning,
   onSelectWord,
   onSubmit,
+  onNext,
+  wordMastery,
 }: WordMatchBattleProps) {
-  return (
-    <div className="mt-5">
-      <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
-        <p className="font-black text-amber-950">
-          Match one English word with its Thai meaning.
-        </p>
-        <p className="mt-1 text-sm font-semibold text-amber-900/65">
-          A correct pair triggers the selected English word card.
-        </p>
-      </div>
+  const selectedWord = question.cards.find((card) => card.id === selectedWordId);
+  const selectedMeaning = question.meanings.find(
+    (card) => card.id === selectedMeaningId,
+  );
+  const isCorrect =
+    isAnswered && selectedWordId !== null && selectedWordId === selectedMeaningId;
+  const correctAnswer = selectedWord
+    ? `${selectedWord.word} = ${selectedWord.meaningTh}`
+    : "Choose a word and meaning";
+  const selectedPairText =
+    selectedWord && selectedMeaning
+      ? `Selected: ${selectedWord.word} + ${selectedMeaning.meaningTh}`
+      : "Choose 1 card and 1 meaning";
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        <div>
-          <p className="text-sm font-black uppercase tracking-wide text-amber-800/70">
-            English words
+  return (
+    <div className="relative flex h-full min-h-0 flex-col">
+      <BattleResultOverlay
+        battleLog={battleLog}
+        correctAnswer={correctAnswer}
+        isAnswered={isAnswered}
+        isCorrect={isCorrect}
+        isTimeout={selectedWordId === null && selectedMeaningId === null}
+        onNext={onNext}
+      />
+      <div className="grid min-h-0 flex-1 gap-2 md:grid-cols-2">
+        <div className="min-h-0">
+          <p className="mb-1 text-xs font-black uppercase tracking-wide text-emerald-800/75">
+            เลือกการ์ด
           </p>
-          <div className="mt-2 grid gap-3">
+          <div className="grid gap-2">
             {question.cards.map((card) => {
               const isSelected = selectedWordId === card.id;
               const showCorrect =
@@ -2146,7 +2211,7 @@ function WordMatchBattle({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => onSelectWord(card.id)}
-                  className={`rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`min-h-20 rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                     showCorrect
                       ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
@@ -2156,20 +2221,20 @@ function WordMatchBattle({
                           : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-lg font-semibold capitalize text-slate-950">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-base font-semibold capitalize text-slate-950">
                         {card.word}
                       </p>
-                      <p className="mt-1 text-sm text-slate-500">
-                        Base attack {card.baseAttack}
-                      </p>
                     </div>
-                    {!isAnswered && isSelected && (
-                      <Badge tone="sky">Selected</Badge>
-                    )}
-                    {showCorrect && <Badge tone="emerald">Match</Badge>}
-                    {showWrong && <Badge tone="red">Wrong</Badge>}
+                    <div className="flex shrink-0 items-center gap-2">
+                      <CardStatChips card={card} wordMastery={wordMastery} />
+                      {!isAnswered && isSelected && (
+                        <Badge tone="sky">Selected</Badge>
+                      )}
+                      {showCorrect && <Badge tone="emerald">Match</Badge>}
+                      {showWrong && <Badge tone="red">Wrong</Badge>}
+                    </div>
                   </div>
                 </button>
               );
@@ -2177,11 +2242,11 @@ function WordMatchBattle({
           </div>
         </div>
 
-        <div>
-          <p className="text-sm font-black uppercase tracking-wide text-amber-800/70">
-            Thai meanings
+        <div className="min-h-0">
+          <p className="mb-1 text-xs font-black uppercase tracking-wide text-amber-800/75">
+            เลือกความหมาย
           </p>
-          <div className="mt-2 grid gap-3">
+          <div className="grid gap-2">
             {question.meanings.map((card) => {
               const isSelected = selectedMeaningId === card.id;
               const showCorrect =
@@ -2195,7 +2260,7 @@ function WordMatchBattle({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => onSelectMeaning(card.id)}
-                  className={`rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`min-h-20 rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                     showCorrect
                       ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
@@ -2205,20 +2270,22 @@ function WordMatchBattle({
                           : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-lg font-semibold text-slate-950">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-base font-semibold text-slate-950">
                         {card.meaningTh}
                       </p>
-                      <p className="mt-1 text-sm capitalize text-slate-500">
+                      <p className="truncate text-xs capitalize text-slate-500">
                         {card.partOfSpeech}
                       </p>
                     </div>
-                    {!isAnswered && isSelected && (
-                      <Badge tone="sky">Selected</Badge>
-                    )}
-                    {showCorrect && <Badge tone="emerald">Match</Badge>}
-                    {showWrong && <Badge tone="red">Wrong</Badge>}
+                    <div className="flex shrink-0 items-center gap-2">
+                      {!isAnswered && isSelected && (
+                        <Badge tone="sky">Selected</Badge>
+                      )}
+                      {showCorrect && <Badge tone="emerald">Match</Badge>}
+                      {showWrong && <Badge tone="red">Wrong</Badge>}
+                    </div>
                   </div>
                 </button>
               );
@@ -2227,36 +2294,47 @@ function WordMatchBattle({
         </div>
       </div>
 
-      <Button
-        type="button"
-        disabled={isAnswered || !selectedWordId || !selectedMeaningId}
-        onClick={onSubmit}
-        className="mt-5"
-      >
-        Check Pair
-      </Button>
+      <div className="mt-2 flex shrink-0 flex-col gap-2 rounded-xl border-2 border-amber-900/10 bg-amber-50/85 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="truncate text-sm font-black text-amber-950">
+          {selectedPairText}
+        </p>
+        <Button
+          type="button"
+          disabled={isAnswered || !selectedWordId || !selectedMeaningId}
+          onClick={onSubmit}
+          className="shrink-0"
+        >
+          Check Pair
+        </Button>
+      </div>
     </div>
   );
 }
 
 type WordScrambleBattleProps = {
   answer: string;
+  battleLog: BattleLog;
   isAnswered: boolean;
+  onNext?: () => void;
   question: WordScrambleQuestion;
   selectedCardId: string | null;
   onAnswerChange: (answer: string) => void;
   onSelectCard: (cardId: string) => void;
   onSubmit: () => void;
+  wordMastery: WordMasteryByCardId;
 };
 
 function WordScrambleBattle({
   answer,
+  battleLog,
   isAnswered,
   question,
   selectedCardId,
   onAnswerChange,
   onSelectCard,
   onSubmit,
+  onNext,
+  wordMastery,
 }: WordScrambleBattleProps) {
   const selectedOption = question.options.find(
     (option) => option.card.id === selectedCardId,
@@ -2268,17 +2346,20 @@ function WordScrambleBattle({
   const isWrong = isAnswered && selectedOption !== undefined && !isCorrect;
 
   return (
-    <div className="mt-5">
-      <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-5 shadow-inner">
-        <p className="font-black text-amber-950">
-          Choose one scrambled word, then type the original English word.
-        </p>
-        <p className="mt-1 text-sm font-semibold text-amber-900/65">
-          A correct typed answer triggers the selected current-run card.
-        </p>
-      </div>
-
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+    <div className="relative h-full">
+      <BattleResultOverlay
+        battleLog={battleLog}
+        correctAnswer={
+          selectedOption
+            ? `${selectedOption.card.word} = ${selectedOption.card.meaningTh}`
+            : "Choose a scrambled word first"
+        }
+        isAnswered={isAnswered}
+        isCorrect={isCorrect}
+        isTimeout={isAnswered && selectedOption === undefined}
+        onNext={onNext}
+      />
+      <div className="grid gap-2 sm:grid-cols-3">
         {question.options.map((option) => {
           const isSelected = selectedCardId === option.card.id;
           const showCorrect = isCorrect && isSelected;
@@ -2290,7 +2371,7 @@ function WordScrambleBattle({
               type="button"
               disabled={isAnswered}
               onClick={() => onSelectCard(option.card.id)}
-              className={`rounded-2xl border-2 p-4 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 showCorrect
                   ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                   : showWrong
@@ -2300,33 +2381,32 @@ function WordScrambleBattle({
                       : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
               }`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-mono text-2xl font-bold tracking-wide text-slate-950">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate font-mono text-xl font-bold tracking-wide text-slate-950">
                     {option.scrambledWord}
                   </p>
-                  <p className="mt-2 text-sm text-slate-500">
-                    Attack {option.card.baseAttack}
-                    {getCardShieldAmount(option.card) > 0
-                      ? ` / Shield +${getCardShieldAmount(option.card)}`
-                      : ""}
-                  </p>
                 </div>
-                {!isAnswered && isSelected && <Badge tone="sky">Selected</Badge>}
-                {showCorrect && <Badge tone="emerald">Solved</Badge>}
-                {showWrong && <Badge tone="red">Wrong</Badge>}
+                <div className="flex shrink-0 items-center gap-2">
+                  <CardStatChips card={option.card} wordMastery={wordMastery} />
+                  {!isAnswered && isSelected && (
+                    <Badge tone="sky">Selected</Badge>
+                  )}
+                  {showCorrect && <Badge tone="emerald">Solved</Badge>}
+                  {showWrong && <Badge tone="red">Wrong</Badge>}
+                </div>
               </div>
             </button>
           );
         })}
       </div>
 
-      <div className="mt-5 rounded-2xl border-2 border-amber-900/10 bg-white p-4 shadow-inner">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end">
+      <div className="mt-2 rounded-2xl border-2 border-amber-900/10 bg-white p-2 shadow-inner">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end">
           <div className="flex-1">
             <label
               htmlFor="word-scramble-answer"
-              className="text-sm font-semibold uppercase tracking-wide text-slate-500"
+              className="text-xs font-semibold uppercase tracking-wide text-slate-500"
             >
               Typed answer
             </label>
@@ -2341,7 +2421,7 @@ function WordScrambleBattle({
                   onSubmit();
                 }
               }}
-              className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-lg font-semibold text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100 disabled:text-slate-500"
+              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-base font-semibold text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100 disabled:text-slate-500"
               placeholder={
                 selectedOption
                   ? "Type the original word"
@@ -2356,33 +2436,6 @@ function WordScrambleBattle({
           >
             Check Word
           </Button>
-        </div>
-
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-md bg-slate-50 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Selected scrambled card
-            </p>
-            <p className="mt-1 font-mono text-lg font-bold text-slate-950">
-              {selectedOption?.scrambledWord ?? "None"}
-            </p>
-          </div>
-          <div className="rounded-md bg-slate-50 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Typed answer
-            </p>
-            <p className="mt-1 font-semibold text-slate-950">
-              {answer.trim() || "None"}
-            </p>
-          </div>
-          <div className="rounded-md bg-slate-50 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Correct word
-            </p>
-            <p className="mt-1 font-semibold capitalize text-slate-950">
-              {isAnswered ? selectedOption?.card.word : "Hidden"}
-            </p>
-          </div>
         </div>
       </div>
     </div>

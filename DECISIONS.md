@@ -778,6 +778,84 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Mastery should feel useful in battle while remaining a permanent learning bonus that does not mutate current-run decks or save active run state.
 - Status: Accepted
 
+### 2026-06-11: Dungeon Battle Screens Prioritize No-Scroll Gameplay Visibility
+
+- Decision: Dungeon battle screens prioritize no-scroll gameplay visibility on desktop.
+- Reason: Player status, encounter status, timer, active quiz, and recent combat feedback should be visible together so combat feels like a game battle screen rather than a scrolling document page.
+- Status: Accepted
+
+### 2026-06-11: Encounter Intro And Active Battle Use Separate Layouts
+
+- Decision: Encounter Intro and Active Battle use separate Dungeon layouts.
+- Reason: Encounter inspection should keep Start Battle visible and avoid rendering battle feedback or quiz sections before combat, while active battle should make the current quiz the dominant playable area.
+- Status: Accepted
+
+### 2026-06-11: Dungeon Uses True Fullscreen Battle Mode
+
+- Decision: Dungeon uses true fullscreen battle mode with normal navigation chrome hidden.
+- Reason: Dungeon combat should feel like a game screen where the current question, timer, answers, and battle status are immediately playable instead of a scrollable web page or dashboard.
+- Status: Accepted
+
+### 2026-06-12: Active Battle Targets 1366x768 Fit
+
+- Decision: Active Dungeon battle layouts should fit inside a 1366x768 desktop viewport.
+- Reason: The minimum desktop target should keep player HP, monster HP, timer, current quiz, and answer controls visible without page scrolling; secondary information should collapse into accordions.
+- Status: Accepted
+
+### 2026-06-12: Active Battle Does Not Reveal Triggered Card Before Answer
+
+- Decision: Active Dungeon battle should not show a persistent triggered-card or correct-target preview before the player answers.
+- Reason: Pre-answer trigger previews can leak the answer and weaken vocabulary recall, especially in Word Choice, Word Match, and Word Scramble.
+- Status: Accepted
+
+### 2026-06-12: Card Stats Live On Answer Options
+
+- Decision: Compact card stats such as attack, shield, element, and mastery bonus should appear on battle answer options where relevant.
+- Reason: Players still need deckbuilder information while choosing, but that information should not reveal the correct answer through a separate trigger preview.
+- Status: Accepted
+
+### 2026-06-12: Battle Result Feedback Uses Compact Overlay
+
+- Decision: Correct, wrong, and timeout feedback should appear as compact result overlays in the quiz area after the player answers or time expires.
+- Reason: Feedback should be visible without pushing the active quiz and controls below the fold.
+- Status: Accepted
+
+### 2026-06-12: Mobile Battle Prioritizes Playable Quiz Controls
+
+- Decision: On small screens, Dungeon battle layout should prioritize the current quiz and answer controls while secondary panels collapse or move below the arena.
+- Reason: Mobile can tolerate some scrolling, but the playable question area must not be trapped or blocked by side information.
+- Status: Accepted
+
+### 2026-06-12: Battle Option Stats Sit On The Right
+
+- Decision: Battle option cards should place compact stats on the right side of each option.
+- Reason: Keeping ATK, shield, element, and mastery chips beside the answer text reduces vertical height and improves scan speed on smaller desktop screens.
+- Status: Accepted
+
+### 2026-06-12: Result Feedback Uses Non-Pushing Overlay
+
+- Decision: Battle result feedback should appear as a compact centered overlay instead of an inline panel that pushes quiz layout down.
+- Reason: Correct, wrong, and timeout feedback must be visible without causing answer controls or typed input to overflow below the viewport.
+- Status: Accepted
+
+### 2026-06-12: Timer And Short Instructions Can Live In Battle Control Panel
+
+- Decision: The timer and short mini-game instruction may live in the right-side Battle Control Panel.
+- Reason: Moving control/status information out of the quiz arena preserves space for the active prompt, answer options, typed input, and submit actions.
+- Status: Accepted
+
+### 2026-06-12: Word Match Stats Only On English Card Side
+
+- Decision: Word Match shows card stats only on the English card side.
+- Reason: The English side represents the card that can trigger, while showing stats on both English and Thai options can create stat-based answer hints.
+- Status: Accepted
+
+### 2026-06-12: Word Match Uses Compact Selected-Pair Footer
+
+- Decision: Word Match uses a compact selected-pair footer with the Check Pair action.
+- Reason: The footer keeps the current selection and submit action close to the choices without adding large instruction boxes or wasted vertical space.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

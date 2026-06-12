@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 33 Mastery System Gameplay Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -370,6 +370,69 @@ Phase 33 Mastery System Gameplay Pass is complete. GitHub backup is configured o
 - Deck Review now makes mastery easier to scan with Mastered status and Dungeon mastery bonus copy.
 - Preserved selected deck, deck unlock progression, Training rules, Dungeon flow, Encounter Intro, Pause, timers, timeout, elements, shop, boss, events, elites, run statistics, and LocalStorage permanent-progress-only rules.
 - Verified the project with `npm run build` after Phase 33.
+- Refactored Dungeon into a wider battle-screen layout for Phase 34.
+- Added wide `ScreenShell` support so Dungeon can use more desktop horizontal space without changing other screens.
+- Moved Player HP, shield, gold, current floor, monsters defeated, and boss progress into a persistent top-left player panel.
+- Moved Monster/Elite/Boss/Event identity, portrait/icon, HP, attack, and indicators into a persistent top-right encounter panel.
+- Made the active quiz arena the central visual focus, with timer displayed near the quiz.
+- Moved triggered card, damage, shield, element, mastery, and last-action feedback into a compact side feedback area.
+- Kept Encounter Intro and Pause overlay inside the new battle viewport so players can inspect/start/resume without page-like scrolling.
+- Preserved combat math, timers, progression, save rules, mastery, elements, events, elites, boss behavior, shop behavior, statistics, and LocalStorage behavior.
+- Verified the project with `npm run build` after Phase 34.
+- Applied Phase 34.1 Dungeon layout hotfix for usability regressions from the first no-scroll pass.
+- Split Encounter Intro and Active Battle into separate render layouts.
+- Encounter Intro now shows only compact encounter inspection content: portrait, name, HP, attack, flavor text, and Start Battle.
+- Active Battle hides Encounter Intro and prioritizes the quiz arena, timer, compact player status, compact encounter status, and reduced-width feedback panel.
+- Compressed player and monster panels to reduce vertical pushing and keep active questions accessible.
+- Reduced side feedback width and content density so the quiz receives most desktop space.
+- Preserved combat logic, timers, progression, save rules, mastery, elements, events, elites, boss behavior, shop behavior, statistics, and LocalStorage behavior.
+- Verified the project with `npm run build` after Phase 34.1.
+- Applied Phase 34.2 True Fullscreen Battle Mode presentation pass.
+- Dungeon now hides the normal app navigation tabs and uses a compact 64px battle header.
+- Dungeon uses a game-mode `ScreenShell` that removes page title, description, large padding, and document-style chrome.
+- Active battle now fits inside the remaining viewport with `overflow-hidden` layout structure.
+- Player and monster status are compressed into compact top battle bars.
+- Quiz components were tightened with reduced margins, padding, and nested container height so the current question and answers stay primary.
+- Battle Log and Card Trigger remain compact side widgets with a narrower desktop column.
+- Preserved combat rules, timers, elements, shop, progression, mastery, saves, and all gameplay systems.
+- Verified the project with `npm run build` after Phase 34.2.
+- Applied Phase 34.3 Battle Screen Fit Pass for the 1366x768 desktop target.
+- Reworked the top battle area into one compact battle bar containing player HP, shield, gold, floor, run progress, monster identity, monster HP, monster attack, and boss progress.
+- Tightened the quiz shell so the timer, question, and answer controls receive more vertical room.
+- Refactored Word Choice toward a compact 2x2 answer grid with shorter prompt and answer panels.
+- Refactored Word Match into a compact two-column layout with reduced option spacing.
+- Refactored Word Scramble so scrambled choices, typed answer, and submit controls remain visible together; detailed answer summary appears only after answering.
+- Collapsed Battle Log, Card Trigger, and Learning Info into compact accordion sections.
+- Kept required action buttons, such as Next Mini-Game, Spawn Next Monster, Start Boss Battle, Go To Shop, and Restart Run, outside collapsed accordions.
+- Preserved combat rules, timers, elements, shop, progression, mastery, saves, and all gameplay systems.
+- Verified the project with `npm run build` after Phase 34.3.
+- Applied Phase 34.4 Mini-game UX + Battle Readability Refactor.
+- Removed persistent Card Trigger preview during active unanswered battle questions so the UI no longer leaks the selected/triggered answer before the player acts.
+- Moved compact card stat chips into battle answer options, including attack, shield, element, and mastery bonus where relevant.
+- Simplified mini-game headers so Word Choice, Word Match, and Word Scramble focus on the immediate instruction.
+- Added compact result overlay feedback inside the quiz area after correct answers, wrong answers, and timeouts.
+- Added a compact placeholder battle-stage strip for future character/monster presentation without changing combat rules.
+- Kept Battle Log, Card Trigger details, and Learning Info as secondary compact/collapsible information.
+- Preserved combat rules, timers, elements, shop, progression, mastery, saves, encounter generation, pause, events, elites, boss behavior, statistics, and all gameplay systems.
+- Verified the project with `npm run build` after Phase 34.4.
+- Applied Phase 34.5 Battle Option Density + Result Overlay Hotfix.
+- Moved battle option stat chips to the right side of option cards to reduce option height.
+- Tightened Word Choice, Word Match, and Word Scramble option padding, text sizing, and grid spacing.
+- Moved active battle timer and short mini-game instruction into the right-side Battle Control Panel.
+- Removed large instruction containers from the quiz arena so the quiz area focuses on prompt, answers, input, and selected state.
+- Replaced wide inline result feedback with a centered compact overlay that dims the quiz behind it and does not push layout down.
+- Added Next Mini-Game action inside the result overlay when the current question resolves without ending the encounter.
+- Removed extra post-answer Word Scramble summary cards because the overlay now carries result feedback.
+- Preserved combat rules, timers, elements, shop, progression, mastery, saves, encounter generation, pause, events, elites, boss behavior, statistics, and all gameplay systems.
+- Verified the project with `npm run build` after Phase 34.5.
+- Applied Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass.
+- Updated Word Match so compact card stat chips appear only on the English card side.
+- Removed ATK, shield, element, and mastery chips from Thai meaning options to prevent stat-comparison answer hints.
+- Added compact Word Match microcopy for `เลือกการ์ด` and `เลือกความหมาย`.
+- Added a compact selected-pair footer inside Word Match with current selection summary and the Check Pair button.
+- Kept Thai meanings shuffled and preserved all existing Word Match answer logic.
+- Preserved combat rules, timers, elements, shop, progression, mastery, saves, encounter generation, pause, events, elites, boss behavior, statistics, and all gameplay systems.
+- Verified the project with `npm run build` after Phase 34.6.
 
 ## In Progress
 
@@ -377,7 +440,7 @@ Phase 33 Mastery System Gameplay Pass is complete. GitHub backup is configured o
 
 ## Next Task
 
-Phase 33 is complete. Continue with the next explicitly requested phase or feature.
+Phase 34.6 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -508,6 +571,19 @@ The following documents are required and must be updated after every completed t
 - Phase 30 improves Dungeon game feel using CSS, Tailwind utility classes, emoji, and placeholder assets only
 - Combat encounters use Encounter Intro before timers begin
 - Pause stops Dungeon battle timers and disables question interaction until Resume
+- Dungeon battle screens prioritize no-scroll gameplay visibility on desktop
+- Encounter Intro and Active Battle use separate layouts
+- Dungeon uses true fullscreen battle mode with normal navigation chrome hidden
+- Active Dungeon battle targets full fit inside a 1366x768 desktop viewport
+- Active battle does not reveal the triggered card before the player answers
+- Compact card stats live on answer options instead of in a persistent pre-answer trigger preview
+- Battle result feedback appears as a compact quiz overlay after answer or timeout
+- Battle option cards place stats on the right side to reduce vertical height
+- Timer and short quiz instructions can live in the Battle Control Panel to preserve quiz space
+- Result feedback uses a compact overlay instead of pushing the quiz layout down
+- Word Match shows card stats only on the English card side to avoid stat-based answer hints
+- Word Match uses a compact selected-pair footer with Check Pair to reduce wasted space
+- Mobile battle layout prioritizes playable quiz controls while secondary information collapses or moves below
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

@@ -15,6 +15,31 @@ const navItems: Array<{ screen: ScreenName; label: string; icon: string }> = [
 ];
 
 export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
+  if (currentScreen === "dungeon") {
+    return (
+      <header className="h-16 border-b-2 border-amber-300/20 bg-stone-950/95 text-amber-50 shadow-lg">
+        <div className="mx-auto flex h-full max-w-[1800px] items-center justify-between px-3 sm:px-5">
+          <div className="flex items-center gap-2">
+            <span className="grid size-10 place-items-center rounded-lg border border-amber-400/40 bg-amber-300/15 text-2xl shadow-inner">
+              📖
+            </span>
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-amber-300">
+                WordQuest
+              </p>
+              <h1 className="text-lg font-black leading-tight text-amber-50">
+                Dungeon
+              </h1>
+            </div>
+          </div>
+          <p className="hidden text-xs font-black uppercase tracking-[0.2em] text-amber-100/70 sm:block">
+            Battle Mode
+          </p>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <header className="sticky top-0 z-10 border-b-2 border-emerald-200/20 bg-[#132d28]/95 text-amber-50 shadow-lg backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">

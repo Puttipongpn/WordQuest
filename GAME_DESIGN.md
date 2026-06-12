@@ -17,6 +17,21 @@ Current presentation rules:
 - Use warm adventure backgrounds, game-like panels, collectible vocabulary cards, battle-style dungeon panels, and fantasy shop cards.
 - Dungeon battle presentation should prioritize monster/boss encounter first, active mini-game second, player HP/status third, and keep trigger-rule explanations in secondary or collapsible areas.
 - Phase 30 Dungeon presentation uses a battle-stage structure: encounter stage, action arena, player-side status band, battle log, and card trigger feedback panel.
+- Phase 34 Dungeon presentation prioritizes no-scroll gameplay visibility on desktop: player status, encounter status, current quiz, timer, and recent combat feedback should be visible together when possible.
+- Dungeon uses a wider battle-screen layout with persistent top player/encounter panels, a central quiz arena, and a compact side feedback panel.
+- Encounter Intro and Active Battle use separate layouts: intro is compact inspection-only with Start Battle visible, while active battle hides intro and gives most space to the current quiz.
+- Dungeon uses true fullscreen battle mode: normal app navigation chrome is hidden, the header stays compact, and the battle screen occupies the remaining viewport with the quiz as the primary content.
+- Active Dungeon battle should fit inside a 1366x768 desktop viewport: player HP, monster HP, timer, current quiz, and answer controls stay visible, while battle log, card trigger details, and learning info live in compact accordions.
+- Active battle should not reveal the triggered card, target card, correct answer, or final result before the player answers.
+- Battle answer options should carry compact card stats, including attack, shield, element, and mastery bonus where relevant, so players can make deckbuilder decisions without a persistent answer-leaking trigger preview.
+- Result feedback should appear only after answer, timeout, or resolution, preferably as a compact overlay or popup inside the quiz area.
+- Battle option cards should place compact stats on the right side of each option to reduce vertical height and improve scan speed.
+- Timer and short quiz instructions may live in the Battle Control Panel instead of the quiz arena to preserve vertical space for the actual interaction.
+- Result feedback should use a compact centered overlay with a dimmed quiz backdrop instead of an inline panel that pushes answer controls down.
+- In Word Match, compact card stats should appear only on the English card side because that side is the card that can trigger; Thai meaning options should not show stats.
+- Word Match should use a compact selected-pair footer with Check Pair so the action remains close to the choices without wasting vertical space.
+- Mobile battle layout should prioritize playable quiz controls first; secondary battle log, learning, and trigger details can collapse or move below the arena.
+- A compact battle-stage strip may reserve space for future player/monster presentation, but it should not reduce quiz usability or add gameplay rules.
 - Monster, Elite, Boss, and Event encounters should feel visually distinct while using placeholder assets only.
 - Combat feedback should make damage, hits, shield gain, shield absorption, timeout state, and triggered card effects easy to scan.
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.

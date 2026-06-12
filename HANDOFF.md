@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 33 complete.
+Current phase: Phase 34.6 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, and after Phase 33 Mastery System Gameplay Pass work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, and after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work.
 
 The local development server can be started with:
 
@@ -551,6 +551,29 @@ Current Dungeon implementation:
 - Phase 32 preserved Events as immediate non-combat choice encounters.
 - Phase 33 made permanent word mastery useful in Dungeon battles through small triggered-card damage bonuses.
 - Phase 33 improved mastery visibility in Training, Deck Review, and Dungeon card trigger feedback.
+- Phase 34 refactored Dungeon into a wider battle-screen layout that prioritizes no-scroll gameplay visibility on desktop.
+- Phase 34 moved player status and encounter status into persistent top panels, made the quiz arena the center focus, and compacted card/combat feedback into a side panel.
+- Phase 34 changed presentation only and preserved combat math, timers, progression, save rules, mastery, elements, events, elites, boss behavior, shop behavior, statistics, and LocalStorage behavior.
+- Phase 34.1 fixed Dungeon usability regressions by rendering Encounter Intro and Active Battle with separate layouts.
+- Phase 34.1 Encounter Intro is compact and shows only encounter inspection content plus Start Battle; it does not show Battle Log, Card Trigger, Learning Panel, Quiz Arena, or combat feedback.
+- Phase 34.1 Active Battle hides Encounter Intro, compresses player/enemy panels, reduces side feedback width, and keeps the quiz arena as the dominant content.
+- Phase 34.2 added true fullscreen battle mode for Dungeon by hiding the normal app navigation tabs and using a compact 64px battle header.
+- Phase 34.2 added `gameMode` support to `ScreenShell` so Dungeon can remove page title/description chrome and occupy the remaining viewport.
+- Phase 34.2 compressed player/monster status into top battle bars, tightened quiz component spacing, and narrowed side widgets so the current question, timer, and answers dominate active combat.
+- Phase 34.3 targets active Dungeon battle fit at 1366x768 by merging player and encounter status into one compact battle bar.
+- Phase 34.3 collapses Battle Log, Card Trigger, and Learning Info into compact accordions while keeping required action buttons outside accordions.
+- Phase 34.3 tightens Word Choice, Word Match, and Word Scramble layouts so answer controls remain visible without page scrolling.
+- Phase 34.4 removes the persistent pre-answer Card Trigger preview during active questions so the battle UI does not reveal the selected/triggered answer early.
+- Phase 34.4 moves useful card stats into each selectable option: attack, shield, element, and mastery bonus where applicable.
+- Phase 34.4 simplifies battle mini-game headers and uses compact result overlays after correct answers, wrong answers, and timeouts.
+- Phase 34.4 keeps secondary information compact/collapsible and reserves a small future battle-stage strip without changing any gameplay rules.
+- Phase 34.5 moves option stat chips to the right side of each battle answer option so option cards stay shorter.
+- Phase 34.5 moves timer and short mini-game instructions into the right-side Battle Control Panel, leaving the quiz arena primarily for prompt, options, and input.
+- Phase 34.5 replaces layout-pushing result feedback with a centered compact overlay that dims the quiz area and can include the Next Mini-Game action.
+- Phase 34.5 tightens Word Choice, Word Match, and Word Scramble spacing and removes redundant post-answer Word Scramble summary cards.
+- Phase 34.6 keeps Word Match card stats only on the English word/card side because that side represents the card that can trigger.
+- Phase 34.6 removes ATK, shield, element, and mastery chips from Thai meaning options to prevent stat-based matching hints.
+- Phase 34.6 adds compact Word Match microcopy and a selected-pair footer with Check Pair inside the mini-game area.
 
 Current Shop implementation:
 
@@ -908,7 +931,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 33 is complete.
+Phase 34.6 is complete.
 
 Recommended next task:
 

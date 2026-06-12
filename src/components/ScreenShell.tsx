@@ -6,6 +6,8 @@ type ScreenShellProps = {
   children: ReactNode;
   framed?: boolean;
   description?: string;
+  wide?: boolean;
+  gameMode?: boolean;
 };
 
 export function ScreenShell({
@@ -14,9 +16,23 @@ export function ScreenShell({
   children,
   framed = true,
   description,
+  wide = false,
+  gameMode = false,
 }: ScreenShellProps) {
+  if (gameMode) {
+    return (
+      <section className="h-[calc(100vh-4rem)] overflow-hidden px-2 py-2 sm:px-3">
+        {children}
+      </section>
+    );
+  }
+
   return (
-    <section className="mx-auto max-w-6xl px-4 py-7 sm:px-6 lg:px-8">
+    <section
+      className={`mx-auto px-4 py-7 sm:px-6 lg:px-8 ${
+        wide ? "max-w-[1800px]" : "max-w-6xl"
+      }`}
+    >
       <div className="mb-5">
         <p className="text-sm font-extrabold uppercase text-amber-200 drop-shadow">
           {eyebrow}
