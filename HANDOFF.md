@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 37 complete.
+Current phase: Phase 38 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, and after Phase 37 Enemy Variety Pass work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, and after Phase 38 Shop Offer Redesign work.
 
 The local development server can be started with:
 
@@ -589,6 +589,12 @@ Current Dungeon implementation:
 - Phase 37 adds Wolf, Skeleton, Mushroom, Wisp, Imp, Stone Bug, and Dark Crow while preserving the existing Monster / Elite / Boss / Event systems.
 - Phase 37 keeps Elite generation compatible with the expanded monster pool and does not change elite HP, attack, reward, or progression rules.
 - Phase 37 adds flavor text for the new monsters through Dungeon's existing encounter intro helper without changing the monster type.
+- Phase 38 redesigns the Shop from a full deck-editing screen into a roguelike-style limited offer screen.
+- Phase 38 shows 4 randomized shop item offers per shop visit from the existing `sampleShopItems` pool.
+- Phase 38 moves target card selection into a modal with up to 4 eligible current-run cards.
+- Phase 38 keeps all existing shop effects and costs, including Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card.
+- Phase 38 adds a Reroll Offers action for 5 temporary current-run gold without mutating the deck or saving run state.
+- Phase 38 preserves current-run-only shop mutation rules, permanent-progress-only LocalStorage rules, and all combat/save/boss/deck progression behavior.
 
 Current Shop implementation:
 
@@ -596,7 +602,11 @@ Current Shop implementation:
 - `src/data/shopItems.ts` defines current-run placeholder items.
 - The Shop screen is labeled `Current Run Shop`.
 - The screen explains that shop upgrades are temporary and affect only the current run.
-- Each shop item card shows an icon placeholder, name, description, cost, and type.
+- The main shop screen shows 4 randomized item offers per visit instead of all shop controls at once.
+- Each shop offer card shows an icon placeholder, name, description, cost, type, and eligible target count.
+- Selecting an offer opens a modal with up to 4 eligible current-run card targets.
+- Purchase confirmation happens in the modal before spending gold or mutating the current-run deck.
+- Reroll Offers costs 5 temporary current-run gold and refreshes the 4 visible offers.
 - Upgrade Attack, Add Shield, and Add Fire/Water/Wind/Earth Element are active purchases.
 - Upgrade Attack uses the existing shop item cost.
 - The player can choose one card from the current-run deck for Upgrade Attack.
@@ -612,6 +622,7 @@ Current Shop implementation:
 - Remove Card and Duplicate Card are active purchases.
 - Remove Card uses the existing shop item cost and removes the selected card from the current-run deck.
 - Remove Card is disabled when the current-run deck has 5 or fewer cards.
+- Remove Card targets are filtered so invalid removal targets are not offered in the modal.
 - Duplicate Card uses the existing shop item cost and adds a unique-id copy of the selected card to the current-run deck.
 - Duplicated cards preserve current-run upgrades, including upgraded attack, shield effects, and element effects.
 - Phase 7 was presentation-only; Phase 11 added Upgrade Attack and Phase 12 added Add Shield.
@@ -946,7 +957,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 37 is complete.
+Phase 38 is complete.
 
 Recommended next task:
 

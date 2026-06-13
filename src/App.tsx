@@ -569,6 +569,16 @@ export default function App() {
     return true;
   }
 
+  function spendRunGold(cost: number) {
+    if (runGold < cost) {
+      return false;
+    }
+
+    setRunGold((currentGold) => currentGold - cost);
+
+    return true;
+  }
+
   return (
     <div className="min-h-screen">
       <AppHeader currentScreen={currentScreen} onNavigate={setCurrentScreen} />
@@ -629,6 +639,7 @@ export default function App() {
             onPurchaseElementUpgrade={purchaseElementUpgrade}
             onPurchaseRemoveCard={purchaseRemoveCard}
             onPurchaseShieldUpgrade={purchaseShieldUpgrade}
+            onSpendRunGold={spendRunGold}
             runGold={runGold}
             runProgress={runProgress}
           />

@@ -452,7 +452,13 @@ Current shop rules:
 - Shop item data lives in `src/data/shopItems.ts`.
 - The Shop screen is labeled `Current Run Shop`.
 - Shop upgrades are explained as temporary current-run upgrades.
-- Shop item cards show icon placeholder, name, description, cost, and type.
+- The Shop uses limited randomized offers instead of exposing every deck-editing control at once.
+- Each shop visit shows 4 randomized item offers from the existing shop item pool.
+- Shop offer cards show icon placeholder, name, description, cost, type, and eligible target count.
+- Selecting a shop offer opens a focused modal with up to 4 eligible current-run word card targets.
+- Purchase confirmation happens in the modal before spending temporary gold or mutating the current-run deck.
+- Shop offers can be rerolled for 5 temporary current-run gold.
+- Rerolling shop offers does not mutate the deck and is not saved to LocalStorage.
 - `Upgrade Attack` is purchasable.
 - `Upgrade Attack` uses its existing shop item cost.
 - If the player has enough temporary gold, the player can choose one current-run card and increase its `baseAttack` by +2.
@@ -470,6 +476,7 @@ Current shop rules:
 - If the player has enough temporary gold and the current-run deck has more than 5 cards, the player can choose one current-run card and remove it.
 - The minimum current-run deck size is 5 cards.
 - Remove Card must leave at least 4 distinct visible words in the current-run deck.
+- Remove Card target offers filter out cards that would break minimum deck or visible-word safety rules.
 - `Duplicate Card` is purchasable.
 - `Duplicate Card` uses its existing shop item cost.
 - If the player has enough temporary gold, the player can choose one current-run card and add a unique-id copy of it to the current-run deck.

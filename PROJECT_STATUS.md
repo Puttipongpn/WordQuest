@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 37 Enemy Variety Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 38 Shop Offer Redesign is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -469,6 +469,16 @@ Phase 37 Enemy Variety Pass is complete. GitHub backup is configured on `origin/
 - Added encounter intro flavor text for the new placeholder monsters without adding a lore system or changing the monster data model.
 - Preserved Phase 36.1 unified result actions, Phase 34.6 Word Match anti-hint behavior, and all existing combat/save/shop/boss/deck rules.
 - Verified the project with `npm run build` after Phase 37.
+- Applied Phase 38 Shop Offer Redesign.
+- Replaced the full shop deck-editing panel with 4 randomized shop item offers per visit.
+- Selecting a shop offer now opens a focused modal with up to 4 eligible current-run card targets.
+- Purchase confirmation happens in the modal before spending gold or mutating the current-run deck.
+- Preserved existing active shop effects: Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card.
+- Remove Card target selection filters out invalid targets using the existing minimum deck size and distinct visible word guards.
+- Added a Reroll Offers action that costs 5 temporary current-run gold and does not mutate the deck or save to LocalStorage.
+- Added a temporary run-gold spending helper in `src/App.tsx` for shop rerolls.
+- Preserved current-run-only shop mutation rules, LocalStorage permanent-progress-only rules, and all combat, timer, boss, deck unlock, and save behavior.
+- Verified the project with `npm run build` after Phase 38.
 
 ## In Progress
 
@@ -476,7 +486,7 @@ Phase 37 Enemy Variety Pass is complete. GitHub backup is configured on `origin/
 
 ## Next Task
 
-Phase 37 is complete. Continue with the next explicitly requested phase or feature.
+Phase 38 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

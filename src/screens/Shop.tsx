@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { sampleShopItems } from "../data";
@@ -28,6 +28,7 @@ type ShopProps = {
   ) => boolean;
   onPurchaseRemoveCard: (cardId: string, cost: number) => boolean;
   onPurchaseShieldUpgrade: (cardId: string, cost: number) => boolean;
+  onSpendRunGold: (cost: number) => boolean;
   runGold: number;
   runProgress: RunProgressState;
 };
@@ -37,10 +38,9 @@ type PurchaseFeedback = {
   message: string;
 };
 
-const upgradeAttackItemId = "upgrade-attack";
-const addShieldItemId = "add-shield";
-const removeCardItemId = "remove-card";
-const duplicateCardItemId = "duplicate-card";
+const offerCount = 4;
+const targetOfferCount = 4;
+const rerollCost = 5;
 
 function formatElementName(element: ElementType) {
   return element.charAt(0).toUpperCase() + element.slice(1);
@@ -63,22 +63,6 @@ function getShopItemElement(item: ShopItem) {
   return item.effect?.type === "element" ? item.effect.element : null;
 }
 
-function getCardEffectSummary(card: WordCard) {
-  const shieldAmount = getCardShieldAmount(card);
-  const element = getCardElement(card);
-  const summary = [`Attack ${card.baseAttack}`];
-
-  if (shieldAmount > 0) {
-    summary.push(`Shield +${shieldAmount}`);
-  }
-
-  if (element) {
-    summary.push(`Element: ${formatElementName(element.element)}`);
-  }
-
-  return summary.join(" / ");
-}
-
 function countUniqueWords(deck: WordCard[]) {
   return new Set(deck.map((card) => card.word.toLowerCase())).size;
 }
@@ -92,6 +76,124 @@ function canRemoveCardWithoutBreakingQuestions(deck: WordCard[], cardId: string)
   );
 }
 
+function shuffleItems<T>(items: T[]) {
+  return [...items].sort(() => Math.random() - 0.5);
+}
+
+function getRandomOffers() {
+  return shuffleItems(sampleShopItems).slice(0, offerCount);
+}
+
+function getCardEffectSummary(card: WordCard) {
+  const shieldAmount = getCardShieldAmount(card);
+  const element = getCardElement(card);
+  const summary = [`ATK ${card.baseAttack}`];
+
+  if (shieldAmount > 0) {
+    summary.push(`SHD +${shieldAmount}`);
+  }
+
+  if (element) {
+    summary.push(formatElementName(element.element));
+  }
+
+  return summary.join(" / ");
+}
+
+function getEligibleTargets(item: ShopItem, currentRunDeck: WordCard[]) {
+  if (item.type !== "remove-card") {
+    return currentRunDeck;
+  }
+
+  return currentRunDeck.filter((card) =>
+    canRemoveCardWithoutBreakingQuestions(currentRunDeck, card.id),
+  );
+}
+
+function getPurchasePreview(item: ShopItem, card: WordCard, deckSize: number) {
+  const element = getShopItemElement(item);
+
+  if (item.type === "upgrade-attack") {
+    return `Attack ${card.baseAttack} -> ${card.baseAttack + UPGRADE_ATTACK_AMOUNT}`;
+  }
+
+  if (item.type === "add-shield") {
+    const currentShield = getCardShieldAmount(card);
+
+    return `Shield ${currentShield} -> ${currentShield + ADD_SHIELD_AMOUNT}`;
+  }
+
+  if (element) {
+    const currentElement = getCardElement(card);
+
+    return `${
+      currentElement ? formatElementName(currentElement.element) : "No element"
+    } -> ${formatElementName(element)}`;
+  }
+
+  if (item.type === "remove-card") {
+    return `Deck size ${deckSize} -> ${deckSize - 1}`;
+  }
+
+  if (item.type === "duplicate-card") {
+    return `Deck size ${deckSize} -> ${deckSize + 1}`;
+  }
+
+  return getCardEffectSummary(card);
+}
+
+function getOfferShortEffect(item: ShopItem) {
+  const element = getShopItemElement(item);
+
+  if (item.type === "upgrade-attack") {
+    return `+${UPGRADE_ATTACK_AMOUNT} attack to one card`;
+  }
+
+  if (item.type === "add-shield") {
+    return `Add Shield +${ADD_SHIELD_AMOUNT}`;
+  }
+
+  if (element) {
+    return `Add or replace ${formatElementName(element)} element`;
+  }
+
+  if (item.type === "remove-card") {
+    return "Remove one current-run card";
+  }
+
+  if (item.type === "duplicate-card") {
+    return "Copy one current-run card";
+  }
+
+  return item.description;
+}
+
+function getPurchaseSuccessMessage(item: ShopItem, card: WordCard) {
+  const element = getShopItemElement(item);
+
+  if (item.type === "upgrade-attack") {
+    return `${card.word} attack upgraded by +${UPGRADE_ATTACK_AMOUNT} for this run only.`;
+  }
+
+  if (item.type === "add-shield") {
+    return `${card.word} gained Shield +${ADD_SHIELD_AMOUNT} for this run only.`;
+  }
+
+  if (element) {
+    return `${card.word} now has Element: ${formatElementName(element)} for this run only.`;
+  }
+
+  if (item.type === "remove-card") {
+    return `${card.word} removed from this run deck only.`;
+  }
+
+  if (item.type === "duplicate-card") {
+    return `${card.word} duplicated with current-run upgrades preserved.`;
+  }
+
+  return `${item.name} purchased.`;
+}
+
 export function Shop({
   currentRunDeck,
   onNavigate,
@@ -100,251 +202,138 @@ export function Shop({
   onPurchaseElementUpgrade,
   onPurchaseRemoveCard,
   onPurchaseShieldUpgrade,
+  onSpendRunGold,
   runGold,
   runProgress,
 }: ShopProps) {
-  const [selectedAttackCardId, setSelectedAttackCardId] = useState(
-    currentRunDeck[0]?.id ?? "",
+  const [shopOffers, setShopOffers] = useState<ShopItem[]>(() =>
+    getRandomOffers(),
   );
-  const [selectedShieldCardId, setSelectedShieldCardId] = useState(
-    currentRunDeck[0]?.id ?? "",
-  );
-  const [selectedRemoveCardId, setSelectedRemoveCardId] = useState(
-    currentRunDeck[0]?.id ?? "",
-  );
-  const [selectedDuplicateCardId, setSelectedDuplicateCardId] = useState(
-    currentRunDeck[0]?.id ?? "",
-  );
-  const [selectedElementCardIds, setSelectedElementCardIds] = useState<
-    Record<string, string>
-  >({});
+  const [activeOffer, setActiveOffer] = useState<ShopItem | null>(null);
+  const [targetCards, setTargetCards] = useState<WordCard[]>([]);
+  const [selectedTargetId, setSelectedTargetId] = useState("");
   const [purchaseFeedback, setPurchaseFeedback] = useState<PurchaseFeedback>({
     tone: "neutral",
-    message: "Choose a card to preview an active shop purchase.",
+    message:
+      "Choose a limited shop offer, then pick from a small set of current-run card targets.",
   });
-  const selectedAttackCard = currentRunDeck.find(
-    (card) => card.id === selectedAttackCardId,
+  const activeTarget = targetCards.find((card) => card.id === selectedTargetId);
+
+  const offerTargetCounts = useMemo(
+    () =>
+      Object.fromEntries(
+        shopOffers.map((item) => [
+          item.id,
+          getEligibleTargets(item, currentRunDeck).length,
+        ]),
+      ),
+    [currentRunDeck, shopOffers],
   );
-  const selectedShieldCard = currentRunDeck.find(
-    (card) => card.id === selectedShieldCardId,
-  );
-  const selectedRemoveCard = currentRunDeck.find(
-    (card) => card.id === selectedRemoveCardId,
-  );
-  const selectedDuplicateCard = currentRunDeck.find(
-    (card) => card.id === selectedDuplicateCardId,
-  );
-  const canRemoveCards = currentRunDeck.length > MIN_RUN_DECK_SIZE;
-  const canRemoveSelectedCard =
-    Boolean(selectedRemoveCard) &&
-    canRemoveCards &&
-    canRemoveCardWithoutBreakingQuestions(
-      currentRunDeck,
-      selectedRemoveCardId,
-    );
-  const firstRunCardId = currentRunDeck[0]?.id ?? "";
 
   useEffect(() => {
-    const cardIds = new Set(currentRunDeck.map((card) => card.id));
-
-    if (!cardIds.has(selectedAttackCardId)) {
-      setSelectedAttackCardId(firstRunCardId);
+    if (!activeOffer) {
+      return;
     }
 
-    if (!cardIds.has(selectedShieldCardId)) {
-      setSelectedShieldCardId(firstRunCardId);
+    const validTargetIds = new Set(currentRunDeck.map((card) => card.id));
+
+    if (!selectedTargetId || validTargetIds.has(selectedTargetId)) {
+      return;
     }
 
-    if (!cardIds.has(selectedRemoveCardId)) {
-      setSelectedRemoveCardId(firstRunCardId);
-    }
-
-    if (!cardIds.has(selectedDuplicateCardId)) {
-      setSelectedDuplicateCardId(firstRunCardId);
-    }
-
-    setSelectedElementCardIds((currentSelections) => {
-      let didChange = false;
-      const nextSelections: Record<string, string> = {};
-
-      for (const [itemId, cardId] of Object.entries(currentSelections)) {
-        if (cardIds.has(cardId)) {
-          nextSelections[itemId] = cardId;
-          continue;
-        }
-
-        nextSelections[itemId] = firstRunCardId;
-        didChange = true;
-      }
-
-      return didChange ? nextSelections : currentSelections;
+    setActiveOffer(null);
+    setTargetCards([]);
+    setSelectedTargetId("");
+    setPurchaseFeedback({
+      tone: "danger",
+      message: "That target is no longer available in the current-run deck.",
     });
-  }, [
-    currentRunDeck,
-    firstRunCardId,
-    selectedAttackCardId,
-    selectedDuplicateCardId,
-    selectedRemoveCardId,
-    selectedShieldCardId,
-  ]);
+  }, [activeOffer, currentRunDeck, selectedTargetId]);
 
-  function handlePurchaseAttackUpgrade(cost: number) {
-    if (!selectedAttackCard) {
+  function openOfferModal(item: ShopItem) {
+    const eligibleTargets = getEligibleTargets(item, currentRunDeck);
+
+    if (eligibleTargets.length === 0) {
       setPurchaseFeedback({
         tone: "danger",
-        message: "Choose a card before buying Upgrade Attack.",
+        message: `${item.name} has no eligible targets right now.`,
       });
       return;
     }
 
-    const isPurchased = onPurchaseAttackUpgrade(selectedAttackCard.id, cost);
+    const nextTargets = shuffleItems(eligibleTargets).slice(0, targetOfferCount);
+
+    setActiveOffer(item);
+    setTargetCards(nextTargets);
+    setSelectedTargetId(nextTargets[0]?.id ?? "");
+    setPurchaseFeedback({
+      tone: "neutral",
+      message: `Choose one current-run card for ${item.name}. Gold is spent only after confirmation.`,
+    });
+  }
+
+  function closeOfferModal() {
+    setActiveOffer(null);
+    setTargetCards([]);
+    setSelectedTargetId("");
+  }
+
+  function confirmPurchase() {
+    if (!activeOffer || !activeTarget) {
+      setPurchaseFeedback({
+        tone: "danger",
+        message: "Choose a valid target before confirming the purchase.",
+      });
+      return;
+    }
+
+    const element = getShopItemElement(activeOffer);
+    const isPurchased =
+      activeOffer.type === "upgrade-attack"
+        ? onPurchaseAttackUpgrade(activeTarget.id, activeOffer.cost)
+        : activeOffer.type === "add-shield"
+          ? onPurchaseShieldUpgrade(activeTarget.id, activeOffer.cost)
+          : element
+            ? onPurchaseElementUpgrade(
+                activeTarget.id,
+                activeOffer.cost,
+                element,
+              )
+            : activeOffer.type === "remove-card"
+              ? onPurchaseRemoveCard(activeTarget.id, activeOffer.cost)
+              : activeOffer.type === "duplicate-card"
+                ? onPurchaseDuplicateCard(activeTarget.id, activeOffer.cost)
+                : false;
 
     if (!isPurchased) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Unable to buy Upgrade Attack. It costs ${cost} gold and needs a valid current-run card.`,
+        message: `Unable to buy ${activeOffer.name}. Check gold, target validity, and current-run deck safety rules.`,
       });
       return;
     }
 
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedAttackCard.word} attack upgraded by +${UPGRADE_ATTACK_AMOUNT} for this run only. This upgrade resets on run restart, failure, or refresh.`,
+      message: `${getPurchaseSuccessMessage(activeOffer, activeTarget)} Temporary run change only.`,
     });
+    closeOfferModal();
   }
 
-  function handlePurchaseShieldUpgrade(cost: number) {
-    if (!selectedShieldCard) {
+  function rerollOffers() {
+    if (!onSpendRunGold(rerollCost)) {
       setPurchaseFeedback({
         tone: "danger",
-        message: "Choose a card before buying Add Shield.",
+        message: `Reroll costs ${rerollCost} gold.`,
       });
       return;
     }
 
-    const isPurchased = onPurchaseShieldUpgrade(selectedShieldCard.id, cost);
-
-    if (!isPurchased) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: `Unable to buy Add Shield. It costs ${cost} gold and needs a valid current-run card.`,
-      });
-      return;
-    }
-
+    setShopOffers(getRandomOffers());
+    closeOfferModal();
     setPurchaseFeedback({
       tone: "success",
-      message: `${selectedShieldCard.word} gained Shield +${ADD_SHIELD_AMOUNT} for this run only. This shield effect resets with the run deck.`,
-    });
-  }
-
-  function getSelectedElementCard(itemId: string) {
-    const selectedCardId = selectedElementCardIds[itemId] ?? currentRunDeck[0]?.id;
-
-    return currentRunDeck.find((card) => card.id === selectedCardId);
-  }
-
-  function handleSelectElementCard(itemId: string, cardId: string) {
-    setSelectedElementCardIds((currentSelections) => ({
-      ...currentSelections,
-      [itemId]: cardId,
-    }));
-  }
-
-  function handlePurchaseElementUpgrade(item: ShopItem, element: ElementType) {
-    const selectedElementCard = getSelectedElementCard(item.id);
-
-    if (!selectedElementCard) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: `Choose a card before buying ${item.name}.`,
-      });
-      return;
-    }
-
-    const isPurchased = onPurchaseElementUpgrade(
-      selectedElementCard.id,
-      item.cost,
-      element,
-    );
-
-    if (!isPurchased) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: `Unable to buy ${item.name}. It costs ${item.cost} gold and needs a valid current-run card.`,
-      });
-      return;
-    }
-
-    setPurchaseFeedback({
-      tone: "success",
-      message: `${selectedElementCard.word} now has Element: ${formatElementName(element)} for this run only. Element effects apply simple Dungeon bonuses and reset with the run deck.`,
-    });
-  }
-
-  function handlePurchaseRemoveCard(cost: number) {
-    if (!canRemoveCards) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: `Remove Card is disabled because the current-run deck must keep at least ${MIN_RUN_DECK_SIZE} cards.`,
-      });
-      return;
-    }
-
-    if (!selectedRemoveCard) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: "Choose a card before buying Remove Card.",
-      });
-      return;
-    }
-
-    if (!canRemoveSelectedCard) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: `Choose a different card. Battle questions need at least ${MIN_DISTINCT_VISIBLE_WORDS} distinct visible words after removal.`,
-      });
-      return;
-    }
-
-    const isPurchased = onPurchaseRemoveCard(selectedRemoveCard.id, cost);
-
-    if (!isPurchased) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: `Unable to buy Remove Card. It costs ${cost} gold, needs a valid current-run card, and cannot reduce the deck below ${MIN_RUN_DECK_SIZE} cards.`,
-      });
-      return;
-    }
-
-    setPurchaseFeedback({
-      tone: "success",
-      message: `${selectedRemoveCard.word} removed from this run deck only. The source deck and permanent progress were not changed.`,
-    });
-  }
-
-  function handlePurchaseDuplicateCard(cost: number) {
-    if (!selectedDuplicateCard) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: "Choose a card before buying Duplicate Card.",
-      });
-      return;
-    }
-
-    const isPurchased = onPurchaseDuplicateCard(selectedDuplicateCard.id, cost);
-
-    if (!isPurchased) {
-      setPurchaseFeedback({
-        tone: "danger",
-        message: `Unable to buy Duplicate Card. It costs ${cost} gold and needs a valid current-run card.`,
-      });
-      return;
-    }
-
-    setPurchaseFeedback({
-      tone: "success",
-      message: `${selectedDuplicateCard.word} duplicated with current-run upgrades preserved. The copy exists only for this run.`,
+      message: `Shop offers rerolled for ${rerollCost} current-run gold.`,
     });
   }
 
@@ -352,45 +341,30 @@ export function Shop({
     <ScreenShell
       eyebrow="Upgrade"
       title="Current Run Shop"
-      description="Buy temporary current-run upgrades and mutate the current-run deck."
+      description="Choose limited temporary offers for this run."
       framed={false}
     >
-      <CardPanel className="mb-6 border-amber-700/30 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <CardPanel className="mb-5 border-amber-700/30 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <Badge tone="emerald">Current-run only</Badge>
             <p className="mt-3 text-xl font-black text-amber-950">
-              Shop upgrades are temporary and affect only the current run.
+              Pick from a small set of shop offers.
             </p>
-            <p className="mt-2 text-sm font-medium text-amber-950/75">
-              Upgrade Attack, Add Shield, and Element items can modify copied
-              current-run cards. Remove and Duplicate now mutate only this run
-              deck.
-            </p>
-            <p className="mt-2 text-sm font-bold text-amber-900">
-              Costs spend temporary run gold only. Run failure, run restart, or
-              page refresh resets these deck changes. Word mastery and
-              completed deck status stay permanent.
+            <p className="mt-2 max-w-3xl text-sm font-bold leading-6 text-amber-950/75">
+              Upgrades, removals, duplicates, and elements affect only this
+              current-run deck. Permanent mastery is not changed by shop
+              purchases.
             </p>
           </div>
-          <div className="grid gap-3 sm:min-w-72 sm:grid-cols-4">
-            <StatCard
-              label="Gold"
-              value={runGold}
-              helper="Temporary"
-              tone="amber"
-            />
-            <StatCard
-              label="Mode"
-              value="Active"
-              helper="Current run"
-              tone="emerald"
-            />
+          <div className="grid gap-3 sm:grid-cols-4 lg:min-w-[34rem]">
+            <StatCard label="Gold" value={runGold} helper="Temporary" tone="amber" />
+            <StatCard label="Offers" value={shopOffers.length} helper="This visit" tone="emerald" />
             <StatCard
               label="Deck Size"
               value={currentRunDeck.length}
-              helper={`Min ${MIN_RUN_DECK_SIZE} cards / ${MIN_DISTINCT_VISIBLE_WORDS} words`}
-              tone={canRemoveCards ? "sky" : "red"}
+              helper={`Min ${MIN_RUN_DECK_SIZE} cards`}
+              tone={currentRunDeck.length > MIN_RUN_DECK_SIZE ? "sky" : "red"}
             />
             <StatCard
               label="Progress"
@@ -400,351 +374,77 @@ export function Shop({
             />
           </div>
         </div>
-        <Button
-          type="button"
-          variant="secondary"
-          className="mt-5"
-          onClick={() => onNavigate("dungeon")}
-        >
-          Back To Dungeon
-        </Button>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Button
+            type="button"
+            onClick={rerollOffers}
+            variant="secondary"
+            disabled={runGold < rerollCost}
+          >
+            Reroll Offers ({rerollCost} gold)
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => onNavigate("dungeon")}
+          >
+            Back To Dungeon
+          </Button>
+        </div>
       </CardPanel>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {sampleShopItems.map((item) => {
-          const isUpgradeAttack = item.id === upgradeAttackItemId;
-          const isAddShield = item.id === addShieldItemId;
-          const isRemoveCard = item.id === removeCardItemId;
-          const isDuplicateCard = item.id === duplicateCardItemId;
-          const element = getShopItemElement(item);
-          const isAddElement = element !== null;
-          const isActivePurchase =
-            isUpgradeAttack ||
-            isAddShield ||
-            isAddElement ||
-            isRemoveCard ||
-            isDuplicateCard;
-          const selectedElementCard = getSelectedElementCard(item.id);
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {shopOffers.map((item) => {
+          const eligibleTargetCount = offerTargetCounts[item.id] ?? 0;
+          const hasEnoughGold = runGold >= item.cost;
+          const canSelectOffer = eligibleTargetCount > 0;
 
           return (
             <CardPanel
               key={item.id}
-              className={`flex min-h-72 flex-col ${
-                isActivePurchase
-                  ? "border-amber-700/30 bg-gradient-to-br from-amber-50 to-orange-50"
-                  : "opacity-85"
-              }`}
+              className="flex min-h-64 flex-col border-amber-700/30 bg-gradient-to-br from-amber-50 to-orange-50"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-amber-900/15 bg-amber-100 text-xl font-black text-amber-950 shadow-inner">
+                <div className="grid size-14 place-items-center rounded-xl border border-amber-900/15 bg-amber-100 text-sm font-black text-amber-950 shadow-inner">
                   {item.icon}
                 </div>
-                <Badge tone={isActivePurchase ? "emerald" : "slate"}>
+                <Badge tone={canSelectOffer ? "emerald" : "red"}>
                   {item.type.replaceAll("-", " ")}
                 </Badge>
               </div>
-
               <div className="mt-4 flex flex-1 flex-col">
                 <h3 className="text-xl font-black text-amber-950">
                   {item.name}
                 </h3>
+                <p className="mt-2 text-sm font-black text-amber-900">
+                  {getOfferShortEffect(item)}
+                </p>
                 <p className="mt-2 flex-1 text-sm font-medium leading-6 text-amber-950/70">
                   {item.description}
                 </p>
               </div>
-
-              {isUpgradeAttack && (
-                <div className="mt-5 rounded-lg border border-emerald-700/20 bg-emerald-100/70 p-3">
-                  <p className="text-sm font-black text-emerald-950">
-                    Choose current-run card
-                  </p>
-                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
-                    {currentRunDeck.map((card) => {
-                      const isSelected = selectedAttackCardId === card.id;
-
-                      return (
-                        <button
-                          key={card.id}
-                          type="button"
-                          onClick={() => setSelectedAttackCardId(card.id)}
-                          className={`w-full rounded-md border p-3 text-left transition ${
-                            isSelected
-                              ? "border-emerald-600 bg-white ring-1 ring-emerald-300"
-                              : "border-emerald-700/20 bg-white/70 hover:border-emerald-500"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between gap-3">
-                            <span className="font-semibold capitalize text-slate-950">
-                              {card.word}
-                            </span>
-                            <span className="text-sm font-semibold text-slate-600">
-                              {card.baseAttack} -&gt;{" "}
-                              {card.baseAttack + UPGRADE_ATTACK_AMOUNT}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {selectedAttackCard && (
-                    <p className="mt-3 text-sm font-semibold text-emerald-900">
-                      Preview: {selectedAttackCard.word}{" "}
-                      {selectedAttackCard.baseAttack} -&gt;{" "}
-                      {selectedAttackCard.baseAttack + UPGRADE_ATTACK_AMOUNT}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {isAddShield && (
-                <div className="mt-5 rounded-lg border border-sky-700/20 bg-sky-100/70 p-3">
-                  <p className="text-sm font-black text-sky-950">
-                    Choose current-run card
-                  </p>
-                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
-                    {currentRunDeck.map((card) => {
-                      const isSelected = selectedShieldCardId === card.id;
-                      const currentShield = getCardShieldAmount(card);
-
-                      return (
-                        <button
-                          key={card.id}
-                          type="button"
-                          onClick={() => setSelectedShieldCardId(card.id)}
-                          className={`w-full rounded-md border p-3 text-left transition ${
-                            isSelected
-                              ? "border-sky-500 bg-white ring-1 ring-sky-200"
-                              : "border-sky-100 bg-white/70 hover:border-sky-400"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between gap-3">
-                            <span className="font-semibold capitalize text-slate-950">
-                              {card.word}
-                            </span>
-                            <span className="text-sm font-semibold text-slate-600">
-                              Shield {currentShield} -&gt;{" "}
-                              {currentShield + ADD_SHIELD_AMOUNT}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {selectedShieldCard && (
-                    <p className="mt-3 text-sm font-semibold text-sky-900">
-                      Preview: {selectedShieldCard.word} Shield{" "}
-                      {getCardShieldAmount(selectedShieldCard)} -&gt;{" "}
-                      {getCardShieldAmount(selectedShieldCard) +
-                        ADD_SHIELD_AMOUNT}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {element && (
-                <div className="mt-5 rounded-lg border border-amber-700/20 bg-amber-100/80 p-3">
-                  <p className="text-sm font-black text-amber-950">
-                    Choose current-run card
-                  </p>
-                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
-                    {currentRunDeck.map((card) => {
-                      const selectedCardId =
-                        selectedElementCardIds[item.id] ?? currentRunDeck[0]?.id;
-                      const isSelected = selectedCardId === card.id;
-                      const currentElement = getCardElement(card);
-
-                      return (
-                        <button
-                          key={card.id}
-                          type="button"
-                          onClick={() => handleSelectElementCard(item.id, card.id)}
-                          className={`w-full rounded-md border p-3 text-left transition ${
-                            isSelected
-                              ? "border-amber-500 bg-white ring-1 ring-amber-200"
-                              : "border-amber-100 bg-white/70 hover:border-amber-400"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between gap-3">
-                            <span className="font-semibold capitalize text-slate-950">
-                              {card.word}
-                            </span>
-                            <span className="text-sm font-semibold text-slate-600">
-                              {currentElement
-                                ? formatElementName(currentElement.element)
-                                : "None"}{" "}
-                              -&gt; {formatElementName(element)}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {selectedElementCard && (
-                    <p className="mt-3 text-sm font-semibold text-amber-900">
-                      Preview: {selectedElementCard.word}{" "}
-                      {getCardElement(selectedElementCard)
-                        ? formatElementName(
-                            getCardElement(selectedElementCard)!.element,
-                          )
-                        : "None"}{" "}
-                      -&gt; {formatElementName(element)}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {isRemoveCard && (
-                <div className="mt-5 rounded-lg border border-red-700/20 bg-red-100/70 p-3">
-                  <p className="text-sm font-black text-red-950">
-                    Choose card to remove
-                  </p>
-                  {!canRemoveCards && (
-                    <p className="mt-2 rounded-md border border-red-200 bg-white p-2 text-sm font-semibold text-red-700">
-                      Remove Card is disabled. Current-run deck must keep at
-                      least {MIN_RUN_DECK_SIZE} cards and{" "}
-                      {MIN_DISTINCT_VISIBLE_WORDS} distinct words so battle
-                      questions still have enough options.
-                    </p>
-                  )}
-                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
-                    {currentRunDeck.map((card) => {
-                      const isSelected = selectedRemoveCardId === card.id;
-
-                      return (
-                        <button
-                          key={card.id}
-                          type="button"
-                          disabled={!canRemoveCards}
-                          onClick={() => setSelectedRemoveCardId(card.id)}
-                          className={`w-full rounded-md border p-3 text-left transition ${
-                            isSelected
-                              ? "border-red-500 bg-white ring-1 ring-red-200"
-                              : "border-red-100 bg-white/70 hover:border-red-400"
-                          } ${canRemoveCards ? "" : "cursor-not-allowed opacity-60"}`}
-                        >
-                          <div className="flex flex-col gap-1">
-                            <span className="font-semibold capitalize text-slate-950">
-                              {card.word}
-                            </span>
-                            <span className="text-sm text-slate-600">
-                              {getCardEffectSummary(card)}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {selectedRemoveCard && canRemoveCards && (
-                    <p className="mt-3 text-sm font-semibold text-red-900">
-                      {canRemoveSelectedCard
-                        ? `Preview: remove ${selectedRemoveCard.word}. Deck size ${currentRunDeck.length} -> ${currentRunDeck.length - 1}`
-                        : `Choose a different card. At least ${MIN_DISTINCT_VISIBLE_WORDS} distinct words must remain for battle questions.`}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {isDuplicateCard && (
-                <div className="mt-5 rounded-lg border border-violet-700/20 bg-violet-100/70 p-3">
-                  <p className="text-sm font-black text-violet-950">
-                    Choose card to duplicate
-                  </p>
-                  <div className="mt-3 max-h-64 space-y-2 overflow-y-auto pr-1">
-                    {currentRunDeck.map((card) => {
-                      const isSelected = selectedDuplicateCardId === card.id;
-
-                      return (
-                        <button
-                          key={card.id}
-                          type="button"
-                          onClick={() => setSelectedDuplicateCardId(card.id)}
-                          className={`w-full rounded-md border p-3 text-left transition ${
-                            isSelected
-                              ? "border-violet-500 bg-white ring-1 ring-violet-200"
-                              : "border-violet-100 bg-white/70 hover:border-violet-400"
-                          }`}
-                        >
-                          <div className="flex flex-col gap-1">
-                            <span className="font-semibold capitalize text-slate-950">
-                              {card.word}
-                            </span>
-                            <span className="text-sm text-slate-600">
-                              {getCardEffectSummary(card)}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {selectedDuplicateCard && (
-                    <p className="mt-3 text-sm font-semibold text-violet-900">
-                      Preview: copy {selectedDuplicateCard.word} with{" "}
-                      {getCardEffectSummary(selectedDuplicateCard)}. Deck size{" "}
-                      {currentRunDeck.length} -&gt; {currentRunDeck.length + 1}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              <div className="mt-5 border-t border-slate-100 pt-4">
+              <div className="mt-4 border-t border-amber-900/10 pt-3">
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="text-sm font-black uppercase text-amber-800/70">Cost</p>
                   <Badge tone="amber">{item.cost} gold</Badge>
+                  <p className="text-xs font-black uppercase text-amber-800/70">
+                    {eligibleTargetCount > 0
+                      ? `${eligibleTargetCount} eligible`
+                      : "No eligible targets"}
+                  </p>
                 </div>
-                {isUpgradeAttack ? (
-                  <Button
-                    type="button"
-                    className="w-full"
-                    disabled={!selectedAttackCard}
-                    onClick={() => handlePurchaseAttackUpgrade(item.cost)}
-                  >
-                    Buy Upgrade Attack
-                  </Button>
-                ) : isAddShield ? (
-                  <Button
-                    type="button"
-                    className="w-full"
-                    disabled={!selectedShieldCard}
-                    onClick={() => handlePurchaseShieldUpgrade(item.cost)}
-                  >
-                    Buy Add Shield
-                  </Button>
-                ) : element ? (
-                  <Button
-                    type="button"
-                    className="w-full"
-                    disabled={!selectedElementCard}
-                    onClick={() => handlePurchaseElementUpgrade(item, element)}
-                  >
-                    Buy {item.name}
-                  </Button>
-                ) : isRemoveCard ? (
-                  <Button
-                    type="button"
-                    className="w-full"
-                    disabled={!canRemoveSelectedCard}
-                    onClick={() => handlePurchaseRemoveCard(item.cost)}
-                  >
-                    {canRemoveCards ? "Buy Remove Card" : "Deck Too Small"}
-                  </Button>
-                ) : isDuplicateCard ? (
-                  <Button
-                    type="button"
-                    className="w-full"
-                    disabled={!selectedDuplicateCard}
-                    onClick={() => handlePurchaseDuplicateCard(item.cost)}
-                  >
-                    Buy Duplicate Card
-                  </Button>
-                ) : (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="w-full"
-                    disabled
-                  >
-                    Coming Soon
-                  </Button>
+                <Button
+                  type="button"
+                  className="w-full"
+                  disabled={!canSelectOffer}
+                  onClick={() => openOfferModal(item)}
+                  variant={hasEnoughGold ? "primary" : "secondary"}
+                >
+                  {canSelectOffer ? "Select Offer" : "No Eligible Targets"}
+                </Button>
+                {!hasEnoughGold && canSelectOffer && (
+                  <p className="mt-2 text-xs font-bold text-red-700">
+                    Not enough gold to buy after selecting.
+                  </p>
                 )}
               </div>
             </CardPanel>
@@ -766,6 +466,97 @@ export function Shop({
           {purchaseFeedback.message}
         </p>
       </div>
+
+      {activeOffer && (
+        <div className="fixed inset-0 z-40 grid place-items-center bg-stone-950/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-3xl rounded-3xl border-2 border-amber-300 bg-amber-50 p-5 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)]">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <Badge tone="emerald">Choose target</Badge>
+                <h3 className="mt-2 text-3xl font-black">
+                  {activeOffer.name}
+                </h3>
+                <p className="mt-1 text-sm font-bold text-amber-900/75">
+                  Pick one eligible current-run card. Gold is spent only when
+                  you confirm.
+                </p>
+              </div>
+              <Badge tone={runGold >= activeOffer.cost ? "amber" : "red"}>
+                {activeOffer.cost} gold
+              </Badge>
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {targetCards.map((card) => {
+                const isSelected = selectedTargetId === card.id;
+
+                return (
+                  <button
+                    key={card.id}
+                    type="button"
+                    onClick={() => setSelectedTargetId(card.id)}
+                    className={`rounded-2xl border-2 p-3 text-left transition ${
+                      isSelected
+                        ? "border-emerald-500 bg-white shadow-md ring-2 ring-emerald-200"
+                        : "border-amber-900/10 bg-white/75 hover:border-emerald-400"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-xl font-black capitalize">
+                          {card.word}
+                        </p>
+                        <p className="mt-1 truncate text-sm font-bold text-amber-900/65">
+                          {card.meaningTh}
+                        </p>
+                        <p className="mt-2 text-xs font-black uppercase text-amber-800/70">
+                          {getCardEffectSummary(card)}
+                        </p>
+                      </div>
+                      {isSelected && <Badge tone="emerald">Selected</Badge>}
+                    </div>
+                    <p className="mt-3 rounded-lg bg-amber-100 px-3 py-2 text-sm font-black text-amber-950">
+                      {getPurchasePreview(
+                        activeOffer,
+                        card,
+                        currentRunDeck.length,
+                      )}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+
+            {targetCards.length === 0 && (
+              <p className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-black text-red-800">
+                No eligible targets.
+              </p>
+            )}
+
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <Button type="button" variant="ghost" onClick={closeOfferModal}>
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                onClick={confirmPurchase}
+                disabled={
+                  !activeTarget ||
+                  targetCards.length === 0 ||
+                  runGold < activeOffer.cost
+                }
+              >
+                Confirm Purchase
+              </Button>
+            </div>
+            {runGold < activeOffer.cost && (
+              <p className="mt-3 text-right text-sm font-black text-red-700">
+                Not enough gold.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </ScreenShell>
   );
 }

@@ -886,6 +886,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: More monsters make runs feel less repetitive without adding new systems, scaling rules, art assets, or combat changes.
 - Status: Accepted
 
+### 2026-06-13: Shop Uses Limited Randomized Offers
+
+- Decision: Shop uses limited randomized offers instead of exposing all deck-edit controls at once.
+- Reason: A smaller offer set makes the shop feel more like a roguelike deckbuilder stop and less like an admin editing panel.
+- Status: Accepted
+
+### 2026-06-13: Shop Target Selection Uses Limited Modal
+
+- Decision: Shop item target selection uses a limited random set of eligible current-run word cards in a modal.
+- Reason: Focused target selection keeps purchases tactical, reduces visual overload, and avoids showing the full run deck for every shop item.
+- Status: Accepted
+
+### 2026-06-13: Shop Offers Can Be Rerolled With Run Gold
+
+- Decision: Shop offers can be rerolled for 5 current-run gold.
+- Reason: Rerolling gives controlled player choice while keeping shop outcomes temporary and within roguelike run reset rules.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
