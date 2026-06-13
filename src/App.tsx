@@ -26,6 +26,7 @@ import {
 } from "./game/deckProgression";
 import {
   incrementWordUsage,
+  recoverWordEnergy,
   type WordFatigueByWord,
 } from "./game/cardFatigue";
 import type {
@@ -379,6 +380,18 @@ export default function App() {
     );
   }
 
+  function recoverRunWordEnergy() {
+    setWordFatigue((currentFatigue) => recoverWordEnergy(currentFatigue));
+  }
+
+  function navigateToScreen(screen: ScreenName) {
+    if (currentScreen === "shop" && screen === "dungeon") {
+      recoverRunWordEnergy();
+    }
+
+    setCurrentScreen(screen);
+  }
+
   function selectDeck(deckId: string) {
     const nextDeck =
       availableDecks.find((deck) => deck.id === deckId) ?? starterDeck;
@@ -599,13 +612,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <AppHeader currentScreen={currentScreen} onNavigate={setCurrentScreen} />
+      <AppHeader currentScreen={currentScreen} onNavigate={navigateToScreen} />
       <main>
         {currentScreen === "home" && (
           <Home
             availableDecks={availableDecks}
             completedDeckIds={completedDeckIds}
-            onNavigate={setCurrentScreen}
+            onNavigate={navigateToScreen}
             onResetProgress={resetPlayerProgress}
             onSelectDeck={selectDeck}
             playerStatistics={playerStatistics}
@@ -636,7 +649,7 @@ export default function App() {
             onIncreaseWordFatigue={increaseWordFatigue}
             onGainRunGold={gainRunGold}
             onMonsterDefeated={recordMonsterDefeated}
-            onNavigate={setCurrentScreen}
+            onNavigate={navigateToScreen}
             onRecordRunEnded={recordRunEnded}
             onResetRun={resetCurrentRun}
             onResetWordFatigue={resetWordFatigue}
@@ -654,7 +667,7 @@ export default function App() {
         {currentScreen === "shop" && (
           <Shop
             currentRunDeck={currentRunDeck}
-            onNavigate={setCurrentScreen}
+            onNavigate={navigateToScreen}
             onPurchaseDuplicateCard={purchaseDuplicateCard}
             onPurchaseAttackUpgrade={purchaseAttackUpgrade}
             onPurchaseElementUpgrade={purchaseElementUpgrade}
@@ -666,7 +679,7 @@ export default function App() {
           />
         )}
         {currentScreen === "run-result" && (
-          <RunResult onNavigate={setCurrentScreen} />
+          <RunResult onNavigate={navigateToScreen} />
         )}
       </main>
     </div>

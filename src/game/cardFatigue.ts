@@ -11,6 +11,7 @@ import type { WordCard } from "../types";
 
 export type WordFatigueByWord = Record<string, number>;
 export type WordFatigueState = "fresh" | "used" | "tired" | "resting";
+export type WordFatigueSummary = Record<WordFatigueState, number>;
 
 type SelectCardsWithFatigueOptions = {
   count: number;
@@ -73,6 +74,20 @@ export function incrementWordUsage(
   };
 }
 
+export function recoverWordEnergy(usageByWord: WordFatigueByWord) {
+  const nextUsageByWord: WordFatigueByWord = {};
+
+  for (const [word, usageCount] of Object.entries(usageByWord)) {
+    const nextUsageCount = Math.max(usageCount - 1, 0);
+
+    if (nextUsageCount > 0) {
+      nextUsageByWord[word] = nextUsageCount;
+    }
+  }
+
+  return nextUsageByWord;
+}
+
 export function getWordUsageCount(
   usageByWord: WordFatigueByWord,
   word: string,
@@ -95,14 +110,14 @@ export function getWordEnergyLabel(usageCount: number) {
     return "⚡ Tired";
   }
 
-  return "Resting";
+  return "Low";
 }
 
 export function getWordEnergyFeedback(word: string, nextUsageCount: number) {
   const fatigueState = getWordFatigueState(nextUsageCount);
 
   if (fatigueState === "used") {
-    return `Word Energy used: ${word}.`;
+    return "";
   }
 
   if (fatigueState === "tired") {
@@ -110,10 +125,36 @@ export function getWordEnergyFeedback(word: string, nextUsageCount: number) {
   }
 
   if (fatigueState === "resting") {
-    return `${word} will appear less often this run.`;
+    return `${word} is low energy.`;
   }
 
   return "";
+}
+
+export function summarizeWordFatigue(
+  cards: WordCard[],
+  usageByWord: WordFatigueByWord,
+): WordFatigueSummary {
+  const summary: WordFatigueSummary = {
+    fresh: 0,
+    used: 0,
+    tired: 0,
+    resting: 0,
+  };
+  const countedWords = new Set<string>();
+
+  for (const card of cards) {
+    const wordKey = normalizeWordForFatigue(card.word);
+
+    if (countedWords.has(wordKey)) {
+      continue;
+    }
+
+    countedWords.add(wordKey);
+    summary[getWordFatigueState(usageByWord[wordKey] ?? 0)] += 1;
+  }
+
+  return summary;
 }
 
 function seededRandom(seed: number) {

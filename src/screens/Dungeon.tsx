@@ -36,6 +36,7 @@ import {
   getWordEnergyLabel,
   getWordUsageCount,
   selectCardsWithFatigue,
+  summarizeWordFatigue,
   type WordFatigueByWord,
 } from "../game/cardFatigue";
 import {
@@ -855,6 +856,10 @@ export function Dungeon({
   const sidePanelCardElement = getCardElement(sidePanelCard);
   const sidePanelWordUsage =
     battleLog.wordUsageCount ?? getWordUsageCount(wordFatigue, sidePanelCard.word);
+  const wordEnergySummary = useMemo(
+    () => summarizeWordFatigue(currentRunDeck, wordFatigue),
+    [currentRunDeck, wordFatigue],
+  );
   const isShopAvailable =
     runProgress.monstersDefeated > 0 &&
     runProgress.monstersDefeated === runProgress.nextShopAt;
@@ -2049,6 +2054,22 @@ export function Dungeon({
             </section>
           )}
 
+          <section className="rounded-2xl border-2 border-emerald-800/20 bg-emerald-50/95 p-3 shadow-[0_8px_0_rgba(6,95,70,0.1)]">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge tone="emerald">Word Energy</Badge>
+              <p className="text-xs font-black uppercase text-emerald-900/70">
+                Current run
+              </p>
+            </div>
+            <p className="mt-2 text-sm font-black leading-5 text-emerald-950">
+              {wordEnergySummary.fresh} Fresh / {wordEnergySummary.used} Used /{" "}
+              {wordEnergySummary.tired} Tired / {wordEnergySummary.resting} Low
+            </p>
+            <p className="mt-1 text-xs font-bold text-emerald-900/65">
+              Shop visits restore 1 energy step.
+            </p>
+          </section>
+
           <details
             className={`rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${battleFeedbackClass}`}
           >
@@ -2107,7 +2128,7 @@ export function Dungeon({
               <Badge tone={sidePanelMastery >= 5 ? "emerald" : "amber"}>
                 {getMasteryStatusLabel(sidePanelMastery)}
               </Badge>
-              <Badge tone={sidePanelWordUsage >= 3 ? "slate" : "emerald"}>
+              <Badge tone={sidePanelWordUsage >= 5 ? "slate" : "emerald"}>
                 {getWordEnergyLabel(sidePanelWordUsage)}
               </Badge>
             </summary>
@@ -2292,9 +2313,9 @@ function CardStatChips({
     <div className="flex shrink-0 flex-wrap justify-end gap-1">
       <span
         className={`rounded-full border px-1.5 py-0.5 text-[10px] font-black uppercase ${
-          usageCount >= 3
+          usageCount >= 5
             ? "border-stone-300 bg-stone-100 text-stone-700"
-            : usageCount >= 2
+            : usageCount >= 3
               ? "border-orange-200 bg-orange-50 text-orange-800"
               : "border-emerald-200 bg-emerald-50 text-emerald-800"
         }`}

@@ -922,6 +922,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Correct answers should remain rewarding while the system gently nudges the player toward varied vocabulary.
 - Status: Accepted
 
+### 2026-06-14: Word Energy Thresholds Are Softer
+
+- Decision: Word Energy thresholds are softened so Low Energy appears at usage 5+ instead of usage 3+.
+- Reason: Longer runs should still encourage vocabulary variety without making most of the deck look exhausted too early.
+- Status: Accepted
+
+### 2026-06-14: Shop Return Recovers Word Energy
+
+- Decision: Leaving Shop for Dungeon recovers current-run Word Energy by reducing each tracked usage count by 1.
+- Reason: Shop checkpoints are natural pacing breaks, and small recovery keeps long runs from feeling like every word is unusable.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

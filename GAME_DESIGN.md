@@ -217,19 +217,21 @@ Current rules:
 - Usage increases only when a Dungeon word card triggers correctly.
 - Wrong answers, timeouts, event choices, shop purchases, Training answers, and Deck Review do not increase usage.
 - Usage 0 is Fresh.
-- Usage 1 is Used.
-- Usage 2 is Tired.
-- Usage 3 or more is Resting.
-- Fresh words have the highest battle question selection weight.
-- Used and Tired words have reduced selection weight.
-- Resting words are avoided if enough non-resting words are available.
-- Resting words can still appear as fallback if needed to keep Word Choice, Word Match, or Word Scramble playable.
+- Usage 1-2 is Used.
+- Usage 3-4 is Tired.
+- Usage 5 or more is Low Energy.
+- Fresh words have battle question selection weight 5.
+- Used words have selection weight 3.
+- Tired words have selection weight 2.
+- Low Energy words are avoided if enough non-low-energy words are available.
+- Low Energy words can still appear as fallback if needed to keep Word Choice, Word Match, or Word Scramble playable.
 - Fatigue affects card appearance chance only.
 - Fatigue does not reduce damage, shield, element effects, mastery bonuses, or combat rewards.
+- Leaving Shop for Dungeon recovers Word Energy by reducing each tracked usage count by 1 to a minimum of 0.
 - Fatigue resets with temporary run state on run reset, run failure, run completion, deck change, Reset Progress, or page refresh.
 - Fatigue is not saved to LocalStorage.
 
-Dungeon option cards show compact Word Energy chips where card stats are already shown. In Word Match, fatigue is shown only on the English card side.
+Dungeon option cards show compact Word Energy chips where card stats are already shown. In Word Match, fatigue is shown only on the English card side. Dungeon also shows a compact Word Energy summary for current-run diagnostics.
 
 ## Basic Balance
 

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 39 Card Fatigue / Word Energy System is complete. GitHub backup is configured on `origin/main`.
+Phase 39.1 Word Energy Balance + Diagnostics Hotfix is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -490,6 +490,15 @@ Phase 39 Card Fatigue / Word Energy System is complete. GitHub backup is configu
 - Fatigue resets on run reset, run failure, run completion, deck change, and Reset Progress, and is not saved to LocalStorage.
 - Preserved combat damage math, timer values, shop effects, Phase 38 shop offer behavior, boss rules, event rewards, deck unlock rules, and permanent mastery behavior.
 - Verified the project with `npm run build` after Phase 39.
+- Applied Phase 39.1 Word Energy Balance + Diagnostics Hotfix.
+- Softened fatigue thresholds so Fresh is usage 0, Used is usage 1-2, Tired is usage 3-4, and Low Energy is usage 5+.
+- Softened fatigue weights to Fresh 5, Used 3, Tired 2, and Low Energy 0 unless fallback is needed.
+- Updated player-facing low-energy label from `Resting` to compact `Low`.
+- Added a compact Word Energy summary in the Dungeon side panel showing Fresh, Used, Tired, and Low counts for the current run deck.
+- Added current-run-only energy recovery when leaving Shop for Dungeon; all tracked usage counts decrease by 1 to a minimum of 0.
+- Reduced result overlay noise so Word Energy feedback appears only when a word becomes Tired or Low Energy.
+- Preserved Word Match's English-side-only stat rule, Phase 38 shop offers, combat math, timers, mastery, elements, boss rules, event rewards, deck unlocks, statistics, and LocalStorage rules.
+- Verified the project with `npm run build` after Phase 39.1.
 
 ## In Progress
 
@@ -497,7 +506,7 @@ Phase 39 Card Fatigue / Word Energy System is complete. GitHub backup is configu
 
 ## Next Task
 
-Phase 39 is complete. Continue with the next explicitly requested phase or feature.
+Phase 39.1 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -618,7 +627,8 @@ The following documents are required and must be updated after every completed t
 - Word Energy / Card Fatigue is current-run-only
 - Card fatigue is tracked by normalized word text, not card id
 - Fatigue affects Dungeon card appearance chance only and does not reduce damage
-- Resting words can reappear as fallback if needed to keep mini-games playable
+- Low Energy words can reappear as fallback if needed to keep mini-games playable
+- Word Energy recovers by 1 usage step when leaving Shop for Dungeon
 - Elements now have simple first-pass gameplay effects during Dungeon battles
 - Element effects remain temporary current-run card effects
 - Advanced elemental weakness and resistance are still deferred
