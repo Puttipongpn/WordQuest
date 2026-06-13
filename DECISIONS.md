@@ -952,6 +952,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Abandon Run communicates that only the current temporary run will be lost.
 - Status: Accepted
 
+### 2026-06-14: Expanded Events Are Current-Run Only
+
+- Decision: Expanded dungeon events provide current-run-only choices and never modify permanent progress unless explicitly designed in a later phase.
+- Reason: Events should add run variety and tactical choices without bypassing roguelike reset rules or weakening the permanent-progress safety model.
+- Status: Accepted
+
+### 2026-06-14: Events Can Recover Word Energy
+
+- Decision: Some non-combat events can recover current-run Word Energy by 1 step.
+- Reason: Word Energy recovery gives events a learning-system reward that helps long runs feel less repetitive while remaining temporary and unsaved.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

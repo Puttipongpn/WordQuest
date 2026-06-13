@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix is complete. GitHub backup is configured on `origin/main`.
+Phase 40 Event Expansion Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -509,6 +509,14 @@ Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix is complete. GitHub 
 - Added a distinct Home Reset Progress confirmation modal explaining that it clears permanent progress.
 - Confirmed `resetSavedProgress()` is only used by Home Reset Progress, not abandon/restart/back-home run actions.
 - Verified the project with `npm run build` after Phase 39.2.
+- Applied Phase 40 Event Expansion Pass.
+- Expanded Dungeon events beyond Treasure Chest, Healing Shrine, and Strange Altar with Campfire, Lost Backpack, Ancient Library, Element Fountain, Cursed Door, Wandering Trainer, Mystic Well, and Forgotten Signpost.
+- Added current-run-only event rewards for temporary gold, HP recovery, shield gain, random current-run card attack upgrades, random current-run card shield upgrades, random current-run card elements, HP costs, and Word Energy recovery.
+- Added a random current-run card shield upgrade helper so events can add Shield +2 without mutating source deck data.
+- Kept events non-combat, immediate choice encounters with no Encounter Intro and no timer.
+- Kept events from counting toward monster defeats, shop checkpoints, or boss progression.
+- Preserved LocalStorage permanent-progress-only rules; event rewards do not modify word mastery, deck unlocks, completed decks, or permanent statistics.
+- Verified the project with `npm run build` after Phase 40.
 
 ## In Progress
 
@@ -516,7 +524,7 @@ Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix is complete. GitHub 
 
 ## Next Task
 
-Phase 39.2 is complete. Continue with the next explicitly requested phase or feature.
+Phase 40 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -651,6 +659,7 @@ The following documents are required and must be updated after every completed t
 - Event encounters are temporary run content and do not count toward boss progression
 - Event rewards remain current-run only and never bypass roguelike reset rules
 - Events do not chain immediately after resolving an event
+- Expanded event rewards remain temporary current-run effects and do not modify permanent progress
 - Phase 30 improves Dungeon game feel using CSS, Tailwind utility classes, emoji, and placeholder assets only
 - Combat encounters use Encounter Intro before timers begin
 - Pause stops Dungeon battle timers and disables question interaction until Resume

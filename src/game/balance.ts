@@ -41,9 +41,16 @@ export const ELITE_GOLD_BONUS = 10;
 
 export const TREASURE_GOLD_REWARD = 10;
 export const EVENT_ATTACK_UPGRADE_AMOUNT = 1;
+export const EVENT_CARD_SHIELD_UPGRADE_AMOUNT = 2;
 export const SHRINE_HEAL_AMOUNT = 5;
 export const SHRINE_SHIELD_GAIN = 5;
 export const ALTAR_HP_COST = 5;
+export const CAMPFIRE_HEAL_AMOUNT = 6;
+export const CURSED_DOOR_HP_COST = 6;
+export const CURSED_DOOR_GOLD_REWARD = 15;
+export const MYSTIC_WELL_HEAL_AMOUNT = 6;
+export const MYSTIC_WELL_SHIELD_GAIN = 6;
+export const SIGNPOST_GOLD_REWARD = 8;
 
 export const WORD_FATIGUE_USED_THRESHOLD = 1;
 export const WORD_FATIGUE_TIRED_THRESHOLD = 3;

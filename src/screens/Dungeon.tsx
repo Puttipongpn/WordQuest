@@ -11,19 +11,26 @@ import { sampleBoss, sampleMonsters } from "../data";
 import {
   ALTAR_HP_COST,
   BOSS_MONSTER_REQUIREMENT,
+  CAMPFIRE_HEAL_AMOUNT,
+  CURSED_DOOR_GOLD_REWARD,
+  CURSED_DOOR_HP_COST,
   EARTH_ATTACK_REDUCTION,
   ELITE_ATTACK_BONUS,
   ELITE_ENCOUNTER_WEIGHT,
   ELITE_GOLD_BONUS,
   ELITE_HP_MULTIPLIER,
   EVENT_ATTACK_UPGRADE_AMOUNT,
+  EVENT_CARD_SHIELD_UPGRADE_AMOUNT,
   EVENT_ENCOUNTER_WEIGHT,
   FIRE_BONUS_DAMAGE,
   INITIAL_SHIELD,
   MONSTER_ENCOUNTER_WEIGHT,
+  MYSTIC_WELL_HEAL_AMOUNT,
+  MYSTIC_WELL_SHIELD_GAIN,
   PLAYER_MAX_HP,
   SHRINE_HEAL_AMOUNT,
   SHRINE_SHIELD_GAIN,
+  SIGNPOST_GOLD_REWARD,
   TREASURE_GOLD_REWARD,
   WATER_SHIELD_GAIN,
   WIND_DEFEAT_GOLD_BONUS,
@@ -59,6 +66,7 @@ type DungeonProps = {
   isSelectedDeckCompleted: boolean;
   onCompleteSelectedDeck: () => CompletionReward;
   onAddRandomElementToRunCard: () => { word: string; element: string } | null;
+  onAddShieldToRandomRunCard: (amount?: number) => string | null;
   onIncreaseWordFatigue: (word: string) => void;
   onGainRunGold: (amount: number) => void;
   onMonsterDefeated: (options?: { isElite?: boolean; bonusGold?: number }) => void;
@@ -69,6 +77,7 @@ type DungeonProps = {
   ) => void;
   onResetRun: () => void;
   onResetWordFatigue: () => void;
+  onRecoverWordEnergy: () => void;
   onUpgradeRandomRunCardAttack: (amount?: number) => string | null;
   onUpdateRunStatistics: (nextStatistics: RunStatistics) => void;
   runGold: number;
@@ -86,7 +95,18 @@ type CompletionReward = {
 
 type BattleMiniGameType = "word-choice" | "word-match" | "word-scramble";
 type EncounterType = "monster" | "elite" | "event";
-type DungeonEventId = "treasure-chest" | "healing-shrine" | "strange-altar";
+type DungeonEventId =
+  | "treasure-chest"
+  | "healing-shrine"
+  | "strange-altar"
+  | "campfire"
+  | "lost-backpack"
+  | "ancient-library"
+  | "element-fountain"
+  | "cursed-door"
+  | "wandering-trainer"
+  | "mystic-well"
+  | "forgotten-signpost";
 type BattleStatus =
   | "encounter-intro"
   | "fighting"
@@ -225,6 +245,198 @@ const dungeonEvents: DungeonEvent[] = [
       {
         id: "leave",
         label: "Leave",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "campfire",
+    icon: "🔥",
+    title: "Campfire",
+    description:
+      "A small campfire crackles in a safe alcove. The warmth steadies your thoughts.",
+    options: [
+      {
+        id: "heal",
+        label: "Rest",
+        description: `Recover ${CAMPFIRE_HEAL_AMOUNT} HP.`,
+      },
+      {
+        id: "focus",
+        label: "Focus words",
+        description: "Recover current-run Word Energy by 1 step.",
+      },
+      {
+        id: "leave",
+        label: "Move on",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "lost-backpack",
+    icon: "🎒",
+    title: "Lost Backpack",
+    description:
+      "An old backpack rests under loose stones. A few supplies are still useful.",
+    options: [
+      {
+        id: "gold",
+        label: "Take spare coins",
+        description: `Gain +${TREASURE_GOLD_REWARD} temporary gold.`,
+      },
+      {
+        id: "attack",
+        label: "Use a whetstone",
+        description: `Upgrade a random current-run card attack by +${EVENT_ATTACK_UPGRADE_AMOUNT}.`,
+      },
+      {
+        id: "leave",
+        label: "Leave it",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "ancient-library",
+    icon: "📚",
+    title: "Ancient Library",
+    description:
+      "Dusty shelves whisper with old vocabulary. You can take one quick lesson before moving on.",
+    options: [
+      {
+        id: "attack",
+        label: "Study battle verbs",
+        description: `Upgrade a random current-run card attack by +${EVENT_ATTACK_UPGRADE_AMOUNT}.`,
+      },
+      {
+        id: "gold",
+        label: "Find a bookmark",
+        description: `Gain +${SIGNPOST_GOLD_REWARD} temporary gold.`,
+      },
+      {
+        id: "leave",
+        label: "Close the book",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "element-fountain",
+    icon: "⛲",
+    title: "Element Fountain",
+    description:
+      "Colored water circles a stone basin. One splash can enchant a current-run card.",
+    options: [
+      {
+        id: "element",
+        label: "Draw an element",
+        description: "Add a random element to a random current-run card.",
+      },
+      {
+        id: "card-shield",
+        label: "Bottle a ward",
+        description: `Add Shield +${EVENT_CARD_SHIELD_UPGRADE_AMOUNT} to a random current-run card.`,
+      },
+      {
+        id: "leave",
+        label: "Leave the fountain",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "cursed-door",
+    icon: "🚪",
+    title: "Cursed Door",
+    description:
+      "A sealed door offers a bargain. The handle is cold, but treasure waits beyond it.",
+    options: [
+      {
+        id: "gold",
+        label: "Pay blood for gold",
+        description: `Lose ${CURSED_DOOR_HP_COST} HP and gain +${CURSED_DOOR_GOLD_REWARD} gold.`,
+      },
+      {
+        id: "attack",
+        label: "Pay blood for power",
+        description: `Lose ${CURSED_DOOR_HP_COST} HP and upgrade a random current-run card attack by +${EVENT_ATTACK_UPGRADE_AMOUNT}.`,
+      },
+      {
+        id: "leave",
+        label: "Step away",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "wandering-trainer",
+    icon: "🧙",
+    title: "Wandering Trainer",
+    description:
+      "A traveling tutor offers one quick drill before vanishing deeper into the dungeon.",
+    options: [
+      {
+        id: "attack",
+        label: "Practice strikes",
+        description: `Upgrade a random current-run card attack by +${EVENT_ATTACK_UPGRADE_AMOUNT}.`,
+      },
+      {
+        id: "focus",
+        label: "Practice recall",
+        description: "Recover current-run Word Energy by 1 step.",
+      },
+      {
+        id: "leave",
+        label: "Save your strength",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "mystic-well",
+    icon: "💧",
+    title: "Mystic Well",
+    description:
+      "A deep well reflects your next battle before it happens. The water feels protective.",
+    options: [
+      {
+        id: "shield",
+        label: "Raise a barrier",
+        description: `Gain ${MYSTIC_WELL_SHIELD_GAIN} shield.`,
+      },
+      {
+        id: "heal",
+        label: "Drink carefully",
+        description: `Recover ${MYSTIC_WELL_HEAL_AMOUNT} HP.`,
+      },
+      {
+        id: "leave",
+        label: "Leave the well",
+        description: "Continue without changing the run.",
+      },
+    ],
+  },
+  {
+    id: "forgotten-signpost",
+    icon: "🪧",
+    title: "Forgotten Signpost",
+    description:
+      "A half-buried sign points toward safer paths and a few coins hidden nearby.",
+    options: [
+      {
+        id: "gold",
+        label: "Search the path",
+        description: `Gain +${SIGNPOST_GOLD_REWARD} temporary gold.`,
+      },
+      {
+        id: "shield",
+        label: "Prepare defense",
+        description: `Gain ${SHRINE_SHIELD_GAIN} shield.`,
+      },
+      {
+        id: "leave",
+        label: "Keep walking",
         description: "Continue without changing the run.",
       },
     ],
@@ -755,6 +967,7 @@ export function Dungeon({
   isSelectedDeckCompleted,
   onCompleteSelectedDeck,
   onAddRandomElementToRunCard,
+  onAddShieldToRandomRunCard,
   onIncreaseWordFatigue,
   onGainRunGold,
   onMonsterDefeated,
@@ -762,6 +975,7 @@ export function Dungeon({
   onRecordRunEnded,
   onResetRun,
   onResetWordFatigue,
+  onRecoverWordEnergy,
   onUpgradeRandomRunCardAttack,
   onUpdateRunStatistics,
   runGold,
@@ -1488,6 +1702,206 @@ export function Dungeon({
         elementReward
           ? `Chose Touch the altar. Cost: -${ALTAR_HP_COST} HP. Reward: ${elementReward.word} gained ${formatElementName(elementReward.element)}.`
           : `Chose Touch the altar. Cost: -${ALTAR_HP_COST} HP, but no card was available.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "campfire" && optionId === "heal") {
+      const nextHp = Math.min(playerHp + CAMPFIRE_HEAL_AMOUNT, PLAYER_MAX_HP);
+
+      setPlayerHp(nextHp);
+      continueAfterEvent(
+        `Chose Rest. Reward: recovered ${nextHp - playerHp} HP.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "campfire" && optionId === "focus") {
+      onRecoverWordEnergy();
+      continueAfterEvent(
+        "Chose Focus words. Reward: Word Energy recovered by 1 step.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "lost-backpack" && optionId === "gold") {
+      onGainRunGold(TREASURE_GOLD_REWARD);
+      continueAfterEvent(
+        `Chose Take spare coins. Reward: +${TREASURE_GOLD_REWARD} gold.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "lost-backpack" && optionId === "attack") {
+      const upgradedWord = onUpgradeRandomRunCardAttack(
+        EVENT_ATTACK_UPGRADE_AMOUNT,
+      );
+      continueAfterEvent(
+        upgradedWord
+          ? `Chose Use a whetstone. Reward: ${upgradedWord} gained +${EVENT_ATTACK_UPGRADE_AMOUNT} attack.`
+          : "Chose Use a whetstone. No card was available to upgrade.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "ancient-library" && optionId === "attack") {
+      const upgradedWord = onUpgradeRandomRunCardAttack(
+        EVENT_ATTACK_UPGRADE_AMOUNT,
+      );
+      continueAfterEvent(
+        upgradedWord
+          ? `Chose Study battle verbs. Reward: ${upgradedWord} gained +${EVENT_ATTACK_UPGRADE_AMOUNT} attack.`
+          : "Chose Study battle verbs. No card was available to upgrade.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "ancient-library" && optionId === "gold") {
+      onGainRunGold(SIGNPOST_GOLD_REWARD);
+      continueAfterEvent(
+        `Chose Find a bookmark. Reward: +${SIGNPOST_GOLD_REWARD} gold.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "element-fountain" && optionId === "element") {
+      const elementReward = onAddRandomElementToRunCard();
+
+      continueAfterEvent(
+        elementReward
+          ? `Chose Draw an element. Reward: ${elementReward.word} gained ${formatElementName(elementReward.element)}.`
+          : "Chose Draw an element. No card was available to enchant.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "element-fountain" && optionId === "card-shield") {
+      const shieldedWord = onAddShieldToRandomRunCard(
+        EVENT_CARD_SHIELD_UPGRADE_AMOUNT,
+      );
+
+      continueAfterEvent(
+        shieldedWord
+          ? `Chose Bottle a ward. Reward: ${shieldedWord} gained Shield +${EVENT_CARD_SHIELD_UPGRADE_AMOUNT}.`
+          : "Chose Bottle a ward. No card was available to protect.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "cursed-door" && optionId === "gold") {
+      const nextPlayerHp = Math.max(playerHp - CURSED_DOOR_HP_COST, 0);
+
+      setPlayerHp(nextPlayerHp);
+
+      if (nextPlayerHp === 0) {
+        onResetWordFatigue();
+        setEndedRunGold(runGold);
+        setEndedRunStatistics(nextRunStatistics);
+        onRecordRunEnded("failed", nextRunStatistics);
+        setBattleStatus("run-failed");
+        setBattleLog({
+          tone: "danger",
+          message: `Cursed Door: lost ${CURSED_DOOR_HP_COST} HP and the run failed.`,
+        });
+        return;
+      }
+
+      onGainRunGold(CURSED_DOOR_GOLD_REWARD);
+      continueAfterEvent(
+        `Chose Pay blood for gold. Cost: -${CURSED_DOOR_HP_COST} HP. Reward: +${CURSED_DOOR_GOLD_REWARD} gold.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "cursed-door" && optionId === "attack") {
+      const nextPlayerHp = Math.max(playerHp - CURSED_DOOR_HP_COST, 0);
+      const upgradedWord = onUpgradeRandomRunCardAttack(
+        EVENT_ATTACK_UPGRADE_AMOUNT,
+      );
+
+      setPlayerHp(nextPlayerHp);
+
+      if (nextPlayerHp === 0) {
+        onResetWordFatigue();
+        setEndedRunGold(runGold);
+        setEndedRunStatistics(nextRunStatistics);
+        onRecordRunEnded("failed", nextRunStatistics);
+        setBattleStatus("run-failed");
+        setBattleLog({
+          tone: "danger",
+          message: `Cursed Door: lost ${CURSED_DOOR_HP_COST} HP and the run failed.`,
+        });
+        return;
+      }
+
+      continueAfterEvent(
+        upgradedWord
+          ? `Chose Pay blood for power. Cost: -${CURSED_DOOR_HP_COST} HP. Reward: ${upgradedWord} gained +${EVENT_ATTACK_UPGRADE_AMOUNT} attack.`
+          : `Chose Pay blood for power. Cost: -${CURSED_DOOR_HP_COST} HP, but no card was available.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "wandering-trainer" && optionId === "attack") {
+      const upgradedWord = onUpgradeRandomRunCardAttack(
+        EVENT_ATTACK_UPGRADE_AMOUNT,
+      );
+      continueAfterEvent(
+        upgradedWord
+          ? `Chose Practice strikes. Reward: ${upgradedWord} gained +${EVENT_ATTACK_UPGRADE_AMOUNT} attack.`
+          : "Chose Practice strikes. No card was available to upgrade.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "wandering-trainer" && optionId === "focus") {
+      onRecoverWordEnergy();
+      continueAfterEvent(
+        "Chose Practice recall. Reward: Word Energy recovered by 1 step.",
+      );
+      return;
+    }
+
+    if (currentEvent.id === "mystic-well" && optionId === "shield") {
+      setShield((currentShield) => currentShield + MYSTIC_WELL_SHIELD_GAIN);
+      onUpdateRunStatistics({
+        ...nextRunStatistics,
+        totalShieldGained:
+          nextRunStatistics.totalShieldGained + MYSTIC_WELL_SHIELD_GAIN,
+      });
+      continueAfterEvent(
+        `Chose Raise a barrier. Reward: gained ${MYSTIC_WELL_SHIELD_GAIN} shield.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "mystic-well" && optionId === "heal") {
+      const nextHp = Math.min(playerHp + MYSTIC_WELL_HEAL_AMOUNT, PLAYER_MAX_HP);
+
+      setPlayerHp(nextHp);
+      continueAfterEvent(
+        `Chose Drink carefully. Reward: recovered ${nextHp - playerHp} HP.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "forgotten-signpost" && optionId === "gold") {
+      onGainRunGold(SIGNPOST_GOLD_REWARD);
+      continueAfterEvent(
+        `Chose Search the path. Reward: +${SIGNPOST_GOLD_REWARD} gold.`,
+      );
+      return;
+    }
+
+    if (currentEvent.id === "forgotten-signpost" && optionId === "shield") {
+      setShield((currentShield) => currentShield + SHRINE_SHIELD_GAIN);
+      onUpdateRunStatistics({
+        ...nextRunStatistics,
+        totalShieldGained:
+          nextRunStatistics.totalShieldGained + SHRINE_SHIELD_GAIN,
+      });
+      continueAfterEvent(
+        `Chose Prepare defense. Reward: gained ${SHRINE_SHIELD_GAIN} shield.`,
       );
       return;
     }

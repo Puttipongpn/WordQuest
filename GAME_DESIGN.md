@@ -448,6 +448,32 @@ Current Event encounters:
 - Strange Altar
   - Lose 5 HP and add a random element to a random current-run card, or
   - Leave
+- Campfire
+  - Recover 6 HP, recover current-run Word Energy by 1 step, or
+  - Leave
+- Lost Backpack
+  - Gain +10 gold, upgrade a random current-run card attack by +1, or
+  - Leave
+- Ancient Library
+  - Upgrade a random current-run card attack by +1, gain +8 gold, or
+  - Leave
+- Element Fountain
+  - Add a random element to a random current-run card, add Shield +2 to a random current-run card, or
+  - Leave
+- Cursed Door
+  - Lose 6 HP and gain +15 gold, lose 6 HP and upgrade a random current-run card attack by +1, or
+  - Leave
+- Wandering Trainer
+  - Upgrade a random current-run card attack by +1, recover current-run Word Energy by 1 step, or
+  - Leave
+- Mystic Well
+  - Gain 6 shield, recover 6 HP, or
+  - Leave
+- Forgotten Signpost
+  - Gain +8 gold, gain 5 shield, or
+  - Leave
+
+Expanded Event rewards are current-run-only. They may affect temporary HP, shield, gold, Word Energy, or the current-run deck copy, but they do not modify word mastery, deck unlocks, completed decks, permanent statistics, source deck data, or LocalStorage.
 
 ## Mini-Game Plan
 

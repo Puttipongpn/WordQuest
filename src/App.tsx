@@ -11,6 +11,7 @@ import {
 import { availableDecks, starterDeck } from "./data";
 import {
   ADD_SHIELD_AMOUNT,
+  EVENT_CARD_SHIELD_UPGRADE_AMOUNT,
   EVENT_ATTACK_UPGRADE_AMOUNT,
   GOLD_PER_MONSTER,
   MAX_WORD_MASTERY,
@@ -312,6 +313,67 @@ export default function App() {
     }));
 
     return { word: selectedCard.word, element };
+  }
+
+  function addShieldToRandomRunCard(amount = EVENT_CARD_SHIELD_UPGRADE_AMOUNT) {
+    if (currentRunDeck.length === 0) {
+      return null;
+    }
+
+    const randomIndex = Math.floor(Math.random() * currentRunDeck.length);
+    const selectedCard = currentRunDeck[randomIndex];
+
+    setCurrentRunDeck((currentDeck) =>
+      currentDeck.map((card) => {
+        if (card.id !== selectedCard.id) {
+          return card;
+        }
+
+        const effects = card.effects ?? [];
+        const existingShieldEffect = effects.find(
+          (effect) => effect.type === "shield",
+        );
+
+        if (existingShieldEffect) {
+          let hasUpgradedShield = false;
+
+          return {
+            ...card,
+            effects: effects.map((effect) => {
+              if (effect.type !== "shield" || hasUpgradedShield) {
+                return effect;
+              }
+
+              hasUpgradedShield = true;
+
+              return {
+                ...effect,
+                amount: effect.amount + amount,
+                description: `Gain ${effect.amount + amount} shield when triggered.`,
+              };
+            }),
+          };
+        }
+
+        return {
+          ...card,
+          effects: [
+            ...effects,
+            {
+              type: "shield",
+              amount,
+              description: `Gain ${amount} shield when triggered.`,
+            },
+          ],
+        };
+      }),
+    );
+    setRunStatistics((currentStatistics) => ({
+      ...currentStatistics,
+      cardsUpgradedCount: currentStatistics.cardsUpgradedCount + 1,
+    }));
+
+    return selectedCard.word;
   }
 
   function updateRunStatistics(nextStatistics: RunStatistics) {
@@ -655,6 +717,8 @@ export default function App() {
             onResetWordFatigue={resetWordFatigue}
             onUpgradeRandomRunCardAttack={upgradeRandomRunCardAttack}
             onAddRandomElementToRunCard={addRandomElementToRunCard}
+            onAddShieldToRandomRunCard={addShieldToRandomRunCard}
+            onRecoverWordEnergy={recoverRunWordEnergy}
             onUpdateRunStatistics={updateRunStatistics}
             runGold={runGold}
             runProgress={runProgress}
