@@ -934,6 +934,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Shop checkpoints are natural pacing breaks, and small recovery keeps long runs from feeling like every word is unusable.
 - Status: Accepted
 
+### 2026-06-14: Abandon Run Preserves Permanent Progress
+
+- Decision: Abandon Run ends only the current temporary run and never clears permanent progress.
+- Reason: Players need a safe way to leave a roguelike run without losing word mastery, unlocked decks, completed decks, or saved statistics.
+- Status: Accepted
+
+### 2026-06-14: Reset Progress Is The Only Permanent Reset
+
+- Decision: Reset Progress is the only player action that clears permanent progress.
+- Reason: Permanent learning progress should be protected from ambiguous run-exit actions.
+- Status: Accepted
+
+### 2026-06-14: Use Abandon Run Wording
+
+- Decision: Replace player-facing `End Run` and `Leave Run` wording with `Abandon Run`.
+- Reason: Abandon Run communicates that only the current temporary run will be lost.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

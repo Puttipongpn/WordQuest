@@ -120,6 +120,22 @@ Current saved data intentionally excludes:
 
 Run summary statistics are saved only after a run completes or fails. Active run state is never persisted.
 
+## Run Exit Safety
+
+Dungeon uses explicit `Abandon Run` wording for leaving an active temporary run.
+
+Abandon Run rules:
+
+- Abandon Run ends only the current temporary run.
+- Abandon Run never clears word mastery, unlocked decks, completed decks, or saved permanent statistics.
+- Abandon Run resets temporary HP, shield, gold, shop upgrades, card enchantments, duplicated cards, removed cards, current-run deck copy, monster state, boss state, event state, floor/progression state, and Word Energy.
+- Abandon Run requires confirmation before resetting the temporary run.
+- `Abandon & Go Home` resets temporary run state and returns to Home.
+- `Abandon & Restart` resets temporary run state and starts a fresh run with the same selected deck.
+- Run Complete and Run Failed navigation actions clear temporary run state before leaving Dungeon.
+
+Reset Progress is different from Abandon Run. Reset Progress is the only player action that clears permanent progress in LocalStorage.
+
 ## Deck System
 
 Vocabulary is represented as decks of word cards.
@@ -343,7 +359,7 @@ Current battle rules:
 - Timer countdown runs only while a Dungeon battle question is active, unpaused, and unanswered.
 - Pause is available during active Monster, Elite, and Boss combat.
 - Pause stops the timer and disables question interaction until Resume.
-- Leave Run from Pause ends the current run through the existing Run Failed flow without saving temporary run state.
+- Abandon Run from Pause opens the current-run abandon confirmation and never clears permanent progress.
 - If time reaches 0, the result is treated as a wrong answer.
 - Word Choice uses recall-focused prompts instead of image-only prompts.
 - Word Choice can ask English Word to Thai Meaning, Thai Meaning to English Word, or Example Sentence Cloze.
@@ -586,8 +602,10 @@ The Home screen includes a simple reset progress action.
 
 Reset progress rules:
 
+- Show a distinct confirmation modal before clearing permanent progress.
 - Clear the LocalStorage saved player progress.
 - Reset in-memory progress back to defaults.
+- Clear word mastery, unlocked decks, completed decks, and best run stats.
 - Do not affect any backend or remote state because none exists in Version 1.
 
 ## Save Versioning

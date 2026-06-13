@@ -804,6 +804,7 @@ export function Dungeon({
   const [endedRunStatistics, setEndedRunStatistics] =
     useState<RunStatistics | null>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [isAbandonConfirmOpen, setIsAbandonConfirmOpen] = useState(false);
   const [battleLog, setBattleLog] = useState<BattleLog>({
     tone: "neutral",
     message: "Inspect the encounter, then start battle when ready.",
@@ -873,8 +874,18 @@ export function Dungeon({
   );
   const miniGameTimeLimit = getMiniGameTimeLimit(miniGameType);
   const isTimerLow = timeRemaining <= 3;
-  const isTimerRunning = battleStatus === "fighting" && !isPaused && !isAnswered;
-  const canPauseBattle = battleStatus === "fighting" && !isPaused && !isAnswered;
+  const isTimerRunning =
+    battleStatus === "fighting" &&
+    !isPaused &&
+    !isAnswered &&
+    !isAbandonConfirmOpen;
+  const canPauseBattle =
+    battleStatus === "fighting" &&
+    !isPaused &&
+    !isAnswered &&
+    !isAbandonConfirmOpen;
+  const canAbandonRun =
+    battleStatus !== "run-complete" && battleStatus !== "run-failed";
   const canShowTriggeredCardDetails = battleLog.triggeredCard !== undefined;
   const encounterFlavorText = getEncounterFlavorText(currentEncounter, {
     isBossEncounter,
@@ -1005,24 +1016,19 @@ export function Dungeon({
     });
   }
 
+  function openAbandonRunConfirm() {
+    setIsAbandonConfirmOpen(true);
+  }
+
+  function closeAbandonRunConfirm() {
+    setIsAbandonConfirmOpen(false);
+  }
+
   function resumeBattle() {
     setIsPaused(false);
     setBattleLog({
       tone: "neutral",
       message: "Battle resumed. Answer before the timer runs out.",
-    });
-  }
-
-  function leaveRunFromPause() {
-    setIsPaused(false);
-    onResetWordFatigue();
-    setEndedRunGold(runGold);
-    setEndedRunStatistics(runStatistics);
-    onRecordRunEnded("failed", runStatistics);
-    setBattleStatus("run-failed");
-    setBattleLog({
-      tone: "danger",
-      message: "Run abandoned from pause. Temporary run state was not saved.",
     });
   }
 
@@ -1249,6 +1255,7 @@ export function Dungeon({
       timeRemaining > 0 ||
       isAnswered ||
       isPaused ||
+      isAbandonConfirmOpen ||
       battleStatus !== "fighting"
     ) {
       return;
@@ -1256,10 +1263,15 @@ export function Dungeon({
 
     setIsAnswered(true);
     monsterAttack("Time's up!", true);
-  }, [battleStatus, isAnswered, isPaused, timeRemaining]);
+  }, [battleStatus, isAbandonConfirmOpen, isAnswered, isPaused, timeRemaining]);
 
   function handleWordChoiceAnswer(choice: WordCard) {
-    if (isAnswered || isPaused || battleStatus !== "fighting") {
+    if (
+      isAnswered ||
+      isPaused ||
+      isAbandonConfirmOpen ||
+      battleStatus !== "fighting"
+    ) {
       return;
     }
 
@@ -1278,6 +1290,7 @@ export function Dungeon({
     if (
       isAnswered ||
       isPaused ||
+      isAbandonConfirmOpen ||
       battleStatus !== "fighting" ||
       selectedWordId === null ||
       selectedMeaningId === null
@@ -1305,6 +1318,7 @@ export function Dungeon({
     if (
       isAnswered ||
       isPaused ||
+      isAbandonConfirmOpen ||
       battleStatus !== "fighting" ||
       selectedScrambleCardId === null ||
       scrambleAnswer.trim() === ""
@@ -1530,6 +1544,25 @@ export function Dungeon({
     });
   }
 
+  function abandonRunAndGoHome() {
+    setIsAbandonConfirmOpen(false);
+    setIsPaused(false);
+    onResetRun();
+    onResetWordFatigue();
+    onNavigate("home");
+  }
+
+  function abandonRunAndRestart() {
+    setIsAbandonConfirmOpen(false);
+    handleRestartRun();
+  }
+
+  function leaveEndedRun(screen: ScreenName) {
+    onResetRun();
+    onResetWordFatigue();
+    onNavigate(screen);
+  }
+
   const resultActions: BattleResultAction[] = (() => {
     if (battleStatus === "run-complete") {
       return [
@@ -1539,12 +1572,12 @@ export function Dungeon({
           variant: "secondary",
         },
         {
-          label: "Review Completed Deck",
-          onClick: () => onNavigate("deck-review"),
+          label: "Review Deck",
+          onClick: () => leaveEndedRun("deck-review"),
         },
         {
           label: "Back Home",
-          onClick: () => onNavigate("home"),
+          onClick: () => leaveEndedRun("home"),
           variant: "ghost",
         },
       ];
@@ -1556,6 +1589,11 @@ export function Dungeon({
           label: "Restart Run",
           onClick: handleRestartRun,
           variant: "danger",
+        },
+        {
+          label: "Back Home",
+          onClick: () => leaveEndedRun("home"),
+          variant: "ghost",
         },
       ];
     }
@@ -1719,13 +1757,15 @@ export function Dungeon({
                     Pause
                   </Button>
                 )}
-                <Button
-                  type="button"
-                  onClick={() => onNavigate("run-result")}
-                  variant="secondary"
-                >
-                  End Run
-                </Button>
+                {canAbandonRun && (
+                  <Button
+                    type="button"
+                    onClick={openAbandonRunConfirm}
+                    variant="danger"
+                  >
+                    Abandon Run
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -1993,8 +2033,39 @@ export function Dungeon({
                   <Button type="button" onClick={resumeBattle}>
                     Resume
                   </Button>
-                  <Button type="button" onClick={leaveRunFromPause} variant="danger">
-                    Leave Run
+                  <Button type="button" onClick={openAbandonRunConfirm} variant="danger">
+                    Abandon Run
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isAbandonConfirmOpen && (
+            <div className="absolute inset-0 z-30 grid place-items-center bg-stone-950/75 p-5 backdrop-blur-sm">
+              <div className="w-full max-w-lg rounded-3xl border-2 border-red-300 bg-amber-50 p-6 text-amber-950 shadow-[0_18px_0_rgba(127,29,29,0.24)]">
+                <Badge tone="red">Abandon Run</Badge>
+                <h3 className="mt-3 text-3xl font-black">
+                  Abandon current run?
+                </h3>
+                <p className="mt-3 text-sm font-bold leading-6 text-amber-900/80">
+                  You will lose this run's HP, gold, shield, shop upgrades,
+                  duplicated cards, removed cards, card enchantments, monster
+                  state, boss state, and Word Energy.
+                </p>
+                <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-bold leading-6 text-emerald-950">
+                  <p>Your permanent progress stays safe:</p>
+                  <p>word mastery, unlocked decks, completed decks, and saved best run stats.</p>
+                </div>
+                <div className="mt-6 grid gap-3">
+                  <Button type="button" variant="secondary" onClick={closeAbandonRunConfirm}>
+                    Continue Run
+                  </Button>
+                  <Button type="button" variant="danger" onClick={abandonRunAndGoHome}>
+                    Abandon & Go Home
+                  </Button>
+                  <Button type="button" variant="ghost" onClick={abandonRunAndRestart}>
+                    Abandon & Restart
                   </Button>
                 </div>
               </div>
@@ -2239,10 +2310,10 @@ export function Dungeon({
                 <Button type="button" onClick={handleRestartRun} variant="secondary">
                   Start Fresh Run
                 </Button>
-                <Button type="button" onClick={() => onNavigate("deck-review")}>
-                  Review Completed Deck
+                <Button type="button" onClick={() => leaveEndedRun("deck-review")}>
+                  Review Deck
                 </Button>
-                <Button type="button" onClick={() => onNavigate("home")} variant="ghost">
+                <Button type="button" onClick={() => leaveEndedRun("home")} variant="ghost">
                   Back Home
                 </Button>
               </div>
@@ -2270,6 +2341,14 @@ export function Dungeon({
                 <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
                 <StatCard label="Damage" value={summaryStatistics.totalDamageDealt} tone="red" />
                 <StatCard label="Shield Gained" value={summaryStatistics.totalShieldGained} tone="sky" />
+              </div>
+              <div className="mt-4 grid gap-2">
+                <Button type="button" onClick={handleRestartRun} variant="danger">
+                  Restart Run
+                </Button>
+                <Button type="button" onClick={() => leaveEndedRun("home")} variant="ghost">
+                  Back Home
+                </Button>
               </div>
             </section>
           )}

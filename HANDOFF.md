@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 39.1 complete.
+Current phase: Phase 39.2 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, and after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, and after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work.
 
 The local development server can be started with:
 
@@ -475,7 +475,7 @@ Current Dungeon implementation:
 - Current static time limits are Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
 - Timer countdown runs only while a Dungeon battle question is active, unpaused, and unanswered.
 - Pause is available during active Monster, Elite, or Boss combat. It stops the timer and blocks question interaction until Resume.
-- Leave Run from Pause ends the run through the existing Run Failed flow and does not save temporary run state.
+- Abandon Run from Pause opens the current-run abandon confirmation and does not clear permanent progress.
 - Timeout is treated as a wrong answer and causes the current monster or boss to attack.
 - Word Choice shows one prompt card with an English-to-Thai, Thai-to-English, or cloze-style prompt.
 - Word Choice uses answer choices that match the prompt direction and clearly reveals the correct answer after selection.
@@ -547,7 +547,7 @@ Current Dungeon implementation:
 - Phase 31 improved Home deck progression display with locked, unlocked, completed, requirement text, and next unlock target.
 - Phase 32 added Encounter Intro before Monster, Elite, and Boss combat.
 - Phase 32 added Start Battle so timers and active questions begin only after the player chooses to start combat.
-- Phase 32 added a Pause overlay during active combat with Resume and Leave Run actions.
+- Phase 32 added a Pause overlay during active combat; Phase 39.2 now uses Resume and Abandon Run actions there.
 - Phase 32 preserved Events as immediate non-combat choice encounters.
 - Phase 33 made permanent word mastery useful in Dungeon battles through small triggered-card damage bonuses.
 - Phase 33 improved mastery visibility in Training, Deck Review, and Dungeon card trigger feedback.
@@ -607,6 +607,11 @@ Current Dungeon implementation:
 - Phase 39.1 adds a compact Dungeon Word Energy summary for Fresh, Used, Tired, and Low counts.
 - Phase 39.1 adds current-run-only energy recovery when leaving Shop for Dungeon by reducing each tracked usage count by 1.
 - Phase 39.1 keeps fatigue as appearance-chance-only and preserves all combat math, save rules, shop item effects, timers, mastery, elements, boss rules, event rewards, and deck unlocks.
+- Phase 39.2 replaces ambiguous `End Run` / `Leave Run` wording with `Abandon Run`.
+- Phase 39.2 adds an Abandon Run confirmation modal with Continue Run, Abandon & Go Home, and Abandon & Restart.
+- Phase 39.2 makes Abandon Run reset only temporary run state and never clear word mastery, unlocked decks, completed decks, or permanent statistics.
+- Phase 39.2 adds a distinct Home Reset Progress confirmation modal for clearing permanent progress.
+- Phase 39.2 ensures Run Complete and Run Failed navigation actions clear temporary run state before leaving Dungeon.
 
 Current Shop implementation:
 
@@ -747,6 +752,8 @@ Permanent progress should be saved in LocalStorage for Version 1.
 
 Current prototype note: word mastery, deck unlocks, completed decks, and best run summary statistics are persisted in LocalStorage.
 
+Reset Progress is the only player action that clears permanent progress. Abandon Run, Restart Run, Back Home, selected deck changes, and run completion/failure navigation must not clear LocalStorage permanent progress.
+
 ## Run Progress Rules
 
 Run progress is temporary.
@@ -770,10 +777,13 @@ Run progress includes:
 - Elite state
 - Temporary event rewards
 - Active run statistics before completion/failure
+- Word Energy / fatigue
 
 If the player dies, permanent progress survives death and run progress is completely lost.
 
 Temporary run upgrades should not be saved as permanent progress after death.
+
+Abandon Run also loses only the current temporary run. It resets HP, shield, gold, current-run deck changes, encounter state, boss state, run progression, and Word Energy while preserving word mastery, unlocked decks, completed decks, and permanent statistics.
 
 Only summary statistics from completed or failed runs are saved as permanent best run stats.
 
@@ -984,7 +994,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 39.1 is complete.
+Phase 39.2 is complete.
 
 Recommended next task:
 

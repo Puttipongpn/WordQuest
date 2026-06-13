@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import { Badge, Button, CardPanel, StatCard } from "../components/ui";
 import { BOSS_MONSTER_REQUIREMENT } from "../game/balance";
@@ -28,20 +29,16 @@ export function Home({
   selectedDeckId,
   unlockedDeckIds,
 }: HomeProps) {
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const selectedDeck =
     availableDecks.find((deck) => deck.id === selectedDeckId) ??
     availableDecks[0];
   const isSelectedDeckCompleted = completedDeckIds.includes(selectedDeck.id);
   const nextUnlockTarget = getNextUnlockTarget(completedDeckIds, availableDecks);
 
-  function handleResetProgress() {
-    const shouldReset = window.confirm(
-      "Reset saved word mastery and permanent progress?",
-    );
-
-    if (shouldReset) {
-      onResetProgress();
-    }
+  function confirmResetProgress() {
+    onResetProgress();
+    setIsResetConfirmOpen(false);
   }
 
   return (
@@ -88,7 +85,7 @@ export function Home({
             </Button>
             <Button
               type="button"
-              onClick={handleResetProgress}
+              onClick={() => setIsResetConfirmOpen(true)}
               variant="danger"
             >
               Reset Progress
@@ -291,6 +288,35 @@ export function Home({
           })}
         </div>
       </CardPanel>
+
+      {isResetConfirmOpen && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-stone-950/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-3xl border-2 border-red-300 bg-amber-50 p-6 text-amber-950 shadow-[0_18px_0_rgba(127,29,29,0.24)]">
+            <Badge tone="red">Permanent Reset</Badge>
+            <h3 className="mt-3 text-3xl font-black">Reset all progress?</h3>
+            <p className="mt-3 text-sm font-bold leading-6 text-amber-900/80">
+              This clears permanent progress saved in this browser. This is
+              different from abandoning a dungeon run.
+            </p>
+            <div className="mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-bold leading-6 text-red-950">
+              <p>This will clear:</p>
+              <p>word mastery, unlocked decks, completed decks, and best run stats.</p>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setIsResetConfirmOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="button" variant="danger" onClick={confirmResetProgress}>
+                Reset All Progress
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </ScreenShell>
   );
 }

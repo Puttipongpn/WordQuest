@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 39.1 Word Energy Balance + Diagnostics Hotfix is complete. GitHub backup is configured on `origin/main`.
+Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -354,9 +354,9 @@ Phase 39.1 Word Energy Balance + Diagnostics Hotfix is complete. GitHub backup i
 - Added encounter flavor text for Slime, Goblin, Bat, Elite encounters, and Gatekeeper.
 - Kept Event encounters immediate with their existing choices and no Start Battle step.
 - Added a Pause button during active combat.
-- Pause stops the timer, disables question interaction, and shows a PAUSED overlay with Resume and Leave Run actions.
+- Pause stops the timer, disables question interaction, and shows a PAUSED overlay with Resume and Abandon Run actions.
 - Resume continues the active battle timer.
-- Leave Run from pause ends the run through the existing Run Failed flow without saving temporary run state.
+- Abandon Run from pause opens the current-run abandon confirmation.
 - Updated timer rules so timers do not run during Encounter Intro, Events, Pause, Shop routing, Boss Available, Run Complete, Run Failed, or Training.
 - Preserved combat math, elements, shop, deck unlocks, LocalStorage, run progression, statistics, mastery, Training, and all balance values.
 - Verified the project with `npm run build` after Phase 32.
@@ -499,6 +499,16 @@ Phase 39.1 Word Energy Balance + Diagnostics Hotfix is complete. GitHub backup i
 - Reduced result overlay noise so Word Energy feedback appears only when a word becomes Tired or Low Energy.
 - Preserved Word Match's English-side-only stat rule, Phase 38 shop offers, combat math, timers, mastery, elements, boss rules, event rewards, deck unlocks, statistics, and LocalStorage rules.
 - Verified the project with `npm run build` after Phase 39.1.
+- Applied Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix.
+- Replaced ambiguous Dungeon `End Run` and pause `Leave Run` wording with `Abandon Run`.
+- Added an Abandon Run confirmation modal with `Continue Run`, `Abandon & Go Home`, and `Abandon & Restart` actions.
+- Abandon Run resets only temporary run state, current-run deck mutations, HP, shield, gold, monster/boss/event state, and Word Energy.
+- Abandon Run preserves word mastery, unlocked decks, completed decks, and saved permanent statistics.
+- Run Failed now offers both `Restart Run` and `Back Home`.
+- Run Complete `Review Deck` and `Back Home` now clear temporary run state before navigation.
+- Added a distinct Home Reset Progress confirmation modal explaining that it clears permanent progress.
+- Confirmed `resetSavedProgress()` is only used by Home Reset Progress, not abandon/restart/back-home run actions.
+- Verified the project with `npm run build` after Phase 39.2.
 
 ## In Progress
 
@@ -506,7 +516,7 @@ Phase 39.1 Word Energy Balance + Diagnostics Hotfix is complete. GitHub backup i
 
 ## Next Task
 
-Phase 39.1 is complete. Continue with the next explicitly requested phase or feature.
+Phase 39.2 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -634,6 +644,8 @@ The following documents are required and must be updated after every completed t
 - Advanced elemental weakness and resistance are still deferred
 - Run summary stats are saved only after a run completes or fails
 - Best run stats are permanent progress
+- Abandon Run ends only the current temporary run and never clears permanent progress
+- Reset Progress is the only player action that clears permanent progress
 - Active run state remains unsaved
 - Elite encounters are temporary run content and count as monster defeats
 - Event encounters are temporary run content and do not count toward boss progression
