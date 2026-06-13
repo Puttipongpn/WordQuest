@@ -129,6 +129,12 @@ type BattleLog = {
   rewardSummary?: string;
 };
 
+type BattleResultAction = {
+  label: string;
+  onClick: () => void;
+  variant?: "primary" | "secondary" | "danger" | "ghost";
+};
+
 type DungeonEvent = {
   id: DungeonEventId;
   icon: string;
@@ -545,6 +551,149 @@ function getTimerStateLabel(
   return "Counting";
 }
 
+function getStageFeedbackText({
+  battleLog,
+  battleStatus,
+  currentEncounterName,
+  encounterType,
+  isBossEncounter,
+}: {
+  battleLog: BattleLog;
+  battleStatus: BattleStatus;
+  currentEncounterName: string;
+  encounterType: EncounterType;
+  isBossEncounter: boolean;
+}) {
+  if (battleStatus === "run-failed") {
+    return "Run ended!";
+  }
+
+  if (battleStatus === "run-complete") {
+    return `${currentEncounterName} defeated!`;
+  }
+
+  if (battleStatus === "monster-defeated") {
+    return `${encounterType === "elite" ? "Elite" : currentEncounterName} defeated!`;
+  }
+
+  if ((battleLog.damageDealt ?? 0) > 0) {
+    return "Player attacks!";
+  }
+
+  if ((battleLog.shieldAbsorbed ?? 0) > 0) {
+    return `Shield blocked ${battleLog.shieldAbsorbed}!`;
+  }
+
+  if ((battleLog.hpDamageTaken ?? 0) > 0) {
+    return `${isBossEncounter ? currentEncounterName : "Enemy"} hits back!`;
+  }
+
+  return "Choose your move.";
+}
+
+function getResultOverlayCopy({
+  battleLog,
+  encounterResultLabel,
+  isCorrect,
+  isDefeated,
+  isTimeout,
+}: {
+  battleLog: BattleLog;
+  encounterResultLabel?: string;
+  isCorrect: boolean;
+  isDefeated: boolean;
+  isTimeout?: boolean;
+}) {
+  if (isDefeated) {
+    return {
+      title: "Defeated!",
+      subtitle: isTimeout
+        ? "Time ran out, and the enemy finished the run."
+        : "The enemy's attack ended your run.",
+    };
+  }
+
+  if (isCorrect) {
+    if (encounterResultLabel) {
+      return {
+        title: encounterResultLabel,
+        subtitle: "Your card ended the encounter.",
+      };
+    }
+
+    return {
+      title: (battleLog.damageDealt ?? 0) > 0 ? "Hit!" : "Correct!",
+      subtitle: "Your card triggered.",
+    };
+  }
+
+  if (isTimeout) {
+    return {
+      title: "Time Out!",
+      subtitle: "No card triggered.",
+    };
+  }
+
+  return {
+    title: "Wrong!",
+    subtitle: "No card triggered.",
+  };
+}
+
+function getFloatingCombatText({
+  battleLog,
+  battleStatus,
+}: {
+  battleLog: BattleLog;
+  battleStatus: BattleStatus;
+}) {
+  if (battleStatus === "run-failed") {
+    return "DEFEATED";
+  }
+
+  if (battleStatus === "monster-defeated" || battleStatus === "run-complete") {
+    return "DEFEATED";
+  }
+
+  if ((battleLog.damageDealt ?? 0) > 0) {
+    return `-${battleLog.damageDealt} DMG`;
+  }
+
+  if ((battleLog.hpDamageTaken ?? 0) > 0) {
+    return `-${battleLog.hpDamageTaken} HP`;
+  }
+
+  if ((battleLog.shieldAbsorbed ?? 0) > 0) {
+    return `BLOCK ${battleLog.shieldAbsorbed}`;
+  }
+
+  if ((battleLog.shieldGained ?? 0) > 0) {
+    return `+${battleLog.shieldGained} SHD`;
+  }
+
+  return "";
+}
+
+function getElementCombatText(battleLog: BattleLog) {
+  if ((battleLog.elementBonusDamage ?? 0) > 0) {
+    return `Fire +${battleLog.elementBonusDamage} DMG`;
+  }
+
+  if ((battleLog.waterShieldGained ?? 0) > 0) {
+    return `Water +${battleLog.waterShieldGained} SHD`;
+  }
+
+  if ((battleLog.earthAttackReduction ?? 0) > 0) {
+    return `Earth weakens attack`;
+  }
+
+  if ((battleLog.windGoldGained ?? 0) > 0) {
+    return `Wind +${battleLog.windGoldGained} Gold`;
+  }
+
+  return "";
+}
+
 function getEncounterFlavorText(
   encounter: Monster,
   options: { isBossEncounter: boolean; encounterType: EncounterType },
@@ -709,6 +858,40 @@ export function Dungeon({
     battleLog.tone,
     battleLog.message,
   );
+  const stageFeedbackText = getStageFeedbackText({
+    battleLog,
+    battleStatus,
+    currentEncounterName: currentEncounter.name,
+    encounterType,
+    isBossEncounter,
+  });
+  const floatingCombatText = getFloatingCombatText({ battleLog, battleStatus });
+  const elementCombatText = getElementCombatText(battleLog);
+  const playerTookHit = (battleLog.hpDamageTaken ?? 0) > 0;
+  const shieldBlockedHit = (battleLog.shieldAbsorbed ?? 0) > 0;
+  const encounterTookHit = (battleLog.damageDealt ?? 0) > 0;
+  const encounterResolved =
+    battleStatus === "monster-defeated" ||
+    battleStatus === "run-complete" ||
+    battleStatus === "run-failed";
+  const encounterResultLabel =
+    battleStatus === "run-complete"
+      ? "Boss Defeated!"
+      : battleStatus === "monster-defeated"
+        ? encounterType === "elite"
+          ? "Elite Defeated!"
+          : "Monster Defeated!"
+        : undefined;
+  const battleStageMotionClass =
+    battleStatus === "run-failed"
+      ? "defeat-glow"
+      : encounterTookHit
+        ? "hit-flash"
+        : playerTookHit
+          ? "damage-shake"
+          : shieldBlockedHit
+            ? "shield-pulse"
+            : "";
   const encounterStageClass = isEventEncounter
     ? "border-violet-300/40 bg-gradient-to-br from-violet-950 via-stone-950 to-amber-950"
     : isBossEncounter
@@ -1287,6 +1470,89 @@ export function Dungeon({
     });
   }
 
+  const resultActions: BattleResultAction[] = (() => {
+    if (battleStatus === "run-complete") {
+      return [
+        {
+          label: "Start Fresh Run",
+          onClick: handleRestartRun,
+          variant: "secondary",
+        },
+        {
+          label: "Review Completed Deck",
+          onClick: () => onNavigate("deck-review"),
+        },
+        {
+          label: "Back Home",
+          onClick: () => onNavigate("home"),
+          variant: "ghost",
+        },
+      ];
+    }
+
+    if (battleStatus === "run-failed") {
+      return [
+        {
+          label: "Restart Run",
+          onClick: handleRestartRun,
+          variant: "danger",
+        },
+      ];
+    }
+
+    if (battleStatus === "monster-defeated") {
+      if (isBossAvailable) {
+        return [
+          {
+            label: "Start Boss Battle",
+            onClick: handleStartBoss,
+          },
+          ...(isShopAvailable
+            ? [
+                {
+                  label: "Go To Shop",
+                  onClick: () => onNavigate("shop"),
+                  variant: "secondary" as const,
+                },
+              ]
+            : []),
+        ];
+      }
+
+      if (isShopAvailable) {
+        return [
+          {
+            label: "Go To Shop",
+            onClick: () => onNavigate("shop"),
+          },
+          {
+            label: "Continue Dungeon",
+            onClick: handleNextMonster,
+            variant: "secondary",
+          },
+        ];
+      }
+
+      return [
+        {
+          label: "Next Encounter",
+          onClick: handleNextMonster,
+        },
+      ];
+    }
+
+    if (isAnswered && battleStatus === "fighting") {
+      return [
+        {
+          label: "Next Mini-Game",
+          onClick: advanceQuestion,
+        },
+      ];
+    }
+
+    return [];
+  })();
+
   return (
     <ScreenShell
       eyebrow="Battle"
@@ -1404,11 +1670,17 @@ export function Dungeon({
             </div>
 
             <section
-              className={`rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] ${encounterStageClass}`}
+              className={`rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] ${encounterStageClass} ${battleStageMotionClass}`}
             >
               <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.78fr)] lg:items-center">
                 <div className="grid gap-2 sm:grid-cols-[1.25fr_0.7fr_0.7fr_0.7fr_0.9fr]">
-                  <div className="rounded-xl border border-red-100/15 bg-red-950/25 px-3 py-1.5">
+                  <div
+                    className={`rounded-xl border px-3 py-1.5 transition ${
+                      playerTookHit
+                        ? "damage-shake border-red-200/70 bg-red-800/45 shadow-[0_0_24px_rgba(248,113,113,0.28)]"
+                        : "border-red-100/15 bg-red-950/25"
+                    }`}
+                  >
                     <div className="flex items-center justify-between text-sm font-black text-red-50">
                       <span>Player HP</span>
                       <span>{playerHp} / {PLAYER_MAX_HP}</span>
@@ -1420,7 +1692,13 @@ export function Dungeon({
                       label="Player HP"
                     />
                   </div>
-                  <div className="rounded-xl border border-sky-100/15 bg-sky-950/25 px-3 py-1.5">
+                  <div
+                    className={`rounded-xl border px-3 py-1.5 transition ${
+                      shieldBlockedHit
+                        ? "shield-pulse border-sky-200/70 bg-sky-700/35 shadow-[0_0_24px_rgba(125,211,252,0.25)]"
+                        : "border-sky-100/15 bg-sky-950/25"
+                    }`}
+                  >
                     <p className="text-xs font-black uppercase text-sky-100/70">
                       Shield
                     </p>
@@ -1452,7 +1730,13 @@ export function Dungeon({
 
                 <div className="grid gap-2 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center">
                   <div
-                    className={`grid size-12 place-items-center rounded-xl border-4 text-3xl shadow-lg ${encounterPortraitClass}`}
+                    className={`grid size-12 place-items-center rounded-xl border-4 text-3xl shadow-lg transition ${encounterPortraitClass} ${
+                      encounterTookHit
+                        ? "damage-shake scale-105 ring-4 ring-red-300/45"
+                        : encounterResolved
+                          ? "defeat-glow ring-4 ring-emerald-300/35"
+                          : ""
+                    }`}
                   >
                     {isEventEncounter
                       ? currentEvent.icon
@@ -1529,8 +1813,35 @@ export function Dungeon({
                 </span>
                 Player
               </div>
-              <div className="relative h-2 rounded-full bg-amber-100/20">
+              <div className="relative h-6 rounded-full bg-amber-100/15">
                 <span className="absolute inset-y-0 left-2 right-2 rounded-full border-t border-dashed border-amber-100/45" />
+                <span
+                  className={`attack-pop absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border px-3 py-0.5 text-xs font-black shadow ${
+                    battleLog.tone === "success"
+                      ? "border-emerald-200 bg-emerald-100 text-emerald-950"
+                      : battleLog.tone === "danger"
+                        ? "border-red-200 bg-red-100 text-red-950"
+                        : "border-amber-200 bg-amber-100 text-amber-950"
+                  }`}
+                >
+                  {stageFeedbackText}
+                </span>
+                {floatingCombatText && (
+                  <span
+                    className={`float-combat-text pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 rounded-full border px-2 py-0.5 text-[11px] font-black shadow ${
+                      battleLog.tone === "success"
+                        ? "border-emerald-200 bg-emerald-100 text-emerald-950"
+                        : "border-red-200 bg-red-100 text-red-950"
+                    }`}
+                  >
+                    {floatingCombatText}
+                  </span>
+                )}
+                {elementCombatText && (
+                  <span className="attack-pop absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-full border border-violet-200 bg-violet-100 px-2 py-0.5 text-[11px] font-black text-violet-950 shadow md:inline">
+                    {elementCombatText}
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2 text-sm font-black text-red-100">
                 <span className="grid size-7 place-items-center rounded-full border border-red-200/30 bg-red-100/15">
@@ -1563,23 +1874,27 @@ export function Dungeon({
                 ) : miniGameType === "word-choice" ? (
                   <WordChoiceBattle
                     isAnswered={isAnswered}
+                    isDefeated={battleStatus === "run-failed"}
+                    encounterResultLabel={encounterResultLabel}
                     question={wordChoiceQuestion}
                     selectedChoiceId={selectedChoiceId}
                     onAnswer={handleWordChoiceAnswer}
-                    onNext={canAdvanceAfterAnswer ? advanceQuestion : undefined}
+                    actions={resultActions}
                     battleLog={battleLog}
                     wordMastery={wordMastery}
                   />
                 ) : miniGameType === "word-match" ? (
                   <WordMatchBattle
                     isAnswered={isAnswered}
+                    isDefeated={battleStatus === "run-failed"}
+                    encounterResultLabel={encounterResultLabel}
                     question={wordMatchQuestion}
                     selectedMeaningId={selectedMeaningId}
                     selectedWordId={selectedWordId}
                     onSelectMeaning={setSelectedMeaningId}
                     onSelectWord={setSelectedWordId}
                     onSubmit={handleWordMatchSubmit}
-                    onNext={canAdvanceAfterAnswer ? advanceQuestion : undefined}
+                    actions={resultActions}
                     battleLog={battleLog}
                     wordMastery={wordMastery}
                   />
@@ -1587,51 +1902,20 @@ export function Dungeon({
                   <WordScrambleBattle
                     answer={scrambleAnswer}
                     isAnswered={isAnswered}
+                    isDefeated={battleStatus === "run-failed"}
+                    encounterResultLabel={encounterResultLabel}
                     question={wordScrambleQuestion}
                     selectedCardId={selectedScrambleCardId}
                     onAnswerChange={setScrambleAnswer}
                     onSelectCard={setSelectedScrambleCardId}
                     onSubmit={handleWordScrambleSubmit}
-                    onNext={canAdvanceAfterAnswer ? advanceQuestion : undefined}
+                    actions={resultActions}
                     battleLog={battleLog}
                     wordMastery={wordMastery}
                   />
                 )}
               </div>
             </section>
-
-            {(isBossAvailable || isShopAvailable) && (
-              <section className="rounded-xl border-2 border-amber-300/20 bg-amber-100/10 p-3">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <Badge tone={isBossAvailable ? "red" : "amber"}>
-                      {isBossAvailable ? "Boss Available" : "Shop Available"}
-                    </Badge>
-                    <p className="mt-1 text-sm font-bold text-amber-50">
-                      {isBossAvailable
-                        ? `${sampleBoss.name} is ready.`
-                        : `Shop checkpoint reached after ${runProgress.monstersDefeated} monsters.`}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {isBossAvailable && (
-                      <Button type="button" onClick={handleStartBoss}>
-                        Start Boss Battle
-                      </Button>
-                    )}
-                    {isShopAvailable && (
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => onNavigate("shop")}
-                      >
-                        Go To Shop
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </section>
-            )}
           </div>
 
           {isPaused && (
@@ -1662,7 +1946,7 @@ export function Dungeon({
                 timeRemaining === 0
                   ? "border-red-400 bg-red-100"
                   : isTimerLow && isTimerRunning
-                    ? "border-red-400 bg-red-50 motion-safe:animate-pulse"
+                    ? "hit-flash border-red-400 bg-red-50 motion-safe:animate-pulse"
                     : "border-amber-800/30 bg-gradient-to-br from-amber-50 to-stone-100"
               }`}
             >
@@ -1682,7 +1966,13 @@ export function Dungeon({
                   <p className="text-xs font-extrabold uppercase text-amber-800/70">
                     Timer
                   </p>
-                  <p className="text-3xl font-black leading-none text-amber-950">
+                  <p
+                    className={`text-3xl font-black leading-none ${
+                      isTimerLow && isTimerRunning
+                        ? "attack-pop text-red-700"
+                        : "text-amber-950"
+                    }`}
+                  >
                     {timeRemaining}s
                   </p>
                 </div>
@@ -1733,47 +2023,19 @@ export function Dungeon({
             </div>
           </details>
 
-          {(isAnswered && battleStatus === "fighting") ||
-          battleStatus === "monster-defeated" ||
-          battleStatus === "run-failed" ? (
+          {battleStatus === "run-failed" && !isAnswered ? (
             <section className="rounded-2xl border-2 border-amber-800/20 bg-amber-50/95 p-3 shadow-[0_6px_0_rgba(120,53,15,0.12)]">
-              {isAnswered && battleStatus === "fighting" && (
-                <Button type="button" onClick={advanceQuestion} className="w-full">
-                  Next Mini-Game
-                </Button>
-              )}
-              {battleStatus === "monster-defeated" && (
-                <div className="grid gap-2">
-                  {!isBossAvailable && (
-                    <Button type="button" onClick={handleNextMonster}>
-                      Spawn Next Monster
-                    </Button>
-                  )}
-                  {isBossAvailable && (
-                    <Button type="button" onClick={handleStartBoss}>
-                      Start Boss Battle
-                    </Button>
-                  )}
-                  {isShopAvailable && (
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      onClick={() => onNavigate("shop")}
-                    >
-                      Go To Shop
-                    </Button>
-                  )}
-                </div>
-              )}
-              {battleStatus === "run-failed" && (
-                <Button
-                  type="button"
-                  onClick={handleRestartRun}
-                  className="w-full bg-red-600 hover:bg-red-700"
-                >
-                  Restart Run
-                </Button>
-              )}
+              <Badge tone="red">Run Failed</Badge>
+              <p className="mt-2 text-sm font-bold text-amber-950/80">
+                The run ended outside an active quiz result.
+              </p>
+              <Button
+                type="button"
+                onClick={handleRestartRun}
+                className="mt-3 w-full bg-red-600 hover:bg-red-700"
+              >
+                Restart Run
+              </Button>
             </section>
           ) : null}
 
@@ -1933,9 +2195,11 @@ export function Dungeon({
 }
 
 type WordChoiceBattleProps = {
+  actions: BattleResultAction[];
   battleLog: BattleLog;
+  encounterResultLabel?: string;
   isAnswered: boolean;
-  onNext?: () => void;
+  isDefeated: boolean;
   question: WordChoiceQuestion;
   selectedChoiceId: string | null;
   onAnswer: (choice: WordCard) => void;
@@ -1978,37 +2242,67 @@ function CardStatChips({
 }
 
 function BattleResultOverlay({
+  actions,
   battleLog,
   correctAnswer,
+  encounterResultLabel,
   isAnswered,
   isCorrect,
+  isDefeated,
   isTimeout,
-  onNext,
 }: {
+  actions: BattleResultAction[];
   battleLog: BattleLog;
   correctAnswer: string;
+  encounterResultLabel?: string;
   isAnswered: boolean;
   isCorrect: boolean;
+  isDefeated: boolean;
   isTimeout?: boolean;
-  onNext?: () => void;
 }) {
   if (!isAnswered) {
     return null;
   }
 
-  const toneClass = isCorrect
+  const toneClass = isDefeated
+    ? "border-red-500 bg-gradient-to-br from-red-100 to-stone-100 text-red-950"
+    : isCorrect
     ? "border-emerald-400 bg-emerald-50 text-emerald-950"
     : isTimeout
       ? "border-amber-400 bg-amber-50 text-amber-950"
       : "border-red-400 bg-red-50 text-red-950";
-  const title = isCorrect ? "Correct!" : isTimeout ? "Timeout!" : "Wrong!";
+  const { title, subtitle } = getResultOverlayCopy({
+    battleLog,
+    encounterResultLabel,
+    isCorrect,
+    isDefeated,
+    isTimeout,
+  });
+  const elementLine = getElementCombatText(battleLog);
+  const resultIcon = isDefeated
+    ? "💀"
+    : encounterResultLabel
+      ? "🏆"
+      : isCorrect
+        ? "⚔"
+        : isTimeout
+          ? "⏳"
+          : "💥";
+  const actionHint = actions.some((action) => action.label === "Go To Shop")
+    ? "Shop checkpoint reached."
+    : actions.some((action) => action.label === "Start Boss Battle")
+      ? "Boss available."
+      : "";
   const resultLines = isCorrect
     ? [
         battleLog.damageDealt !== undefined
           ? `+${battleLog.damageDealt} Damage`
           : null,
         battleLog.shieldGained ? `Shield +${battleLog.shieldGained}` : null,
-        battleLog.effectsSummary ? battleLog.effectsSummary : null,
+        elementLine || null,
+        battleLog.masteryBonusDamage
+          ? `Mastery +${battleLog.masteryBonusDamage}`
+          : null,
       ].filter(Boolean)
     : [
         battleLog.damageTaken !== undefined
@@ -2019,13 +2313,19 @@ function BattleResultOverlay({
       ].filter(Boolean);
 
   return (
-    <div className="absolute inset-0 z-10 grid place-items-center rounded-2xl bg-stone-950/35 p-3 backdrop-blur-[1px]">
-      <div className={`pointer-events-auto w-full max-w-xs rounded-2xl border-2 p-4 text-center shadow-2xl ${toneClass}`}>
-        <p className="text-2xl font-black">{title}</p>
+    <div className="absolute inset-0 z-10 grid place-items-center rounded-2xl bg-stone-950/45 p-3 backdrop-blur-[2px]">
+      <div className={`result-pop pointer-events-auto w-full max-w-xs rounded-2xl border-2 p-4 text-center shadow-[0_18px_0_rgba(28,25,23,0.22)] ${toneClass}`}>
+        <p className="text-3xl leading-none" aria-hidden="true">
+          {resultIcon}
+        </p>
+        <p className="text-3xl font-black leading-none">{title}</p>
+        <p className="mt-1 text-xs font-black uppercase opacity-70">
+          {subtitle}
+        </p>
         {resultLines.length > 0 && (
-          <div className="mt-2 grid gap-1">
+          <div className="mt-3 grid gap-1">
             {resultLines.slice(0, 3).map((line) => (
-              <p key={line} className="text-sm font-black">
+              <p key={line} className="rounded-lg bg-white/60 px-2 py-1 text-sm font-black shadow-inner">
                 {line}
               </p>
             ))}
@@ -2034,10 +2334,25 @@ function BattleResultOverlay({
         <p className="mt-2 text-xs font-bold leading-5 opacity-80">
           Correct answer: {correctAnswer}
         </p>
-        {onNext && (
-          <Button type="button" onClick={onNext} className="mt-3 w-full">
-            Next Mini-Game
-          </Button>
+        {actionHint && (
+          <p className="mt-2 rounded-full bg-white/50 px-2 py-1 text-xs font-black uppercase opacity-85">
+            {actionHint}
+          </p>
+        )}
+        {actions.length > 0 && (
+          <div className="mt-3 grid gap-2">
+            {actions.map((action) => (
+              <Button
+                key={action.label}
+                type="button"
+                onClick={action.onClick}
+                variant={action.variant}
+                className="w-full"
+              >
+                {action.label}
+              </Button>
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -2045,12 +2360,14 @@ function BattleResultOverlay({
 }
 
 function WordChoiceBattle({
+  actions,
   battleLog,
+  encounterResultLabel,
   isAnswered,
+  isDefeated,
   question,
   selectedChoiceId,
   onAnswer,
-  onNext,
   wordMastery,
 }: WordChoiceBattleProps) {
   const showsEnglishChoices =
@@ -2060,16 +2377,18 @@ function WordChoiceBattle({
   return (
     <div className="relative h-full">
       <BattleResultOverlay
+        actions={actions}
         battleLog={battleLog}
         correctAnswer={
           showsEnglishChoices
             ? `${question.card.word} = ${question.card.meaningTh}`
             : question.card.meaningTh
         }
+        encounterResultLabel={encounterResultLabel}
         isAnswered={isAnswered}
         isCorrect={selectedChoiceId === question.card.id}
+        isDefeated={isDefeated}
         isTimeout={selectedChoiceId === null}
-        onNext={onNext}
       />
       <div className="rounded-2xl border-2 border-amber-900/10 bg-white/85 p-2 shadow-inner">
         <Badge tone="purple">
@@ -2144,9 +2463,11 @@ function WordChoiceBattle({
 }
 
 type WordMatchBattleProps = {
+  actions: BattleResultAction[];
   battleLog: BattleLog;
+  encounterResultLabel?: string;
   isAnswered: boolean;
-  onNext?: () => void;
+  isDefeated: boolean;
   question: WordMatchQuestion;
   selectedMeaningId: string | null;
   selectedWordId: string | null;
@@ -2157,15 +2478,17 @@ type WordMatchBattleProps = {
 };
 
 function WordMatchBattle({
+  actions,
   battleLog,
+  encounterResultLabel,
   isAnswered,
+  isDefeated,
   question,
   selectedMeaningId,
   selectedWordId,
   onSelectMeaning,
   onSelectWord,
   onSubmit,
-  onNext,
   wordMastery,
 }: WordMatchBattleProps) {
   const selectedWord = question.cards.find((card) => card.id === selectedWordId);
@@ -2185,12 +2508,14 @@ function WordMatchBattle({
   return (
     <div className="relative flex h-full min-h-0 flex-col">
       <BattleResultOverlay
+        actions={actions}
         battleLog={battleLog}
         correctAnswer={correctAnswer}
+        encounterResultLabel={encounterResultLabel}
         isAnswered={isAnswered}
         isCorrect={isCorrect}
+        isDefeated={isDefeated}
         isTimeout={selectedWordId === null && selectedMeaningId === null}
-        onNext={onNext}
       />
       <div className="grid min-h-0 flex-1 gap-2 md:grid-cols-2">
         <div className="min-h-0">
@@ -2312,10 +2637,12 @@ function WordMatchBattle({
 }
 
 type WordScrambleBattleProps = {
+  actions: BattleResultAction[];
   answer: string;
   battleLog: BattleLog;
+  encounterResultLabel?: string;
   isAnswered: boolean;
-  onNext?: () => void;
+  isDefeated: boolean;
   question: WordScrambleQuestion;
   selectedCardId: string | null;
   onAnswerChange: (answer: string) => void;
@@ -2325,15 +2652,17 @@ type WordScrambleBattleProps = {
 };
 
 function WordScrambleBattle({
+  actions,
   answer,
   battleLog,
+  encounterResultLabel,
   isAnswered,
+  isDefeated,
   question,
   selectedCardId,
   onAnswerChange,
   onSelectCard,
   onSubmit,
-  onNext,
   wordMastery,
 }: WordScrambleBattleProps) {
   const selectedOption = question.options.find(
@@ -2348,16 +2677,18 @@ function WordScrambleBattle({
   return (
     <div className="relative h-full">
       <BattleResultOverlay
+        actions={actions}
         battleLog={battleLog}
         correctAnswer={
           selectedOption
             ? `${selectedOption.card.word} = ${selectedOption.card.meaningTh}`
             : "Choose a scrambled word first"
         }
+        encounterResultLabel={encounterResultLabel}
         isAnswered={isAnswered}
         isCorrect={isCorrect}
+        isDefeated={isDefeated}
         isTimeout={isAnswered && selectedOption === undefined}
-        onNext={onNext}
       />
       <div className="grid gap-2 sm:grid-cols-3">
         {question.options.map((option) => {

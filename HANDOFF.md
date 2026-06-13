@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 34.6 complete.
+Current phase: Phase 36.1 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, and after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, and after Phase 36.1 Unified Encounter Resolution Actions Hotfix work.
 
 The local development server can be started with:
 
@@ -574,6 +574,17 @@ Current Dungeon implementation:
 - Phase 34.6 keeps Word Match card stats only on the English word/card side because that side represents the card that can trigger.
 - Phase 34.6 removes ATK, shield, element, and mastery chips from Thai meaning options to prevent stat-based matching hints.
 - Phase 34.6 adds compact Word Match microcopy and a selected-pair footer with Check Pair inside the mini-game area.
+- Phase 35 improves combat result presentation without changing combat rules.
+- Phase 35 result overlays now use `Defeated!` wording when the player's HP reaches 0 instead of generic wrong/timeout wording.
+- Phase 35 adds stronger overlay titles for Monster Defeated, Elite Defeated, and Boss Defeated outcomes.
+- Phase 35 adds CSS/Tailwind-only feedback highlights for enemy damage, player HP damage, shield absorption, and compact stage feedback text.
+- Phase 36 adds CSS-only animation hooks in `src/styles.css` for hit flash, damage shake, shield pulse, attack pop, defeat glow, result pop, and floating combat text.
+- Phase 36 uses those hooks locally in Dungeon for player hit, shield block, enemy damage, defeat, result overlay, timer hurry, and floating combat text feedback.
+- Phase 36 keeps motion presentation-only and preserves combat math, timers, mastery, elements, save rules, shop, boss, events, and progression.
+- Phase 36.1 consolidates post-question and post-encounter actions into the result overlay/action area.
+- Phase 36.1 removes duplicate action blocks below the battle arena and in the side panel for normal result flow.
+- Phase 36.1 uses player-facing labels such as `Next Encounter` and `Continue Dungeon` instead of `Spawn Next Monster`.
+- Phase 36.1 keeps a side-panel restart fallback only for run failures that occur outside an active quiz overlay.
 
 Current Shop implementation:
 
@@ -931,7 +942,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 34.6 is complete.
+Phase 36.1 is complete.
 
 Recommended next task:
 

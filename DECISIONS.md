@@ -856,6 +856,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The footer keeps the current selection and submit action close to the choices without adding large instruction boxes or wasted vertical space.
 - Status: Accepted
 
+### 2026-06-12: Defeat Feedback Uses Defeated Messaging
+
+- Decision: Result feedback should use `Defeated!` messaging when player HP reaches 0 instead of only generic wrong or timeout feedback.
+- Reason: HP reaching 0 is a run-ending game outcome and should be communicated clearly and emotionally differently from an ordinary wrong answer.
+- Status: Accepted
+
+### 2026-06-12: Battle Motion Uses CSS-Only Hooks
+
+- Decision: Battle stage motion uses CSS-only animation hooks and does not change combat rules.
+- Reason: The prototype needs livelier combat feedback without adding animation libraries, sprite systems, or gameplay side effects.
+- Status: Accepted
+
+### 2026-06-12: Post-Encounter Actions Live In One Result Area
+
+- Decision: Post-encounter actions should appear in a single result overlay/action area to avoid duplicated battle controls.
+- Reason: A single action area makes the result flow clearer and prevents scattered buttons such as duplicated shop, next encounter, or restart actions.
+- Status: Accepted
+
+### 2026-06-12: Use Next Encounter Wording
+
+- Decision: Use `Next Encounter`, `Continue Dungeon`, or similar labels instead of player-facing `Spawn Next Monster`.
+- Reason: The next encounter may be a monster, elite, event, shop checkpoint, or boss milestone, so generic adventure wording is clearer.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

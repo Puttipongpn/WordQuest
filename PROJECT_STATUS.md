@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 36.1 Unified Encounter Resolution Actions Hotfix is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -433,6 +433,33 @@ Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass is complete. GitHub
 - Kept Thai meanings shuffled and preserved all existing Word Match answer logic.
 - Preserved combat rules, timers, elements, shop, progression, mastery, saves, encounter generation, pause, events, elites, boss behavior, statistics, and all gameplay systems.
 - Verified the project with `npm run build` after Phase 34.6.
+- Applied Phase 35 Combat Feedback + Defeat Presentation Pass.
+- Updated battle result overlay wording so player HP reaching 0 shows `Defeated!` messaging instead of generic wrong/timeout wording.
+- Polished compact result overlays with stronger titles, subtitles, clearer damage/shield lines, dimmed backdrop, and game-result styling.
+- Added Monster Defeated, Elite Defeated, and Boss Defeated overlay titles when triggered damage ends an encounter.
+- Added simple CSS/Tailwind-only feedback highlights for enemy damage, player HP damage, and shield absorption.
+- Added compact battle stage feedback text such as player attacks, shield blocked, encounter defeated, and run ended.
+- Preserved the Phase 34.6 Word Match anti-hint rule: stats remain only on English card options.
+- Preserved combat rules, timers, elements, shop, progression, mastery, saves, encounter generation, pause, events, elites, boss behavior, statistics, and all gameplay systems.
+- Verified the project with `npm run build` after Phase 35.
+- Applied Phase 36 Battle Stage Animation Hooks + Motion Polish.
+- Added reusable CSS-only animation hooks in `src/styles.css`: hit flash, damage shake, shield pulse, attack pop, defeat glow, result pop, and floating combat text.
+- Added reduced-motion fallback so motion hooks do not animate for reduced-motion users.
+- Added battle stage reaction states for player damage, shield block, enemy damage, encounter defeat, and run defeat.
+- Added floating combat text near the battle stage, such as damage, HP loss, shield block, shield gain, and defeated feedback.
+- Improved result overlay motion and visual hierarchy with result icons and compact element/mastery feedback lines.
+- Improved timer hurry feedback with subtle CSS-only pulse/flash styling.
+- Preserved the Phase 34.6 Word Match anti-hint rule and all existing gameplay rules.
+- Verified the project with `npm run build` after Phase 36.
+- Applied Phase 36.1 Unified Encounter Resolution Actions Hotfix.
+- Consolidated post-question and post-encounter actions into the compact result overlay/action area.
+- Removed the large Shop Available / Boss Available action block from below the battle arena.
+- Removed duplicated side-panel buttons for normal result flow, including Next Mini-Game, Go To Shop, Start Boss Battle, and old Spawn Next Monster wording.
+- Replaced player-facing `Spawn Next Monster` wording with `Next Encounter` or `Continue Dungeon`.
+- Added result overlay action sets for ongoing questions, monster/elite defeat, shop checkpoints, boss availability, boss defeat, and run failure.
+- Kept a side-panel restart fallback only for run failures that happen outside an active quiz overlay.
+- Preserved combat rules, timers, elements, shop purchases, progression, mastery, saves, encounter generation, pause, events, boss behavior, statistics, and current-run deck logic.
+- Verified the project with `npm run build` after Phase 36.1.
 
 ## In Progress
 
@@ -440,7 +467,7 @@ Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass is complete. GitHub
 
 ## Next Task
 
-Phase 34.6 is complete. Continue with the next explicitly requested phase or feature.
+Phase 36.1 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

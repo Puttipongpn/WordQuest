@@ -40,3 +40,129 @@ body::before {
   background: #facc15;
   color: #2d1d12;
 }
+
+@keyframes hit-flash {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  35% {
+    filter: brightness(1.45);
+  }
+}
+
+@keyframes damage-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-1px);
+  }
+}
+
+@keyframes shield-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes attack-pop {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.4;
+  }
+  65% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes defeat-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(251, 191, 36, 0);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(251, 191, 36, 0.45);
+  }
+}
+
+@keyframes result-pop {
+  0% {
+    transform: translateY(6px) scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float-combat-text {
+  0% {
+    transform: translate(-50%, 6px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -12px);
+    opacity: 0;
+  }
+}
+
+.hit-flash {
+  animation: hit-flash 420ms ease-out;
+}
+
+.damage-shake {
+  animation: damage-shake 360ms ease-out;
+}
+
+.shield-pulse {
+  animation: shield-pulse 520ms ease-out;
+}
+
+.attack-pop {
+  animation: attack-pop 320ms ease-out;
+}
+
+.defeat-glow {
+  animation: defeat-glow 900ms ease-out;
+}
+
+.result-pop {
+  animation: result-pop 180ms ease-out;
+}
+
+.float-combat-text {
+  animation: float-combat-text 1.1s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hit-flash,
+  .damage-shake,
+  .shield-pulse,
+  .attack-pop,
+  .defeat-glow,
+  .result-pop,
+  .float-combat-text {
+    animation: none;
+  }
+}

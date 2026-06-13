@@ -34,6 +34,14 @@ Current presentation rules:
 - A compact battle-stage strip may reserve space for future player/monster presentation, but it should not reduce quiz usability or add gameplay rules.
 - Monster, Elite, Boss, and Event encounters should feel visually distinct while using placeholder assets only.
 - Combat feedback should make damage, hits, shield gain, shield absorption, timeout state, and triggered card effects easy to scan.
+- If a wrong answer, timeout, or enemy hit reduces player HP to 0, result feedback should use `Defeated!` style messaging rather than generic wrong/timeout wording.
+- Compact result overlays can use stronger game-result titles such as Hit, Monster Defeated, Elite Defeated, Boss Defeated, Time Out, Wrong, and Defeated while preserving the underlying combat rules.
+- The compact battle stage strip can show short presentation-only feedback such as player attacks, shield blocked, encounter defeated, or run ended.
+- Battle stage motion uses CSS-only animation hooks such as hit flash, damage shake, shield pulse, attack pop, defeat glow, result pop, and floating combat text.
+- Motion effects are presentation-only and should never change combat rules, timer values, save behavior, or run progression.
+- Motion should remain subtle, readable, and safe for reduced-motion users.
+- Post-question and post-encounter actions should appear in one result overlay/action area to avoid duplicated battle controls.
+- Player-facing encounter continuation should use labels such as `Next Encounter` or `Continue Dungeon`, not `Spawn Next Monster`.
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
 - Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual passes.
 
