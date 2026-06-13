@@ -720,6 +720,34 @@ function getEncounterFlavorText(
     return "A fluttering bat circles above the dungeon path.";
   }
 
+  if (baseName.includes("wolf")) {
+    return "A hungry wolf watches your every move.";
+  }
+
+  if (baseName.includes("skeleton")) {
+    return "An old skeleton rattles in the dark.";
+  }
+
+  if (baseName.includes("mushroom")) {
+    return "A strange mushroom blocks the path.";
+  }
+
+  if (baseName.includes("wisp")) {
+    return "A glowing wisp floats between forgotten words.";
+  }
+
+  if (baseName.includes("imp")) {
+    return "A mischievous imp grins from the shadows.";
+  }
+
+  if (baseName.includes("stone bug")) {
+    return "A stone-shelled bug scrapes across the dungeon floor.";
+  }
+
+  if (baseName.includes("dark crow")) {
+    return "A dark crow watches from a broken archway.";
+  }
+
   return `${encounter.name} blocks your path.`;
 }
 

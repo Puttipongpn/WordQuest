@@ -289,8 +289,10 @@ Current battle rules:
 - Dungeon run progression tracks monsters defeated, current floor, and next shop checkpoint.
 - The run deck starts as a temporary copy of the selected deck.
 - Dungeon battle questions use the current-run deck copy.
-- Current sample monsters are Slime, Goblin, and Bat.
+- Current sample monsters are Slime, Goblin, Bat, Wolf, Skeleton, Mushroom, Wisp, Imp, Stone Bug, and Dark Crow.
 - Each monster has name, HP, max HP, and attack.
+- Phase 37 expands placeholder monster variety while preserving existing encounter and combat rules.
+- Monster variety currently uses manual placeholder emoji/icons and beginner-friendly values, not a complex scaling system.
 - Current encounter types are Monster, Elite, and Event.
 - Monster encounters use existing battle rules.
 - Elite encounters use stronger versions of existing sample monsters.

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 36.1 Unified Encounter Resolution Actions Hotfix is complete. GitHub backup is configured on `origin/main`.
+Phase 37 Enemy Variety Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -460,6 +460,15 @@ Phase 36.1 Unified Encounter Resolution Actions Hotfix is complete. GitHub backu
 - Kept a side-panel restart fallback only for run failures that happen outside an active quiz overlay.
 - Preserved combat rules, timers, elements, shop purchases, progression, mastery, saves, encounter generation, pause, events, boss behavior, statistics, and current-run deck logic.
 - Verified the project with `npm run build` after Phase 36.1.
+- Applied Phase 37 Enemy Variety Pass.
+- Expanded `src/data/monsters.ts` from 3 normal monsters to 10 placeholder monsters: Slime, Goblin, Bat, Wolf, Skeleton, Mushroom, Wisp, Imp, Stone Bug, and Dark Crow.
+- Kept monster values beginner-friendly, with normal monster HP between 18 and 34 and attack between 4 and 7.
+- Adjusted Goblin slightly downward to keep the expanded early pool approachable.
+- Existing monster selection automatically uses the expanded monster list through `getMonsterForIndex`.
+- Elite generation remains compatible with the expanded monster pool and still uses the existing HP x1.5 / attack +2 behavior.
+- Added encounter intro flavor text for the new placeholder monsters without adding a lore system or changing the monster data model.
+- Preserved Phase 36.1 unified result actions, Phase 34.6 Word Match anti-hint behavior, and all existing combat/save/shop/boss/deck rules.
+- Verified the project with `npm run build` after Phase 37.
 
 ## In Progress
 
@@ -467,7 +476,7 @@ Phase 36.1 Unified Encounter Resolution Actions Hotfix is complete. GitHub backu
 
 ## Next Task
 
-Phase 36.1 is complete. Continue with the next explicitly requested phase or feature.
+Phase 37 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

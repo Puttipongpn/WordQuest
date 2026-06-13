@@ -880,6 +880,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The next encounter may be a monster, elite, event, shop checkpoint, or boss milestone, so generic adventure wording is clearer.
 - Status: Accepted
 
+### 2026-06-13: Placeholder Monster Variety Expanded
+
+- Decision: Expand placeholder normal monster variety while preserving existing encounter and combat rules.
+- Reason: More monsters make runs feel less repetitive without adding new systems, scaling rules, art assets, or combat changes.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
