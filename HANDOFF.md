@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 38 complete.
+Current phase: Phase 39 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, and after Phase 38 Shop Offer Redesign work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, and after Phase 39 Card Fatigue / Word Energy System work.
 
 The local development server can be started with:
 
@@ -595,6 +595,13 @@ Current Dungeon implementation:
 - Phase 38 keeps all existing shop effects and costs, including Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card.
 - Phase 38 adds a Reroll Offers action for 5 temporary current-run gold without mutating the deck or saving run state.
 - Phase 38 preserves current-run-only shop mutation rules, permanent-progress-only LocalStorage rules, and all combat/save/boss/deck progression behavior.
+- Phase 39 adds a current-run-only Word Energy / Card Fatigue system.
+- Phase 39 tracks word usage by normalized word text, not card id, so duplicated copies share fatigue.
+- Phase 39 increases fatigue only when a Dungeon word card triggers correctly.
+- Phase 39 makes Word Choice, Word Match, and Word Scramble prefer fresher words through weighted selection while falling back to resting words if needed.
+- Phase 39 shows compact Word Energy chips on battle option card stats; Word Match still shows stats only on the English side.
+- Phase 39 adds short word-energy feedback after correct triggers without changing damage math.
+- Phase 39 resets fatigue on run reset, run failure, run completion, selected deck change, and Reset Progress; fatigue is not saved to LocalStorage.
 
 Current Shop implementation:
 
@@ -629,6 +636,19 @@ Current Shop implementation:
 - Phase 9 UI polish made item type, cost, preview-only state, and current-run-only messaging clearer.
 - Phase 10 added `Back To Dungeon` routing.
 - Advanced element interactions and balancing are deferred.
+
+Current Word Energy / Card Fatigue implementation:
+
+- `src/game/cardFatigue.ts` owns pure fatigue helpers.
+- Fatigue is tracked by normalized word text in app-level current-run state.
+- Usage increases only after a correct Dungeon card trigger.
+- Usage does not increase on wrong answers, timeouts, events, shop purchases, Training answers, or Deck Review.
+- Usage 0 is Fresh, usage 1 is Used, usage 2 is Tired, and usage 3+ is Resting.
+- Fresh words have the highest selection weight, Used words are reduced, Tired words are reduced further, and Resting words are avoided when enough other words are available.
+- Resting words are allowed as fallback so mini-game generation remains playable.
+- Fatigue affects Word Choice, Word Match, and Word Scramble appearance chance only.
+- Fatigue does not reduce attack, shield, element effects, mastery bonuses, or any other combat math.
+- Fatigue resets with temporary run state and is not saved to LocalStorage.
 
 ## Version 1 Scope
 
@@ -957,7 +977,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 38 is complete.
+Phase 39 is complete.
 
 Recommended next task:
 

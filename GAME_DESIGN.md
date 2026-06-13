@@ -206,6 +206,31 @@ Current prototype rules:
 
 Deck Review displays current saved mastery after page refresh and shows the current mastery bonus. Training updates mastery on correct answers and shows mastery before/after feedback.
 
+## Word Energy / Card Fatigue
+
+Word Energy is a current-run-only card fatigue system that encourages vocabulary variety during Dungeon battles.
+
+Current rules:
+
+- Fatigue is tracked by normalized word text, not card id.
+- Duplicated copies of the same word share the same fatigue count.
+- Usage increases only when a Dungeon word card triggers correctly.
+- Wrong answers, timeouts, event choices, shop purchases, Training answers, and Deck Review do not increase usage.
+- Usage 0 is Fresh.
+- Usage 1 is Used.
+- Usage 2 is Tired.
+- Usage 3 or more is Resting.
+- Fresh words have the highest battle question selection weight.
+- Used and Tired words have reduced selection weight.
+- Resting words are avoided if enough non-resting words are available.
+- Resting words can still appear as fallback if needed to keep Word Choice, Word Match, or Word Scramble playable.
+- Fatigue affects card appearance chance only.
+- Fatigue does not reduce damage, shield, element effects, mastery bonuses, or combat rewards.
+- Fatigue resets with temporary run state on run reset, run failure, run completion, deck change, Reset Progress, or page refresh.
+- Fatigue is not saved to LocalStorage.
+
+Dungeon option cards show compact Word Energy chips where card stats are already shown. In Word Match, fatigue is shown only on the English card side.
+
 ## Basic Balance
 
 First-pass balance values live in `src/game/balance.ts`.
@@ -328,6 +353,7 @@ Current battle rules:
 - Correct answers trigger the selected word card.
 - Correct Word Match pairs trigger the selected English word card.
 - Correct Word Scramble answers trigger the selected scrambled word card.
+- Correct Dungeon card triggers increase current-run Word Energy fatigue for that normalized word.
 - Triggered cards deal damage equal to `baseAttack`.
 - If a current-run card has been upgraded in the shop, the upgraded `baseAttack` is used for battle damage.
 - If a triggered card has saved word mastery, its permanent mastery damage bonus is added to final damage.
@@ -356,6 +382,7 @@ Current battle rules:
 - Removed cards no longer appear in Dungeon mini-games.
 - Duplicated cards are added as extra current-run deck entries and may appear more often.
 - Battle question builders avoid showing the same word twice in a single question, even when duplicates exist in the run deck.
+- Battle question builders use Word Energy weights to make heavily repeated words less likely to appear, while preserving fallback behavior for playability.
 - Remove Card is guarded so battle questions keep enough distinct visible words.
 - After a monster is defeated, the player can spawn the next sample monster.
 - Boss becomes available after 20 defeated monsters.

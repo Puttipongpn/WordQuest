@@ -24,6 +24,10 @@ import {
   getNextUnlockedDeckId,
   getUnlockedDeckIdsForCompletedDecks,
 } from "./game/deckProgression";
+import {
+  incrementWordUsage,
+  type WordFatigueByWord,
+} from "./game/cardFatigue";
 import type {
   ElementType,
   RunProgressState,
@@ -126,6 +130,7 @@ export default function App() {
   const [runGold, setRunGold] = useState(STARTING_GOLD);
   const [runStatistics, setRunStatistics] =
     useState<RunStatistics>(initialRunStatistics);
+  const [wordFatigue, setWordFatigue] = useState<WordFatigueByWord>({});
   const [currentRunDeck, setCurrentRunDeck] = useState<WordCard[]>(
     () => createRunDeckCopy(starterDeck),
   );
@@ -170,6 +175,7 @@ export default function App() {
     setRunProgress(initialRunProgress);
     setRunGold(STARTING_GOLD);
     setRunStatistics(initialRunStatistics);
+    setWordFatigue({});
     setCurrentRunDeck(createRunDeckCopy(starterDeck));
   }
 
@@ -359,7 +365,18 @@ export default function App() {
     setRunProgress(initialRunProgress);
     setRunGold(STARTING_GOLD);
     setRunStatistics(initialRunStatistics);
+    setWordFatigue({});
     setCurrentRunDeck(createRunDeckCopy(selectedDeck));
+  }
+
+  function resetWordFatigue() {
+    setWordFatigue({});
+  }
+
+  function increaseWordFatigue(word: string) {
+    setWordFatigue((currentFatigue) =>
+      incrementWordUsage(currentFatigue, word),
+    );
   }
 
   function selectDeck(deckId: string) {
@@ -377,6 +394,7 @@ export default function App() {
     setRunProgress(initialRunProgress);
     setRunGold(STARTING_GOLD);
     setRunStatistics(initialRunStatistics);
+    setWordFatigue({});
     setCurrentRunDeck(createRunDeckCopy(nextDeck));
   }
 
@@ -615,11 +633,13 @@ export default function App() {
             currentRunDeck={currentRunDeck}
             isSelectedDeckCompleted={completedDeckIds.includes(selectedDeck.id)}
             onCompleteSelectedDeck={markSelectedDeckCompleted}
+            onIncreaseWordFatigue={increaseWordFatigue}
             onGainRunGold={gainRunGold}
             onMonsterDefeated={recordMonsterDefeated}
             onNavigate={setCurrentScreen}
             onRecordRunEnded={recordRunEnded}
             onResetRun={resetCurrentRun}
+            onResetWordFatigue={resetWordFatigue}
             onUpgradeRandomRunCardAttack={upgradeRandomRunCardAttack}
             onAddRandomElementToRunCard={addRandomElementToRunCard}
             onUpdateRunStatistics={updateRunStatistics}
@@ -627,6 +647,7 @@ export default function App() {
             runProgress={runProgress}
             runStatistics={runStatistics}
             selectedDeck={selectedDeck}
+            wordFatigue={wordFatigue}
             wordMastery={wordMastery}
           />
         )}

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 38 Shop Offer Redesign is complete. GitHub backup is configured on `origin/main`.
+Phase 39 Card Fatigue / Word Energy System is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -479,6 +479,17 @@ Phase 38 Shop Offer Redesign is complete. GitHub backup is configured on `origin
 - Added a temporary run-gold spending helper in `src/App.tsx` for shop rerolls.
 - Preserved current-run-only shop mutation rules, LocalStorage permanent-progress-only rules, and all combat, timer, boss, deck unlock, and save behavior.
 - Verified the project with `npm run build` after Phase 38.
+- Applied Phase 39 Card Fatigue / Word Energy System.
+- Added `src/game/cardFatigue.ts` with normalized-word usage helpers, fatigue states, fatigue weights, and weighted card selection.
+- Tracked current-run word fatigue in app state by normalized word text rather than card id, so duplicated copies share usage.
+- Increased fatigue only when a Dungeon card triggers correctly.
+- Kept wrong answers, timeouts, events, shop purchases, Training, and Deck Review from increasing fatigue.
+- Updated Word Choice, Word Match, and Word Scramble question generation to prefer fresher words while falling back to resting words when needed for playable questions.
+- Added compact Word Energy chips to battle option card stats; Word Match still shows stats only on the English card side.
+- Added short word-energy feedback in the battle result overlay and card trigger panel after a correct trigger.
+- Fatigue resets on run reset, run failure, run completion, deck change, and Reset Progress, and is not saved to LocalStorage.
+- Preserved combat damage math, timer values, shop effects, Phase 38 shop offer behavior, boss rules, event rewards, deck unlock rules, and permanent mastery behavior.
+- Verified the project with `npm run build` after Phase 39.
 
 ## In Progress
 
@@ -486,7 +497,7 @@ Phase 38 Shop Offer Redesign is complete. GitHub backup is configured on `origin
 
 ## Next Task
 
-Phase 38 is complete. Continue with the next explicitly requested phase or feature.
+Phase 39 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -604,6 +615,10 @@ The following documents are required and must be updated after every completed t
 - Basic balance constants live in `src/game/balance.ts`
 - Current prototype balance targets are approachable Starter runs, slightly more room before the first shop, and a boss that is stronger but not unfair
 - Static timer values remain first-pass values and are tuned for beginner learners
+- Word Energy / Card Fatigue is current-run-only
+- Card fatigue is tracked by normalized word text, not card id
+- Fatigue affects Dungeon card appearance chance only and does not reduce damage
+- Resting words can reappear as fallback if needed to keep mini-games playable
 - Elements now have simple first-pass gameplay effects during Dungeon battles
 - Element effects remain temporary current-run card effects
 - Advanced elemental weakness and resistance are still deferred

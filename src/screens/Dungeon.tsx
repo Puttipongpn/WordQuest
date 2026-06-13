@@ -32,6 +32,13 @@ import {
   WORD_SCRAMBLE_TIME_LIMIT,
 } from "../game/balance";
 import {
+  getWordEnergyFeedback,
+  getWordEnergyLabel,
+  getWordUsageCount,
+  selectCardsWithFatigue,
+  type WordFatigueByWord,
+} from "../game/cardFatigue";
+import {
   getMasteryDamageBonus,
   getMasterySourceCardId,
   getMasteryStatusLabel,
@@ -51,6 +58,7 @@ type DungeonProps = {
   isSelectedDeckCompleted: boolean;
   onCompleteSelectedDeck: () => CompletionReward;
   onAddRandomElementToRunCard: () => { word: string; element: string } | null;
+  onIncreaseWordFatigue: (word: string) => void;
   onGainRunGold: (amount: number) => void;
   onMonsterDefeated: (options?: { isElite?: boolean; bonusGold?: number }) => void;
   onNavigate: (screen: ScreenName) => void;
@@ -59,12 +67,14 @@ type DungeonProps = {
     finalRunStatistics: RunStatistics,
   ) => void;
   onResetRun: () => void;
+  onResetWordFatigue: () => void;
   onUpgradeRandomRunCardAttack: (amount?: number) => string | null;
   onUpdateRunStatistics: (nextStatistics: RunStatistics) => void;
   runGold: number;
   runProgress: RunProgressState;
   runStatistics: RunStatistics;
   selectedDeck: VocabularyDeck;
+  wordFatigue: WordFatigueByWord;
   wordMastery: WordMasteryByCardId;
 };
 
@@ -125,6 +135,8 @@ type BattleLog = {
   shieldGained?: number;
   earthAttackReduction?: number;
   windGoldGained?: number;
+  wordEnergyFeedback?: string;
+  wordUsageCount?: number;
   effectsSummary?: string;
   rewardSummary?: string;
 };
@@ -265,53 +277,19 @@ function chooseDungeonEvent(seed: number) {
   return dungeonEvents[seed % dungeonEvents.length];
 }
 
-function rotateCards(seed: number, deck: WordCard[]) {
-  return deck.map(
-    (_, index) => deck[(seed + index) % deck.length],
-  );
-}
-
-function takeUniqueWordCards(cards: WordCard[], count: number) {
-  const usedWords = new Set<string>();
-  const uniqueCards: WordCard[] = [];
-
-  for (const card of cards) {
-    const wordKey = card.word.toLowerCase();
-
-    if (usedWords.has(wordKey)) {
-      continue;
-    }
-
-    usedWords.add(wordKey);
-    uniqueCards.push(card);
-
-    if (uniqueCards.length === count) {
-      break;
-    }
-  }
-
-  return uniqueCards;
-}
-
-function buildChoices(card: WordCard, cardIndex: number, deck: WordCard[]) {
-  const distractors = deck
-    .filter(
-      (candidate) =>
-        candidate.id !== card.id &&
-        candidate.word.toLowerCase() !== card.word.toLowerCase(),
-    )
-    .slice(cardIndex, cardIndex + 3);
-
-  if (distractors.length < 3) {
-    const fallbackChoices = deck.filter(
-      (candidate) =>
-        candidate.id !== card.id &&
-        candidate.word.toLowerCase() !== card.word.toLowerCase() &&
-        !distractors.some((distractor) => distractor.id === candidate.id),
-    );
-
-    distractors.push(...fallbackChoices.slice(0, 3 - distractors.length));
-  }
+function buildChoices(
+  card: WordCard,
+  cardIndex: number,
+  deck: WordCard[],
+  usageByWord: WordFatigueByWord,
+) {
+  const distractors = selectCardsWithFatigue({
+    count: 3,
+    deck,
+    excludeWords: [card.word],
+    seed: cardIndex,
+    usageByWord,
+  });
 
   return [card, ...distractors].sort((left, right) =>
     left.meaningTh.localeCompare(right.meaningTh),
@@ -348,19 +326,33 @@ function blankTargetWord(sentence: string, word: string) {
 function buildWordChoiceQuestion(
   seed: number,
   deck: WordCard[],
+  usageByWord: WordFatigueByWord,
 ): WordChoiceQuestion {
-  const cardIndex = seed % deck.length;
-  const card = deck[cardIndex];
+  const card = selectCardsWithFatigue({
+    count: 1,
+    deck,
+    seed,
+    usageByWord,
+  })[0] ?? deck[seed % deck.length];
 
   return {
     card,
     promptType: chooseWordChoicePromptType(seed),
-    choices: buildChoices(card, cardIndex + 1, deck),
+    choices: buildChoices(card, seed + 1, deck, usageByWord),
   };
 }
 
-function buildWordMatchQuestion(seed: number, deck: WordCard[]): WordMatchQuestion {
-  const cards = takeUniqueWordCards(rotateCards(seed, deck), 3);
+function buildWordMatchQuestion(
+  seed: number,
+  deck: WordCard[],
+  usageByWord: WordFatigueByWord,
+): WordMatchQuestion {
+  const cards = selectCardsWithFatigue({
+    count: 3,
+    deck,
+    seed,
+    usageByWord,
+  });
   const meanings = [...cards].sort((left, right) =>
     seed % 2 === 0
       ? right.meaningTh.localeCompare(left.meaningTh)
@@ -400,8 +392,14 @@ function scrambleWord(word: string, seed: number) {
 function buildWordScrambleQuestion(
   seed: number,
   deck: WordCard[],
+  usageByWord: WordFatigueByWord,
 ): WordScrambleQuestion {
-  const cards = takeUniqueWordCards(rotateCards(seed + 2, deck), 3);
+  const cards = selectCardsWithFatigue({
+    count: 3,
+    deck,
+    seed: seed + 2,
+    usageByWord,
+  });
 
   return {
     options: cards.map((card, index) => ({
@@ -756,17 +754,20 @@ export function Dungeon({
   isSelectedDeckCompleted,
   onCompleteSelectedDeck,
   onAddRandomElementToRunCard,
+  onIncreaseWordFatigue,
   onGainRunGold,
   onMonsterDefeated,
   onNavigate,
   onRecordRunEnded,
   onResetRun,
+  onResetWordFatigue,
   onUpgradeRandomRunCardAttack,
   onUpdateRunStatistics,
   runGold,
   runProgress,
   runStatistics,
   selectedDeck,
+  wordFatigue,
   wordMastery,
 }: DungeonProps) {
   const initialMiniGameType = useMemo(() => chooseBattleMiniGame(), []);
@@ -808,6 +809,8 @@ export function Dungeon({
   });
   const [battleStatus, setBattleStatus] =
     useState<BattleStatus>("encounter-intro");
+  const [questionWordFatigue, setQuestionWordFatigue] =
+    useState<WordFatigueByWord>(wordFatigue);
 
   const currentMonster = getMonsterForIndex(monsterIndex);
   const eliteMonster = createEliteMonster(currentMonster);
@@ -827,16 +830,16 @@ export function Dungeon({
         ? "Event"
         : "Monster";
   const wordChoiceQuestion = useMemo(
-    () => buildWordChoiceQuestion(questionSeed, currentRunDeck),
-    [currentRunDeck, questionSeed],
+    () => buildWordChoiceQuestion(questionSeed, currentRunDeck, questionWordFatigue),
+    [currentRunDeck, questionSeed, questionWordFatigue],
   );
   const wordMatchQuestion = useMemo(
-    () => buildWordMatchQuestion(questionSeed, currentRunDeck),
-    [currentRunDeck, questionSeed],
+    () => buildWordMatchQuestion(questionSeed, currentRunDeck, questionWordFatigue),
+    [currentRunDeck, questionSeed, questionWordFatigue],
   );
   const wordScrambleQuestion = useMemo(
-    () => buildWordScrambleQuestion(questionSeed, currentRunDeck),
-    [currentRunDeck, questionSeed],
+    () => buildWordScrambleQuestion(questionSeed, currentRunDeck, questionWordFatigue),
+    [currentRunDeck, questionSeed, questionWordFatigue],
   );
   const featuredCard =
     miniGameType === "word-choice"
@@ -850,6 +853,8 @@ export function Dungeon({
   const sidePanelMasteryBonus = getMasteryDamageBonus(sidePanelMastery);
   const sidePanelCardShield = getCardShieldAmount(sidePanelCard);
   const sidePanelCardElement = getCardElement(sidePanelCard);
+  const sidePanelWordUsage =
+    battleLog.wordUsageCount ?? getWordUsageCount(wordFatigue, sidePanelCard.word);
   const isShopAvailable =
     runProgress.monstersDefeated > 0 &&
     runProgress.monstersDefeated === runProgress.nextShopAt;
@@ -957,6 +962,7 @@ export function Dungeon({
     setIsPaused(false);
     setPendingEarthReduction(0);
     resetAnswerState();
+    setQuestionWordFatigue(wordFatigue);
     setQuestionSeed((current) => current + 1);
     setMiniGameType(nextMiniGameType);
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
@@ -971,6 +977,7 @@ export function Dungeon({
 
     setIsPaused(false);
     resetAnswerState();
+    setQuestionWordFatigue(wordFatigue);
     setQuestionSeed((current) => current + 1);
     setMiniGameType(nextMiniGameType);
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
@@ -1003,6 +1010,7 @@ export function Dungeon({
 
   function leaveRunFromPause() {
     setIsPaused(false);
+    onResetWordFatigue();
     setEndedRunGold(runGold);
     setEndedRunStatistics(runStatistics);
     onRecordRunEnded("failed", runStatistics);
@@ -1020,6 +1028,9 @@ export function Dungeon({
     const masteryBonusDamage = getMasteryDamageBonus(masteryLevel);
     const elementBonusDamage =
       element?.element === "fire" ? FIRE_BONUS_DAMAGE : 0;
+    const currentUsageCount = getWordUsageCount(wordFatigue, card.word);
+    const nextUsageCount = currentUsageCount + 1;
+    const wordEnergyFeedback = getWordEnergyFeedback(card.word, nextUsageCount);
     const waterShieldGained =
       element?.element === "water" ? WATER_SHIELD_GAIN : 0;
     const totalShieldGained = cardShieldGained + waterShieldGained;
@@ -1059,6 +1070,7 @@ export function Dungeon({
         ? `Next attack -${earthAttackReduction}`
         : null,
       windGoldGained > 0 ? `Wind gold +${windGoldGained}` : null,
+      wordEnergyFeedback || null,
       element ? `Element: ${formatElementName(element.element)}` : null,
       `Total damage ${totalDamageDealt}`,
     ]
@@ -1073,6 +1085,7 @@ export function Dungeon({
     if (windGoldGained > 0) {
       onGainRunGold(windGoldGained);
     }
+    onIncreaseWordFatigue(card.word);
 
     const nextRunStatistics: RunStatistics = {
       ...runStatistics,
@@ -1087,6 +1100,7 @@ export function Dungeon({
     if (isDefeated) {
       if (isBossEncounter) {
         const completionReward = onCompleteSelectedDeck();
+        onResetWordFatigue();
         setEndedRunGold(runGold + windGoldGained);
         setEndedRunStatistics(nextRunStatistics);
         onRecordRunEnded("completed", nextRunStatistics);
@@ -1095,7 +1109,7 @@ export function Dungeon({
         setBattleStatus("run-complete");
         setBattleLog({
           tone: "success",
-          message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
+          message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${wordEnergyFeedback ? `${wordEnergyFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
           triggeredCard: card,
           baseDamageDealt: card.baseAttack,
           elementBonusDamage,
@@ -1107,6 +1121,8 @@ export function Dungeon({
           shieldGained: totalShieldGained,
           earthAttackReduction,
           windGoldGained,
+          wordEnergyFeedback,
+          wordUsageCount: nextUsageCount,
           effectsSummary,
           rewardSummary: `${completionReward.completedMessage} ${completionReward.unlockMessage}`,
         });
@@ -1121,7 +1137,7 @@ export function Dungeon({
       setBattleStatus("monster-defeated");
       setBattleLog({
         tone: "success",
-        message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated.${encounterType === "elite" ? ` Elite bonus: +${ELITE_GOLD_BONUS} gold.` : ""}`,
+        message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${wordEnergyFeedback ? `${wordEnergyFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated.${encounterType === "elite" ? ` Elite bonus: +${ELITE_GOLD_BONUS} gold.` : ""}`,
         triggeredCard: card,
         baseDamageDealt: card.baseAttack,
         elementBonusDamage,
@@ -1133,6 +1149,8 @@ export function Dungeon({
         shieldGained: totalShieldGained,
         earthAttackReduction,
         windGoldGained,
+        wordEnergyFeedback,
+        wordUsageCount: nextUsageCount,
         effectsSummary,
       });
       return;
@@ -1141,7 +1159,7 @@ export function Dungeon({
     onUpdateRunStatistics(nextRunStatistics);
     setBattleLog({
       tone: "success",
-      message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield.` : ""}`,
+      message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${wordEnergyFeedback ? `${wordEnergyFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield.` : ""}`,
       triggeredCard: card,
       baseDamageDealt: card.baseAttack,
       elementBonusDamage,
@@ -1153,6 +1171,8 @@ export function Dungeon({
       shieldGained: totalShieldGained,
       earthAttackReduction,
       windGoldGained,
+      wordEnergyFeedback,
+      wordUsageCount: nextUsageCount,
       effectsSummary,
     });
   }
@@ -1179,6 +1199,7 @@ export function Dungeon({
     setPlayerHp(nextPlayerHp);
 
     if (nextPlayerHp === 0) {
+      onResetWordFatigue();
       setEndedRunGold(runGold);
       setEndedRunStatistics(nextRunStatistics);
       onRecordRunEnded("failed", nextRunStatistics);
@@ -1323,6 +1344,7 @@ export function Dungeon({
     setIsPaused(false);
     setBattleStatus(isNextEvent ? "event" : "encounter-intro");
     resetAnswerState();
+    setQuestionWordFatigue(wordFatigue);
     setQuestionSeed((current) => current + 1);
     if (isNextEvent) {
       setEventIndex((current) => current + 1);
@@ -1354,6 +1376,7 @@ export function Dungeon({
     setIsPaused(false);
     setBattleStatus(isNextEvent ? "event" : "encounter-intro");
     resetAnswerState();
+    setQuestionWordFatigue(wordFatigue);
     setQuestionSeed((current) => current + 1);
     if (isNextEvent) {
       setEventIndex((current) => current + 1);
@@ -1430,6 +1453,7 @@ export function Dungeon({
       setPlayerHp(nextPlayerHp);
 
       if (nextPlayerHp === 0) {
+        onResetWordFatigue();
         setEndedRunGold(runGold);
         setEndedRunStatistics(nextRunStatistics);
         onRecordRunEnded("failed", nextRunStatistics);
@@ -1462,6 +1486,7 @@ export function Dungeon({
     setIsPaused(false);
     setBattleStatus("encounter-intro");
     resetAnswerState();
+    setQuestionWordFatigue(wordFatigue);
     setQuestionSeed((current) => current + 1);
     setMiniGameType(nextMiniGameType);
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
@@ -1475,6 +1500,7 @@ export function Dungeon({
     const nextMiniGameType = chooseBattleMiniGame();
 
     onResetRun();
+    onResetWordFatigue();
     setPlayerHp(PLAYER_MAX_HP);
     setShield(INITIAL_SHIELD);
     setPendingEarthReduction(0);
@@ -1489,6 +1515,7 @@ export function Dungeon({
     setIsPaused(false);
     setBattleStatus("encounter-intro");
     resetAnswerState();
+    setQuestionWordFatigue({});
     setQuestionSeed((current) => current + 1);
     setMiniGameType(nextMiniGameType);
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
@@ -1909,6 +1936,7 @@ export function Dungeon({
                     onAnswer={handleWordChoiceAnswer}
                     actions={resultActions}
                     battleLog={battleLog}
+                    wordFatigue={questionWordFatigue}
                     wordMastery={wordMastery}
                   />
                 ) : miniGameType === "word-match" ? (
@@ -1924,6 +1952,7 @@ export function Dungeon({
                     onSubmit={handleWordMatchSubmit}
                     actions={resultActions}
                     battleLog={battleLog}
+                    wordFatigue={questionWordFatigue}
                     wordMastery={wordMastery}
                   />
                 ) : (
@@ -1939,6 +1968,7 @@ export function Dungeon({
                     onSubmit={handleWordScrambleSubmit}
                     actions={resultActions}
                     battleLog={battleLog}
+                    wordFatigue={questionWordFatigue}
                     wordMastery={wordMastery}
                   />
                 )}
@@ -2077,6 +2107,9 @@ export function Dungeon({
               <Badge tone={sidePanelMastery >= 5 ? "emerald" : "amber"}>
                 {getMasteryStatusLabel(sidePanelMastery)}
               </Badge>
+              <Badge tone={sidePanelWordUsage >= 3 ? "slate" : "emerald"}>
+                {getWordEnergyLabel(sidePanelWordUsage)}
+              </Badge>
             </summary>
             <div className="mt-3 flex items-start gap-3">
               <span className="grid size-12 shrink-0 place-items-center rounded-2xl border-2 border-amber-900/15 bg-amber-100 text-3xl shadow-inner">
@@ -2138,6 +2171,11 @@ export function Dungeon({
               <p className="mt-2 text-sm font-bold text-amber-900/70">
                 Mastery: {sidePanelMastery} / 5
               </p>
+              {battleLog.wordEnergyFeedback && (
+                <p className="mt-1 text-sm font-bold text-emerald-800">
+                  {battleLog.wordEnergyFeedback}
+                </p>
+              )}
             </div>
           </details>
           )}
@@ -2231,22 +2269,38 @@ type WordChoiceBattleProps = {
   question: WordChoiceQuestion;
   selectedChoiceId: string | null;
   onAnswer: (choice: WordCard) => void;
+  wordFatigue: WordFatigueByWord;
   wordMastery: WordMasteryByCardId;
 };
 
 function CardStatChips({
   card,
+  wordFatigue,
   wordMastery,
 }: {
   card: WordCard;
+  wordFatigue: WordFatigueByWord;
   wordMastery: WordMasteryByCardId;
 }) {
   const shieldAmount = getCardShieldAmount(card);
   const element = getCardElement(card);
   const masteryBonus = getCardMasteryBonus(card, wordMastery);
+  const usageCount = getWordUsageCount(wordFatigue, card.word);
+  const energyLabel = getWordEnergyLabel(usageCount);
 
   return (
     <div className="flex shrink-0 flex-wrap justify-end gap-1">
+      <span
+        className={`rounded-full border px-1.5 py-0.5 text-[10px] font-black uppercase ${
+          usageCount >= 3
+            ? "border-stone-300 bg-stone-100 text-stone-700"
+            : usageCount >= 2
+              ? "border-orange-200 bg-orange-50 text-orange-800"
+              : "border-emerald-200 bg-emerald-50 text-emerald-800"
+        }`}
+      >
+        {energyLabel}
+      </span>
       <span className="rounded-full border border-red-200 bg-red-50 px-1.5 py-0.5 text-[10px] font-black uppercase text-red-800">
         ATK {card.baseAttack}
       </span>
@@ -2331,6 +2385,7 @@ function BattleResultOverlay({
         battleLog.masteryBonusDamage
           ? `Mastery +${battleLog.masteryBonusDamage}`
           : null,
+        battleLog.wordEnergyFeedback ?? null,
       ].filter(Boolean)
     : [
         battleLog.damageTaken !== undefined
@@ -2352,7 +2407,7 @@ function BattleResultOverlay({
         </p>
         {resultLines.length > 0 && (
           <div className="mt-3 grid gap-1">
-            {resultLines.slice(0, 3).map((line) => (
+            {resultLines.slice(0, 4).map((line) => (
               <p key={line} className="rounded-lg bg-white/60 px-2 py-1 text-sm font-black shadow-inner">
                 {line}
               </p>
@@ -2396,6 +2451,7 @@ function WordChoiceBattle({
   question,
   selectedChoiceId,
   onAnswer,
+  wordFatigue,
   wordMastery,
 }: WordChoiceBattleProps) {
   const showsEnglishChoices =
@@ -2477,7 +2533,11 @@ function WordChoiceBattle({
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  <CardStatChips card={choice} wordMastery={wordMastery} />
+                  <CardStatChips
+                    card={choice}
+                    wordFatigue={wordFatigue}
+                    wordMastery={wordMastery}
+                  />
                   {showCorrect && <Badge tone="emerald">Correct</Badge>}
                   {showWrong && <Badge tone="red">Wrong</Badge>}
                 </div>
@@ -2502,6 +2562,7 @@ type WordMatchBattleProps = {
   onSelectMeaning: (cardId: string) => void;
   onSelectWord: (cardId: string) => void;
   onSubmit: () => void;
+  wordFatigue: WordFatigueByWord;
   wordMastery: WordMasteryByCardId;
 };
 
@@ -2517,6 +2578,7 @@ function WordMatchBattle({
   onSelectMeaning,
   onSelectWord,
   onSubmit,
+  wordFatigue,
   wordMastery,
 }: WordMatchBattleProps) {
   const selectedWord = question.cards.find((card) => card.id === selectedWordId);
@@ -2581,7 +2643,11 @@ function WordMatchBattle({
                       </p>
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
-                      <CardStatChips card={card} wordMastery={wordMastery} />
+                      <CardStatChips
+                        card={card}
+                        wordFatigue={wordFatigue}
+                        wordMastery={wordMastery}
+                      />
                       {!isAnswered && isSelected && (
                         <Badge tone="sky">Selected</Badge>
                       )}
@@ -2676,6 +2742,7 @@ type WordScrambleBattleProps = {
   onAnswerChange: (answer: string) => void;
   onSelectCard: (cardId: string) => void;
   onSubmit: () => void;
+  wordFatigue: WordFatigueByWord;
   wordMastery: WordMasteryByCardId;
 };
 
@@ -2691,6 +2758,7 @@ function WordScrambleBattle({
   onAnswerChange,
   onSelectCard,
   onSubmit,
+  wordFatigue,
   wordMastery,
 }: WordScrambleBattleProps) {
   const selectedOption = question.options.find(
@@ -2747,7 +2815,11 @@ function WordScrambleBattle({
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  <CardStatChips card={option.card} wordMastery={wordMastery} />
+                  <CardStatChips
+                    card={option.card}
+                    wordFatigue={wordFatigue}
+                    wordMastery={wordMastery}
+                  />
                   {!isAnswered && isSelected && (
                     <Badge tone="sky">Selected</Badge>
                   )}

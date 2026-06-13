@@ -904,6 +904,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Rerolling gives controlled player choice while keeping shop outcomes temporary and within roguelike run reset rules.
 - Status: Accepted
 
+### 2026-06-13: Word Energy Is Current-Run Only
+
+- Decision: Word Energy / Card Fatigue is current-run-only and encourages vocabulary variety without reducing permanent mastery.
+- Reason: Repeated words should become less common during a run, but learned vocabulary progress should never be punished or downgraded.
+- Status: Accepted
+
+### 2026-06-13: Fatigue Is Tracked By Normalized Word
+
+- Decision: Card fatigue is tracked by normalized word text instead of card id.
+- Reason: Duplicated copies of the same word should share usage so duplication cannot bypass the vocabulary variety system.
+- Status: Accepted
+
+### 2026-06-13: Fatigue Affects Appearance Chance Only
+
+- Decision: Fatigue affects battle question card appearance chance and does not reduce damage, shield, element effects, or mastery bonuses.
+- Reason: Correct answers should remain rewarding while the system gently nudges the player toward varied vocabulary.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
