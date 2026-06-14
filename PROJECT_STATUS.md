@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 44 Home / Deck Progress Polish is complete. GitHub backup is configured on `origin/main`.
+Phase 45 Training Mode Expansion is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -553,6 +553,17 @@ Phase 44 Home / Deck Progress Polish is complete. GitHub backup is configured on
 - Added local-save clarity copy explaining permanent progress is saved in this browser/device.
 - Preserved deck selection rules, permanent-progress save rules, temporary run reset behavior, combat systems, shop, events, boss, Training, Deck Review, Word Energy, and LocalStorage safety.
 - Verified the project with `npm run build` after Phase 44.
+- Applied Phase 45 Training Mode Expansion.
+- Added Training setup flow before a session starts.
+- Added Training modes: Quick Practice, Weak Words, Unmastered Words, and Review All.
+- Added session length choices: 5 questions, 10 questions, 20 questions, and all available target words.
+- Updated Training word selection so Weak Words prioritizes mastery 0-2, Unmastered Words targets mastery below 5, and Review All can use the full selected deck.
+- Added friendly empty-state messages for no weak words and all words mastered.
+- Added improved Training session summary with selected deck, mode, answered count, correct count, wrong count, accuracy, mastery increases, and newly mastered words.
+- Added Training summary actions: Train Again, Change Training Mode, Review Deck, Enter Dungeon, and Back Home.
+- Preserved existing Training question types, untimed Training behavior, correct-answer mastery increase, wrong-answer no decrease, mastery cap at 5, and LocalStorage mastery save behavior.
+- Preserved Training isolation from HP, shield, gold, current-run deck, shop upgrades, dungeon run state, events, boss state, Word Energy, and run statistics.
+- Verified the project with `npm run build` after Phase 45.
 
 ## In Progress
 
@@ -560,7 +571,7 @@ Phase 44 Home / Deck Progress Polish is complete. GitHub backup is configured on
 
 ## Next Task
 
-Phase 44 is complete. Continue with the next explicitly requested phase or feature.
+Phase 45 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

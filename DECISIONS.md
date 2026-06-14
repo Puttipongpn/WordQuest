@@ -1006,6 +1006,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Home should clarify learning progress without changing mastery rules or introducing new persistence behavior.
 - Status: Accepted
 
+### 2026-06-14: Training Uses Mode Selection
+
+- Decision: Training supports Quick Practice, Weak Words, Unmastered Words, and Review All setup modes before a session starts.
+- Reason: Players should be able to intentionally practice the kind of vocabulary they need before entering timed Dungeon battles.
+- Status: Accepted
+
+### 2026-06-14: Training Session Length Is Player-Selectable
+
+- Decision: Training sessions support 5 questions, 10 questions, 20 questions, or all available target words.
+- Reason: Short and longer sessions make Training useful for different amounts of available practice time without changing mastery rules.
+- Status: Accepted
+
+### 2026-06-14: Training Expansion Preserves Run Isolation
+
+- Decision: Expanded Training still remains untimed and only updates permanent word mastery through existing correct-answer rules.
+- Reason: Training should stay a safe learning space and must not affect HP, gold, shield, Word Energy, current-run deck, shop upgrades, dungeon state, or run statistics.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

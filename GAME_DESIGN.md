@@ -313,11 +313,17 @@ Training must not change:
 - Dungeon progress
 - Timers
 
-Current mini-game:
+Current Training implementation:
 
 - Recall-focused Word Choice Training
 - Uses the selected deck
-- Uses the first 10 cards for the first prototype
+- Has a setup flow before each session
+- Supports Quick Practice, Weak Words, Unmastered Words, and Review All modes
+- Supports 5 question, 10 question, 20 question, and all available target word session lengths
+- Quick Practice uses a mixed set from the selected deck
+- Weak Words prioritizes words at mastery 0-2 and can fall back to higher mastery words when needed
+- Unmastered Words targets words below mastery 5 and shows a friendly message if all words are mastered
+- Review All can use any word from the selected deck
 - Randomly selects between English Word to Thai Meaning, Thai Meaning to English Word, and Example Sentence Cloze question types
 - English-to-Thai questions show an English word and 4 Thai meaning choices
 - Thai-to-English questions show a Thai meaning and 4 English word choices
@@ -325,7 +331,8 @@ Current mini-game:
 - Shows the current question type clearly
 - Shows correct/wrong feedback
 - Reveals the correct answer after selection
-- Advances with Next or restarts after the final question
+- Advances with Next and shows a Training Complete summary after the final question
+- Training Complete shows deck, mode, answered count, correct count, wrong count, accuracy, mastery increases, newly mastered words, and actions for Train Again, Change Training Mode, Review Deck, Enter Dungeon, and Back Home
 - Updates saved word mastery on correct answers
 - Training is intentionally untimed so players can practice safely.
 

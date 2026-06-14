@@ -701,6 +701,7 @@ export default function App() {
             deck={selectedDeck}
             wordMastery={wordMastery}
             onIncreaseWordMastery={increaseWordMastery}
+            onNavigate={navigateToScreen}
           />
         )}
         {currentScreen === "dungeon" && (
