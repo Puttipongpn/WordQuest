@@ -318,6 +318,8 @@ Current shared values:
 
 Card baseAttack values remain unchanged in the first balance pass. Static timer values are still first-pass values; difficulty scaling and advanced balance systems are deferred.
 
+Phase 47 reviewed these values during a full prototype QA pass and did not change any balance constants.
+
 ## Training Mode
 
 Training mode is outside dungeon runs.
@@ -378,6 +380,7 @@ Current battle rules:
 - Events do not count as defeated monsters and do not advance boss progression.
 - Event rewards are temporary current-run rewards and are not saved to LocalStorage.
 - After resolving an Event, the next generated encounter cannot be another Event.
+- After resolving an Event, the next Encounter Intro should show the last Event result so the player can see the chosen reward or cost before starting the next battle.
 - Battle questions use selected deck vocabulary cards through the current-run deck copy.
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble.
 - Monster, Elite, and Boss encounters enter Encounter Intro before active combat.

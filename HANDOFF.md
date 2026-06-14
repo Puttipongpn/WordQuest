@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 46 complete.
+Current phase: Phase 47 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, after Phase 45 Training Mode Expansion work, and after Phase 46 Deck Review Learning Polish work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, after Phase 45 Training Mode Expansion work, after Phase 46 Deck Review Learning Polish work, and after Phase 47 Full Prototype QA + Balance Pass work.
 
 The local development server can be started with:
 
@@ -396,6 +396,20 @@ Current Deck Review implementation:
 - Deck Review does not mutate mastery and has no persistence, save logic, battle logic, shop logic, event logic, boss logic, timer logic, or run-state logic.
 - Phase 46 improved Deck Review learning usefulness while preserving all mastery and save rules.
 
+## Phase 47 QA Summary
+
+Phase 47 performed a code-path QA and light balance review across the playable prototype loop:
+
+- Reviewed fresh progress, failure, and progression flows across Home, Deck Review, Training, Dungeon, Shop, Events, Elites, Boss, Run Complete, Run Failed, Abandon Run, Reset Progress, and deck unlocks.
+- Confirmed the intended permanent-progress boundary remains: word mastery, unlocked deck ids, completed deck ids, and saved statistics are LocalStorage progress; HP, shield, gold, current-run deck changes, shop upgrades, encounter state, boss state, run progression, and Word Energy are temporary.
+- Confirmed Abandon Run, ending actions, restarting, and changing selected deck reset temporary run state without clearing permanent progress.
+- Confirmed Deck Review remains display-only and Training remains untimed with only correct answers increasing mastery.
+- Confirmed Shop offers mutate only the current-run deck/gold and do not touch LocalStorage.
+- Confirmed Events remain current-run-only, do not count as monster defeats, do not advance boss progress, and cannot immediately chain into another Event.
+- Fixed one UX bug: Event result feedback was not visible after resolving an Event because the next Encounter Intro replaced the Event screen. The next Encounter Intro now shows the previous Event result message.
+- Reviewed `src/game/balance.ts`; no balance constants were changed in Phase 47.
+- Browser visual QA was not run because the Browser skill file advertised by the environment was unavailable in this session. Verification used code-path audit and `npm run build`.
+
 Current Training implementation:
 
 - `src/screens/Training.tsx` receives the selected deck, saved `wordMastery`, `onIncreaseWordMastery`, and `onNavigate` from `src/App.tsx`.
@@ -484,6 +498,7 @@ Current Dungeon implementation:
 - Event card upgrades target only cards currently present in the current-run deck. Removed cards are not eligible, and duplicated cards can be targeted as separate current-run entries.
 - Event rewards never modify word mastery, deck unlocks, completed decks, permanent statistics, source deck data, or LocalStorage.
 - Phase 41 audited event safety and balance. Event rewards remain modest and current-run-only.
+- Phase 47 QA fixed Event result visibility: after resolving an Event, the next Encounter Intro shows the last Event result so the chosen reward/cost remains visible before the next battle starts.
 - HP-cost event choices are disabled when the player does not have enough HP to survive the cost.
 - Random-card event choices are disabled if no current-run card target exists.
 - There are currently no gold-cost event choices, so events cannot spend gold or make gold negative.
@@ -1035,7 +1050,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 46 is complete.
+Phase 47 is complete.
 
 Recommended next task:
 

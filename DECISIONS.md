@@ -1042,6 +1042,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Mastery changes should remain tied to Training correct answers so learning progress stays intentional and understandable.
 - Status: Accepted
 
+### 2026-06-14: Event Results Stay Visible Before Next Battle
+
+- Decision: After a dungeon Event resolves, the next Encounter Intro should show the last Event result before the player starts the next battle.
+- Reason: Event rewards and costs should be clear to the player without adding new encounter systems or changing run rules.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

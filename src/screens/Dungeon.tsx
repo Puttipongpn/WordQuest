@@ -1207,6 +1207,9 @@ export function Dungeon({
         ? "border-red-300 bg-gradient-to-br from-red-100 to-amber-50"
         : "border-amber-800/30 bg-gradient-to-br from-amber-50 to-stone-100";
   const canAdvanceAfterAnswer = isAnswered && battleStatus === "fighting";
+  const lastEventResultMessage = battleLog.message.startsWith("Event result:")
+    ? battleLog.message
+    : "";
 
   function getEventOptionUnavailableReason(
     option: DungeonEventOption,
@@ -2209,6 +2212,11 @@ export function Dungeon({
               <p className="mx-auto mt-4 max-w-2xl text-base font-bold leading-7 text-amber-100/90">
                 {encounterFlavorText}
               </p>
+              {lastEventResultMessage && (
+                <p className="mx-auto mt-4 max-w-2xl rounded-2xl border border-emerald-200/25 bg-emerald-100/10 px-4 py-3 text-sm font-black leading-6 text-emerald-100">
+                  {lastEventResultMessage}
+                </p>
+              )}
               <div className="mx-auto mt-5 grid max-w-xl gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border-2 border-red-200/20 bg-black/30 p-4">
                   <p className="text-xs font-black uppercase text-red-100/70">

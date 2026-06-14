@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 46 Deck Review Learning Polish is complete. GitHub backup is configured on `origin/main`.
+Phase 47 Full Prototype QA + Balance Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -574,6 +574,17 @@ Phase 46 Deck Review Learning Polish is complete. GitHub backup is configured on
 - Added Deck Review action handoffs to Training, Dungeon, and Home without changing Training rules or adding React Router.
 - Preserved Deck Review as display-only: it does not change mastery, run state, save rules, deck unlocks, combat, shop, events, boss, timers, or Word Energy.
 - Verified the project with `npm run build` after Phase 46.
+- Applied Phase 47 Full Prototype QA + Balance Pass.
+- Audited fresh progress, failure, and progression flows across Home, Deck Review, Training, Dungeon, Shop, Events, Boss, Run Complete, Run Failed, Abandon Run, Reset Progress, and deck unlock behavior.
+- Audited permanent progress safety: word mastery, unlocked deck ids, completed deck ids, and saved statistics remain permanent progress, while Abandon Run, run ending actions, restarts, and selected deck changes reset only temporary run state.
+- Audited temporary run reset paths for HP, shield, gold, current-run deck copy, shop mutations, monster/boss/event state, run progression, and Word Energy.
+- Audited learning screens for Home hub clarity, Deck Review display-only filters/sorting, Training mode selection, mastery cap behavior, and Training Complete summaries.
+- Audited Dungeon mini-games, timers, pause, timeout behavior, shield absorption, boss availability, boss defeat, event choices, elite rewards, and result actions.
+- Audited Shop offer behavior, target modal purchase confirmation, reroll cost, current-run-only mutations, Remove Card safety, Duplicate Card unique copies, and LocalStorage safety.
+- Fixed Event result visibility by showing the last Event result on the next Encounter Intro so event rewards/costs are not lost when the next encounter appears.
+- Reviewed balance values in `src/game/balance.ts`; no balance constants were changed in Phase 47.
+- Browser visual QA was not run because the Browser skill file advertised by the environment was unavailable in this session; verification used code-path audit and production build.
+- Verified the project with `npm run build` after Phase 47.
 
 ## In Progress
 
@@ -581,7 +592,7 @@ Phase 46 Deck Review Learning Polish is complete. GitHub backup is configured on
 
 ## Next Task
 
-Phase 46 is complete. Continue with the next explicitly requested phase or feature.
+Phase 47 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
