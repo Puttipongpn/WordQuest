@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 42 Boss Variety + Boss Presentation Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 43 Run Complete / Run Failed Summary Polish is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -534,6 +534,15 @@ Phase 42 Boss Variety + Boss Presentation Pass is complete. GitHub backup is con
 - Run Complete summary now shows the defeated boss name.
 - Preserved the 20 defeated monster boss requirement, existing Card Trigger battle system, deck completion reward, deck unlock logic, LocalStorage save rules, shop behavior, event behavior, timer values, mastery rules, and combat math.
 - Verified the project with `npm run build` after Phase 42.
+- Applied Phase 43 Run Complete / Run Failed Summary Polish.
+- Moved Run Complete and Run Failed summaries into the main battle arena as game-style result screens instead of narrow side-panel reports.
+- Added clearer victory/failure title treatment, reward/encouragement panels, boss defeat details, and compact tracked-stat grids.
+- Added compact Permanent Progress Kept and Temporary Run Lost sections to clarify what survives a run end.
+- Added required ending actions: Start Fresh Run / Restart Run, Review Deck, Training, and Back Home.
+- Removed duplicated run-ending action buttons from the side panel so ending actions appear in one main result area.
+- Preserved run exit safety: ending actions reset only temporary run state and do not clear permanent progress.
+- Preserved combat math, boss requirement, deck unlocks, save rules, shop effects, event effects, timer values, mastery rules, and LocalStorage permanent-progress-only behavior.
+- Verified the project with `npm run build` after Phase 43.
 
 ## In Progress
 
@@ -541,7 +550,7 @@ Phase 42 Boss Variety + Boss Presentation Pass is complete. GitHub backup is con
 
 ## Next Task
 
-Phase 42 is complete. Continue with the next explicitly requested phase or feature.
+Phase 43 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

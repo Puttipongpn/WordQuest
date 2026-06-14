@@ -411,8 +411,10 @@ Current battle rules:
 - Boss battles use the same Word Choice, Word Match, Word Scramble, Card Trigger System, current-run deck, attack, shield, and element display behavior as regular monster battles.
 - Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
 - When boss HP reaches 0, the screen shows `Run Complete`.
-- Run Complete shows selected deck name, monsters defeated, boss defeated, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Run Complete appears as a main battle-arena victory result screen, not a narrow side-panel report.
+- Run Complete shows selected deck name, boss defeated, deck completion / unlock reward feedback, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
 - Run Complete also shows elites defeated and events visited.
+- Run Complete shows boss icon, boss name, boss title, and defeat text when available.
 - Boss defeat marks the selected deck completed in `completedDeckIds`.
 - Completed deck ids are saved in LocalStorage permanent progress.
 - If Starter Deck is completed, Food Deck is unlocked in `unlockedDeckIds`.
@@ -422,8 +424,11 @@ Current battle rules:
 - Run Complete shows reward feedback that the selected deck was completed and permanent progress was saved.
 - Boss defeat does not unlock decks beyond Nature Deck yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
-- Run Failed shows selected deck name, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
+- Run Failed appears as a main battle-arena result screen with encouraging copy.
+- Run Failed shows selected deck name, failure reason, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
 - Run Failed also shows elites defeated and events visited.
+- Both ending screens show compact Permanent Progress Kept and Temporary Run Lost sections.
+- Ending actions are centralized in the main result screen: Start Fresh Run / Restart Run, Review Deck, Training, and Back Home.
 - Completed and failed run summaries update permanent best run stats in LocalStorage.
 - After run failure, the player can restart the local run.
 

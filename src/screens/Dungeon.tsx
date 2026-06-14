@@ -2077,6 +2077,11 @@ export function Dungeon({
           onClick: () => leaveEndedRun("deck-review"),
         },
         {
+          label: "Training",
+          onClick: () => leaveEndedRun("training"),
+          variant: "secondary",
+        },
+        {
           label: "Back Home",
           onClick: () => leaveEndedRun("home"),
           variant: "ghost",
@@ -2090,6 +2095,15 @@ export function Dungeon({
           label: "Restart Run",
           onClick: handleRestartRun,
           variant: "danger",
+        },
+        {
+          label: "Review Deck",
+          onClick: () => leaveEndedRun("deck-review"),
+        },
+        {
+          label: "Training",
+          onClick: () => leaveEndedRun("training"),
+          variant: "secondary",
         },
         {
           label: "Back Home",
@@ -2471,7 +2485,24 @@ export function Dungeon({
 
             <section className="flex min-h-0 flex-1 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-2 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)]">
               <div className="min-h-0 flex-1 rounded-2xl border-2 border-amber-900/10 bg-white/80 p-2 shadow-inner">
-                {isEventEncounter ? (
+                {battleStatus === "run-complete" ||
+                battleStatus === "run-failed" ? (
+                  <RunEndingSummary
+                    battleLog={battleLog}
+                    currentRunDeckSize={currentRunDeck.length}
+                    finalGold={summaryGold}
+                    isComplete={battleStatus === "run-complete"}
+                    onBackHome={() => leaveEndedRun("home")}
+                    onReviewDeck={() => leaveEndedRun("deck-review")}
+                    onRestartRun={handleRestartRun}
+                    onTraining={() => leaveEndedRun("training")}
+                    selectedBoss={selectedBoss}
+                    selectedDeck={selectedDeck}
+                    statistics={summaryStatistics}
+                    summaryAccuracy={summaryAccuracy}
+                    runProgress={runProgress}
+                  />
+                ) : isEventEncounter ? (
                   <div className="grid h-full min-h-[260px] content-center gap-3 sm:grid-cols-2">
                     {currentEvent.options.map((option) => {
                       const unavailableReason =
@@ -2514,7 +2545,7 @@ export function Dungeon({
                 ) : miniGameType === "word-choice" ? (
                   <WordChoiceBattle
                     isAnswered={isAnswered}
-                    isDefeated={battleStatus === "run-failed"}
+                    isDefeated={false}
                     encounterResultLabel={encounterResultLabel}
                     question={wordChoiceQuestion}
                     selectedChoiceId={selectedChoiceId}
@@ -2527,7 +2558,7 @@ export function Dungeon({
                 ) : miniGameType === "word-match" ? (
                   <WordMatchBattle
                     isAnswered={isAnswered}
-                    isDefeated={battleStatus === "run-failed"}
+                    isDefeated={false}
                     encounterResultLabel={encounterResultLabel}
                     question={wordMatchQuestion}
                     selectedMeaningId={selectedMeaningId}
@@ -2544,7 +2575,7 @@ export function Dungeon({
                   <WordScrambleBattle
                     answer={scrambleAnswer}
                     isAnswered={isAnswered}
-                    isDefeated={battleStatus === "run-failed"}
+                    isDefeated={false}
                     encounterResultLabel={encounterResultLabel}
                     question={wordScrambleQuestion}
                     selectedCardId={selectedScrambleCardId}
@@ -2823,84 +2854,210 @@ export function Dungeon({
             </p>
           </details>
 
-          {battleStatus === "run-complete" && (
-            <section className="rounded-xl border-2 border-emerald-300 bg-emerald-100 p-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge tone="emerald">Run Complete</Badge>
-                <p className="font-black text-emerald-950">
-                  {battleLog.rewardSummary ?? `${selectedDeck.name} completed.`}
-                </p>
-              </div>
-              <p className="mt-2 text-sm font-medium text-emerald-950/75">
-                Permanent progress saved. Temporary run state was not saved.
-              </p>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
-                <StatCard label="Deck" value={selectedDeck.name} tone="emerald" />
-                <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
-                <StatCard label="Elites" value={summaryStatistics.eliteDefeated} tone="red" />
-                <StatCard label="Events" value={summaryStatistics.eventsVisited} tone="purple" />
-                <StatCard
-                  label="Boss"
-                  value={summaryStatistics.bossDefeated ? selectedBoss.name : "No"}
-                  tone="purple"
-                />
-                <StatCard label="Final Gold" value={summaryGold} tone="amber" />
-                <StatCard label="Run Deck" value={currentRunDeck.length} tone="slate" />
-                <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
-                <StatCard label="Damage" value={summaryStatistics.totalDamageDealt} tone="red" />
-                <StatCard label="Shield Gained" value={summaryStatistics.totalShieldGained} tone="sky" />
-              </div>
-              <div className="mt-4 grid gap-2">
-                <Button type="button" onClick={handleRestartRun} variant="secondary">
-                  Start Fresh Run
-                </Button>
-                <Button type="button" onClick={() => leaveEndedRun("deck-review")}>
-                  Review Deck
-                </Button>
-                <Button type="button" onClick={() => leaveEndedRun("home")} variant="ghost">
-                  Back Home
-                </Button>
-              </div>
-            </section>
-          )}
-
-          {battleStatus === "run-failed" && (
-            <section className="rounded-xl border-2 border-red-300 bg-red-100 p-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge tone="red">Run Failed</Badge>
-                <p className="font-black text-red-950">
-                  {selectedDeck.name} run ended.
-                </p>
-              </div>
-              <p className="mt-2 text-sm font-medium text-red-950/75">
-                Best run summary was saved. Active run state was not saved.
-              </p>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
-                <StatCard label="Deck" value={selectedDeck.name} tone="red" />
-                <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
-                <StatCard label="Elites" value={summaryStatistics.eliteDefeated} tone="red" />
-                <StatCard label="Events" value={summaryStatistics.eventsVisited} tone="purple" />
-                <StatCard label="Floor" value={runProgress.currentFloor} tone="slate" />
-                <StatCard label="Final Gold" value={summaryGold} tone="amber" />
-                <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
-                <StatCard label="Damage" value={summaryStatistics.totalDamageDealt} tone="red" />
-                <StatCard label="Shield Gained" value={summaryStatistics.totalShieldGained} tone="sky" />
-              </div>
-              <div className="mt-4 grid gap-2">
-                <Button type="button" onClick={handleRestartRun} variant="danger">
-                  Restart Run
-                </Button>
-                <Button type="button" onClick={() => leaveEndedRun("home")} variant="ghost">
-                  Back Home
-                </Button>
-              </div>
-            </section>
-          )}
-
         </aside>
       </div>
       )}
     </ScreenShell>
+  );
+}
+
+function RunEndingSummary({
+  battleLog,
+  currentRunDeckSize,
+  finalGold,
+  isComplete,
+  onBackHome,
+  onRestartRun,
+  onReviewDeck,
+  onTraining,
+  runProgress,
+  selectedBoss,
+  selectedDeck,
+  statistics,
+  summaryAccuracy,
+}: {
+  battleLog: BattleLog;
+  currentRunDeckSize: number;
+  finalGold: number;
+  isComplete: boolean;
+  onBackHome: () => void;
+  onRestartRun: () => void;
+  onReviewDeck: () => void;
+  onTraining: () => void;
+  runProgress: RunProgressState;
+  selectedBoss: Boss;
+  selectedDeck: VocabularyDeck;
+  statistics: RunStatistics;
+  summaryAccuracy: number;
+}) {
+  const bossTitle = getBossTitle(selectedBoss);
+  const bossDefeatText = getBossDefeatText(selectedBoss);
+  const keptItems = [
+    "Word Mastery",
+    "Unlocked Decks",
+    "Completed Decks",
+    "Saved Best Stats",
+  ];
+  const lostItems = [
+    "HP",
+    "Shield",
+    "Gold",
+    "Shop Upgrades",
+    "Duplicated / Removed Cards",
+    "Card Enchantments",
+    "Word Energy",
+  ];
+
+  return (
+    <section
+      className={`h-full overflow-y-auto rounded-2xl border-2 p-4 shadow-inner ${
+        isComplete
+          ? "border-emerald-300 bg-gradient-to-br from-emerald-100 via-amber-50 to-white"
+          : "border-red-300 bg-gradient-to-br from-red-100 via-amber-50 to-white"
+      }`}
+    >
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
+        <div className="space-y-4">
+          <div className="rounded-3xl border-2 border-amber-900/10 bg-white/75 p-5 shadow-[0_10px_0_rgba(120,53,15,0.12)]">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge tone={isComplete ? "emerald" : "red"}>
+                {isComplete ? "Victory" : "Run Failed"}
+              </Badge>
+              <Badge tone="purple">{selectedDeck.name}</Badge>
+            </div>
+            <h3
+              className={`mt-3 text-4xl font-black leading-none ${
+                isComplete ? "text-emerald-950" : "text-red-950"
+              }`}
+            >
+              {isComplete ? "Dungeon Cleared!" : "Your Run Ended"}
+            </h3>
+            <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-950/75">
+              {isComplete
+                ? "Boss defeated, deck progress saved, and your permanent learning progress is safe."
+                : "The run is over, but your learning progress remains. Review, train, and try again when ready."}
+            </p>
+          </div>
+
+          {isComplete ? (
+            <div className="rounded-3xl border-2 border-violet-200 bg-violet-50 p-4">
+              <div className="flex items-start gap-3">
+                <span className="grid size-16 shrink-0 place-items-center rounded-2xl border-2 border-violet-200 bg-white text-4xl shadow-inner">
+                  {selectedBoss.imagePlaceholder}
+                </span>
+                <div className="min-w-0">
+                  <Badge tone="purple">Boss Defeated</Badge>
+                  <h4 className="mt-2 truncate text-2xl font-black text-violet-950">
+                    {selectedBoss.name}
+                  </h4>
+                  {bossTitle && (
+                    <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-violet-800/70">
+                      {bossTitle}
+                    </p>
+                  )}
+                  <p className="mt-2 text-sm font-bold leading-6 text-violet-950/75">
+                    {bossDefeatText ??
+                      "The final guardian falls. Your words light the way forward."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-3xl border-2 border-red-200 bg-red-50 p-4">
+              <Badge tone="red">Failure Reason</Badge>
+              <p className="mt-2 text-sm font-bold leading-6 text-red-950/75">
+                {battleLog.message}
+              </p>
+              <p className="mt-2 text-sm font-black text-red-950">
+                Permanent mastery is safe. Temporary run upgrades are lost.
+              </p>
+            </div>
+          )}
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            <div className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-3">
+              <p className="text-xs font-black uppercase text-emerald-800/70">
+                Permanent Progress Kept
+              </p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {keptItems.map((item) => (
+                  <Badge key={item} tone="emerald">
+                    {item}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl border-2 border-stone-200 bg-stone-50 p-3">
+              <p className="text-xs font-black uppercase text-stone-700/70">
+                Temporary Run Lost
+              </p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {lostItems.map((item) => (
+                  <Badge key={item} tone="slate">
+                    {item}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="rounded-3xl border-2 border-amber-200 bg-amber-50 p-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge tone={isComplete ? "emerald" : "amber"}>
+                {isComplete ? "Reward" : "Encouragement"}
+              </Badge>
+              <p className="font-black text-amber-950">
+                {isComplete
+                  ? battleLog.rewardSummary ?? `${selectedDeck.name} completed.`
+                  : "Best run stats saved. Training progress is safe."}
+              </p>
+            </div>
+            <p className="mt-2 text-sm font-bold leading-6 text-amber-900/75">
+              {isComplete
+                ? "Permanent progress saved. Any next-deck unlock uses the existing deck progression rules."
+                : "Try reviewing the deck or training before the next run. Shop upgrades reset because they are current-run-only."}
+            </p>
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            <StatCard label="Deck" value={selectedDeck.name} tone={isComplete ? "emerald" : "red"} />
+            <StatCard label="Boss" value={statistics.bossDefeated ? selectedBoss.name : "No"} tone="purple" />
+            <StatCard label="Monsters" value={statistics.monstersDefeated} tone="emerald" />
+            <StatCard label="Elites" value={statistics.eliteDefeated} tone="red" />
+            <StatCard label="Events" value={statistics.eventsVisited} tone="purple" />
+            <StatCard label="Floor" value={runProgress.currentFloor} tone="slate" />
+            <StatCard label="Final Gold" value={finalGold} tone="amber" />
+            <StatCard label="Run Deck" value={currentRunDeckSize} tone="slate" />
+            <StatCard label="Correct" value={statistics.correctAnswers} tone="emerald" />
+            <StatCard label="Wrong" value={statistics.wrongAnswers + statistics.timeouts} tone="red" />
+            <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
+            <StatCard label="Damage" value={statistics.totalDamageDealt} tone="red" />
+            <StatCard label="Shield Gained" value={statistics.totalShieldGained} tone="sky" />
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            <Button
+              type="button"
+              onClick={onRestartRun}
+              variant={isComplete ? "secondary" : "danger"}
+            >
+              {isComplete ? "Start Fresh Run" : "Restart Run"}
+            </Button>
+            <Button type="button" onClick={onReviewDeck}>
+              Review Deck
+            </Button>
+            <Button type="button" onClick={onTraining} variant="secondary">
+              Training
+            </Button>
+            <Button type="button" onClick={onBackHome} variant="ghost">
+              Back Home
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 

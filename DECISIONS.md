@@ -982,6 +982,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Phase 42 improves game feel while deferring final art assets, sound, animation libraries, and complex boss systems.
 - Status: Accepted
 
+### 2026-06-14: Run Ending Summaries Are Main Result Screens
+
+- Decision: Run Complete and Run Failed summaries render in the main battle arena with centralized ending actions instead of as narrow side-panel reports.
+- Reason: Ending a run should feel clear, rewarding, and game-like while avoiding duplicated action buttons.
+- Status: Accepted
+
+### 2026-06-14: Ending Screens Clarify Permanent vs Temporary Progress
+
+- Decision: Run ending screens show compact Permanent Progress Kept and Temporary Run Lost sections.
+- Reason: Players should understand that learning progress survives while temporary roguelike run state resets.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
