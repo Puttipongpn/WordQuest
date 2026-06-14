@@ -686,6 +686,7 @@ export default function App() {
             playerStatistics={playerStatistics}
             selectedDeckId={selectedDeck.id}
             unlockedDeckIds={unlockedDeckIds}
+            wordMastery={wordMastery}
           />
         )}
         {currentScreen === "deck-review" && (

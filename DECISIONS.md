@@ -994,6 +994,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Players should understand that learning progress survives while temporary roguelike run state resets.
 - Status: Accepted
 
+### 2026-06-14: Home Acts As Main Game Hub
+
+- Decision: Home presents selected deck status, deck progression, mastery summaries, best run stats, primary actions, and reset progress clarity.
+- Reason: Players should understand what deck is active, what is unlocked, what to do next, and what progress is saved before entering the Dungeon.
+- Status: Accepted
+
+### 2026-06-14: Home Mastery Summaries Are Display-Only
+
+- Decision: Home calculates deck mastery summaries from existing saved word mastery and does not modify mastery or save new data.
+- Reason: Home should clarify learning progress without changing mastery rules or introducing new persistence behavior.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

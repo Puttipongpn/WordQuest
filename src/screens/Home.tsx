@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
-import { Badge, Button, CardPanel, StatCard } from "../components/ui";
+import { Badge, Button, CardPanel, ProgressBar, StatCard } from "../components/ui";
 import { BOSS_MONSTER_REQUIREMENT } from "../game/balance";
 import {
+  getNextUnlockedDeckId,
   getDeckRequirementText,
   getNextUnlockTarget,
 } from "../game/deckProgression";
-import type { PlayerStatistics, ScreenName, VocabularyDeck } from "../types";
+import type {
+  PlayerStatistics,
+  ScreenName,
+  VocabularyDeck,
+  WordMasteryByCardId,
+} from "../types";
 
 type HomeProps = {
   availableDecks: VocabularyDeck[];
@@ -17,7 +23,33 @@ type HomeProps = {
   playerStatistics: PlayerStatistics;
   selectedDeckId: string;
   unlockedDeckIds: string[];
+  wordMastery: WordMasteryByCardId;
 };
+
+function getDeckMasterySummary(
+  deck: VocabularyDeck,
+  wordMastery: WordMasteryByCardId,
+) {
+  const totalCards = deck.cards.length;
+  const totalMastery = deck.cards.reduce(
+    (total, card) => total + (wordMastery[card.id] ?? 0),
+    0,
+  );
+  const masteredWords = deck.cards.filter(
+    (card) => (wordMastery[card.id] ?? 0) >= 5,
+  ).length;
+  const averageMastery =
+    totalCards > 0 ? Number((totalMastery / totalCards).toFixed(1)) : 0;
+  const masteryPercent =
+    totalCards > 0 ? Math.round((totalMastery / (totalCards * 5)) * 100) : 0;
+
+  return {
+    averageMastery,
+    masteredWords,
+    masteryPercent,
+    totalCards,
+  };
+}
 
 export function Home({
   availableDecks,
@@ -28,6 +60,7 @@ export function Home({
   playerStatistics,
   selectedDeckId,
   unlockedDeckIds,
+  wordMastery,
 }: HomeProps) {
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const selectedDeck =
@@ -35,6 +68,21 @@ export function Home({
     availableDecks[0];
   const isSelectedDeckCompleted = completedDeckIds.includes(selectedDeck.id);
   const nextUnlockTarget = getNextUnlockTarget(completedDeckIds, availableDecks);
+  const selectedDeckMastery = getDeckMasterySummary(selectedDeck, wordMastery);
+  const nextUnlockedDeckId = getNextUnlockedDeckId(selectedDeck.id);
+  const nextUnlockedDeck = availableDecks.find(
+    (deck) => deck.id === nextUnlockedDeckId,
+  );
+  const isEveryDeckCompleted = availableDecks.every((deck) =>
+    completedDeckIds.includes(deck.id),
+  );
+  const selectedDeckNextAction = isEveryDeckCompleted
+    ? "All current decks completed. More decks coming soon."
+    : isSelectedDeckCompleted && nextUnlockedDeck && unlockedDeckIds.includes(nextUnlockedDeck.id)
+      ? `Next: Try ${nextUnlockedDeck.name}.`
+      : selectedDeckMastery.averageMastery < 2
+        ? "Next: Training can improve mastery and increase Dungeon damage."
+        : "Next: Review or enter the Dungeon when ready.";
 
   function confirmResetProgress() {
     onResetProgress();
@@ -55,15 +103,68 @@ export function Home({
             <Badge tone="purple">Deckbuilder run</Badge>
             <Badge tone="sky">Training untimed</Badge>
             <Badge tone="red">Dungeon timed</Badge>
-            <Badge tone="amber">Placeholder art</Badge>
+            <Badge tone="amber">Saved locally</Badge>
           </div>
           <h3 className="mt-5 max-w-2xl text-5xl font-black text-amber-950">
-            Learn words. Trigger cards. Survive the dungeon.
+            {selectedDeck.name}
           </h3>
-          <p className="mt-4 max-w-2xl text-lg font-medium leading-8 text-amber-950/80">
-            Permanent word mastery is saved locally. Current dungeon runs remain
-            temporary and reset separately. Train safely at camp, then face
-            timed battles and a boss after {BOSS_MONSTER_REQUIREMENT} monsters.
+          <p className="mt-3 max-w-2xl text-lg font-bold leading-8 text-amber-950/80">
+            {selectedDeck.description}
+          </p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <StatCard
+              label="Status"
+              value={isSelectedDeckCompleted ? "Completed" : "Unlocked"}
+              helper={
+                isSelectedDeckCompleted
+                  ? "Boss cleared"
+                  : "Ready to play"
+              }
+              tone={isSelectedDeckCompleted ? "emerald" : "sky"}
+            />
+            <StatCard
+              label="Cards"
+              value={selectedDeck.cards.length}
+              helper="Vocabulary cards"
+              tone="amber"
+            />
+            <StatCard
+              label="Mastered"
+              value={`${selectedDeckMastery.masteredWords} / ${selectedDeckMastery.totalCards}`}
+              helper="Words at 5 / 5"
+              tone="emerald"
+            />
+            <StatCard
+              label="Average"
+              value={`${selectedDeckMastery.averageMastery} / 5`}
+              helper="Saved mastery"
+              tone="purple"
+            />
+          </div>
+          <div className="mt-5 rounded-2xl border-2 border-amber-900/10 bg-white/70 p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="font-black text-amber-950">
+                Mastery Progress
+              </p>
+              <Badge tone="emerald">
+                {selectedDeckMastery.masteryPercent}%
+              </Badge>
+            </div>
+            <div className="mt-3">
+              <ProgressBar
+                value={selectedDeckMastery.masteryPercent}
+                max={100}
+                label={`${selectedDeck.name} mastery progress`}
+                tone="emerald"
+              />
+            </div>
+            <p className="mt-3 text-sm font-bold text-amber-900/75">
+              {selectedDeckNextAction}
+            </p>
+          </div>
+          <p className="mt-4 max-w-2xl text-sm font-bold leading-6 text-amber-950/75">
+            Permanent progress is saved locally in this browser. Dungeon HP,
+            shield, gold, shop upgrades, and Word Energy are temporary run state.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button type="button" onClick={() => onNavigate("deck-review")}>
@@ -79,16 +180,8 @@ export function Home({
             <Button
               type="button"
               onClick={() => onNavigate("dungeon")}
-              variant="secondary"
             >
               Enter Dungeon
-            </Button>
-            <Button
-              type="button"
-              onClick={() => setIsResetConfirmOpen(true)}
-              variant="danger"
-            >
-              Reset Progress
             </Button>
           </div>
         </CardPanel>
@@ -122,8 +215,8 @@ export function Home({
             />
             <StatCard
               label="Mastery"
-              value="0-5"
-              helper="Saved locally"
+              value={`${selectedDeckMastery.masteryPercent}%`}
+              helper="Selected deck"
               tone="emerald"
             />
             <StatCard
@@ -132,6 +225,14 @@ export function Home({
               helper="Ended runs"
               tone="amber"
             />
+          </div>
+          <div className="mt-5 rounded-2xl border border-emerald-900/10 bg-white/70 p-4">
+            <Badge tone="emerald">Local Save</Badge>
+            <p className="mt-2 text-sm font-bold leading-6 text-amber-900/80">
+              Permanent progress is saved on this device. Reset Progress is the
+              only Home action that clears mastery, unlocks, completions, and
+              saved stats.
+            </p>
           </div>
         </CardPanel>
       </div>
@@ -150,7 +251,7 @@ export function Home({
             </p>
           </div>
         </div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
           <StatCard
             label="Best Monsters"
             value={playerStatistics.bestMonstersDefeated}
@@ -181,6 +282,18 @@ export function Home({
             helper="Run ended"
             tone="amber"
           />
+          <StatCard
+            label="Total Correct"
+            value={playerStatistics.totalCorrectAnswers}
+            helper="Saved answers"
+            tone="emerald"
+          />
+          <StatCard
+            label="Total Wrong"
+            value={playerStatistics.totalWrongAnswers}
+            helper="Saved answers"
+            tone="red"
+          />
         </div>
       </CardPanel>
 
@@ -189,12 +302,15 @@ export function Home({
           <div>
             <Badge tone="purple">Deck Selection</Badge>
             <h3 className="mt-2 text-2xl font-black text-amber-950">
-              Choose your active deck
+              Deck Progression Path
             </h3>
             <p className="mt-2 max-w-2xl text-sm font-bold text-amber-900/75">
               Deck Review, Training, Dungeon battles, shop mutations, and boss
               completion all use the selected deck. Changing decks starts a
               fresh run. Locked decks appear here but cannot be selected yet.
+            </p>
+            <p className="mt-3 text-lg font-black text-amber-950">
+              Starter Deck → Food Deck → Travel Deck → Nature Deck
             </p>
             <p className="mt-3 rounded-lg border border-amber-900/10 bg-white/70 px-3 py-2 text-sm font-black text-amber-950">
               Next unlock target: {nextUnlockTarget}
@@ -214,6 +330,7 @@ export function Home({
             const isCompleted = completedDeckIds.includes(deck.id);
             const isUnlocked = unlockedDeckIds.includes(deck.id);
             const requirement = getDeckRequirementText(deck.id, availableDecks);
+            const masterySummary = getDeckMasterySummary(deck, wordMastery);
             const statusLabel = isCompleted
               ? "Completed"
               : isUnlocked
@@ -221,15 +338,11 @@ export function Home({
                 : "Locked";
 
             return (
-              <button
+              <article
                 key={deck.id}
-                type="button"
-                disabled={!isUnlocked}
-                onClick={() => onSelectDeck(deck.id)}
-                aria-pressed={isSelected}
                 className={`rounded-xl border-2 p-4 text-left shadow-[0_8px_0_rgba(120,53,15,0.12)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                   !isUnlocked
-                    ? "cursor-not-allowed border-slate-300 bg-slate-100/80 opacity-75"
+                    ? "border-slate-300 bg-slate-100/80 opacity-75"
                     : isSelected
                       ? "border-amber-700 bg-white ring-2 ring-amber-300"
                       : "border-amber-900/15 bg-white/70 hover:border-amber-500"
@@ -245,18 +358,19 @@ export function Home({
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
+                    {isSelected && isUnlocked && (
+                      <Badge tone="amber">Selected</Badge>
+                    )}
                     <Badge
                       tone={
                         isCompleted
                           ? "emerald"
                           : !isUnlocked
                             ? "slate"
-                            : isSelected
-                              ? "amber"
-                              : "sky"
+                            : "sky"
                       }
                     >
-                      {isSelected && isUnlocked ? "Selected" : statusLabel}
+                      {statusLabel}
                     </Badge>
                     <Badge tone={isCompleted ? "emerald" : "sky"}>
                       {isCompleted ? "Completed" : "In Progress"}
@@ -266,11 +380,29 @@ export function Home({
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   <StatCard label="Cards" value={deck.cards.length} />
                   <StatCard
-                    label="Access"
-                    value={statusLabel}
-                    helper={isUnlocked ? "Selectable" : requirement}
-                    tone={isUnlocked ? "emerald" : "slate"}
+                    label="Mastered"
+                    value={`${masterySummary.masteredWords} / ${masterySummary.totalCards}`}
+                    helper={`Avg ${masterySummary.averageMastery} / 5`}
+                    tone="emerald"
                   />
+                </div>
+                <div className="mt-4 rounded-lg border border-amber-900/10 bg-white/70 p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-xs font-black uppercase text-amber-800/70">
+                      Mastery
+                    </p>
+                    <p className="text-xs font-black text-amber-950">
+                      {masterySummary.masteryPercent}%
+                    </p>
+                  </div>
+                  <div className="mt-2">
+                    <ProgressBar
+                      value={masterySummary.masteryPercent}
+                      max={100}
+                      label={`${deck.name} mastery`}
+                      tone={isCompleted ? "emerald" : "sky"}
+                    />
+                  </div>
                 </div>
                 <p
                   className={`mt-3 rounded-md border px-3 py-2 text-sm font-bold ${
@@ -281,11 +413,51 @@ export function Home({
                 >
                   {isCompleted
                     ? "Completed. You can still replay this deck."
-                    : requirement}
+                    : isUnlocked
+                      ? isSelected
+                        ? "Selected. Review, train, or enter the dungeon."
+                        : "Unlocked. Select this deck to start a fresh run."
+                      : requirement}
                 </p>
-              </button>
+                <Button
+                  type="button"
+                  disabled={!isUnlocked || isSelected}
+                  onClick={() => onSelectDeck(deck.id)}
+                  variant={isSelected ? "secondary" : "primary"}
+                  className="mt-4 w-full"
+                >
+                  {isSelected
+                    ? "Selected"
+                    : isUnlocked
+                      ? "Select Deck"
+                      : "Locked"}
+                </Button>
+              </article>
             );
           })}
+        </div>
+      </CardPanel>
+
+      <CardPanel className="mt-6 border-red-800/30 bg-gradient-to-br from-red-50 via-amber-50 to-stone-100">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <Badge tone="red">Danger Zone</Badge>
+            <h3 className="mt-2 text-2xl font-black text-red-950">
+              Reset Progress
+            </h3>
+            <p className="mt-2 max-w-2xl text-sm font-bold leading-6 text-red-950/75">
+              This clears word mastery, unlocked decks, completed decks, and
+              saved statistics from this browser. It is separate from Abandon
+              Run, which only ends the current temporary run.
+            </p>
+          </div>
+          <Button
+            type="button"
+            onClick={() => setIsResetConfirmOpen(true)}
+            variant="danger"
+          >
+            Reset Progress
+          </Button>
         </div>
       </CardPanel>
 

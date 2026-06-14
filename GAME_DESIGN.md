@@ -156,7 +156,14 @@ Current decks:
 Current selected deck rules:
 
 - `Starter Deck` is selected by default.
-- Home provides the first deck selection UI.
+- Home acts as the main game hub.
+- Home shows the selected deck, selected deck status, deck description, card count, mastered word count, average mastery, mastery progress, and next recommended action.
+- Home shows the manual deck progression path: Starter Deck → Food Deck → Travel Deck → Nature Deck.
+- Home deck cards show locked, unlocked, selected, and completed states; unlock requirement copy; card count; mastery summary; and a select action when available.
+- Home mastery summaries are display-only and use existing saved word mastery.
+- Home Best Run summary uses existing saved permanent statistics.
+- Home keeps Reset Progress in a separate danger-zone section with confirmation.
+- Home includes local-save copy explaining permanent progress is saved in this browser/device.
 - Starter Deck is unlocked by default.
 - Food Deck starts locked.
 - Travel Deck starts locked.

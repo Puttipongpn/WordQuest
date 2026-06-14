@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 43 Run Complete / Run Failed Summary Polish is complete. GitHub backup is configured on `origin/main`.
+Phase 44 Home / Deck Progress Polish is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -543,6 +543,16 @@ Phase 43 Run Complete / Run Failed Summary Polish is complete. GitHub backup is 
 - Preserved run exit safety: ending actions reset only temporary run state and do not clear permanent progress.
 - Preserved combat math, boss requirement, deck unlocks, save rules, shop effects, event effects, timer values, mastery rules, and LocalStorage permanent-progress-only behavior.
 - Verified the project with `npm run build` after Phase 43.
+- Applied Phase 44 Home / Deck Progress Polish.
+- Updated Home into a clearer game hub focused on the selected deck, deck progression, mastery progress, best run stats, and primary next actions.
+- Added selected deck hero details for deck status, card count, mastered words, average mastery, mastery progress percent, and next recommended action.
+- Added per-deck mastery summaries and progress bars to the deck progression cards using existing saved word mastery only.
+- Improved deck progression path copy for Starter Deck → Food Deck → Travel Deck → Nature Deck without changing unlock rules.
+- Improved Best Run summary with total correct and total wrong saved answer stats.
+- Moved Reset Progress into a distinct Danger Zone and kept the existing confirmation flow.
+- Added local-save clarity copy explaining permanent progress is saved in this browser/device.
+- Preserved deck selection rules, permanent-progress save rules, temporary run reset behavior, combat systems, shop, events, boss, Training, Deck Review, Word Energy, and LocalStorage safety.
+- Verified the project with `npm run build` after Phase 44.
 
 ## In Progress
 
@@ -550,7 +560,7 @@ Phase 43 Run Complete / Run Failed Summary Polish is complete. GitHub backup is 
 
 ## Next Task
 
-Phase 43 is complete. Continue with the next explicitly requested phase or feature.
+Phase 44 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
