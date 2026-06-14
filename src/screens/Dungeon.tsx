@@ -7,7 +7,7 @@ import {
   ProgressBar,
   StatCard,
 } from "../components/ui";
-import { sampleBoss, sampleMonsters } from "../data";
+import { sampleBoss, sampleBosses, sampleMonsters } from "../data";
 import {
   ALTAR_HP_COST,
   BOSS_MONSTER_REQUIREMENT,
@@ -53,6 +53,7 @@ import {
 } from "../game/mastery";
 import type {
   Monster,
+  Boss,
   RunProgressState,
   RunStatistics,
   ScreenName,
@@ -492,6 +493,10 @@ function chooseDungeonEvent(seed: number) {
   return dungeonEvents[seed % dungeonEvents.length];
 }
 
+function chooseBoss(seed: number) {
+  return sampleBosses[seed % sampleBosses.length] ?? sampleBoss;
+}
+
 function buildChoices(
   card: WordCard,
   cardIndex: number,
@@ -912,6 +917,13 @@ function getEncounterFlavorText(
   options: { isBossEncounter: boolean; encounterType: EncounterType },
 ) {
   if (options.isBossEncounter) {
+    if (
+      "introFlavor" in encounter &&
+      typeof encounter.introFlavor === "string"
+    ) {
+      return encounter.introFlavor;
+    }
+
     return "The guardian of forgotten words stands before you.";
   }
 
@@ -964,6 +976,22 @@ function getEncounterFlavorText(
   return `${encounter.name} blocks your path.`;
 }
 
+function getBossTitle(encounter: Monster) {
+  if ("title" in encounter && typeof encounter.title === "string") {
+    return encounter.title;
+  }
+
+  return undefined;
+}
+
+function getBossDefeatText(encounter: Monster) {
+  if ("defeatText" in encounter && typeof encounter.defeatText === "string") {
+    return encounter.defeatText;
+  }
+
+  return undefined;
+}
+
 export function Dungeon({
   currentRunDeck,
   isSelectedDeckCompleted,
@@ -998,6 +1026,7 @@ export function Dungeon({
     () => getMonsterForIndex(0).maxHp,
   );
   const [isBossEncounter, setIsBossEncounter] = useState(false);
+  const [selectedBoss, setSelectedBoss] = useState<Boss>(sampleBoss);
   const [hasCompletedBoss, setHasCompletedBoss] = useState(false);
   const [questionSeed, setQuestionSeed] = useState(0);
   const [miniGameType, setMiniGameType] =
@@ -1033,7 +1062,7 @@ export function Dungeon({
   const currentMonster = getMonsterForIndex(monsterIndex);
   const eliteMonster = createEliteMonster(currentMonster);
   const currentEncounter = isBossEncounter
-    ? sampleBoss
+    ? selectedBoss
     : encounterType === "elite"
       ? eliteMonster
       : currentMonster;
@@ -1370,9 +1399,11 @@ export function Dungeon({
         onUpdateRunStatistics(nextRunStatistics);
         setHasCompletedBoss(true);
         setBattleStatus("run-complete");
+        const bossDefeatText = getBossDefeatText(currentEncounter);
+
         setBattleLog({
           tone: "success",
-          message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${wordEnergyFeedback ? `${wordEnergyFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${sampleBoss.name} defeated. ${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
+          message: `${card.word} triggered for ${totalDamageDealt} total damage. ${masteryBonusDamage > 0 ? `Mastery added +${masteryBonusDamage} damage. ` : ""}${elementFeedback ? `${elementFeedback} ` : ""}${wordEnergyFeedback ? `${wordEnergyFeedback} ` : ""}${totalShieldGained > 0 ? `Gained ${totalShieldGained} shield. ` : ""}${windGoldGained > 0 ? `Gained ${windGoldGained} extra gold. ` : ""}${currentEncounter.name} defeated. ${bossDefeatText ? `${bossDefeatText} ` : ""}${completionReward.completedMessage} ${completionReward.unlockMessage} Permanent progress saved.`,
           triggeredCard: card,
           baseDamageDealt: card.baseAttack,
           elementBonusDamage,
@@ -1964,10 +1995,12 @@ export function Dungeon({
 
   function handleStartBoss() {
     const nextMiniGameType = chooseBattleMiniGame();
+    const nextBoss = chooseBoss(runProgress.monstersDefeated + questionSeed);
 
     setIsBossEncounter(true);
+    setSelectedBoss(nextBoss);
     setEncounterType("monster");
-    setMonsterHp(sampleBoss.maxHp);
+    setMonsterHp(nextBoss.maxHp);
     setPendingEarthReduction(0);
     setIsPaused(false);
     setBattleStatus("encounter-intro");
@@ -1978,7 +2011,7 @@ export function Dungeon({
     setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
     setBattleLog({
       tone: "neutral",
-      message: `${sampleBoss.name} appears. Inspect the boss before battle.`,
+      message: `${nextBoss.name} appears. The dungeon quiets before the final battle.`,
     });
   }
 
@@ -1993,6 +2026,7 @@ export function Dungeon({
     setEndedRunGold(null);
     setEndedRunStatistics(null);
     setIsBossEncounter(false);
+    setSelectedBoss(sampleBoss);
     setHasCompletedBoss(false);
     setEncounterType("monster");
     setEventIndex(0);
@@ -2143,16 +2177,21 @@ export function Dungeon({
                       : "emerald"
                 }
               >
-                {encounterLabel}
+                {isBossEncounter ? "BOSS" : encounterLabel}
               </Badge>
               <div
-                className={`mx-auto mt-4 grid size-28 place-items-center rounded-3xl border-4 text-6xl shadow-lg ${encounterPortraitClass}`}
+                className={`mx-auto mt-4 grid place-items-center rounded-3xl border-4 shadow-lg ${isBossEncounter ? "size-32 text-7xl ring-4 ring-red-300/25" : "size-28 text-6xl"} ${encounterPortraitClass}`}
               >
                 {currentEncounter.imagePlaceholder}
               </div>
               <h3 className="mt-4 text-5xl font-black leading-none text-amber-50 drop-shadow">
                 {currentEncounter.name}
               </h3>
+              {isBossEncounter && getBossTitle(currentEncounter) && (
+                <p className="mt-2 text-sm font-black uppercase tracking-[0.24em] text-red-100/85">
+                  {getBossTitle(currentEncounter)}
+                </p>
+              )}
               <p className="mx-auto mt-4 max-w-2xl text-base font-bold leading-7 text-amber-100/90">
                 {encounterFlavorText}
               </p>
@@ -2176,7 +2215,14 @@ export function Dungeon({
               </div>
               <div className="mt-6 flex flex-wrap justify-center gap-2">
                 <Badge tone="sky">Timer starts after Start Battle</Badge>
-                {isBossEncounter && <Badge tone="purple">Major Fight</Badge>}
+                {isBossEncounter && (
+                  <>
+                    <Badge tone="purple">Major Fight</Badge>
+                    <Badge tone="red">
+                      {selectedBoss.specialMoveName}
+                    </Badge>
+                  </>
+                )}
                 {encounterType === "elite" && (
                   <Badge tone="amber">
                     Elite Bonus +{ELITE_GOLD_BONUS} gold
@@ -2188,7 +2234,7 @@ export function Dungeon({
                 onClick={startBattleFromIntro}
                 className="mt-7 min-w-64 px-8 py-3 text-lg"
               >
-                Start Battle
+                {isBossEncounter ? "Start Boss Battle" : "Start Battle"}
               </Button>
             </div>
           </section>
@@ -2322,10 +2368,15 @@ export function Dungeon({
                                 : "emerald"
                         }
                       >
-                        {encounterLabel}
+                        {isBossEncounter ? "BOSS" : encounterLabel}
                       </Badge>
                       {!isEventEncounter && (
                         <Badge tone="red">ATK {currentEncounter.attack}</Badge>
+                      )}
+                      {isBossEncounter && getBossTitle(currentEncounter) && (
+                        <Badge tone="purple">
+                          {getBossTitle(currentEncounter)}
+                        </Badge>
                       )}
                       <Badge
                         tone={
@@ -2360,7 +2411,7 @@ export function Dungeon({
                       <ProgressBar
                         value={monsterHp}
                         max={currentEncounter.maxHp}
-                        label={`${currentEncounter.name} HP`}
+                        label={`${isBossEncounter ? "BOSS " : ""}${currentEncounter.name} HP`}
                         tone={
                           isBossEncounter || encounterType === "elite"
                             ? "red"
@@ -2788,7 +2839,11 @@ export function Dungeon({
                 <StatCard label="Monsters" value={summaryStatistics.monstersDefeated} tone="emerald" />
                 <StatCard label="Elites" value={summaryStatistics.eliteDefeated} tone="red" />
                 <StatCard label="Events" value={summaryStatistics.eventsVisited} tone="purple" />
-                <StatCard label="Boss" value={summaryStatistics.bossDefeated ? "Defeated" : "No"} tone="purple" />
+                <StatCard
+                  label="Boss"
+                  value={summaryStatistics.bossDefeated ? selectedBoss.name : "No"}
+                  tone="purple"
+                />
                 <StatCard label="Final Gold" value={summaryGold} tone="amber" />
                 <StatCard label="Run Deck" value={currentRunDeck.length} tone="slate" />
                 <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />

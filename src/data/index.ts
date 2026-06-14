@@ -1,4 +1,4 @@
-export { sampleBoss } from "./bosses";
+export { sampleBoss, sampleBosses } from "./bosses";
 export { foodDeck } from "./foodDeck";
 export { natureDeck } from "./natureDeck";
 export { sampleMonsters } from "./monsters";

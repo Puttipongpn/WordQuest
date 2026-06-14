@@ -135,6 +135,9 @@ export type Monster = {
 export type Boss = Monster & {
   bossNumber: number;
   specialMoveName: string;
+  title?: string;
+  introFlavor?: string;
+  defeatText?: string;
 };
 
 export type ShopItemType =

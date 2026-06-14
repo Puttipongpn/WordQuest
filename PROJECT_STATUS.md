@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 41 Event QA + Balance Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 42 Boss Variety + Boss Presentation Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -525,6 +525,15 @@ Phase 41 Event QA + Balance Pass is complete. GitHub backup is configured on `or
 - Confirmed events do not increase monster defeats, advance boss progress, trigger shop checkpoints, or grant monster defeat gold.
 - Confirmed current event reward values remain inside the intended modest ranges.
 - Verified the project with `npm run build` after Phase 41.
+- Applied Phase 42 Boss Variety + Boss Presentation Pass.
+- Expanded boss data from only Gatekeeper to a placeholder boss pool: Gatekeeper, Word Warden, Grammar Golem, Shadow Reader, and Memory Dragon.
+- Added boss metadata for title, intro flavor text, defeat text, and special move presentation.
+- Boss battle start now selects one boss from the boss pool for that encounter.
+- Improved Boss Encounter Intro with a BOSS badge, larger placeholder icon treatment, boss title, special move badge, and boss-specific flavor text.
+- Improved active boss battle presentation with BOSS labeling and boss title in the encounter panel.
+- Run Complete summary now shows the defeated boss name.
+- Preserved the 20 defeated monster boss requirement, existing Card Trigger battle system, deck completion reward, deck unlock logic, LocalStorage save rules, shop behavior, event behavior, timer values, mastery rules, and combat math.
+- Verified the project with `npm run build` after Phase 42.
 
 ## In Progress
 
@@ -532,7 +541,7 @@ Phase 41 Event QA + Balance Pass is complete. GitHub backup is configured on `or
 
 ## Next Task
 
-Phase 41 is complete. Continue with the next explicitly requested phase or feature.
+Phase 42 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -628,6 +637,7 @@ The following documents are required and must be updated after every completed t
 - Remove and Duplicate are temporary run deck mutations
 - Boss appears at monster 20
 - Boss uses the same Card Trigger System as regular monsters
+- Boss encounters can select from the placeholder boss pool
 - Boss defeat creates a Run Complete state
 - Boss defeat marks the current deck completed
 - Completed deck ids are permanent progress saved in LocalStorage

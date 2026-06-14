@@ -970,6 +970,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Events should create interesting choices without causing accidental run failure, invalid deck mutation, or unclear outcomes.
 - Status: Accepted
 
+### 2026-06-14: Boss Variety Uses Placeholder Boss Pool
+
+- Decision: Boss encounters can select from a small placeholder boss pool while preserving the same boss requirement, Card Trigger battle system, and permanent completion reward rules.
+- Reason: Boss fights should feel more like a run climax without adding advanced boss mechanics or changing progression/save systems.
+- Status: Accepted
+
+### 2026-06-14: Boss Presentation Uses Placeholder Visuals Only
+
+- Decision: Boss intro and battle presentation use Tailwind/CSS styling, badges, flavor text, and emoji placeholders only.
+- Reason: Phase 42 improves game feel while deferring final art assets, sound, animation libraries, and complex boss systems.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

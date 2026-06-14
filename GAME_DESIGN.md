@@ -404,7 +404,10 @@ Current battle rules:
 - Remove Card is guarded so battle questions keep enough distinct visible words.
 - After a monster is defeated, the player can spawn the next sample monster.
 - Boss becomes available after 20 defeated monsters.
-- The current sample boss is Gatekeeper, tuned to 76 HP and 8 attack.
+- Boss encounters select from a placeholder boss pool when the boss battle starts.
+- Current placeholder bosses are Gatekeeper, Word Warden, Grammar Golem, Shadow Reader, and Memory Dragon.
+- Boss HP / attack values stay beginner-friendly, currently in the 64-76 HP and 7-10 attack range.
+- Boss metadata can include title, intro flavor text, defeat text, and special move name for presentation only.
 - Boss battles use the same Word Choice, Word Match, Word Scramble, Card Trigger System, current-run deck, attack, shield, and element display behavior as regular monster battles.
 - Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
 - When boss HP reaches 0, the screen shows `Run Complete`.

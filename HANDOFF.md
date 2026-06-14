@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 41 complete.
+Current phase: Phase 42 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, and after Phase 41 Event QA + Balance Pass work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, and after Phase 42 Boss Variety + Boss Presentation Pass work.
 
 The local development server can be started with:
 
@@ -347,7 +347,7 @@ Current data files:
 - `src/data/starterDeck.ts`: the first sample vocabulary deck.
 - `src/data/foodDeck.ts`: the second manual sample deck for multi-deck flow testing.
 - `src/data/monsters.ts`: sample monster list with Slime, Goblin, and Bat.
-- `src/data/bosses.ts`: sample boss data with Gatekeeper.
+- `src/data/bosses.ts`: placeholder boss pool with Gatekeeper, Word Warden, Grammar Golem, Shadow Reader, and Memory Dragon.
 - `src/data/shopItems.ts`: sample current-run shop item placeholders.
 - `src/data/index.ts`: data exports, including `availableDecks`.
 
@@ -358,7 +358,7 @@ Current balance values:
 - Gold per defeated monster: `6`
 - Shop interval: every `5` defeated monsters
 - Boss requirement: `20` defeated monsters
-- Gatekeeper boss: `76` HP and `8` attack
+- Boss pool values: `64-76` HP and `7-10` attack
 - Upgrade Attack amount: `+2`
 - Add Shield amount: `+3`
 - Minimum current-run deck size: `5`
@@ -521,7 +521,8 @@ Current Dungeon implementation:
 - Triggered cards with shield effects add shield while still dealing `baseAttack` damage.
 - Dungeon feedback shows total monster attack, shield absorbed, HP damage taken, shield gained, triggered card, and triggered effects summary.
 - Boss becomes available after 20 defeated monsters.
-- The first boss is Gatekeeper with 76 HP and 8 attack.
+- Boss battle start selects one boss from the placeholder boss pool.
+- Bosses currently have presentation metadata only: title, intro flavor text, defeat text, and special move name.
 - Boss battles use the same mini-games and Card Trigger System as regular monsters.
 - Boss defeat creates a Run Complete state with monsters defeated, current floor, final gold, and current-run deck size.
 - Run Complete summary shows selected deck name, monsters defeated, elites defeated, events visited, boss defeated, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
@@ -625,6 +626,9 @@ Current Dungeon implementation:
 - Phase 40 keeps event rewards out of permanent progress and LocalStorage.
 - Phase 41 adds event choice guards for HP-cost and random-card-target edge cases.
 - Phase 41 confirms expanded events remain current-run-only, do not mutate permanent progress, and do not advance boss/shop progression.
+- Phase 42 expands placeholder boss variety with Gatekeeper, Word Warden, Grammar Golem, Shadow Reader, and Memory Dragon.
+- Phase 42 improves boss intro, active boss labeling, and Run Complete boss-name presentation using Tailwind/CSS and emoji placeholders only.
+- Phase 42 preserves boss requirement, combat math, Card Trigger rules, deck completion rewards, deck unlocks, save rules, shop behavior, event behavior, timers, and mastery rules.
 
 Current Shop implementation:
 
@@ -1007,7 +1011,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 41 is complete.
+Phase 42 is complete.
 
 Recommended next task:
 
