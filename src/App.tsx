@@ -693,6 +693,8 @@ export default function App() {
           <DeckReview
             completedDeckIds={completedDeckIds}
             deck={selectedDeck}
+            onNavigate={navigateToScreen}
+            unlockedDeckIds={unlockedDeckIds}
             wordMastery={wordMastery}
           />
         )}

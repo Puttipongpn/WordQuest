@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 45 complete.
+Current phase: Phase 46 complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation Pass work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, and after Phase 45 Training Mode Expansion work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, after Phase 45 Training Mode Expansion work, and after Phase 46 Deck Review Learning Polish work.
 
 The local development server can be started with:
 
@@ -380,13 +380,21 @@ Current Deck Review implementation:
 
 - `src/screens/DeckReview.tsx` receives the selected deck from `src/App.tsx`.
 - It receives current `wordMastery` from `src/App.tsx`.
-- All cards render in a responsive grid.
+- It receives unlocked deck ids and navigation from `src/App.tsx` for display status and compact screen handoff actions.
+- Deck Review is now a learning preparation screen, not just a static card list.
+- The top summary shows selected deck name, description, status, total card count, mastered words, average mastery, weak word count, and a deck mastery progress bar.
+- Readiness copy helps the player decide whether to train first, enter Dungeon, replay a completed deck, or continue progression.
+- Display-only filters are available for All, Weak, Unmastered, Mastered, Attack High, and Has Effect.
+- Display-only sorting supports default deck order, mastery low/high, difficulty low/high, attack high, and alphabetical.
+- Filter empty states explain what to do next, such as trying Review All, Training, or Dungeon.
+- All matching cards render in a responsive grid.
 - Clicking a card stores the selected card in local React state.
-- The selected card detail panel shows word, Thai meaning, part of speech, example sentence, difficulty, base attack, effects, and mastery placeholder.
-- Mastery displays persisted values from `0 / 5`, mastered status, and the current Dungeon mastery damage bonus.
-- Deck summary shows deck name, total cards, and current total saved mastery.
-- Deck Review does not mutate mastery and has no persistence, save logic, battle logic, shop logic, or training interaction logic.
-- Phase 9 UI polish added clearer badges, stat cards, and progress bars for scanability.
+- Card grid entries show English word, Thai meaning, part of speech, difficulty, mastery, mastery guidance, mastery progress, base attack, effects, and mastered status.
+- The selected card detail panel shows word, Thai meaning, part of speech, example sentence, image placeholder, difficulty, base attack, effects, mastery value, mastery guidance, and Dungeon mastery damage bonus.
+- The selected card detail includes short battle-role copy explaining base attack damage, permanent mastery bonus damage, and current-run-only shop upgrades.
+- Deck Review includes compact handoff buttons for Start Training, Enter Dungeon, Back Home, Train Weak Words, Train Unmastered, and Quick Practice. These navigate to Training or Dungeon only; they do not preselect a Training mode yet.
+- Deck Review does not mutate mastery and has no persistence, save logic, battle logic, shop logic, event logic, boss logic, timer logic, or run-state logic.
+- Phase 46 improved Deck Review learning usefulness while preserving all mastery and save rules.
 
 Current Training implementation:
 
@@ -1027,7 +1035,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 45 is complete.
+Phase 46 is complete.
 
 Recommended next task:
 

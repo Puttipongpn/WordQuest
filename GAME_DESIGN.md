@@ -185,6 +185,25 @@ Decks should target around 20 words each. The long-term source for vocabulary is
 
 Real Oxford 3000 import and progression beyond the current manual sample chain are intentionally deferred.
 
+## Deck Review
+
+Deck Review is a selected-deck learning preparation screen.
+
+Current Deck Review rules:
+
+- Uses the app-level selected deck.
+- Shows selected deck name, description, locked/unlocked/completed status, total cards, mastered words, average mastery, weak word count, and deck mastery progress.
+- Gives short readiness guidance, such as training first when average mastery is low or entering Dungeon when many words are mastered.
+- Provides display-only filters for All, Weak, Unmastered, Mastered, Attack High, and Has Effect.
+- Provides display-only sorting for default deck order, mastery low/high, difficulty low/high, attack high, and alphabetical.
+- Card grid entries show English word, Thai meaning, part of speech, difficulty, mastery, mastery guidance, base attack, effects, and mastered status.
+- Selected card details show image placeholder, English word, Thai meaning, part of speech, example sentence, difficulty, mastery, mastery Dungeon damage bonus, base attack, effects, and short battle-role copy.
+- Deck Review can navigate to Training, Dungeon, or Home.
+- Deck Review does not change mastery.
+- Deck Review does not change permanent progress, current-run deck, HP, shield, gold, Word Energy, dungeon run state, shop state, events, bosses, timers, or LocalStorage.
+
+Deck Review should feel like a vocabulary card collection, study journal, or adventure notebook rather than an admin table.
+
 ## Word Card Structure
 
 Each word card currently includes:

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 45 Training Mode Expansion is complete. GitHub backup is configured on `origin/main`.
+Phase 46 Deck Review Learning Polish is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -564,6 +564,16 @@ Phase 45 Training Mode Expansion is complete. GitHub backup is configured on `or
 - Preserved existing Training question types, untimed Training behavior, correct-answer mastery increase, wrong-answer no decrease, mastery cap at 5, and LocalStorage mastery save behavior.
 - Preserved Training isolation from HP, shield, gold, current-run deck, shop upgrades, dungeon run state, events, boss state, Word Energy, and run statistics.
 - Verified the project with `npm run build` after Phase 45.
+- Applied Phase 46 Deck Review Learning Polish.
+- Improved Deck Review as a learning preparation screen with selected deck status, deck description, total cards, mastered words, average mastery, weak word count, and deck mastery progress.
+- Added readiness guidance so players can decide whether to train first or enter Dungeon.
+- Added display-only card filters: All, Weak, Unmastered, Mastered, Attack High, and Has Effect.
+- Added display-only sorting: default deck order, mastery low/high, difficulty low/high, attack high, and alphabetical.
+- Improved vocabulary card scanability with Thai meaning, part of speech, difficulty, mastery guidance, mastery progress, base attack, effects, and mastered badges.
+- Improved selected card details with image placeholder, meaning, part of speech, example sentence, difficulty, mastery bonus, effects, mastery guidance, and short battle-role copy.
+- Added Deck Review action handoffs to Training, Dungeon, and Home without changing Training rules or adding React Router.
+- Preserved Deck Review as display-only: it does not change mastery, run state, save rules, deck unlocks, combat, shop, events, boss, timers, or Word Energy.
+- Verified the project with `npm run build` after Phase 46.
 
 ## In Progress
 
@@ -571,7 +581,7 @@ Phase 45 Training Mode Expansion is complete. GitHub backup is configured on `or
 
 ## Next Task
 
-Phase 45 is complete. Continue with the next explicitly requested phase or feature.
+Phase 46 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -603,6 +613,7 @@ The following documents are required and must be updated after every completed t
 - Seed vocabulary data lives in `src/data`
 - Deck Review uses the selected deck from app-level state
 - Deck Review uses local React state for selected-card detail display
+- Deck Review is a display-only learning preparation screen with filters, sorting, mastery guidance, and navigation handoffs
 - Mastery display uses saved permanent progress from `0 / 5` per card
 - GitHub backup remote is `https://github.com/Puttipongpn/WordQuest.git`
 - Main branch is `main`

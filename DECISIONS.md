@@ -1024,6 +1024,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Training should stay a safe learning space and must not affect HP, gold, shield, Word Energy, current-run deck, shop upgrades, dungeon state, or run statistics.
 - Status: Accepted
 
+### 2026-06-14: Deck Review Is A Learning Preparation Screen
+
+- Decision: Deck Review should help players inspect the selected deck, identify weak/unmastered/mastered words, understand card battle roles, and choose Training or Dungeon next.
+- Reason: Deck Review should support learning preparation rather than act as a static card list or admin table.
+- Status: Accepted
+
+### 2026-06-14: Deck Review Filters And Sorting Are Display-Only
+
+- Decision: Deck Review can filter and sort cards by learning state, attack, effects, difficulty, mastery, and alphabetic order without changing deck data.
+- Reason: Players need better ways to study and scan vocabulary while preserving mastery, save, run, and deck rules.
+- Status: Accepted
+
+### 2026-06-14: Deck Review Does Not Change Mastery
+
+- Decision: Deck Review displays saved mastery, mastery guidance, and Dungeon mastery bonus information but never increases or decreases mastery.
+- Reason: Mastery changes should remain tied to Training correct answers so learning progress stays intentional and understandable.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
