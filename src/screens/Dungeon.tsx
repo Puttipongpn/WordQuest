@@ -180,6 +180,8 @@ type DungeonEvent = {
   }>;
 };
 
+type DungeonEventOption = DungeonEvent["options"][number];
+
 const battleMiniGames: BattleMiniGameType[] = [
   "word-choice",
   "word-match",
@@ -1177,6 +1179,42 @@ export function Dungeon({
         : "border-amber-800/30 bg-gradient-to-br from-amber-50 to-stone-100";
   const canAdvanceAfterAnswer = isAnswered && battleStatus === "fighting";
 
+  function getEventOptionUnavailableReason(
+    option: DungeonEventOption,
+  ): string | null {
+    const costsHp =
+      (currentEvent.id === "strange-altar" && option.id === "element") ||
+      (currentEvent.id === "cursed-door" &&
+        (option.id === "gold" || option.id === "attack"));
+
+    if (costsHp) {
+      const hpCost =
+        currentEvent.id === "strange-altar"
+          ? ALTAR_HP_COST
+          : CURSED_DOOR_HP_COST;
+
+      if (playerHp <= hpCost) {
+        return `Not enough HP. Need more than ${hpCost} HP.`;
+      }
+    }
+
+    const targetsRandomCard =
+      (currentEvent.id === "treasure-chest" && option.id === "attack") ||
+      (currentEvent.id === "lost-backpack" && option.id === "attack") ||
+      (currentEvent.id === "ancient-library" && option.id === "attack") ||
+      (currentEvent.id === "element-fountain" &&
+        (option.id === "element" || option.id === "card-shield")) ||
+      (currentEvent.id === "strange-altar" && option.id === "element") ||
+      (currentEvent.id === "cursed-door" && option.id === "attack") ||
+      (currentEvent.id === "wandering-trainer" && option.id === "attack");
+
+    if (targetsRandomCard && currentRunDeck.length === 0) {
+      return "No current-run cards available.";
+    }
+
+    return null;
+  }
+
   function resetAnswerState() {
     setSelectedChoiceId(null);
     setSelectedWordId(null);
@@ -1629,6 +1667,21 @@ export function Dungeon({
   }
 
   function handleEventOption(optionId: string) {
+    const option = currentEvent.options.find(
+      (currentOption) => currentOption.id === optionId,
+    );
+    const unavailableReason = option
+      ? getEventOptionUnavailableReason(option)
+      : null;
+
+    if (unavailableReason) {
+      setBattleLog({
+        tone: "danger",
+        message: `${currentEvent.title}: ${unavailableReason}`,
+      });
+      return;
+    }
+
     const nextRunStatistics = {
       ...runStatistics,
       eventsVisited: runStatistics.eventsVisited + 1,
@@ -2369,21 +2422,43 @@ export function Dungeon({
               <div className="min-h-0 flex-1 rounded-2xl border-2 border-amber-900/10 bg-white/80 p-2 shadow-inner">
                 {isEventEncounter ? (
                   <div className="grid h-full min-h-[260px] content-center gap-3 sm:grid-cols-2">
-                    {currentEvent.options.map((option) => (
-                      <button
-                        key={option.id}
-                        type="button"
-                        onClick={() => handleEventOption(option.id)}
-                        className="rounded-xl border-2 border-amber-900/15 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-400"
-                      >
-                        <p className="text-lg font-black text-amber-950">
-                          {option.label}
-                        </p>
-                        <p className="mt-2 text-sm font-semibold leading-6 text-amber-900/70">
-                          {option.description}
-                        </p>
-                      </button>
-                    ))}
+                    {currentEvent.options.map((option) => {
+                      const unavailableReason =
+                        getEventOptionUnavailableReason(option);
+
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          disabled={unavailableReason !== null}
+                          onClick={() => handleEventOption(option.id)}
+                          className={`rounded-xl border-2 p-4 text-left shadow-sm transition focus:outline-none focus:ring-2 focus:ring-amber-400 ${
+                            unavailableReason
+                              ? "cursor-not-allowed border-stone-300 bg-stone-100 text-stone-500 opacity-70"
+                              : "border-amber-900/15 bg-white hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md"
+                          }`}
+                        >
+                          <p
+                            className={`text-lg font-black ${
+                              unavailableReason
+                                ? "text-stone-500"
+                                : "text-amber-950"
+                            }`}
+                          >
+                            {option.label}
+                          </p>
+                          <p
+                            className={`mt-2 text-sm font-semibold leading-6 ${
+                              unavailableReason
+                                ? "text-stone-500"
+                                : "text-amber-900/70"
+                            }`}
+                          >
+                            {unavailableReason ?? option.description}
+                          </p>
+                        </button>
+                      );
+                    })}
                   </div>
                 ) : miniGameType === "word-choice" ? (
                   <WordChoiceBattle

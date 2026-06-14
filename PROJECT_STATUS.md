@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 40 Event Expansion Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 41 Event QA + Balance Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -517,6 +517,14 @@ Phase 40 Event Expansion Pass is complete. GitHub backup is configured on `origi
 - Kept events from counting toward monster defeats, shop checkpoints, or boss progression.
 - Preserved LocalStorage permanent-progress-only rules; event rewards do not modify word mastery, deck unlocks, completed decks, or permanent statistics.
 - Verified the project with `npm run build` after Phase 40.
+- Applied Phase 41 Event QA + Balance Pass.
+- Audited all current events for clear titles, placeholder icons, short descriptions, 2-3 choices, concise result feedback, and clean return to dungeon flow.
+- Added disabled-state guards for HP-cost event choices so Strange Altar and Cursed Door cannot be selected when they would reduce player HP to 0 or below.
+- Added disabled-state guards for random-card event choices if no current-run cards are available.
+- Confirmed expanded events remain current-run-only and do not modify word mastery, unlocked decks, completed decks, source deck data, or LocalStorage permanent progress.
+- Confirmed events do not increase monster defeats, advance boss progress, trigger shop checkpoints, or grant monster defeat gold.
+- Confirmed current event reward values remain inside the intended modest ranges.
+- Verified the project with `npm run build` after Phase 41.
 
 ## In Progress
 
@@ -524,7 +532,7 @@ Phase 40 Event Expansion Pass is complete. GitHub backup is configured on `origi
 
 ## Next Task
 
-Phase 40 is complete. Continue with the next explicitly requested phase or feature.
+Phase 41 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -660,6 +668,7 @@ The following documents are required and must be updated after every completed t
 - Event rewards remain current-run only and never bypass roguelike reset rules
 - Events do not chain immediately after resolving an event
 - Expanded event rewards remain temporary current-run effects and do not modify permanent progress
+- HP-cost event choices are guarded so events cannot accidentally kill the player
 - Phase 30 improves Dungeon game feel using CSS, Tailwind utility classes, emoji, and placeholder assets only
 - Combat encounters use Encounter Intro before timers begin
 - Pause stops Dungeon battle timers and disables question interaction until Resume

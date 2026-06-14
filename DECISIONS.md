@@ -964,6 +964,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Word Energy recovery gives events a learning-system reward that helps long runs feel less repetitive while remaining temporary and unsaved.
 - Status: Accepted
 
+### 2026-06-14: Event Cost Choices Are Guarded
+
+- Decision: Event choices with HP costs are disabled when the player cannot survive the cost, and random-card event choices require a current-run card target.
+- Reason: Events should create interesting choices without causing accidental run failure, invalid deck mutation, or unclear outcomes.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

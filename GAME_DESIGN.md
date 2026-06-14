@@ -475,6 +475,16 @@ Current Event encounters:
 
 Expanded Event rewards are current-run-only. They may affect temporary HP, shield, gold, Word Energy, or the current-run deck copy, but they do not modify word mastery, deck unlocks, completed decks, permanent statistics, source deck data, or LocalStorage.
 
+Event safety rules:
+
+- Events do not count as monster defeats.
+- Events do not advance boss progress or trigger shop checkpoints by themselves.
+- HP-cost event choices are disabled when the cost would reduce player HP to 0 or below.
+- Random-card event choices target only cards currently present in the current-run deck.
+- Duplicated current-run cards are valid random event targets.
+- Removed cards are not valid event targets.
+- Word Energy recovery from events affects only current-run fatigue and is not saved.
+
 ## Mini-Game Plan
 
 Training mini-games:
