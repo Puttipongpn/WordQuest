@@ -2179,9 +2179,9 @@ export function Dungeon({
       gameMode
     >
       {isEncounterIntro ? (
-        <CardPanel className="mx-auto grid h-full max-w-5xl place-items-center overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-4 text-amber-50">
+        <CardPanel className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-5xl place-items-center border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-3 text-amber-50 sm:min-h-[calc(100vh-6rem)] sm:p-4 xl:h-full xl:min-h-0 xl:overflow-hidden">
           <section
-            className={`relative w-full overflow-hidden rounded-3xl border-2 p-6 text-center shadow-[inset_0_0_55px_rgba(0,0,0,0.28)] ${encounterStageClass}`}
+            className={`relative w-full overflow-hidden rounded-3xl border-2 p-4 text-center shadow-[inset_0_0_55px_rgba(0,0,0,0.28)] sm:p-6 ${encounterStageClass}`}
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/10 to-transparent" />
             <div className="relative mx-auto max-w-3xl">
@@ -2197,11 +2197,11 @@ export function Dungeon({
                 {isBossEncounter ? "BOSS" : encounterLabel}
               </Badge>
               <div
-                className={`mx-auto mt-4 grid place-items-center rounded-3xl border-4 shadow-lg ${isBossEncounter ? "size-32 text-7xl ring-4 ring-red-300/25" : "size-28 text-6xl"} ${encounterPortraitClass}`}
+                className={`mx-auto mt-4 grid place-items-center rounded-3xl border-4 shadow-lg ${isBossEncounter ? "size-28 text-6xl ring-4 ring-red-300/25 sm:size-32 sm:text-7xl" : "size-24 text-5xl sm:size-28 sm:text-6xl"} ${encounterPortraitClass}`}
               >
                 {currentEncounter.imagePlaceholder}
               </div>
-              <h3 className="mt-4 text-5xl font-black leading-none text-amber-50 drop-shadow">
+              <h3 className="mt-4 text-4xl font-black leading-none text-amber-50 drop-shadow sm:text-5xl">
                 {currentEncounter.name}
               </h3>
               {isBossEncounter && getBossTitle(currentEncounter) && (
@@ -2217,20 +2217,20 @@ export function Dungeon({
                   {lastEventResultMessage}
                 </p>
               )}
-              <div className="mx-auto mt-5 grid max-w-xl gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border-2 border-red-200/20 bg-black/30 p-4">
+              <div className="mx-auto mt-5 grid max-w-xl grid-cols-2 gap-3">
+                <div className="rounded-2xl border-2 border-red-200/20 bg-black/30 p-3 sm:p-4">
                   <p className="text-xs font-black uppercase text-red-100/70">
                     HP
                   </p>
-                  <p className="mt-1 text-4xl font-black text-red-100">
+                  <p className="mt-1 text-3xl font-black text-red-100 sm:text-4xl">
                     {currentEncounter.maxHp}
                   </p>
                 </div>
-                <div className="rounded-2xl border-2 border-amber-200/20 bg-black/30 p-4">
+                <div className="rounded-2xl border-2 border-amber-200/20 bg-black/30 p-3 sm:p-4">
                   <p className="text-xs font-black uppercase text-amber-100/70">
                     Attack
                   </p>
-                  <p className="mt-1 text-4xl font-black text-amber-100">
+                  <p className="mt-1 text-3xl font-black text-amber-100 sm:text-4xl">
                     {currentEncounter.attack}
                   </p>
                 </div>
@@ -2254,7 +2254,7 @@ export function Dungeon({
               <Button
                 type="button"
                 onClick={startBattleFromIntro}
-                className="mt-7 min-w-64 px-8 py-3 text-lg"
+                className="mt-7 w-full px-8 py-3 text-lg sm:w-auto sm:min-w-64"
               >
                 {isBossEncounter ? "Start Boss Battle" : "Start Battle"}
               </Button>
@@ -2262,9 +2262,9 @@ export function Dungeon({
           </section>
         </CardPanel>
       ) : (
-      <div className="grid h-full min-h-0 gap-3 xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]">
-        <CardPanel className="relative h-full min-h-0 overflow-hidden border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-3 text-amber-50">
-          <div className="flex h-full min-h-0 flex-col gap-3">
+      <div className="grid gap-3 xl:h-full xl:min-h-0 xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]">
+        <CardPanel className="relative min-h-0 border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-2 text-amber-50 sm:p-3 xl:h-full xl:overflow-hidden">
+          <div className="flex min-h-0 flex-col gap-2 sm:gap-3 xl:h-full">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-wrap gap-2">
                 <Badge
@@ -2305,12 +2305,12 @@ export function Dungeon({
             </div>
 
             <section
-              className={`rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] ${encounterStageClass} ${battleStageMotionClass}`}
+              className={`rounded-2xl border-2 p-1.5 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] sm:p-2 ${encounterStageClass} ${battleStageMotionClass}`}
             >
               <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.78fr)] lg:items-center">
-                <div className="grid gap-2 sm:grid-cols-[1.25fr_0.7fr_0.7fr_0.7fr_0.9fr]">
+                <div className="grid grid-cols-4 gap-1.5 sm:gap-2 md:grid-cols-[1.25fr_0.7fr_0.7fr_0.7fr_0.9fr]">
                   <div
-                    className={`rounded-xl border px-3 py-1.5 transition ${
+                    className={`col-span-4 rounded-xl border px-2 py-1.5 transition sm:px-3 md:col-span-1 ${
                       playerTookHit
                         ? "damage-shake border-red-200/70 bg-red-800/45 shadow-[0_0_24px_rgba(248,113,113,0.28)]"
                         : "border-red-100/15 bg-red-950/25"
@@ -2328,7 +2328,7 @@ export function Dungeon({
                     />
                   </div>
                   <div
-                    className={`rounded-xl border px-3 py-1.5 transition ${
+                    className={`rounded-xl border px-2 py-1.5 transition sm:px-3 ${
                       shieldBlockedHit
                         ? "shield-pulse border-sky-200/70 bg-sky-700/35 shadow-[0_0_24px_rgba(125,211,252,0.25)]"
                         : "border-sky-100/15 bg-sky-950/25"
@@ -2337,33 +2337,33 @@ export function Dungeon({
                     <p className="text-xs font-black uppercase text-sky-100/70">
                       Shield
                     </p>
-                    <p className="text-xl font-black text-sky-50">{shield}</p>
+                    <p className="text-lg font-black text-sky-50 sm:text-xl">{shield}</p>
                   </div>
-                  <div className="rounded-xl border border-amber-100/15 bg-amber-950/25 px-3 py-1.5">
+                  <div className="rounded-xl border border-amber-100/15 bg-amber-950/25 px-2 py-1.5 sm:px-3">
                     <p className="text-xs font-black uppercase text-amber-100/70">
                       Gold
                     </p>
-                    <p className="text-xl font-black text-amber-50">{runGold}</p>
+                    <p className="text-lg font-black text-amber-50 sm:text-xl">{runGold}</p>
                   </div>
-                  <div className="rounded-xl border border-stone-100/15 bg-stone-950/25 px-3 py-1.5">
+                  <div className="rounded-xl border border-stone-100/15 bg-stone-950/25 px-2 py-1.5 sm:px-3">
                     <p className="text-xs font-black uppercase text-stone-100/70">
                       Floor
                     </p>
-                    <p className="text-xl font-black text-stone-50">
+                    <p className="text-lg font-black text-stone-50 sm:text-xl">
                       {runProgress.currentFloor}
                     </p>
                   </div>
-                  <div className="rounded-xl border border-emerald-100/15 bg-emerald-950/25 px-3 py-1.5">
+                  <div className="rounded-xl border border-emerald-100/15 bg-emerald-950/25 px-2 py-1.5 sm:px-3">
                     <p className="text-xs font-black uppercase text-emerald-100/70">
                       Progress
                     </p>
-                    <p className="text-base font-black text-emerald-50">
+                    <p className="text-sm font-black text-emerald-50 sm:text-base">
                       {runProgress.monstersDefeated} / {runProgress.nextShopAt}
                     </p>
                   </div>
                 </div>
 
-                <div className="grid gap-2 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center">
+                <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2">
                   <div
                     className={`grid size-12 place-items-center rounded-xl border-4 text-3xl shadow-lg transition ${encounterPortraitClass} ${
                       encounterTookHit
@@ -2420,7 +2420,7 @@ export function Dungeon({
                       </Badge>
                     </div>
                     <div className="mt-1 flex items-center justify-between gap-3">
-                      <h3 className="truncate text-2xl font-black leading-none text-amber-50 drop-shadow">
+                      <h3 className="truncate text-xl font-black leading-none text-amber-50 drop-shadow sm:text-2xl">
                         {isEventEncounter ? currentEvent.title : currentEncounter.name}
                       </h3>
                       {!isEventEncounter && (
@@ -2446,7 +2446,53 @@ export function Dungeon({
               </div>
             </section>
 
-            <section className="grid h-10 shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-amber-200/15 bg-black/20 px-3">
+            {!isEventEncounter && (
+              <section
+                className={`rounded-2xl border-2 p-2 xl:hidden ${
+                  timeRemaining === 0
+                    ? "border-red-400 bg-red-100 text-red-950"
+                    : isTimerLow && isTimerRunning
+                      ? "border-red-400 bg-red-50 text-red-950"
+                      : "border-amber-300/40 bg-amber-50 text-amber-950"
+                }`}
+              >
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
+                      <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
+                        {timerStateLabel}
+                      </Badge>
+                    </div>
+                    <p className="mt-1 truncate text-xs font-black text-amber-900/75">
+                      {getMiniGameInstruction(miniGameType)}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p
+                      className={`text-3xl font-black leading-none ${
+                        isTimerLow && isTimerRunning ? "text-red-700" : ""
+                      }`}
+                    >
+                      {timeRemaining}s
+                    </p>
+                    <p className="text-[11px] font-black uppercase opacity-70">
+                      / {miniGameTimeLimit}s
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <ProgressBar
+                    value={timeRemaining}
+                    max={miniGameTimeLimit}
+                    tone={isTimerLow && isTimerRunning ? "red" : "amber"}
+                    label="Mobile battle timer"
+                  />
+                </div>
+              </section>
+            )}
+
+            <section className="hidden h-10 shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-amber-200/15 bg-black/20 px-3 sm:grid">
               <div className="flex items-center gap-2 text-sm font-black text-sky-100">
                 <span className="grid size-7 place-items-center rounded-full border border-sky-200/30 bg-sky-100/15">
                   🧙
@@ -2491,8 +2537,8 @@ export function Dungeon({
               </div>
             </section>
 
-            <section className="flex min-h-0 flex-1 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-2 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)]">
-              <div className="min-h-0 flex-1 rounded-2xl border-2 border-amber-900/10 bg-white/80 p-2 shadow-inner">
+            <section className="flex min-h-0 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-2 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)] xl:flex-1">
+              <div className="min-h-[18rem] rounded-2xl border-2 border-amber-900/10 bg-white/80 p-2 shadow-inner xl:min-h-0 xl:flex-1">
                 {battleStatus === "run-complete" ||
                 battleStatus === "run-failed" ? (
                   <RunEndingSummary
@@ -2511,7 +2557,7 @@ export function Dungeon({
                     runProgress={runProgress}
                   />
                 ) : isEventEncounter ? (
-                  <div className="grid h-full min-h-[260px] content-center gap-3 sm:grid-cols-2">
+                  <div className="grid min-h-[260px] content-center gap-3 sm:grid-cols-2 xl:h-full">
                     {currentEvent.options.map((option) => {
                       const unavailableReason =
                         getEventOptionUnavailableReason(option);
@@ -2601,8 +2647,8 @@ export function Dungeon({
           </div>
 
           {isPaused && (
-            <div className="absolute inset-0 z-20 grid place-items-center bg-stone-950/70 p-5 backdrop-blur-sm">
-              <div className="w-full max-w-md rounded-3xl border-2 border-amber-300 bg-amber-50 p-6 text-center text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)]">
+            <div className="absolute inset-0 z-20 grid place-items-center bg-stone-950/70 p-3 backdrop-blur-sm sm:p-5">
+              <div className="max-h-[min(90vh,34rem)] w-full max-w-md overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-4 text-center text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:p-6">
                 <Badge tone="amber">Paused</Badge>
                 <h3 className="mt-3 text-5xl font-black">PAUSED</h3>
                 <p className="mt-3 text-sm font-bold leading-6 text-amber-900/75">
@@ -2621,8 +2667,8 @@ export function Dungeon({
           )}
 
           {isAbandonConfirmOpen && (
-            <div className="absolute inset-0 z-30 grid place-items-center bg-stone-950/75 p-5 backdrop-blur-sm">
-              <div className="w-full max-w-lg rounded-3xl border-2 border-red-300 bg-amber-50 p-6 text-amber-950 shadow-[0_18px_0_rgba(127,29,29,0.24)]">
+            <div className="absolute inset-0 z-30 grid place-items-center bg-stone-950/75 p-3 backdrop-blur-sm sm:p-5">
+              <div className="max-h-[min(90vh,38rem)] w-full max-w-lg overflow-y-auto rounded-3xl border-2 border-red-300 bg-amber-50 p-4 text-amber-950 shadow-[0_18px_0_rgba(127,29,29,0.24)] sm:p-6">
                 <Badge tone="red">Abandon Run</Badge>
                 <h3 className="mt-3 text-3xl font-black">
                   Abandon current run?
@@ -2655,7 +2701,7 @@ export function Dungeon({
         <aside className="grid min-h-0 gap-3 lg:grid-cols-2 xl:block xl:h-full xl:space-y-3 xl:overflow-hidden">
           {!isEventEncounter && (
             <section
-              className={`rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${
+              className={`hidden rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] xl:block ${
                 timeRemaining === 0
                   ? "border-red-400 bg-red-100"
                   : isTimerLow && isTimerRunning
@@ -2918,7 +2964,7 @@ function RunEndingSummary({
 
   return (
     <section
-      className={`h-full overflow-y-auto rounded-2xl border-2 p-4 shadow-inner ${
+      className={`overflow-y-auto rounded-2xl border-2 p-3 shadow-inner sm:p-4 xl:h-full ${
         isComplete
           ? "border-emerald-300 bg-gradient-to-br from-emerald-100 via-amber-50 to-white"
           : "border-red-300 bg-gradient-to-br from-red-100 via-amber-50 to-white"
@@ -2934,7 +2980,7 @@ function RunEndingSummary({
               <Badge tone="purple">{selectedDeck.name}</Badge>
             </div>
             <h3
-              className={`mt-3 text-4xl font-black leading-none ${
+              className={`mt-3 text-3xl font-black leading-none sm:text-4xl ${
                 isComplete ? "text-emerald-950" : "text-red-950"
               }`}
             >
@@ -2949,7 +2995,7 @@ function RunEndingSummary({
 
           {isComplete ? (
             <div className="rounded-3xl border-2 border-violet-200 bg-violet-50 p-4">
-              <div className="flex items-start gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
                 <span className="grid size-16 shrink-0 place-items-center rounded-2xl border-2 border-violet-200 bg-white text-4xl shadow-inner">
                   {selectedBoss.imagePlaceholder}
                 </span>
@@ -3098,7 +3144,7 @@ function CardStatChips({
   const energyLabel = getWordEnergyLabel(usageCount);
 
   return (
-    <div className="flex shrink-0 flex-wrap justify-end gap-1">
+    <div className="flex max-w-full flex-wrap gap-1 sm:shrink-0 sm:justify-end">
       <span
         className={`rounded-full border px-1.5 py-0.5 text-[10px] font-black uppercase ${
           usageCount >= 5
@@ -3205,12 +3251,12 @@ function BattleResultOverlay({
       ].filter(Boolean);
 
   return (
-    <div className="absolute inset-0 z-10 grid place-items-center rounded-2xl bg-stone-950/45 p-3 backdrop-blur-[2px]">
-      <div className={`result-pop pointer-events-auto w-full max-w-xs rounded-2xl border-2 p-4 text-center shadow-[0_18px_0_rgba(28,25,23,0.22)] ${toneClass}`}>
+    <div className="absolute inset-0 z-10 grid place-items-center rounded-2xl bg-stone-950/45 p-2 backdrop-blur-[2px] sm:p-3">
+      <div className={`result-pop pointer-events-auto max-h-[min(88vh,32rem)] w-full max-w-[min(22rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border-2 p-3 text-center shadow-[0_18px_0_rgba(28,25,23,0.22)] sm:p-4 ${toneClass}`}>
         <p className="text-3xl leading-none" aria-hidden="true">
           {resultIcon}
         </p>
-        <p className="text-3xl font-black leading-none">{title}</p>
+        <p className="text-2xl font-black leading-none sm:text-3xl">{title}</p>
         <p className="mt-1 text-xs font-black uppercase opacity-70">
           {subtitle}
         </p>
@@ -3289,13 +3335,13 @@ function WordChoiceBattle({
         </Badge>
         {question.promptType === "thai-to-english" ? (
           <div className="mt-1">
-            <p className="text-3xl font-black leading-tight text-amber-950">
+            <p className="text-2xl font-black leading-tight text-amber-950 sm:text-3xl">
               {question.card.meaningTh}
             </p>
           </div>
         ) : question.promptType === "sentence-cloze" ? (
           <div className="mt-1">
-            <p className="text-2xl font-black leading-tight text-amber-950">
+            <p className="text-xl font-black leading-tight text-amber-950 sm:text-2xl">
               {blankTargetWord(
                 question.card.exampleSentence,
                 question.card.word,
@@ -3304,7 +3350,7 @@ function WordChoiceBattle({
           </div>
         ) : (
           <div className="mt-1">
-            <p className="text-4xl font-black capitalize leading-tight text-amber-950">
+            <p className="text-3xl font-black capitalize leading-tight text-amber-950 sm:text-4xl">
               {question.card.word}
             </p>
           </div>
@@ -3332,7 +3378,7 @@ function WordChoiceBattle({
                     : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
               } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
             >
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <div className="min-w-0">
                   <p className="truncate text-base font-semibold text-slate-950">
                     {showsEnglishChoices ? choice.word : choice.meaningTh}
@@ -3445,7 +3491,7 @@ function WordMatchBattle({
                           : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                     <div className="min-w-0">
                       <p className="truncate text-base font-semibold capitalize text-slate-950">
                         {card.word}
@@ -3498,7 +3544,7 @@ function WordMatchBattle({
                           : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                     <div className="min-w-0">
                       <p className="truncate text-base font-semibold text-slate-950">
                         {card.meaningTh}
@@ -3522,7 +3568,7 @@ function WordMatchBattle({
         </div>
       </div>
 
-      <div className="mt-2 flex shrink-0 flex-col gap-2 rounded-xl border-2 border-amber-900/10 bg-amber-50/85 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="sticky bottom-0 z-[1] mt-2 flex shrink-0 flex-col gap-2 rounded-xl border-2 border-amber-900/10 bg-amber-50/95 px-3 py-2 shadow-md sm:flex-row sm:items-center sm:justify-between">
         <p className="truncate text-sm font-black text-amber-950">
           {selectedPairText}
         </p>
@@ -3617,9 +3663,9 @@ function WordScrambleBattle({
                       : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
               }`}
             >
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <div className="min-w-0">
-                  <p className="truncate font-mono text-xl font-bold tracking-wide text-slate-950">
+                  <p className="break-all font-mono text-lg font-bold tracking-wide text-slate-950 sm:truncate sm:text-xl">
                     {option.scrambledWord}
                   </p>
                 </div>

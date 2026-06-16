@@ -469,7 +469,7 @@ export function Shop({
 
       {activeOffer && (
         <div className="fixed inset-0 z-40 grid place-items-center bg-stone-950/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-3xl rounded-3xl border-2 border-amber-300 bg-amber-50 p-5 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)]">
+          <div className="max-h-[min(92vh,48rem)] w-full max-w-3xl overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-4 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <Badge tone="emerald">Choose target</Badge>
@@ -533,7 +533,7 @@ export function Shop({
               </p>
             )}
 
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
+            <div className="sticky bottom-0 mt-5 flex flex-col gap-3 border-t border-amber-900/10 bg-amber-50 pt-3 sm:flex-row sm:justify-end">
               <Button type="button" variant="ghost" onClick={closeOfferModal}>
                 Cancel
               </Button>

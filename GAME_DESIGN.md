@@ -31,6 +31,8 @@ Current presentation rules:
 - In Word Match, compact card stats should appear only on the English card side because that side is the card that can trigger; Thai meaning options should not show stats.
 - Word Match should use a compact selected-pair footer with Check Pair so the action remains close to the choices without wasting vertical space.
 - Mobile battle layout should prioritize playable quiz controls first; secondary battle log, learning, and trigger details can collapse or move below the arena.
+- On mobile and narrow screens, Dungeon battle can scroll vertically when needed; quiz controls, timer, player/enemy status, result actions, Pause, and Abandon controls must remain reachable rather than being clipped by fixed viewport assumptions.
+- Mobile Dungeon uses a compact top battle status and timer/control strip near the quiz, while secondary panels move below the active play area.
 - A compact battle-stage strip may reserve space for future player/monster presentation, but it should not reduce quiz usability or add gameplay rules.
 - Monster, Elite, Boss, and Event encounters should feel visually distinct while using placeholder assets only.
 - Combat feedback should make damage, hits, shield gain, shield absorption, timeout state, and triggered card effects easy to scan.

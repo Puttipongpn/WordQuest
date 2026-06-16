@@ -1048,6 +1048,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Event rewards and costs should be clear to the player without adding new encounter systems or changing run rules.
 - Status: Accepted
 
+### 2026-06-16: Mobile Dungeon Prioritizes Reachable Quiz Controls
+
+- Decision: On mobile and narrow screens, Dungeon battle may scroll vertically and should prioritize the quiz, answer controls, timer, and result actions over secondary panels.
+- Reason: Mobile browsers have fragile viewport heights, so controls must remain reachable instead of being clipped by desktop-style fixed-height layouts.
+- Status: Accepted
+
+### 2026-06-16: Desktop Battle Keeps Fullscreen Fit Target
+
+- Decision: Desktop Dungeon battle keeps the fullscreen/no-scroll fit target while mobile uses a more flexible stacked layout.
+- Reason: Desktop and mobile need different layout strategies to preserve game feel without sacrificing playability.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

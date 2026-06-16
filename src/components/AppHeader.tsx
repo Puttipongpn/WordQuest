@@ -17,17 +17,17 @@ const navItems: Array<{ screen: ScreenName; label: string; icon: string }> = [
 export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
   if (currentScreen === "dungeon") {
     return (
-      <header className="h-16 border-b-2 border-amber-300/20 bg-stone-950/95 text-amber-50 shadow-lg">
+      <header className="h-14 border-b-2 border-amber-300/20 bg-stone-950/95 text-amber-50 shadow-lg sm:h-16">
         <div className="mx-auto flex h-full max-w-[1800px] items-center justify-between px-3 sm:px-5">
           <div className="flex items-center gap-2">
-            <span className="grid size-10 place-items-center rounded-lg border border-amber-400/40 bg-amber-300/15 text-2xl shadow-inner">
+            <span className="grid size-9 place-items-center rounded-lg border border-amber-400/40 bg-amber-300/15 text-xl shadow-inner sm:size-10 sm:text-2xl">
               📖
             </span>
             <div>
               <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-amber-300">
                 WordQuest
               </p>
-              <h1 className="text-lg font-black leading-tight text-amber-50">
+              <h1 className="text-base font-black leading-tight text-amber-50 sm:text-lg">
                 Dungeon
               </h1>
             </div>

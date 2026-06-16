@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 47 Full Prototype QA + Balance Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 47 Mobile Battle Polish is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -585,6 +585,18 @@ Phase 47 Full Prototype QA + Balance Pass is complete. GitHub backup is configur
 - Reviewed balance values in `src/game/balance.ts`; no balance constants were changed in Phase 47.
 - Browser visual QA was not run because the Browser skill file advertised by the environment was unavailable in this session; verification used code-path audit and production build.
 - Verified the project with `npm run build` after Phase 47.
+- Applied Phase 47 Mobile Battle Polish.
+- Updated Dungeon game mode shell so mobile and small screens can scroll vertically instead of trapping content behind fixed viewport overflow.
+- Reduced Dungeon mobile header height and compacted Encounter Intro spacing, portrait sizes, HP/attack cards, and Start Battle button behavior.
+- Added a mobile battle timer/control strip above the quiz so the timer and mini-game label remain visible before secondary panels.
+- Adjusted active battle layout so mobile stacks vertically, keeps the quiz before side panels, and keeps desktop fullscreen battle behavior at larger breakpoints.
+- Hid the presentation-only battle lane on narrow screens so it does not push quiz controls down.
+- Improved Word Choice, Word Match, and Word Scramble option layouts so stat chips wrap below text on mobile instead of causing horizontal overflow.
+- Made the Word Match selected-pair footer sticky inside the quiz area so Check Pair stays reachable.
+- Improved Word Scramble long-word wrapping and kept the typed answer controls stacked on mobile.
+- Improved result overlays, Pause, Abandon Run confirmation, Run Complete/Failed summary, and Shop purchase modal with mobile-safe max heights and scrollable content where needed.
+- Preserved combat math, timers, mastery, deck unlocks, save rules, shop effects, event effects, boss rules, statistics, Word Energy rules, and current-run deck behavior.
+- Verified the project with `npm run build` after Phase 47 Mobile Battle Polish.
 
 ## In Progress
 
@@ -592,7 +604,7 @@ Phase 47 Full Prototype QA + Balance Pass is complete. GitHub backup is configur
 
 ## Next Task
 
-Phase 47 is complete. Continue with the next explicitly requested phase or feature.
+Phase 47 Mobile Battle Polish is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

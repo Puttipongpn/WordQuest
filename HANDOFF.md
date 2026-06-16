@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 47 complete.
+Current phase: Phase 47 Mobile Battle Polish complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -409,6 +409,22 @@ Phase 47 performed a code-path QA and light balance review across the playable p
 - Fixed one UX bug: Event result feedback was not visible after resolving an Event because the next Encounter Intro replaced the Event screen. The next Encounter Intro now shows the previous Event result message.
 - Reviewed `src/game/balance.ts`; no balance constants were changed in Phase 47.
 - Browser visual QA was not run because the Browser skill file advertised by the environment was unavailable in this session. Verification used code-path audit and `npm run build`.
+
+## Phase 47 Mobile Battle Polish Summary
+
+Phase 47 Mobile Battle Polish improved Dungeon usability on mobile and small screens without changing gameplay rules:
+
+- `ScreenShell` game mode now allows vertical scrolling on mobile and keeps fixed no-scroll behavior only at desktop battle breakpoints.
+- Dungeon active battle stacks vertically on mobile: compact player/enemy status, mobile timer/control strip, quiz arena, then secondary panels.
+- Desktop keeps the fullscreen battle layout with central quiz and side control panel.
+- Encounter Intro is more compact on mobile with smaller portrait/type, tighter HP/attack cards, and a full-width Start Battle button.
+- The presentation-only battle lane is hidden on narrow screens so it does not push quiz controls below the fold.
+- Word Choice, Word Match, and Word Scramble answer rows allow stat chips to wrap below text on mobile to avoid horizontal overflow.
+- Word Match keeps stats only on the English card side and keeps Thai meaning options stat-free.
+- Word Match selected-pair footer is sticky inside the quiz area so Check Pair remains reachable.
+- Word Scramble allows long scrambled words to wrap safely and keeps typed answer controls stacked on mobile.
+- Result overlays, Pause, Abandon confirmation, Run Complete/Failed summaries, and the Shop purchase modal gained mobile-safe max heights and scroll handling.
+- Combat math, timer values, mastery, deck unlocks, LocalStorage, shop effects, event effects, boss rules, statistics, Word Energy, and current-run deck behavior were preserved.
 
 Current Training implementation:
 
@@ -1050,7 +1066,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 47 is complete.
+Phase 47 Mobile Battle Polish is complete.
 
 Recommended next task:
 
