@@ -30,6 +30,7 @@ import {
   PLAYER_MAX_HP,
   SHRINE_HEAL_AMOUNT,
   SHRINE_SHIELD_GAIN,
+  SHOP_INTERVAL,
   SIGNPOST_GOLD_REWARD,
   TREASURE_GOLD_REWARD,
   WATER_SHIELD_GAIN,
@@ -72,6 +73,8 @@ type DungeonProps = {
   onGainRunGold: (amount: number) => void;
   onMonsterDefeated: (options?: { isElite?: boolean; bonusGold?: number }) => void;
   onNavigate: (screen: ScreenName) => void;
+  onQaAddRunGold: (amount: number) => void;
+  onQaSetRunProgress: (monstersDefeated: number) => void;
   onRecordRunEnded: (
     outcome: "completed" | "failed",
     finalRunStatistics: RunStatistics,
@@ -188,6 +191,7 @@ const battleMiniGames: BattleMiniGameType[] = [
   "word-match",
   "word-scramble",
 ];
+const ENABLE_QA_HELPERS = import.meta.env.DEV;
 const wordChoicePromptTypes: WordChoicePromptType[] = [
   "thai-to-english",
   "sentence-cloze",
@@ -1002,6 +1006,8 @@ export function Dungeon({
   onGainRunGold,
   onMonsterDefeated,
   onNavigate,
+  onQaAddRunGold,
+  onQaSetRunProgress,
   onRecordRunEnded,
   onResetRun,
   onResetWordFatigue,
@@ -2067,6 +2073,150 @@ export function Dungeon({
     onNavigate(screen);
   }
 
+  function qaSetPlayerHpLow() {
+    setPlayerHp(1);
+    setShield(0);
+    setBattleLog({
+      tone: "neutral",
+      message: "QA Helper: Player HP set to 1 and shield set to 0 for Run Failed testing.",
+    });
+  }
+
+  function qaHealPlayer() {
+    setPlayerHp(PLAYER_MAX_HP);
+    setBattleLog({
+      tone: "neutral",
+      message: "QA Helper: Player HP restored to max.",
+    });
+  }
+
+  function qaAddGold() {
+    onQaAddRunGold(50);
+    setBattleLog({
+      tone: "neutral",
+      message: "QA Helper: Added +50 temporary current-run gold. Permanent progress unchanged.",
+    });
+  }
+
+  function qaShowShopCheckpoint() {
+    const checkpoint =
+      runProgress.monstersDefeated > 0 &&
+      runProgress.monstersDefeated % SHOP_INTERVAL === 0
+        ? runProgress.monstersDefeated
+        : runProgress.nextShopAt;
+
+    onQaSetRunProgress(checkpoint);
+    setIsBossEncounter(false);
+    setHasCompletedBoss(false);
+    setPendingEarthReduction(0);
+    setIsPaused(false);
+    resetAnswerState();
+    setBattleStatus("monster-defeated");
+    setBattleLog({
+      tone: "neutral",
+      message: `QA Helper: Set monsters defeated to ${checkpoint}. Shop Available should be reachable from the result actions.`,
+    });
+  }
+
+  function qaTriggerEventEncounter() {
+    const nextMiniGameType = chooseBattleMiniGame();
+
+    setIsBossEncounter(false);
+    setEncounterType("event");
+    setPendingEarthReduction(0);
+    setIsPaused(false);
+    resetAnswerState();
+    setQuestionWordFatigue(wordFatigue);
+    setQuestionSeed((current) => current + 1);
+    setEventIndex((current) => current + 1);
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
+    setBattleStatus("event");
+    setBattleLog({
+      tone: "neutral",
+      message: "QA Helper: Forced an Event encounter. Event rewards remain current-run-only.",
+    });
+  }
+
+  function qaTriggerEliteEncounter() {
+    const nextMiniGameType = chooseBattleMiniGame();
+    const nextEliteMonster = createEliteMonster(currentMonster);
+
+    setIsBossEncounter(false);
+    setEncounterType("elite");
+    setMonsterHp(nextEliteMonster.maxHp);
+    setPendingEarthReduction(0);
+    setIsPaused(false);
+    resetAnswerState();
+    setQuestionWordFatigue(wordFatigue);
+    setQuestionSeed((current) => current + 1);
+    setMiniGameType(nextMiniGameType);
+    setTimeRemaining(getMiniGameTimeLimit(nextMiniGameType));
+    setBattleStatus("encounter-intro");
+    setBattleLog({
+      tone: "neutral",
+      message: "QA Helper: Forced an Elite encounter intro.",
+    });
+  }
+
+  function qaUnlockBossTest() {
+    onQaSetRunProgress(BOSS_MONSTER_REQUIREMENT);
+    setIsBossEncounter(false);
+    setHasCompletedBoss(false);
+    setPendingEarthReduction(0);
+    setIsPaused(false);
+    resetAnswerState();
+    setBattleStatus("monster-defeated");
+    setBattleLog({
+      tone: "neutral",
+      message: `QA Helper: Set monsters defeated to ${BOSS_MONSTER_REQUIREMENT}. Boss Available should appear in the result actions.`,
+    });
+  }
+
+  function qaStartBossTest() {
+    handleStartBoss();
+    setBattleLog({
+      tone: "neutral",
+      message: "QA Helper: Started boss intro through the existing boss start flow.",
+    });
+  }
+
+  function qaForceRunFailed() {
+    if (battleStatus === "run-failed" || battleStatus === "run-complete") {
+      return;
+    }
+
+    const nextRunStatistics: RunStatistics = {
+      ...runStatistics,
+      monstersDefeated: Math.max(
+        runStatistics.monstersDefeated,
+        runProgress.monstersDefeated,
+      ),
+      questionsAnswered: runStatistics.questionsAnswered + 1,
+      wrongAnswers: runStatistics.wrongAnswers + 1,
+    };
+
+    setPlayerHp(0);
+    setShield(0);
+    setEndedRunGold(runGold);
+    setEndedRunStatistics(nextRunStatistics);
+    onResetWordFatigue();
+    onRecordRunEnded("failed", nextRunStatistics);
+    onUpdateRunStatistics(nextRunStatistics);
+    setIsPaused(false);
+    setPendingEarthReduction(0);
+    resetAnswerState();
+    setBattleStatus("run-failed");
+    setBattleLog({
+      tone: "danger",
+      message:
+        "QA Helper: Forced Run Failed through the existing run-ended statistics handler. Permanent learning progress remains safe.",
+      damageTaken: playerHp,
+      hpDamageTaken: playerHp,
+      shieldAbsorbed: 0,
+    });
+  }
+
   const resultActions: BattleResultAction[] = (() => {
     if (battleStatus === "run-complete") {
       return [
@@ -2258,6 +2408,21 @@ export function Dungeon({
               >
                 {isBossEncounter ? "Start Boss Battle" : "Start Battle"}
               </Button>
+              {ENABLE_QA_HELPERS && (
+                <div className="mx-auto mt-5 max-w-3xl text-left">
+                  <QaHelperPanel
+                    onAddGold={qaAddGold}
+                    onForceRunFailed={qaForceRunFailed}
+                    onHealPlayer={qaHealPlayer}
+                    onSetHpLow={qaSetPlayerHpLow}
+                    onShowShopCheckpoint={qaShowShopCheckpoint}
+                    onStartBossTest={qaStartBossTest}
+                    onTriggerElite={qaTriggerEliteEncounter}
+                    onTriggerEvent={qaTriggerEventEncounter}
+                    onUnlockBossTest={qaUnlockBossTest}
+                  />
+                </div>
+              )}
             </div>
           </section>
         </CardPanel>
@@ -2908,6 +3073,20 @@ export function Dungeon({
             </p>
           </details>
 
+          {ENABLE_QA_HELPERS && (
+            <QaHelperPanel
+              onAddGold={qaAddGold}
+              onForceRunFailed={qaForceRunFailed}
+              onHealPlayer={qaHealPlayer}
+              onSetHpLow={qaSetPlayerHpLow}
+              onShowShopCheckpoint={qaShowShopCheckpoint}
+              onStartBossTest={qaStartBossTest}
+              onTriggerElite={qaTriggerEliteEncounter}
+              onTriggerEvent={qaTriggerEventEncounter}
+              onUnlockBossTest={qaUnlockBossTest}
+            />
+          )}
+
         </aside>
       </div>
       )}
@@ -3112,6 +3291,81 @@ function RunEndingSummary({
         </div>
       </div>
     </section>
+  );
+}
+
+type QaHelperPanelProps = {
+  onAddGold: () => void;
+  onForceRunFailed: () => void;
+  onHealPlayer: () => void;
+  onSetHpLow: () => void;
+  onShowShopCheckpoint: () => void;
+  onStartBossTest: () => void;
+  onTriggerElite: () => void;
+  onTriggerEvent: () => void;
+  onUnlockBossTest: () => void;
+};
+
+function QaHelperPanel({
+  onAddGold,
+  onForceRunFailed,
+  onHealPlayer,
+  onSetHpLow,
+  onShowShopCheckpoint,
+  onStartBossTest,
+  onTriggerElite,
+  onTriggerEvent,
+  onUnlockBossTest,
+}: QaHelperPanelProps) {
+  return (
+    <details className="rounded-2xl border-2 border-fuchsia-300 bg-fuchsia-50/95 p-3 text-fuchsia-950 shadow-[0_8px_0_rgba(112,26,117,0.14)]">
+      <summary className="cursor-pointer">
+        <span className="inline-flex flex-wrap items-center gap-2">
+          <Badge tone="purple">QA Helper</Badge>
+          <span className="text-sm font-black uppercase text-fuchsia-900/70">
+            Development only
+          </span>
+        </span>
+      </summary>
+      <p className="mt-2 text-xs font-bold leading-5 text-fuchsia-950/75">
+        These controls are gated by <code>import.meta.env.DEV</code>. They
+        mutate temporary run state for testing and are not player-facing.
+      </p>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
+        <Button type="button" variant="secondary" onClick={onSetHpLow}>
+          Set HP Low
+        </Button>
+        <Button type="button" variant="secondary" onClick={onHealPlayer}>
+          Heal Player
+        </Button>
+        <Button type="button" variant="secondary" onClick={onAddGold}>
+          Add +50 Gold
+        </Button>
+        <Button type="button" variant="secondary" onClick={onShowShopCheckpoint}>
+          Go To Shop Checkpoint
+        </Button>
+        <Button type="button" variant="secondary" onClick={onTriggerEvent}>
+          Trigger Event
+        </Button>
+        <Button type="button" variant="secondary" onClick={onTriggerElite}>
+          Trigger Elite
+        </Button>
+        <Button type="button" variant="secondary" onClick={onUnlockBossTest}>
+          Unlock Boss Test
+        </Button>
+        <Button type="button" variant="secondary" onClick={onStartBossTest}>
+          Start Boss Test
+        </Button>
+        <Button type="button" variant="danger" onClick={onForceRunFailed}>
+          Force Run Failed
+        </Button>
+      </div>
+      <p className="mt-3 rounded-lg border border-fuchsia-200 bg-white/70 px-3 py-2 text-xs font-bold leading-5 text-fuchsia-950/75">
+        Force Run Complete is intentionally deferred because it can bypass the
+        real boss defeat reward path. Use Start Boss Test, then defeat the boss
+        through the existing battle flow.
+      </p>
+    </details>
   );
 }
 

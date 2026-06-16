@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 47 Mobile Battle Polish complete.
+Current phase: Phase 48 QA Helper + Full Prototype QA complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -425,6 +425,39 @@ Phase 47 Mobile Battle Polish improved Dungeon usability on mobile and small scr
 - Word Scramble allows long scrambled words to wrap safely and keeps typed answer controls stacked on mobile.
 - Result overlays, Pause, Abandon confirmation, Run Complete/Failed summaries, and the Shop purchase modal gained mobile-safe max heights and scroll handling.
 - Combat math, timer values, mastery, deck unlocks, LocalStorage, shop effects, event effects, boss rules, statistics, Word Energy, and current-run deck behavior were preserved.
+
+## Phase 48 QA Helper Summary
+
+Phase 48 added a development-only Dungeon QA Helper and performed another prototype code-path QA pass.
+
+Implementation notes:
+
+- `src/screens/Dungeon.tsx` defines `ENABLE_QA_HELPERS = import.meta.env.DEV`.
+- `src/vite-env.d.ts` adds Vite environment typings so `import.meta.env.DEV` is available to TypeScript.
+- QA Helper appears only inside Dungeon in development builds.
+- Production builds should not include QA Helper UI. This was checked by searching `dist` for QA Helper strings after `npm run build`.
+- QA Helper is not saved to LocalStorage and does not create player-facing cheat systems.
+- App-level QA callbacks mutate temporary run gold and run progress only.
+
+Current QA Helper actions:
+
+- Set HP Low: sets player HP to 1 and shield to 0 for Run Failed testing.
+- Heal Player: restores player HP to max.
+- Add +50 Gold: adds temporary current-run gold without writing permanent progress.
+- Go To Shop Checkpoint: sets defeated monster progress to the current shop checkpoint and shows result actions that can route to Shop.
+- Trigger Event: forces an immediate Event encounter.
+- Trigger Elite: forces an Elite Encounter Intro.
+- Unlock Boss Test: sets defeated monster progress to the boss requirement and shows Boss Available result actions.
+- Start Boss Test: starts the existing boss intro flow without marking the deck completed.
+- Force Run Failed: uses the existing run-ended statistics handler to test Run Failed summary and ending actions.
+
+Force Run Complete is intentionally deferred. Boss completion should be tested by using Start Boss Test and defeating the boss through the existing battle flow so the real completion and unlock logic runs.
+
+Phase 48 QA findings:
+
+- Fresh progress, learning screens, Dungeon encounter flow, Shop offer flow, Event flow, Elite flow, Boss availability/start, Run Failed, Abandon Run safety, Reset Progress boundaries, and mobile battle layout were inspected through code paths.
+- No gameplay rules, balance values, timer values, save schema, deck unlock rules, shop effects, event effects, boss rules, Word Energy rules, or current-run deck rules were changed.
+- No obvious permanent-progress safety regression was found.
 
 Current Training implementation:
 
@@ -1066,7 +1099,7 @@ git push
 
 ## Next Recommended Task
 
-Phase 47 Mobile Battle Polish is complete.
+Phase 48 is complete.
 
 Recommended next task:
 

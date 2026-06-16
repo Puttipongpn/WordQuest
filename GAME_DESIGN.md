@@ -47,6 +47,20 @@ Current presentation rules:
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
 - Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual passes.
 
+## Development QA Helpers
+
+Dungeon can include development-only QA helpers to speed up prototype testing.
+
+Current QA helper rules:
+
+- QA helpers are gated by `import.meta.env.DEV`.
+- QA helpers must not appear in production builds.
+- QA helpers are not player-facing cheat systems.
+- QA helper state is not saved to LocalStorage.
+- QA helper actions may mutate temporary run state for testing, such as HP, shield, gold, monster/event/boss state, run progress, and current encounter type.
+- QA helper actions must not directly write word mastery, unlocked deck ids, completed deck ids, or permanent statistics.
+- Run completion should still be tested through the real boss defeat flow. Force Run Complete is intentionally deferred to avoid bypassing completion reward logic.
+
 ## Core Loop
 
 1. Player receives or selects a vocabulary deck.

@@ -380,6 +380,18 @@ export default function App() {
     setRunStatistics(nextStatistics);
   }
 
+  function qaAddRunGold(amount: number) {
+    setRunGold((currentGold) => currentGold + amount);
+  }
+
+  function qaSetRunProgress(monstersDefeated: number) {
+    setRunProgress({
+      monstersDefeated,
+      currentFloor: monstersDefeated + 1,
+      nextShopAt: getNextShopAt(monstersDefeated),
+    });
+  }
+
   function recordRunEnded(
     outcome: "completed" | "failed",
     finalRunStatistics: RunStatistics,
@@ -722,6 +734,8 @@ export default function App() {
             onUpgradeRandomRunCardAttack={upgradeRandomRunCardAttack}
             onAddRandomElementToRunCard={addRandomElementToRunCard}
             onAddShieldToRandomRunCard={addShieldToRandomRunCard}
+            onQaAddRunGold={qaAddRunGold}
+            onQaSetRunProgress={qaSetRunProgress}
             onRecoverWordEnergy={recoverRunWordEnergy}
             onUpdateRunStatistics={updateRunStatistics}
             runGold={runGold}

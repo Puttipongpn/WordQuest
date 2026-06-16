@@ -1060,6 +1060,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Desktop and mobile need different layout strategies to preserve game feel without sacrificing playability.
 - Status: Accepted
 
+### 2026-06-16: Dungeon QA Helpers Are Development-Only
+
+- Decision: Dungeon can include QA Helper controls gated by `import.meta.env.DEV`.
+- Reason: Prototype QA needs fast access to Shop, Event, Elite, Boss, and Run Failed flows without turning helper controls into player-facing cheats.
+- Status: Accepted
+
+### 2026-06-16: Force Run Complete Is Deferred
+
+- Decision: Do not add a fake Force Run Complete QA action yet.
+- Reason: Run completion should use the real boss defeat path so deck completion, unlock rewards, and saved progress are tested through existing production logic.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.

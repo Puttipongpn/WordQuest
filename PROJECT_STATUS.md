@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 47 Mobile Battle Polish is complete. GitHub backup is configured on `origin/main`.
+Phase 48 QA Helper + Full Prototype QA is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -597,6 +597,17 @@ Phase 47 Mobile Battle Polish is complete. GitHub backup is configured on `origi
 - Improved result overlays, Pause, Abandon Run confirmation, Run Complete/Failed summary, and Shop purchase modal with mobile-safe max heights and scrollable content where needed.
 - Preserved combat math, timers, mastery, deck unlocks, save rules, shop effects, event effects, boss rules, statistics, Word Energy rules, and current-run deck behavior.
 - Verified the project with `npm run build` after Phase 47 Mobile Battle Polish.
+- Applied Phase 48 QA Helper + Full Prototype QA.
+- Added a development-only Dungeon QA Helper panel gated by `import.meta.env.DEV`.
+- Added `src/vite-env.d.ts` so Vite environment flags are typed by TypeScript.
+- QA Helper actions include Set HP Low, Heal Player, Add +50 Gold, Go To Shop Checkpoint, Trigger Event, Trigger Elite, Unlock Boss Test, Start Boss Test, and Force Run Failed.
+- Deferred Force Run Complete because it could bypass the real boss defeat reward path; boss completion should be tested through Start Boss Test and existing battle completion.
+- QA Helper mutates temporary run state only, except Force Run Failed uses the existing run-ended statistics handler for testing the failed-run path.
+- Added App-level QA callbacks for temporary run gold and run progress without writing LocalStorage or directly modifying permanent progress.
+- Confirmed production build removes QA Helper UI text from `dist`.
+- Performed code-path QA across fresh progress, learning screens, Dungeon encounters, Shop, Events, Elites, Boss availability/start, Run Failed, Abandon Run, reset boundaries, and mobile battle layout.
+- No gameplay rules, balance values, timer values, save schema, deck unlock rules, shop effects, event effects, boss rules, or Word Energy rules were changed.
+- Verified the project with `npm run build` after Phase 48.
 
 ## In Progress
 
@@ -604,7 +615,7 @@ Phase 47 Mobile Battle Polish is complete. GitHub backup is configured on `origi
 
 ## Next Task
 
-Phase 47 Mobile Battle Polish is complete. Continue with the next explicitly requested phase or feature.
+Phase 48 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
