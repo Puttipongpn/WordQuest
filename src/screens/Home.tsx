@@ -91,13 +91,15 @@ export function Home({
 
   return (
     <ScreenShell
-      eyebrow="Campfire Gate"
+      eyebrow="Campfire Hub"
       title="WordQuest"
-      description="Review your vocabulary deck, train at camp, then descend into the dungeon."
+      description="Choose a deck, sharpen your vocabulary, and venture into the dungeon."
       framed={false}
     >
       <div className="grid gap-5 lg:grid-cols-[1.35fr_0.85fr]">
-        <CardPanel className="border-amber-700/40 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
+        <CardPanel className="relative overflow-hidden border-amber-700/40 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white/55 to-transparent" />
+          <div className="relative">
           <div className="flex flex-wrap gap-2">
             <Badge tone="emerald">Vocabulary cards</Badge>
             <Badge tone="purple">Deckbuilder run</Badge>
@@ -105,7 +107,7 @@ export function Home({
             <Badge tone="red">Dungeon timed</Badge>
             <Badge tone="amber">Saved locally</Badge>
           </div>
-          <h3 className="mt-5 max-w-2xl text-5xl font-black text-amber-950">
+          <h3 className="mt-5 max-w-2xl text-5xl font-black leading-none text-amber-950 sm:text-6xl">
             {selectedDeck.name}
           </h3>
           <p className="mt-3 max-w-2xl text-lg font-bold leading-8 text-amber-950/80">
@@ -168,21 +170,22 @@ export function Home({
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button type="button" onClick={() => onNavigate("deck-review")}>
-              Review Deck
+              Open Spellbook
             </Button>
             <Button
               type="button"
               onClick={() => onNavigate("training")}
               variant="secondary"
             >
-              Training
+              Train At Camp
             </Button>
             <Button
               type="button"
               onClick={() => onNavigate("dungeon")}
             >
-              Enter Dungeon
+              Start Adventure
             </Button>
+          </div>
           </div>
         </CardPanel>
         <CardPanel className="border-emerald-800/30 bg-gradient-to-br from-emerald-100 to-amber-50">
@@ -240,9 +243,9 @@ export function Home({
       <CardPanel className="mt-6 border-emerald-800/30 bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <Badge tone="emerald">Best Run</Badge>
+            <Badge tone="emerald">Adventurer Records</Badge>
             <h3 className="mt-2 text-2xl font-black text-amber-950">
-              Permanent run summary
+              Best Run Summary
             </h3>
             <p className="mt-2 max-w-2xl text-sm font-bold text-amber-900/75">
               Only completed or failed run summaries are saved. Active dungeon
@@ -300,7 +303,7 @@ export function Home({
       <CardPanel className="mt-6 border-amber-700/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <Badge tone="purple">Deck Selection</Badge>
+            <Badge tone="purple">Journey Map</Badge>
             <h3 className="mt-2 text-2xl font-black text-amber-950">
               Deck Progression Path
             </h3>
@@ -415,8 +418,8 @@ export function Home({
                     ? "Completed. You can still replay this deck."
                     : isUnlocked
                       ? isSelected
-                        ? "Selected. Review, train, or enter the dungeon."
-                        : "Unlocked. Select this deck to start a fresh run."
+                        ? "Selected. Study, train, or start the adventure."
+                        : "Unlocked. Select this deck to begin a fresh run."
                       : requirement}
                 </p>
                 <Button

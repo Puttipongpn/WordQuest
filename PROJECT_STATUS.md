@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 49 First Balance Tuning is complete. GitHub backup is configured on `origin/main`.
+Phase 51 Visual Identity + Game Feel Polish is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -617,6 +617,32 @@ Phase 49 First Balance Tuning is complete. GitHub backup is configured on `origi
 - Left player max HP, starting gold, shop interval, boss requirement, monster stats, elite stats, boss stats, event rewards, encounter weights, mastery bonuses, element effects, and Word Energy thresholds unchanged.
 - Confirmed QA Helper remains development-only by checking production `dist` output for QA helper strings after build.
 - Verified the project with `npm run build` after Phase 49.
+- Applied Phase 50 Prototype Stabilization + Deploy Prep.
+- Rewrote `README.md` with install, development, build, preview, gameplay loop, save behavior, QA Helper, Vercel deployment, limitations, and project document guidance.
+- Added `QA_CHECKLIST.md` with manual checks for fresh start, learning screens, Dungeon battle, Shop, Events, Boss, Run Complete, Run Failed, Abandon Run, Reset Progress, responsive smoke testing, production build, and QA Helper production safety.
+- Lightly polished `RunResult` copy so it no longer implies run summaries are unimplemented; current summaries appear inside Dungeon after runs end.
+- Documented Vercel as the preferred static demo deployment target.
+- Confirmed package scripts remain simple: `dev`, `build`, and `preview`.
+- Confirmed LocalStorage fallback code safely handles missing, invalid, or incompatible saved data by returning default progress.
+- Confirmed QA Helper remains gated by `import.meta.env.DEV` and production `dist` output does not include QA Helper UI strings.
+- Prepared deployment instructions without actually deploying the app.
+- Reviewed `npm audit`; it reports a high-severity `esbuild` advisory through the Vite toolchain, but npm's suggested force fix would make breaking dependency changes, so it is documented and deferred.
+- No gameplay systems, decks, combat math, timer values, mastery rules, deck unlock rules, save schema, shop effects, event effects, boss effects, backend, auth, database, API, final art assets, sound, or external UI libraries were added.
+- Verified the project with `npm install`, `npm run build`, and production preview smoke checks after Phase 50.
+- Applied Phase 51 Visual Identity + Game Feel Polish.
+- Strengthened the global cozy fantasy dungeon mood with a warmer layered CSS background and subtle game-screen lighting.
+- Polished shared UI primitives: card panels, badges, progress bars, stat cards, and buttons now have stronger game-like shadows, borders, hover/pressed states, and contrast.
+- Polished `ScreenShell` and `AppHeader` so non-Dungeon screens feel more like a camp menu / adventure UI while Dungeon keeps its compact battle header.
+- Polished Home copy and hero treatment into a clearer Campfire Hub with `Open Spellbook`, `Train At Camp`, `Start Adventure`, `Adventurer Records`, and journey-map language.
+- Polished Deck Review language and panels toward a spellbook/card collection feel without changing filters, sorting, or display-only mastery behavior.
+- Polished Training language and panels toward a preparation-room feel without changing untimed Training or mastery rules.
+- Polished Shop language toward a roguelike merchant screen with `Refresh Wares`, `Inspect Ware`, and `Confirm Trade` while preserving shop offer behavior and costs.
+- Polished Run Result copy into an `Adventure Ledger` placeholder for future standalone history while current run summaries remain inside Dungeon.
+- Kept QA Helper development-only and visually separated from player-facing fantasy UI.
+- No gameplay systems, combat math, timer values, mastery rules, deck unlock rules, save schema, shop/event/boss effects, final art assets, sound, animation libraries, external UI libraries, backend, auth, database, API, React Router, or Oxford 3000 import were added.
+- Verified the project with `npm run build`; production preview served HTML, JS, and CSS with HTTP 200.
+- Confirmed production `dist` output does not include QA Helper UI strings after Phase 51.
+- Browser visual automation was unavailable in this session, so verification used production build, preview HTTP checks, asset checks, and code-path review.
 
 ## In Progress
 
@@ -624,7 +650,7 @@ Phase 49 First Balance Tuning is complete. GitHub backup is configured on `origi
 
 ## Next Task
 
-Phase 49 is complete. Continue with the next explicitly requested phase or feature.
+Phase 51 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -634,6 +660,7 @@ The following documents are required and must be updated after every completed t
 - `HANDOFF.md`
 - `DECISIONS.md`
 - `GAME_DESIGN.md` when gameplay rules, systems, or scope change
+- `QA_CHECKLIST.md` for manual prototype QA before sharing or deploying
 
 ## Core Design Decisions
 

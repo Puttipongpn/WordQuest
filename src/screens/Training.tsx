@@ -411,9 +411,9 @@ export function Training({
 
   return (
     <ScreenShell
-      eyebrow="Practice"
-      title="Training"
-      description="Practice outside dungeon runs. Training is untimed, and correct answers save word mastery only."
+      eyebrow="Training Room"
+      title="Camp Training"
+      description="Practice safely before the dungeon. Training is untimed, and correct answers save word mastery only."
       framed={false}
     >
       {phase === "setup" ? (
@@ -485,14 +485,14 @@ function TrainingSetup({
 }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-50 via-amber-50 to-emerald-50">
+      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-100 via-amber-50 to-emerald-100">
         <div className="flex flex-wrap gap-2">
           <Badge tone="emerald">Practice Room</Badge>
           <Badge tone="sky">Untimed</Badge>
           <Badge tone="purple">{deck.name}</Badge>
         </div>
         <h3 className="mt-3 text-3xl font-black text-amber-950">
-          Choose your training focus
+          Choose a training station
         </h3>
         <p className="mt-2 max-w-2xl text-sm font-bold leading-6 text-amber-950/75">
           Training improves permanent word mastery only. It does not affect HP,
@@ -524,7 +524,7 @@ function TrainingSetup({
                     </p>
                   </div>
                   <Badge tone={isSelected ? "amber" : "sky"}>
-                    {isSelected ? "Selected" : mode.badge}
+                  {isSelected ? "Ready" : mode.badge}
                   </Badge>
                 </div>
               </button>
@@ -557,7 +557,7 @@ function TrainingSetup({
             disabled={availabilityMessage !== ""}
             className="mt-5 w-full"
           >
-            Start Training
+            Begin Practice
           </Button>
         </div>
       </CardPanel>
@@ -640,13 +640,13 @@ function TrainingSession({
 }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-50 via-amber-50 to-emerald-50">
+      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-100 via-amber-50 to-emerald-100">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <Badge tone="emerald">Recall Training</Badge>
             <Badge tone="sky" className="ml-2">Untimed</Badge>
             <h3 className="mt-1 text-2xl font-black text-amber-950">
-              Build recall with meaning and context
+              Practice recall before battle
             </h3>
             <p className="mt-2 max-w-2xl text-sm font-medium text-amber-950/75">
               {deck.name} · {formatTrainingMode(trainingMode)}
@@ -660,7 +660,7 @@ function TrainingSession({
           </div>
         </div>
 
-        <div className="mt-6 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white to-sky-100 p-5 shadow-inner">
+        <div className="mt-6 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white via-amber-50 to-sky-100 p-5 shadow-inner">
           <p className="text-sm font-extrabold uppercase text-sky-800">
             {formatQuestionType(currentQuestion.questionType)}
           </p>
@@ -798,7 +798,7 @@ function TrainingSession({
 
       <aside className="rounded-xl border-2 border-amber-800/25 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.14)] lg:self-start">
         <p className="text-sm font-extrabold uppercase text-amber-700">
-          Training Room
+          Practice Notes
         </p>
         <div className="mt-4 grid gap-3">
           <StatCard

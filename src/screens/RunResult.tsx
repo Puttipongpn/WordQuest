@@ -10,19 +10,20 @@ export function RunResult({ onNavigate }: RunResultProps) {
   return (
     <ScreenShell
       eyebrow="Tavern Ledger"
-      title="Run Result"
-      description="A placeholder summary for future run outcomes, rewards, and learning progress."
+      title="Adventure Ledger"
+      description="A quiet tavern page for future standalone run history."
       framed={false}
     >
-      <CardPanel className="border-amber-700/30 bg-gradient-to-br from-amber-100 to-orange-50">
+      <CardPanel className="border-amber-700/30 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-50">
         <div className="grid gap-3 sm:grid-cols-3">
-          <StatCard label="Outcome" value="Pending" helper="Win/loss later" />
-          <StatCard label="Rewards" value="0" helper="Deferred" tone="amber" />
-          <StatCard label="Progress" value="Saved" helper="Mastery only" tone="emerald" />
+          <StatCard label="Outcome" value="Dungeon" helper="Shown after runs" />
+          <StatCard label="Rewards" value="Deck" helper="Boss completion" tone="amber" />
+          <StatCard label="Progress" value="Local" helper="Browser save" tone="emerald" />
         </div>
         <p className="mt-5 text-sm font-medium leading-6 text-amber-950/75">
-          Run win, loss, rewards, and permanent vocabulary progress updates will
-          be summarized here after those systems exist.
+          Current Run Complete and Run Failed summaries appear inside the
+          Dungeon when a run ends. This page is reserved for a future standalone
+          history view.
         </p>
         <Button
           type="button"

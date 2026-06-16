@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 49 First Balance Tuning complete.
+Current phase: Phase 51 Visual Identity + Game Feel Polish complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, after Phase 45 Training Mode Expansion work, after Phase 46 Deck Review Learning Polish work, after Phase 47 Full Prototype QA + Balance Pass work, after Phase 48 QA Helper + Full Prototype QA work, and after Phase 49 First Balance Tuning work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, after Phase 45 Training Mode Expansion work, after Phase 46 Deck Review Learning Polish work, after Phase 47 Full Prototype QA + Balance Pass work, after Phase 48 QA Helper + Full Prototype QA work, after Phase 49 First Balance Tuning work, after Phase 50 Prototype Stabilization + Deploy Prep work, and after Phase 51 Visual Identity + Game Feel Polish work.
 
 The local development server can be started with:
 
@@ -1077,6 +1077,7 @@ These documents are required project maintenance files:
 - `HANDOFF.md`: project handoff context for another developer or AI agent.
 - `DECISIONS.md`: accepted decision log.
 - `GAME_DESIGN.md`: central accepted gameplay design reference.
+- `QA_CHECKLIST.md`: manual prototype QA checklist before sharing or deploying.
 
 After every completed task, update these documents as needed. Update `GAME_DESIGN.md` when gameplay rules, systems, or scope change.
 
@@ -1096,8 +1097,6 @@ git add .
 git commit -m "Describe the change"
 git push
 ```
-
-## Next Recommended Task
 
 ## Phase 49 Balance Tuning Summary
 
@@ -1144,6 +1143,76 @@ QA notes:
 - `npm run build` passed after the tuning changes.
 
 Phase 49 is complete.
+
+## Phase 50 Stabilization + Deploy Prep Summary
+
+Phase 50 stabilized the current playable prototype for demo/deploy readiness without adding gameplay systems.
+
+Completed:
+
+- Rewrote `README.md` with install, development, build, preview, gameplay loop, save behavior, QA Helper, deployment, prototype limitations, and document references.
+- Added `QA_CHECKLIST.md` for manual prototype checks across fresh start, learning screens, Dungeon battle, Shop, Events, Boss, run end states, exit/reset safety, responsive smoke testing, production build, and QA Helper safety.
+- Updated `RunResult` copy so it points players toward the real Dungeon run summaries and frames the page as a future standalone history view.
+- Documented Vercel as the preferred static deployment target.
+- Added deployment scope notes to `GAME_DESIGN.md`.
+- Added the Vercel static deployment decision to `DECISIONS.md`.
+
+Deploy prep notes:
+
+- Recommended host: Vercel.
+- Framework preset: Vite.
+- Build command: `npm run build`.
+- Output directory: `dist`.
+- The app has not been deployed yet.
+- GitHub Pages is not the default target because it may require Vite base-path changes.
+- `npm audit` reports a high-severity `esbuild` advisory through the Vite toolchain. npm's suggested `audit fix --force` path would make breaking dependency changes, so it is documented and deferred rather than applied in Phase 50.
+
+Verification notes:
+
+- Package scripts remain `dev`, `build`, and `preview`.
+- LocalStorage fallback code still returns default progress for missing, invalid, or incompatible saved data.
+- QA Helper remains gated by `import.meta.env.DEV`.
+- Production `dist` output was checked for QA Helper strings after build.
+- Production preview served HTML, JS, and CSS with HTTP 200 from localhost.
+- No gameplay systems, decks, combat math, timers, mastery rules, deck unlock rules, save schema, shop effects, event effects, boss effects, backend, auth, database, API, React Router, final art assets, sound, or external UI libraries were added.
+- `npm install`, `npm run build`, and production preview smoke checks passed.
+
+Phase 50 is complete.
+
+## Phase 51 Visual Identity + Game Feel Polish Summary
+
+Phase 51 improved the prototype's shared visual identity and game feel using only CSS, Tailwind utility classes, emoji, and existing placeholder visuals.
+
+Presentation changes:
+
+- Strengthened the global cozy fantasy dungeon mood with a warmer layered CSS background and subtle screen lighting.
+- Polished shared UI primitives in `src/components/ui.tsx`: card panels, badges, progress bars, stat cards, and buttons now have stronger game-like borders, shadows, hover states, pressed states, and contrast.
+- Polished `ScreenShell` with adventure-style eyebrow treatment and divider lines.
+- Polished `AppHeader` so normal navigation feels more like a camp menu, while Dungeon keeps its compact battle-mode header.
+- Polished Home into a clearer Campfire Hub with stronger selected-deck hero treatment, `Open Spellbook`, `Train At Camp`, `Start Adventure`, `Adventurer Records`, and journey-map language.
+- Polished Deck Review toward a spellbook/card collection feel with `Spellbook`, `Spellbook Tabs`, and `Open Card` language.
+- Polished Training toward a camp preparation room with `Camp Training`, training station language, and practice-room copy.
+- Polished Shop toward a roguelike merchant screen with `Refresh Wares`, `Inspect Ware`, `Enchant a card`, and `Confirm Trade`.
+- Polished Run Result into an `Adventure Ledger` placeholder while keeping real run summaries inside Dungeon.
+- Dungeon received only small copy polish; battle layout, answer visibility rules, result actions, and mobile safety rules were preserved.
+
+Preserved:
+
+- No gameplay systems were added.
+- Combat math, timer values, mastery rules, deck unlock rules, save schema, shop effects, event effects, boss effects, Word Energy, and LocalStorage behavior were unchanged.
+- No final art assets, sound, animation libraries, external UI libraries, backend, auth, database, API, React Router, or Oxford 3000 import were added.
+- QA Helper remains development-only and gated by `import.meta.env.DEV`.
+
+Verification notes:
+
+- `npm run build` passed.
+- Production preview served HTML, JS, and CSS with HTTP 200.
+- Production `dist` output was checked for QA Helper strings; none were found.
+- Browser visual automation was unavailable in this session, so visual verification used code review plus production preview HTTP and asset checks.
+
+Phase 51 is complete.
+
+## Next Recommended Task
 
 Recommended next task:
 

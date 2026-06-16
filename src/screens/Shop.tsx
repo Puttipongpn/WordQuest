@@ -339,9 +339,9 @@ export function Shop({
 
   return (
     <ScreenShell
-      eyebrow="Upgrade"
+      eyebrow="Merchant"
       title="Current Run Shop"
-      description="Choose limited temporary offers for this run."
+      description="Trade temporary gold for a small set of run-only wares."
       framed={false}
     >
       <CardPanel className="mb-5 border-amber-700/30 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
@@ -349,7 +349,7 @@ export function Shop({
           <div>
             <Badge tone="emerald">Current-run only</Badge>
             <p className="mt-3 text-xl font-black text-amber-950">
-              Pick from a small set of shop offers.
+              The merchant reveals a few wares at a time.
             </p>
             <p className="mt-2 max-w-3xl text-sm font-bold leading-6 text-amber-950/75">
               Upgrades, removals, duplicates, and elements affect only this
@@ -381,7 +381,7 @@ export function Shop({
             variant="secondary"
             disabled={runGold < SHOP_REROLL_COST}
           >
-            Reroll Offers ({SHOP_REROLL_COST} gold)
+            Refresh Wares ({SHOP_REROLL_COST} gold)
           </Button>
           <Button
             type="button"
@@ -402,7 +402,7 @@ export function Shop({
           return (
             <CardPanel
               key={item.id}
-              className="flex min-h-64 flex-col border-amber-700/30 bg-gradient-to-br from-amber-50 to-orange-50"
+              className="flex min-h-64 flex-col border-amber-700/30 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="grid size-14 place-items-center rounded-xl border border-amber-900/15 bg-amber-100 text-sm font-black text-amber-950 shadow-inner">
@@ -439,7 +439,7 @@ export function Shop({
                   onClick={() => openOfferModal(item)}
                   variant={hasEnoughGold ? "primary" : "secondary"}
                 >
-                  {canSelectOffer ? "Select Offer" : "No Eligible Targets"}
+                  {canSelectOffer ? "Inspect Ware" : "No Eligible Targets"}
                 </Button>
                 {!hasEnoughGold && canSelectOffer && (
                   <p className="mt-2 text-xs font-bold text-red-700">
@@ -461,7 +461,7 @@ export function Shop({
               : "border-amber-700/20 bg-amber-50"
         }`}
       >
-        <p className="font-black text-amber-950">Shopkeeper Note</p>
+        <p className="font-black text-amber-950">Merchant Note</p>
         <p className="mt-1 text-sm font-medium text-amber-950/75">
           {purchaseFeedback.message}
         </p>
@@ -472,13 +472,13 @@ export function Shop({
           <div className="max-h-[min(92vh,48rem)] w-full max-w-3xl overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-4 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <Badge tone="emerald">Choose target</Badge>
+                <Badge tone="emerald">Enchant a card</Badge>
                 <h3 className="mt-2 text-3xl font-black">
                   {activeOffer.name}
                 </h3>
                 <p className="mt-1 text-sm font-bold text-amber-900/75">
                   Pick one eligible current-run card. Gold is spent only when
-                  you confirm.
+                  you confirm the enchantment.
                 </p>
               </div>
               <Badge tone={runGold >= activeOffer.cost ? "amber" : "red"}>
@@ -546,7 +546,7 @@ export function Shop({
                   runGold < activeOffer.cost
                 }
               >
-                Confirm Purchase
+                Confirm Trade
               </Button>
             </div>
             {runGold < activeOffer.cost && (

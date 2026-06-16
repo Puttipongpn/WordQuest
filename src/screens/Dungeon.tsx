@@ -2321,9 +2321,9 @@ export function Dungeon({
 
   return (
     <ScreenShell
-      eyebrow="Battle"
-      title="Dungeon"
-      description="Answer timed vocabulary mini-games to trigger cards. Run state here is local and temporary."
+      eyebrow="Dungeon"
+      title="Battle Chamber"
+      description="Answer timed vocabulary mini-games to trigger cards. Current Run state stays temporary."
       framed={false}
       wide
       gameMode

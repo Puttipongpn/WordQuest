@@ -41,10 +41,10 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-10 border-b-2 border-emerald-200/20 bg-[#132d28]/95 text-amber-50 shadow-lg backdrop-blur">
+    <header className="sticky top-0 z-10 border-b-2 border-amber-300/20 bg-gradient-to-r from-stone-950/95 via-emerald-950/95 to-stone-900/95 text-amber-50 shadow-[0_8px_28px_rgba(12,20,16,0.38)] backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3">
-          <span className="grid size-12 place-items-center rounded-lg border border-amber-400/50 bg-amber-300/15 text-3xl shadow-inner">
+          <span className="grid size-12 place-items-center rounded-lg border border-amber-300/55 bg-amber-300/15 text-3xl shadow-[inset_0_0_18px_rgba(251,191,36,0.18),0_3px_0_rgba(120,53,15,0.35)]">
             📖
           </span>
           <div>
@@ -52,7 +52,7 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
               WordQuest
             </p>
             <h1 className="text-2xl font-black text-amber-50">
-              Cozy Dungeon Deckbuilder
+              Vocabulary Dungeon
             </h1>
           </div>
         </div>
@@ -70,8 +70,8 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
                 onClick={() => onNavigate(item.screen)}
                 className={`shrink-0 rounded-lg border px-3 py-2 text-sm font-extrabold transition ${
                   isActive
-                    ? "border-amber-300 bg-amber-300 text-amber-950 shadow-[0_4px_0_rgba(120,53,15,0.55)]"
-                    : "border-amber-100/20 bg-amber-50/10 text-amber-100 hover:border-amber-300 hover:bg-amber-100/20"
+                    ? "border-amber-200 bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow-[0_4px_0_rgba(120,53,15,0.58)]"
+                    : "border-amber-100/20 bg-amber-50/10 text-amber-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:border-amber-300 hover:bg-amber-100/20"
                 }`}
               >
                 <span className="mr-2" aria-hidden="true">

@@ -14,8 +14,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    linear-gradient(180deg, rgba(18, 45, 40, 0.96) 0, rgba(38, 78, 68, 0.9) 230px, rgba(246, 232, 202, 0.98) 780px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 72px),
+    linear-gradient(180deg, rgba(10, 26, 24, 0.98) 0, rgba(26, 65, 57, 0.94) 260px, rgba(85, 54, 34, 0.88) 620px, rgba(247, 230, 190, 0.98) 980px),
+    repeating-linear-gradient(90deg, rgba(255, 245, 205, 0.045) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(0deg, rgba(36, 20, 12, 0.06) 0 1px, transparent 1px 56px),
     #f6e7c8;
   color: #2d1d12;
 }
@@ -31,9 +32,22 @@ body::before {
   pointer-events: none;
   content: "";
   background:
-    linear-gradient(135deg, rgba(170, 230, 198, 0.14), transparent 42%),
-    linear-gradient(180deg, rgba(7, 24, 21, 0.45), transparent 34%),
-    repeating-linear-gradient(0deg, rgba(34, 83, 72, 0.07) 0 2px, transparent 2px 76px);
+    linear-gradient(135deg, rgba(251, 191, 36, 0.13), transparent 32%),
+    linear-gradient(225deg, rgba(20, 184, 166, 0.12), transparent 36%),
+    linear-gradient(180deg, rgba(7, 24, 21, 0.52), transparent 35%),
+    repeating-linear-gradient(0deg, rgba(34, 83, 72, 0.08) 0 2px, transparent 2px 76px);
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(ellipse at top, rgba(255, 244, 214, 0.08), transparent 46%),
+    linear-gradient(90deg, rgba(24, 16, 10, 0.2), transparent 18%, transparent 82%, rgba(24, 16, 10, 0.2));
+  mix-blend-mode: multiply;
 }
 
 ::selection {

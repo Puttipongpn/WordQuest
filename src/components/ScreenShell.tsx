@@ -34,20 +34,23 @@ export function ScreenShell({
       }`}
     >
       <div className="mb-5">
-        <p className="text-sm font-extrabold uppercase text-amber-200 drop-shadow">
-          {eyebrow}
-        </p>
-        <h2 className="text-4xl font-black text-amber-50 drop-shadow-md">
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="rounded-full border border-amber-200/25 bg-amber-100/10 px-3 py-1 text-sm font-extrabold uppercase text-amber-200 shadow-inner">
+            {eyebrow}
+          </p>
+          <span className="hidden h-px flex-1 bg-gradient-to-r from-amber-200/45 to-transparent sm:block" />
+        </div>
+        <h2 className="mt-2 text-4xl font-black text-amber-50 drop-shadow-md">
           {title}
         </h2>
         {description && (
-          <p className="mt-2 max-w-3xl rounded-lg border border-amber-900/15 bg-amber-50/80 px-4 py-2 text-sm font-medium leading-6 text-amber-950 shadow-sm">
+          <p className="mt-2 max-w-3xl rounded-lg border border-amber-900/15 bg-amber-50/85 px-4 py-2 text-sm font-bold leading-6 text-amber-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_4px_0_rgba(92,51,23,0.12)]">
             {description}
           </p>
         )}
       </div>
       {framed ? (
-        <div className="rounded-xl border-2 border-amber-900/25 bg-amber-50/95 p-6 shadow-[0_14px_0_rgba(77,45,20,0.16),0_24px_48px_rgba(46,25,12,0.22)]">
+        <div className="rounded-xl border-2 border-amber-900/25 bg-amber-50/95 p-6 shadow-[0_12px_0_rgba(77,45,20,0.2),0_24px_48px_rgba(46,25,12,0.24),inset_0_1px_0_rgba(255,255,255,0.75)] ring-1 ring-white/35">
           {children}
         </div>
       ) : (

@@ -242,14 +242,14 @@ export function DeckReview({
 
   return (
     <ScreenShell
-      eyebrow="Cards"
+      eyebrow="Spellbook"
       title="Deck Review"
-      description={`Study ${deck.name}, inspect weak words, and choose your next step.`}
+      description={`Open ${deck.name}, inspect weak words, and prepare your battle cards.`}
       framed={false}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]">
         <div className="space-y-5">
-          <CardPanel className="border-amber-700/30 bg-gradient-to-br from-amber-100 to-stone-50">
+          <CardPanel className="border-amber-700/30 bg-gradient-to-br from-amber-100 via-yellow-50 to-stone-50">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <div className="flex flex-wrap items-center gap-3">
@@ -342,11 +342,11 @@ export function DeckReview({
             </div>
           </CardPanel>
 
-          <CardPanel className="border-emerald-800/20 bg-gradient-to-br from-emerald-50 to-amber-50 p-4">
+          <CardPanel className="border-violet-700/20 bg-gradient-to-br from-violet-50 via-amber-50 to-emerald-50 p-4">
             <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-black uppercase text-emerald-800">
-                  Study View
+                <p className="text-sm font-black uppercase text-violet-800">
+                  Spellbook Tabs
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {deckFilters.map((filter) => (
@@ -488,14 +488,14 @@ export function DeckReview({
           </section>
         </div>
 
-        <aside className="rounded-xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-50 p-5 shadow-[0_10px_0_rgba(120,53,15,0.16)] lg:sticky lg:top-32 lg:self-start">
+        <aside className="rounded-xl border-2 border-emerald-800/30 bg-gradient-to-br from-emerald-100 via-amber-50 to-yellow-50 p-5 shadow-[0_10px_0_rgba(120,53,15,0.18)] lg:sticky lg:top-32 lg:self-start">
           <div className="flex items-start gap-4">
             <span className="grid size-20 shrink-0 place-items-center rounded-lg border border-amber-900/20 bg-white/80 text-5xl shadow-inner">
               {selectedCard.imagePlaceholder}
             </span>
             <div>
-              <p className="text-sm font-extrabold uppercase text-amber-700">
-                Selected Card
+              <p className="text-sm font-extrabold uppercase text-emerald-800">
+                Open Card
               </p>
               <h3 className="text-4xl font-black capitalize text-amber-950">
                 {selectedCard.word}

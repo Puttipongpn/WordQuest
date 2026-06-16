@@ -1,8 +1,8 @@
 # WordQuest
 
-WordQuest is a prototype vocabulary learning roguelike deckbuilder web game. It combines English vocabulary cards, deck review, mini-game practice, and a planned dungeon run system where correct answers trigger card effects.
+WordQuest is a vocabulary learning roguelike deckbuilder prototype. Players review English vocabulary cards, practice in Training, then enter a dungeon where correct answers trigger card attacks, shields, elements, and current-run upgrades.
 
-The project is focused on becoming a simple, playable English vocabulary practice app before adding polish or final art.
+The project is a local-first prototype focused on proving the learning and roguelike loop before final art, backend services, or large vocabulary imports.
 
 ## Tech Stack
 
@@ -10,88 +10,112 @@ The project is focused on becoming a simple, playable English vocabulary practic
 - React
 - TypeScript
 - Tailwind CSS
-- LocalStorage for Version 1 save data
+- LocalStorage for permanent Version 1 progress
 
-## Current Status
-
-Prototype v0.1 is in progress.
-
-Completed so far:
-
-- Project scaffold with Vite, React, TypeScript, and Tailwind CSS
-- Basic screen navigation with React state
-- Placeholder screens for Home, Training, Dungeon, Shop, and Run Result
-- Deck Review screen using the Starter Deck
-- Shared TypeScript game data model
-- Starter Deck seed data with 20 vocabulary cards
-- Project documentation and decision log
-
-## Core Features Planned
-
-- Vocabulary decks built from English word cards
-- Deck review before dungeon runs
-- Training mini-games outside dungeon runs
-- Dungeon battles using vocabulary mini-games
-- Card effects based on Attack, Shield, and Element
-- Temporary roguelike run upgrades
-- Shop every 5 monsters
-- Boss every 20 monsters
-- Permanent vocabulary mastery progress
-- LocalStorage save system
-
-## Development Commands
-
-Install dependencies:
+## Install
 
 ```sh
 npm install
 ```
 
-Start the development server:
+## Development
 
 ```sh
 npm run dev
 ```
 
-Build for production:
+Vite will print a local URL, usually `http://localhost:5173`.
+
+## Build
 
 ```sh
 npm run build
 ```
 
-Preview the production build:
+The production output is generated in `dist`.
+
+## Preview Production Build
 
 ```sh
 npm run preview
 ```
 
-## Version 1 Scope
+## Current Gameplay Loop
 
-Version 1 should include:
+- Home: select an unlocked deck and review permanent progress.
+- Deck Review: inspect vocabulary cards, mastery, effects, and learning guidance.
+- Training: practice untimed vocabulary recall and increase permanent word mastery.
+- Dungeon: fight timed vocabulary battles with Word Choice, Word Match, and Word Scramble.
+- Shop: spend temporary run gold on current-run card upgrades.
+- Events: choose temporary current-run rewards or costs.
+- Boss: defeat the boss after dungeon progression to complete the selected deck.
+- Run Complete / Run Failed: view run summaries and update permanent statistics only after a run ends.
 
-- Home screen
-- Deck Review screen
-- Training screen
-- Dungeon battle screen
-- Word Match mini-game
-- Word Scramble mini-game
-- Basic shop
-- Basic monster battle
-- LocalStorage save system
-- Simple placeholder visuals
+## Save Behavior
 
-Version 1 should not include:
+Permanent progress is saved locally in the browser with LocalStorage:
 
-- Backend
-- Database
-- Authentication
-- External API integration
-- Online multiplayer
-- Leaderboards
-- Account system
-- Payment system
-- Final art assets
+- Word mastery
+- Unlocked deck ids
+- Completed deck ids
+- Permanent statistics and best-run summaries
 
-## Project Notes
+Temporary run state is not saved:
 
-WordQuest is a prototype vocabulary learning roguelike deckbuilder. The goal is to make the learning loop playable first, using simple placeholder visuals and local data before expanding into more complete game systems.
+- HP
+- Shield
+- Gold
+- Shop upgrades
+- Duplicated cards
+- Removed cards
+- Card enchantments
+- Monster, elite, event, and boss state
+- Current-run deck
+- Word Energy
+
+Reset Progress clears saved permanent progress. Abandon Run only ends the current temporary run.
+
+## QA Helper
+
+The Dungeon QA Helper is development-only and gated by `import.meta.env.DEV`.
+
+- It appears only while running the dev server.
+- It should not appear in production builds.
+- It mutates temporary run state for testing.
+- It does not directly write permanent mastery, deck unlocks, completed decks, or saved statistics.
+
+## Deployment
+
+Recommended target: Vercel static deployment.
+
+Suggested Vercel setup:
+
+1. Push the project to GitHub.
+2. Import the repository into Vercel.
+3. Use framework preset `Vite`.
+4. Set build command to `npm run build`.
+5. Set output directory to `dist`.
+6. Deploy.
+
+No Vite config changes are currently required for Vercel. GitHub Pages may require a base-path configuration, so it is not the default deploy target for this prototype.
+
+## Prototype Limitations / Roadmap
+
+- No backend, database, authentication, or external API.
+- Manual sample decks only.
+- Oxford 3000 import is deferred.
+- Final art assets are not included.
+- Sound effects are not included.
+- Advanced animations are intentionally limited.
+- Element interactions are first-pass only.
+- More balance testing is needed.
+- Public deployment has been prepared but not performed yet.
+- `npm audit` currently reports a high-severity `esbuild` advisory through the Vite toolchain; npm recommends a force fix with breaking dependency changes, so it has not been applied in this stabilization pass.
+
+## Project Documents
+
+- `GAME_DESIGN.md`: accepted gameplay design and rules.
+- `PROJECT_STATUS.md`: current progress and completed phases.
+- `HANDOFF.md`: detailed continuation context for another developer or AI agent.
+- `DECISIONS.md`: accepted decisions.
+- `QA_CHECKLIST.md`: manual prototype QA checklist.

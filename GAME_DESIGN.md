@@ -15,6 +15,8 @@ Current presentation rules:
 - Use CSS, Tailwind, emoji, and simple placeholder icons only.
 - Make the app feel like a fantasy deckbuilder game before adding final art.
 - Use warm adventure backgrounds, game-like panels, collectible vocabulary cards, battle-style dungeon panels, and fantasy shop cards.
+- Phase 51 strengthens the shared visual identity with a warmer dungeon-camp background, game-like panel shadows, brighter badge/button treatments, camp hub language, spellbook Deck Review language, training-room language, merchant Shop language, and tavern ledger Run Result language.
+- Phase 51 remains a CSS/Tailwind/emoji placeholder pass only; it does not add final generated art, sound, animation libraries, external UI libraries, or new gameplay systems.
 - Dungeon battle presentation should prioritize monster/boss encounter first, active mini-game second, player HP/status third, and keep trigger-rule explanations in secondary or collapsible areas.
 - Phase 30 Dungeon presentation uses a battle-stage structure: encounter stage, action arena, player-side status band, battle log, and card trigger feedback panel.
 - Phase 34 Dungeon presentation prioritizes no-scroll gameplay visibility on desktop: player status, encounter status, current quiz, timer, and recent combat feedback should be visible together when possible.
@@ -60,6 +62,19 @@ Current QA helper rules:
 - QA helper actions may mutate temporary run state for testing, such as HP, shield, gold, monster/event/boss state, run progress, and current encounter type.
 - QA helper actions must not directly write word mastery, unlocked deck ids, completed deck ids, or permanent statistics.
 - Run completion should still be tested through the real boss defeat flow. Force Run Complete is intentionally deferred to avoid bypassing completion reward logic.
+
+## Prototype Deployment Scope
+
+The current prototype is prepared for simple static demo deployment.
+
+Deployment scope rules:
+
+- Recommended deployment target is Vercel with the Vite preset.
+- Build command is `npm run build`.
+- Output directory is `dist`.
+- Deployment prep does not add backend services, databases, authentication, APIs, React Router, final art assets, sound, or new gameplay systems.
+- Production builds must not expose development QA Helper UI.
+- Deployment does not change LocalStorage behavior: permanent progress remains browser-local, and active run state remains temporary and unsaved.
 
 ## Core Loop
 

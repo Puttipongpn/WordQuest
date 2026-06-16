@@ -1072,6 +1072,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Run completion should use the real boss defeat path so deck completion, unlock rewards, and saved progress are tested through existing production logic.
 - Status: Accepted
 
+### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
+
+- Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.
+- Reason: Vercel can host the current frontend-only prototype without backend services, database setup, or Vite base-path changes.
+- Status: Accepted
+
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments
 
 - Decision: Do not add online multiplayer, leaderboards, account systems, or payment systems.
