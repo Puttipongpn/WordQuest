@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 48 QA Helper + Full Prototype QA complete.
+Current phase: Phase 49 First Balance Tuning complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -263,7 +263,7 @@ GitHub backup is configured:
 - Kept timers, advanced element interactions, Oxford 3000 import, backend, auth, database, API, shop rule changes, boss rule changes, save rule changes, and final art assets unimplemented.
 - Verified the project again with `npm run build` after Phase 23.
 - Added the first Dungeon-only battle timer foundation.
-- Added static time limits, currently tuned to Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
+- Added static time limits, currently tuned to Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 24 seconds.
 - Dungeon now shows remaining time, current mini-game limit, and a low-time warning style at 3 seconds or less.
 - Countdown starts for active Dungeon battle questions and stops after an answer.
 - Timeout is treated as a wrong answer: no card triggers, monster or boss attacks, and shield absorbs damage before HP.
@@ -294,7 +294,7 @@ The production build has been verified with:
 npm run build
 ```
 
-The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, after Phase 45 Training Mode Expansion work, after Phase 46 Deck Review Learning Polish work, and after Phase 47 Full Prototype QA + Balance Pass work.
+The build passed successfully after dependencies were installed, after Phase 2 data model work, after Phase 3 Deck Review work, after Phase 4 Training work, after Phase 4.5 mastery/design work, after Phase 5 dungeon battle foundation work, after Phase 6 battle mini-game structure work, after Phase 7 shop presentation work, after Phase 8 LocalStorage save work, after Phase 9 UI polish work, after Phase 10 run progression work, after Phase 11 first shop purchase work, after Phase 12 basic shield system work, after Phase 13 Word Scramble work, after Phase 14 basic element shop work, after Phase 15 current-run deck mutation work, after Phase 16 boss battle foundation work, after Phase 17 permanent deck completion reward work, after Phase 18 gameplay flow QA cleanup work, after Phase 19 game-style visual direction work, after Phase 20 Dungeon battle layout refactor work, after Phase 21 deck selection foundation work, after Phase 22 deck unlock progression foundation work, after Phase 23 learning mini-game redesign work, after Phase 24 Dungeon battle timer foundation work, after Phase 25 basic balance pass work, after Phase 26 element interaction foundation work, after Phase 27 run stats / best run summary work, after Phase 28 elite/event encounter foundation work, after Phase 29 full run playtest/tuning work, after Phase 30 Dungeon battle presentation work, after Phase 31 expanded deck progression work, after Phase 32 Encounter Intro / Pause System work, after Phase 33 Mastery System Gameplay Pass work, after Phase 34 Full Battle Screen Layout Refactor work, after Phase 34.1 Dungeon Layout Hotfix work, after Phase 34.2 True Fullscreen Battle Mode work, after Phase 34.3 Battle Screen Fit Pass work, after Phase 34.4 Mini-game UX + Battle Readability Refactor work, after Phase 34.5 Battle Option Density + Result Overlay Hotfix work, after Phase 34.6 Word Match Anti-Hint + Mini-game Composition Pass work, after Phase 35 Combat Feedback + Defeat Presentation Pass work, after Phase 36 Battle Stage Animation Hooks + Motion Polish work, after Phase 36.1 Unified Encounter Resolution Actions Hotfix work, after Phase 37 Enemy Variety Pass work, after Phase 38 Shop Offer Redesign work, after Phase 39 Card Fatigue / Word Energy System work, after Phase 39.1 Word Energy Balance + Diagnostics Hotfix work, after Phase 39.2 Run Exit Flow + Permanent Progress Safety Hotfix work, after Phase 40 Event Expansion Pass work, after Phase 41 Event QA + Balance Pass work, after Phase 42 Boss Variety + Boss Presentation work, after Phase 43 Run Complete / Run Failed Summary Polish work, after Phase 44 Home / Deck Progress Polish work, after Phase 45 Training Mode Expansion work, after Phase 46 Deck Review Learning Polish work, after Phase 47 Full Prototype QA + Balance Pass work, after Phase 48 QA Helper + Full Prototype QA work, and after Phase 49 First Balance Tuning work.
 
 The local development server can be started with:
 
@@ -355,7 +355,7 @@ Current balance values:
 
 - Player max HP: `32`
 - Starting gold: `20`
-- Gold per defeated monster: `6`
+- Gold per defeated monster: `7`
 - Shop interval: every `5` defeated monsters
 - Boss requirement: `20` defeated monsters
 - Boss pool values: `64-76` HP and `7-10` attack
@@ -363,7 +363,7 @@ Current balance values:
 - Add Shield amount: `+3`
 - Minimum current-run deck size: `5`
 - Minimum distinct visible words for battle questions: `4`
-- Dungeon timers: Word Choice `14s`, Word Match `20s`, Word Scramble `22s`
+- Dungeon timers: Word Choice `14s`, Word Match `20s`, Word Scramble `24s`
 - Element values: Fire `+2` damage, Water `+2` shield, Earth `-2` next attack, Wind `+1` gold on defeat
 - Encounter weights: Monster `70`, Event `20`, Elite `10`
 - Elite rules: `1.5x` HP, `+2` attack, `+10` bonus current-run gold
@@ -557,7 +557,7 @@ Current Dungeon implementation:
 - Encounter Intro shows encounter information, HP, attack, and flavor text with a `Start Battle` button.
 - Events do not use Encounter Intro and continue to show choices immediately.
 - Dungeon battle questions are timed.
-- Current static time limits are Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
+- Current static time limits are Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 24 seconds.
 - Timer countdown runs only while a Dungeon battle question is active, unpaused, and unanswered.
 - Pause is available during active Monster, Elite, or Boss combat. It stops the timer and blocks question interaction until Resume.
 - Abandon Run from Pause opens the current-run abandon confirmation and does not clear permanent progress.
@@ -1022,7 +1022,7 @@ Initial battle mini-games:
   - Show multiple scrambled word choices.
   - Player chooses which word to solve.
   - Player types the original English word.
-  - Has a 22-second Dungeon battle time limit.
+  - Has a 24-second Dungeon battle time limit after Phase 49 tuning.
   - Solving correctly triggers the selected current-run card.
   - Current-run attack and shield upgrades apply through the Card Trigger System.
 
@@ -1099,7 +1099,51 @@ git push
 
 ## Next Recommended Task
 
-Phase 48 is complete.
+## Phase 49 Balance Tuning Summary
+
+Phase 49 performed the first focused numeric balance tuning pass after the development-only Dungeon QA Helper was added.
+
+Values changed:
+
+- `GOLD_PER_MONSTER`: `6` -> `7`
+- `SHOP_ADD_SHIELD_COST`: `40` -> `35`
+- `WORD_SCRAMBLE_TIME_LIMIT`: `22` -> `24`
+- `SHOP_REROLL_COST`: added to `src/game/balance.ts` at `5`; the reroll price itself did not change.
+
+Balance rationale:
+
+- First-shop economy was slightly too tight at exactly `20 + 5 * 6 = 50` gold before optional event/elite rewards. Increasing monster gold to `7` gives a normal first-shop total of `55`, enough for one meaningful purchase with a small reroll buffer.
+- Add Shield was too expensive compared with Upgrade Attack for a defensive effect that still requires correctly triggering the card. Matching the cost at `35` makes it a real first-shop defensive option.
+- Word Scramble needed a little more time for typing, especially on mobile. The timer increased by only two seconds and Training remains untimed.
+
+Values reviewed and left unchanged:
+
+- Player max HP: `32`
+- Starting gold: `20`
+- Shop interval: every `5` defeated monsters
+- Boss requirement: `20` defeated monsters
+- Word Choice timer: `14`
+- Word Match timer: `20`
+- Upgrade Attack amount/cost: `+2` / `35`
+- Add Shield amount: `+3`
+- Add Element cost: `45`
+- Remove Card cost: `30`
+- Duplicate Card cost: `50`
+- Monster HP/attack values
+- Elite HP multiplier, attack bonus, bonus gold, and encounter weight
+- Boss HP/attack values
+- Event reward and HP-cost values
+- Word Energy thresholds and weights
+- Mastery bonus values and element effect values
+
+QA notes:
+
+- Phase 49 used code-path review and the Phase 48 QA helper affordances as the testing reference.
+- Production `dist` output was checked for QA Helper strings after build; no QA helper UI text was found.
+- No combat rules, save schema, deck unlock rules, event behavior, shop behavior, mastery rules, boss requirement, or LocalStorage rules changed.
+- `npm run build` passed after the tuning changes.
+
+Phase 49 is complete.
 
 Recommended next task:
 

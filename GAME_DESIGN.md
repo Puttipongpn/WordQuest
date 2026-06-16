@@ -308,7 +308,7 @@ Current shared values:
 
 - Player max HP: `32`
 - Starting gold: `20`
-- Gold per monster defeated: `6`
+- Gold per monster defeated: `7`
 - Shop interval: every `5` defeated monsters
 - Boss requirement: `20` defeated monsters
 - Upgrade Attack amount: `+2`
@@ -317,7 +317,13 @@ Current shared values:
 - Minimum distinct visible words for battle questions: `4`
 - Word Choice timer: `14` seconds
 - Word Match timer: `20` seconds
-- Word Scramble timer: `22` seconds
+- Word Scramble timer: `24` seconds
+- Shop reroll cost: `5` temporary gold
+- Upgrade Attack cost: `35` temporary gold
+- Add Shield cost: `35` temporary gold
+- Add Element cost: `45` temporary gold
+- Remove Card cost: `30` temporary gold
+- Duplicate Card cost: `50` temporary gold
 - Fire bonus damage: `+2`
 - Water shield gain: `+2`
 - Earth attack reduction: `2`
@@ -335,6 +341,15 @@ Current shared values:
 Card baseAttack values remain unchanged in the first balance pass. Static timer values are still first-pass values; difficulty scaling and advanced balance systems are deferred.
 
 Phase 47 reviewed these values during a full prototype QA pass and did not change any balance constants.
+
+Phase 49 made the first focused numeric tuning pass using the Phase 48 development-only QA helper paths as reference. Changes were intentionally small:
+
+- Gold per monster defeated changed from `6` to `7` so the first shop is more reachable and can support one meaningful purchase plus a small reroll buffer.
+- Add Shield cost changed from `40` to `35` so defensive card upgrades compete more fairly with Upgrade Attack.
+- Word Scramble timer changed from `22` to `24` seconds to reduce mobile typing pressure without changing Training or other timer rules.
+- Shop reroll cost remains `5`, but now lives in `src/game/balance.ts` with the other shop economy values.
+
+Phase 49 left player HP, starting gold, shop interval, boss requirement, monster stats, elite stats, boss stats, event rewards, encounter weights, mastery bonuses, element effects, and Word Energy thresholds unchanged.
 
 ## Training Mode
 
@@ -407,7 +422,7 @@ Current battle rules:
 - Dungeon battle questions are timed.
 - Word Choice has a 14-second time limit.
 - Word Match has a 20-second time limit.
-- Word Scramble has a 22-second time limit.
+- Word Scramble has a 24-second time limit.
 - Timer countdown runs only while a Dungeon battle question is active, unpaused, and unanswered.
 - Pause is available during active Monster, Elite, and Boss combat.
 - Pause stops the timer and disables question interaction until Resume.
@@ -563,7 +578,7 @@ Battle mini-games:
 - Word Match: implemented.
 - Word Match has a 20-second Dungeon battle timer.
 - Word Scramble: implemented with typed input, 3 scrambled current-run card options, and Card Trigger System effects.
-- Word Scramble has a 22-second Dungeon battle timer.
+- Word Scramble has a 24-second Dungeon battle timer.
 
 Battle mini-game timers currently use simple static values first. Difficulty-based timer scaling is deferred.
 

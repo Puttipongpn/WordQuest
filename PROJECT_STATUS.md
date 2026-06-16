@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 48 QA Helper + Full Prototype QA is complete. GitHub backup is configured on `origin/main`.
+Phase 49 First Balance Tuning is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -265,7 +265,7 @@ Phase 48 QA Helper + Full Prototype QA is complete. GitHub backup is configured 
 - Added the first Dungeon-only battle timer foundation.
 - Word Choice now has a 14-second time limit.
 - Word Match now has a 20-second time limit.
-- Word Scramble now has a 22-second time limit.
+- Word Scramble now has a 24-second time limit after Phase 49 tuning.
 - Dungeon displays remaining time, the current mini-game time limit, and a low-time warning style at 3 seconds or less.
 - Timer starts when a new battle question begins and stops after the player answers.
 - Timer resets on next battle question, next monster, boss battle start, and run restart.
@@ -278,8 +278,8 @@ Phase 48 QA Helper + Full Prototype QA is complete. GitHub backup is configured 
 - Added first-pass balance constants in `src/game/balance.ts`.
 - Centralized shared balance values for player HP, starting gold, gold per monster, shop interval, boss milestone, shop upgrade amounts, deck safety limits, timer limits, and shop item costs.
 - Tuned player max HP from 30 to 32.
-- Tuned monster defeat gold from +5 to +6.
-- Tuned Dungeon timer limits to Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 22 seconds.
+- Tuned monster defeat gold from +5 to +6 in Phase 25, then from +6 to +7 in Phase 49.
+- Tuned Dungeon timer limits to Word Choice 14 seconds, Word Match 20 seconds, and Word Scramble 24 seconds.
 - Tuned Gatekeeper boss stats from 80 HP / 9 attack to 76 HP / 8 attack.
 - Kept card baseAttack values unchanged for this first balance pass.
 - Aligned sample monster `goldReward` data with the shared gold-per-monster balance value.
@@ -608,6 +608,15 @@ Phase 48 QA Helper + Full Prototype QA is complete. GitHub backup is configured 
 - Performed code-path QA across fresh progress, learning screens, Dungeon encounters, Shop, Events, Elites, Boss availability/start, Run Failed, Abandon Run, reset boundaries, and mobile battle layout.
 - No gameplay rules, balance values, timer values, save schema, deck unlock rules, shop effects, event effects, boss rules, or Word Energy rules were changed.
 - Verified the project with `npm run build` after Phase 48.
+- Applied Phase 49 First Balance Tuning.
+- Reviewed current balance values for player HP, starting gold, monster rewards, shop interval, boss requirement, Dungeon timers, shop costs, monster stats, elite stats, boss stats, event rewards, and Word Energy thresholds.
+- Tuned gold per monster defeated from `6` to `7` so the first shop is easier to use without making upgrades automatic.
+- Tuned Add Shield shop cost from `40` to `35` so defensive upgrades are a viable first-shop choice alongside Upgrade Attack.
+- Tuned Word Scramble Dungeon timer from `22` seconds to `24` seconds to give mobile typing slightly more room.
+- Moved Shop reroll cost into `src/game/balance.ts` as `SHOP_REROLL_COST = 5`; the numeric value did not change.
+- Left player max HP, starting gold, shop interval, boss requirement, monster stats, elite stats, boss stats, event rewards, encounter weights, mastery bonuses, element effects, and Word Energy thresholds unchanged.
+- Confirmed QA Helper remains development-only by checking production `dist` output for QA helper strings after build.
+- Verified the project with `npm run build` after Phase 49.
 
 ## In Progress
 
@@ -615,7 +624,7 @@ Phase 48 QA Helper + Full Prototype QA is complete. GitHub backup is configured 
 
 ## Next Task
 
-Phase 48 is complete. Continue with the next explicitly requested phase or feature.
+Phase 49 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

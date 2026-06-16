@@ -6,6 +6,7 @@ import {
   ADD_SHIELD_AMOUNT,
   MIN_DISTINCT_VISIBLE_WORDS,
   MIN_RUN_DECK_SIZE,
+  SHOP_REROLL_COST,
   UPGRADE_ATTACK_AMOUNT,
 } from "../game/balance";
 import type {
@@ -40,7 +41,6 @@ type PurchaseFeedback = {
 
 const offerCount = 4;
 const targetOfferCount = 4;
-const rerollCost = 5;
 
 function formatElementName(element: ElementType) {
   return element.charAt(0).toUpperCase() + element.slice(1);
@@ -321,10 +321,10 @@ export function Shop({
   }
 
   function rerollOffers() {
-    if (!onSpendRunGold(rerollCost)) {
+    if (!onSpendRunGold(SHOP_REROLL_COST)) {
       setPurchaseFeedback({
         tone: "danger",
-        message: `Reroll costs ${rerollCost} gold.`,
+        message: `Reroll costs ${SHOP_REROLL_COST} gold.`,
       });
       return;
     }
@@ -333,7 +333,7 @@ export function Shop({
     closeOfferModal();
     setPurchaseFeedback({
       tone: "success",
-      message: `Shop offers rerolled for ${rerollCost} current-run gold.`,
+      message: `Shop offers rerolled for ${SHOP_REROLL_COST} current-run gold.`,
     });
   }
 
@@ -379,9 +379,9 @@ export function Shop({
             type="button"
             onClick={rerollOffers}
             variant="secondary"
-            disabled={runGold < rerollCost}
+            disabled={runGold < SHOP_REROLL_COST}
           >
-            Reroll Offers ({rerollCost} gold)
+            Reroll Offers ({SHOP_REROLL_COST} gold)
           </Button>
           <Button
             type="button"
