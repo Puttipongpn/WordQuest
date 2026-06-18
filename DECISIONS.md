@@ -350,11 +350,11 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: The first Word Scramble implementation uses typed answer input instead of click-to-order letters.
 - Reason: Typed input is simpler to implement, easier to maintain, and enough to validate the mini-game.
-- Status: Accepted
+- Status: Superseded by `Word Scramble Uses Tile-Based Letter Input`
 
 ### 2026-06-04: Scramble Uses Current-Run Deck and Card Trigger System
 
-- Decision: Word Scramble chooses cards from the current-run deck, and correct typed answers trigger the selected scrambled word card.
+- Decision: Word Scramble chooses cards from the current-run deck, and correct answers trigger the selected scrambled word card.
 - Reason: Scramble must honor temporary attack and shield upgrades while keeping cards as the source of combat actions.
 - Status: Accepted
 
@@ -1076,6 +1076,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.
 - Reason: Vercel can host the current frontend-only prototype without backend services, database setup, or Vite base-path changes.
+- Status: Accepted
+
+### 2026-06-17: Word Scramble Uses Tile-Based Letter Input
+
+- Decision: Word Scramble uses tile-based letter input for Version 1 instead of primary manual typed input.
+- Reason: Letter tiles make the mini-game more playable, game-like, mobile-friendly, and safer for duplicate-letter words than a plain text box.
 - Status: Accepted
 
 ### 2026-06-04: No Multiplayer, Leaderboards, Accounts, or Payments

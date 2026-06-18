@@ -32,6 +32,8 @@ Current presentation rules:
 - Result feedback should use a compact centered overlay with a dimmed quiz backdrop instead of an inline panel that pushes answer controls down.
 - In Word Match, compact card stats should appear only on the English card side because that side is the card that can trigger; Thai meaning options should not show stats.
 - Word Match should use a compact selected-pair footer with Check Pair so the action remains close to the choices without wasting vertical space.
+- Word Scramble option cards should keep scrambled text readable; card stat chips should wrap below the scrambled letters instead of covering or truncating them.
+- Word Scramble uses tile-based letter input for Version 1: players choose a scrambled card, tap letter tiles to build the answer, and can tap answer tiles to return them.
 - Mobile battle layout should prioritize playable quiz controls first; secondary battle log, learning, and trigger details can collapse or move below the arena.
 - On mobile and narrow screens, Dungeon battle can scroll vertically when needed; quiz controls, timer, player/enemy status, result actions, Pause, and Abandon controls must remain reachable rather than being clipped by fixed viewport assumptions.
 - Mobile Dungeon uses a compact top battle status and timer/control strip near the quiz, while secondary panels move below the active play area.
@@ -449,7 +451,11 @@ Current battle rules:
 - Word Match shows 3 English words and 3 Thai meanings.
 - Word Match asks the player to select one English word and one Thai meaning.
 - Word Scramble shows 3 scrambled English word options from the current-run deck.
-- Word Scramble asks the player to choose one scrambled card and type the original English word.
+- Word Scramble asks the player to choose one scrambled card and build the original English word with letter tiles.
+- Word Scramble letter tiles are generated from the selected word in scrambled order.
+- Word Scramble duplicate letters use unique tile ids.
+- Word Scramble allows tapped answer tiles to return to the available tile pool.
+- Word Scramble disables Check Word until the selected answer length matches the target word length.
 - Correct answers trigger the selected word card.
 - Correct Word Match pairs trigger the selected English word card.
 - Correct Word Scramble answers trigger the selected scrambled word card.
@@ -592,7 +598,7 @@ Battle mini-games:
 - Word Choice has a 14-second Dungeon battle timer.
 - Word Match: implemented.
 - Word Match has a 20-second Dungeon battle timer.
-- Word Scramble: implemented with typed input, 3 scrambled current-run card options, and Card Trigger System effects.
+- Word Scramble: implemented with tile-based letter input, 3 scrambled current-run card options, and Card Trigger System effects.
 - Word Scramble has a 24-second Dungeon battle timer.
 
 Battle mini-game timers currently use simple static values first. Difficulty-based timer scaling is deferred.

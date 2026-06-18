@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 51 Visual Identity + Game Feel Polish complete.
+Current phase: Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -567,7 +567,9 @@ Current Dungeon implementation:
 - Word Match shows 3 English words and 3 Thai meanings.
 - Word Match requires selecting one English word and one Thai meaning.
 - Word Scramble shows 3 scrambled English word options from the current-run deck.
-- Word Scramble asks the player to choose one scrambled card and type the original English word.
+- Word Scramble asks the player to choose one scrambled card and build the original English word with letter tiles.
+- Word Scramble letter tiles use unique tile ids, so duplicate letters can be selected, returned, and checked safely.
+- Word Scramble disables Check Word until the selected answer length matches the target word length.
 - Correct Word Choice answers trigger the prompt word card.
 - Correct Word Match pairs trigger the selected English word card.
 - Correct Word Scramble answers trigger the selected scrambled word card.
@@ -824,7 +826,7 @@ Version 1 should not include:
 - Shield effects are temporary current-run card effects.
 - Shield and shield effects are not persisted to LocalStorage.
 - Word Scramble is the third battle mini-game.
-- Word Scramble uses typed input first.
+- Word Scramble now uses tile-based letter input for Version 1.
 - Word Scramble uses the current-run deck and the Card Trigger System.
 - Element shop items are active.
 - A card may have one element effect for now.
@@ -915,7 +917,7 @@ Current battle foundation rules:
 - Run progression tracks monsters defeated, current floor, and next shop checkpoint.
 - The current foundation randomly selects Word Choice, Word Match, or Word Scramble for each battle question.
 - Correct answers trigger the selected word card.
-- Word Scramble correct typed answers trigger the selected scrambled word card.
+- Word Scramble correct tile-built answers trigger the selected scrambled word card.
 - Triggered word cards deal damage equal to `baseAttack` in the current foundation.
 - Triggered word cards with shield effects add shield while still dealing `baseAttack` damage.
 - Incorrect answers do not trigger card effects.
@@ -1211,6 +1213,32 @@ Verification notes:
 - Browser visual automation was unavailable in this session, so visual verification used code review plus production preview HTTP and asset checks.
 
 Phase 51 is complete.
+
+## Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix Summary
+
+Phase 51.1 fixed Word Scramble usability without changing combat rules or other systems.
+
+Completed:
+
+- Updated Word Scramble selected-card option layout so scrambled letters remain readable.
+- Moved compact card stat chips to a wrapping row below scrambled text so they no longer cover or truncate the word.
+- Replaced the prominent typed input with tile-based letter input.
+- Added available letter tiles in scrambled order and an answer area built by tapping tiles.
+- Added answer-tile return behavior and Clear Answer.
+- Used unique tile ids for duplicate letters.
+- Disabled Check Word until a scrambled card is selected and the built answer length matches the target word.
+
+Preserved:
+
+- Correct Word Scramble answers still trigger the selected current-run card.
+- Wrong answers and timeouts still do not trigger cards and still cause enemy attacks.
+- Damage, shield, element effects, mastery bonuses, Word Energy, timers, events, shop, boss, progression, Training, and save rules were unchanged.
+
+Verification:
+
+- `npm run build` passed after the hotfix.
+
+Phase 51.1 is complete.
 
 ## Next Recommended Task
 

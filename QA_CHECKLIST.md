@@ -28,7 +28,9 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Start Battle generates a timed question.
 - Word Choice is playable.
 - Word Match follows the anti-hint rule: stats appear only on English card options.
-- Word Scramble is playable with typed input.
+- Word Scramble is playable with tile-based letter input.
+- Word Scramble duplicate letters can be selected and returned safely.
+- Word Scramble Check Word stays disabled until the selected answer length is complete.
 - Timeout is treated as a wrong answer.
 - Correct answers trigger card effects.
 - Wrong answers and timeouts do not trigger card effects.

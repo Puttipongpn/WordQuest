@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 51 Visual Identity + Game Feel Polish is complete. GitHub backup is configured on `origin/main`.
+Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -145,7 +145,7 @@ Phase 51 Visual Identity + Game Feel Polish is complete. GitHub backup is config
 - Verified the project with `npm run build` after Phase 12.
 - Added Word Scramble as the third Dungeon battle mini-game.
 - Word Scramble randomly chooses 3 cards from the current-run deck and shows scrambled English word options.
-- Word Scramble uses typed input for the first simple implementation.
+- Word Scramble originally used typed input for the first simple implementation; Phase 51.1 superseded this with tile-based letter input.
 - Correct Word Scramble answers trigger the selected current-run word card.
 - Word Scramble uses current-run `baseAttack` and shield effects, including shop upgrades.
 - Wrong Word Scramble answers do not trigger card effects and cause monster attacks with shield absorption.
@@ -401,7 +401,7 @@ Phase 51 Visual Identity + Game Feel Polish is complete. GitHub backup is config
 - Tightened the quiz shell so the timer, question, and answer controls receive more vertical room.
 - Refactored Word Choice toward a compact 2x2 answer grid with shorter prompt and answer panels.
 - Refactored Word Match into a compact two-column layout with reduced option spacing.
-- Refactored Word Scramble so scrambled choices, typed answer, and submit controls remain visible together; detailed answer summary appears only after answering.
+- Refactored Word Scramble so scrambled choices, answer controls, and submit controls remain visible together; detailed answer summary appears only after answering.
 - Collapsed Battle Log, Card Trigger, and Learning Info into compact accordion sections.
 - Kept required action buttons, such as Next Mini-Game, Spawn Next Monster, Start Boss Battle, Go To Shop, and Restart Run, outside collapsed accordions.
 - Preserved combat rules, timers, elements, shop, progression, mastery, saves, and all gameplay systems.
@@ -593,7 +593,7 @@ Phase 51 Visual Identity + Game Feel Polish is complete. GitHub backup is config
 - Hid the presentation-only battle lane on narrow screens so it does not push quiz controls down.
 - Improved Word Choice, Word Match, and Word Scramble option layouts so stat chips wrap below text on mobile instead of causing horizontal overflow.
 - Made the Word Match selected-pair footer sticky inside the quiz area so Check Pair stays reachable.
-- Improved Word Scramble long-word wrapping and kept the typed answer controls stacked on mobile.
+- Improved Word Scramble long-word wrapping and kept the answer controls stacked on mobile.
 - Improved result overlays, Pause, Abandon Run confirmation, Run Complete/Failed summary, and Shop purchase modal with mobile-safe max heights and scrollable content where needed.
 - Preserved combat math, timers, mastery, deck unlocks, save rules, shop effects, event effects, boss rules, statistics, Word Energy rules, and current-run deck behavior.
 - Verified the project with `npm run build` after Phase 47 Mobile Battle Polish.
@@ -642,7 +642,18 @@ Phase 51 Visual Identity + Game Feel Polish is complete. GitHub backup is config
 - No gameplay systems, combat math, timer values, mastery rules, deck unlock rules, save schema, shop/event/boss effects, final art assets, sound, animation libraries, external UI libraries, backend, auth, database, API, React Router, or Oxford 3000 import were added.
 - Verified the project with `npm run build`; production preview served HTML, JS, and CSS with HTTP 200.
 - Confirmed production `dist` output does not include QA Helper UI strings after Phase 51.
-- Browser visual automation was unavailable in this session, so verification used production build, preview HTTP checks, asset checks, and code-path review.
+- Applied Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix.
+- Fixed Word Scramble selected-card layout so scrambled text remains readable and stat chips wrap below the scrambled letters instead of covering or truncating them.
+- Replaced the prominent Word Scramble typed answer input with tile-based letter input.
+- Added unique tile ids so duplicate letters can be selected and returned safely.
+- Tapping available letter tiles builds the answer, and tapping answer tiles returns them to the tile pool.
+- Added Clear Answer for Word Scramble tile input.
+- Disabled Check Word until a scrambled card is selected and the built answer length matches the target word length.
+- Preserved Word Scramble combat behavior: correct answers still trigger the selected card, and wrong answers / timeouts still cause enemy attacks.
+- Preserved Word Choice, Word Match, Training, Shop, Events, Boss, save rules, combat math, timers, elements, mastery, Word Energy, and progression rules.
+- Verified the project with `npm run build` after Phase 51.1.
+- Confirmed production `dist` output does not include QA Helper UI strings after Phase 51.1.
+- Browser visual automation was unavailable in this session, so Phase 51.1 verification used production build, diff checks, production bundle string checks, and code-path review.
 
 ## In Progress
 
@@ -650,7 +661,7 @@ Phase 51 Visual Identity + Game Feel Polish is complete. GitHub backup is config
 
 ## Next Task
 
-Phase 51 is complete. Continue with the next explicitly requested phase or feature.
+Phase 51.1 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -709,7 +720,7 @@ The following documents are required and must be updated after every completed t
 - Each battle question randomly selects Word Choice, Word Match, or Word Scramble
 - Word Match uses 3 English words and 3 Thai meanings
 - Correct Word Match pairs trigger the selected English word card
-- Word Scramble uses 3 scrambled current-run deck cards and typed input
+- Word Scramble uses 3 scrambled current-run deck cards and tile-based letter input
 - Correct Word Scramble answers trigger the selected scrambled word card
 - Word Scramble uses current-run card attack and shield effects through the Card Trigger System
 - Phase 6 still does not implement shop logic, boss logic, run rewards, LocalStorage, or permanent mastery updates from battle

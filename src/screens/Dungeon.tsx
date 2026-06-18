@@ -3855,6 +3855,49 @@ type WordScrambleBattleProps = {
   wordMastery: WordMasteryByCardId;
 };
 
+type ScrambleLetterTile = {
+  id: string;
+  letter: string;
+  originalIndex: number;
+};
+
+function createScrambleLetterTiles(
+  card: WordCard,
+  scrambledWord: string,
+): ScrambleLetterTile[] {
+  const sourceTiles = card.word
+    .trim()
+    .toLowerCase()
+    .split("")
+    .map((letter, index) => ({
+      id: `${card.id}-tile-${index}-${letter}`,
+      letter,
+      originalIndex: index,
+    }));
+  const usedSourceTileIds = new Set<string>();
+  const orderedTiles: ScrambleLetterTile[] = [];
+
+  for (const scrambledLetter of scrambledWord.toLowerCase().split("")) {
+    const matchingTile = sourceTiles.find(
+      (tile) =>
+        tile.letter === scrambledLetter && !usedSourceTileIds.has(tile.id),
+    );
+
+    if (!matchingTile) {
+      continue;
+    }
+
+    usedSourceTileIds.add(matchingTile.id);
+    orderedTiles.push(matchingTile);
+  }
+
+  const remainingTiles = sourceTiles.filter(
+    (tile) => !usedSourceTileIds.has(tile.id),
+  );
+
+  return [...orderedTiles, ...remainingTiles];
+}
+
 function WordScrambleBattle({
   actions,
   answer,
@@ -3873,11 +3916,76 @@ function WordScrambleBattle({
   const selectedOption = question.options.find(
     (option) => option.card.id === selectedCardId,
   );
+  const [availableTiles, setAvailableTiles] = useState<ScrambleLetterTile[]>([]);
+  const [answerTiles, setAnswerTiles] = useState<ScrambleLetterTile[]>([]);
   const isCorrect =
     isAnswered &&
     selectedOption !== undefined &&
     answer.trim().toLowerCase() === selectedOption.card.word.toLowerCase();
   const isWrong = isAnswered && selectedOption !== undefined && !isCorrect;
+  const selectedWordLength = selectedOption?.card.word.trim().length ?? 0;
+  const canCheckWord =
+    !isAnswered &&
+    selectedOption !== undefined &&
+    answerTiles.length === selectedWordLength;
+
+  useEffect(() => {
+    if (!selectedOption) {
+      setAvailableTiles([]);
+      setAnswerTiles([]);
+      onAnswerChange("");
+      return;
+    }
+
+    setAvailableTiles(
+      createScrambleLetterTiles(selectedOption.card, selectedOption.scrambledWord),
+    );
+    setAnswerTiles([]);
+    onAnswerChange("");
+  }, [onAnswerChange, selectedOption]);
+
+  function updateAnswerTiles(nextAnswerTiles: ScrambleLetterTile[]) {
+    setAnswerTiles(nextAnswerTiles);
+    onAnswerChange(nextAnswerTiles.map((tile) => tile.letter).join(""));
+  }
+
+  function selectScrambledOption(cardId: string) {
+    onSelectCard(cardId);
+    onAnswerChange("");
+  }
+
+  function moveTileToAnswer(tile: ScrambleLetterTile) {
+    if (isAnswered) {
+      return;
+    }
+
+    setAvailableTiles((currentTiles) =>
+      currentTiles.filter((currentTile) => currentTile.id !== tile.id),
+    );
+    updateAnswerTiles([...answerTiles, tile]);
+  }
+
+  function returnTileToBank(tile: ScrambleLetterTile) {
+    if (isAnswered) {
+      return;
+    }
+
+    updateAnswerTiles(
+      answerTiles.filter((currentTile) => currentTile.id !== tile.id),
+    );
+    setAvailableTiles((currentTiles) => [...currentTiles, tile]);
+  }
+
+  function clearAnswerTiles() {
+    if (!selectedOption || isAnswered) {
+      return;
+    }
+
+    setAvailableTiles(
+      createScrambleLetterTiles(selectedOption.card, selectedOption.scrambledWord),
+    );
+    updateAnswerTiles([]);
+  }
 
   return (
     <div className="relative h-full">
@@ -3906,7 +4014,7 @@ function WordScrambleBattle({
               key={option.card.id}
               type="button"
               disabled={isAnswered}
-              onClick={() => onSelectCard(option.card.id)}
+              onClick={() => selectScrambledOption(option.card.id)}
               className={`rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 showCorrect
                   ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
@@ -3919,16 +4027,11 @@ function WordScrambleBattle({
             >
               <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <div className="min-w-0">
-                  <p className="break-all font-mono text-lg font-bold tracking-wide text-slate-950 sm:truncate sm:text-xl">
+                  <p className="break-words font-mono text-lg font-bold tracking-wide text-slate-950 sm:text-xl">
                     {option.scrambledWord}
                   </p>
                 </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  <CardStatChips
-                    card={option.card}
-                    wordFatigue={wordFatigue}
-                    wordMastery={wordMastery}
-                  />
+                <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
                   {!isAnswered && isSelected && (
                     <Badge tone="sky">Selected</Badge>
                   )}
@@ -3936,43 +4039,100 @@ function WordScrambleBattle({
                   {showWrong && <Badge tone="red">Wrong</Badge>}
                 </div>
               </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <CardStatChips
+                  card={option.card}
+                  wordFatigue={wordFatigue}
+                  wordMastery={wordMastery}
+                />
+              </div>
             </button>
           );
         })}
       </div>
 
       <div className="mt-2 rounded-2xl border-2 border-amber-900/10 bg-white p-2 shadow-inner">
-        <div className="flex flex-col gap-2 md:flex-row md:items-end">
-          <div className="flex-1">
-            <label
-              htmlFor="word-scramble-answer"
-              className="text-xs font-semibold uppercase tracking-wide text-slate-500"
-            >
-              Typed answer
-            </label>
-            <input
-              id="word-scramble-answer"
-              type="text"
-              value={answer}
-              disabled={isAnswered || selectedOption === undefined}
-              onChange={(event) => onAnswerChange(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  onSubmit();
-                }
-              }}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-base font-semibold text-slate-950 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100 disabled:text-slate-500"
-              placeholder={
-                selectedOption
-                  ? "Type the original word"
-                  : "Choose a scrambled word first"
-              }
-            />
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-black uppercase tracking-wide text-amber-800/75">
+                Build your answer
+              </p>
+              {selectedOption && (
+                <Badge tone={canCheckWord ? "emerald" : "amber"}>
+                  {answerTiles.length} / {selectedWordLength}
+                </Badge>
+              )}
+            </div>
+            <div className="mt-2 min-h-14 rounded-xl border-2 border-dashed border-amber-300 bg-amber-50/80 p-2">
+              {answerTiles.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {answerTiles.map((tile) => (
+                    <button
+                      key={tile.id}
+                      type="button"
+                      disabled={isAnswered}
+                      onClick={() => returnTileToBank(tile)}
+                      className="grid size-11 place-items-center rounded-lg border-2 border-emerald-500 bg-emerald-100 font-mono text-xl font-black uppercase text-emerald-950 shadow-[0_3px_0_rgba(6,95,70,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:cursor-default disabled:hover:translate-y-0"
+                    >
+                      {tile.letter}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="px-2 py-3 text-sm font-bold text-amber-900/65">
+                  {selectedOption
+                    ? "Tap letters below to build the word."
+                    : "Choose a scrambled word first."}
+                </p>
+              )}
+            </div>
+
+            <div className="mt-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-xs font-black uppercase tracking-wide text-amber-800/75">
+                  Letter Tiles
+                </p>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="px-3 py-1 text-xs"
+                  disabled={isAnswered || answerTiles.length === 0}
+                  onClick={clearAnswerTiles}
+                >
+                  Clear Answer
+                </Button>
+              </div>
+              <div className="mt-2 min-h-14 rounded-xl border border-amber-900/10 bg-slate-50 p-2">
+                {availableTiles.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {availableTiles.map((tile) => (
+                      <button
+                        key={tile.id}
+                        type="button"
+                        disabled={isAnswered || !selectedOption}
+                        onClick={() => moveTileToAnswer(tile)}
+                        className="grid size-11 place-items-center rounded-lg border-2 border-amber-300 bg-gradient-to-b from-amber-100 to-yellow-200 font-mono text-xl font-black uppercase text-amber-950 shadow-[0_3px_0_rgba(120,53,15,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:cursor-default disabled:opacity-60 disabled:hover:translate-y-0"
+                      >
+                        {tile.letter}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="px-2 py-3 text-sm font-bold text-slate-500">
+                    {selectedOption
+                      ? "All letters are in your answer."
+                      : "Letter tiles appear after choosing a card."}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
           <Button
             type="button"
-            disabled={isAnswered || selectedOption === undefined || answer.trim() === ""}
+            disabled={!canCheckWord}
             onClick={onSubmit}
+            className="w-full lg:w-auto"
           >
             Check Word
           </Button>
