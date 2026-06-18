@@ -7,6 +7,8 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Open the app on Home.
 - Confirm Starter Deck is unlocked by default.
 - Confirm locked decks show requirement text.
+- Confirm Daily Life Deck appears after Nature Deck in the deck progression path.
+- Confirm Emotion Deck appears after Daily Life Deck in the deck progression path.
 - Confirm missing LocalStorage data falls back to default progress.
 - Confirm invalid LocalStorage data does not crash the app and falls back safely.
 
@@ -20,6 +22,10 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Correct Training answers increase word mastery by 1 up to 5.
 - Wrong Training answers do not decrease mastery.
 - Mastery persists after refresh.
+- Daily Life Deck works in Deck Review when unlocked and selected.
+- Emotion Deck works in Deck Review when unlocked and selected.
+- Daily Life Deck works in Training when unlocked and selected.
+- Emotion Deck works in Training when unlocked and selected.
 
 ## Dungeon Battle
 
@@ -38,6 +44,9 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Element effects display and apply their first-pass effects.
 - Mastery bonus appears when a mastered word triggers.
 - Word Energy changes card selection weight without saving run state.
+- Daily Life Deck works in Dungeon when unlocked and selected.
+- Emotion Deck works in Dungeon when unlocked and selected.
+- Word Scramble tile input works with Daily Life Deck and Emotion Deck words.
 
 ## Shop
 
@@ -66,6 +75,9 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Run Complete shows selected deck, boss result, reward copy, and summary stats.
 - Run Complete marks the selected deck completed.
 - Run Complete unlocks the next deck when applicable.
+- Completing Nature Deck unlocks Daily Life Deck.
+- Completing Daily Life Deck unlocks Emotion Deck.
+- Completing Emotion Deck shows More decks coming soon.
 - Run Failed shows selected deck and summary stats.
 - Permanent best-run statistics update only after Run Complete or Run Failed.
 - Run restart resets HP, shield, gold, encounter state, boss state, run progress, current-run deck, shop upgrades, and Word Energy.
@@ -79,6 +91,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Abandon Run clears only temporary run state.
 - Reset Progress requires confirmation.
 - Reset Progress clears word mastery, unlocked decks back to default, completed decks, and permanent statistics.
+- Reset Progress returns deck access to Starter Deck only.
 
 ## Responsive Smoke Test
 
@@ -102,7 +115,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 ## Known Deferred Areas
 
 - Real Oxford 3000 import.
-- More vocabulary decks beyond current manual samples.
+- Real Oxford 3000 vocabulary import and broader production content.
 - Final art assets.
 - Sound effects.
 - Advanced animations.

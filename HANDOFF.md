@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix complete.
+Current phase: Phase 52 Content Expansion / More Manual Decks complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -511,7 +511,7 @@ Current LocalStorage save implementation:
 - Save data includes `version: 1`.
 - Saved permanent progress includes word mastery, unlocked deck ids, completed deck ids, and best run statistics.
 - Permanent statistics include total correct answers from ended runs, total wrong answers from ended runs, best monsters defeated, best accuracy, best damage dealt, completed runs, and failed runs.
-- `completedDeckIds` stores completed deck ids for Starter Deck, Food Deck, Travel Deck, and Nature Deck after boss defeat.
+- `completedDeckIds` stores completed deck ids for Starter Deck, Food Deck, Travel Deck, Nature Deck, Daily Life Deck, and Emotion Deck after boss defeat.
 - `unlockedDeckIds` starts with Starter Deck and unlocks the next manual deck after each completed deck in the current chain.
 - Existing saves are normalized from `completedDeckIds` so completed Starter unlocks Food, completed Food unlocks Travel, and completed Travel unlocks Nature without changing the save data shape.
 - Missing, invalid, or incompatible saved data falls back to default progress.
@@ -633,6 +633,8 @@ Current Dungeon implementation:
 - Phase 30 improved combat feedback for damage dealt, incoming hits, shield gained, shield absorbed, timeout state, card triggers, and event results.
 - Phase 31 added Travel Deck and Nature Deck as manual sample decks with 20 cards each.
 - Phase 31 expanded the permanent unlock chain to Starter Deck → Food Deck → Travel Deck → Nature Deck.
+- Phase 52 added Daily Life Deck and Emotion Deck as manual sample decks with 20 cards each.
+- Phase 52 expanded the permanent unlock chain to Starter Deck → Food Deck → Travel Deck → Nature Deck → Daily Life Deck → Emotion Deck.
 - Phase 31 added `src/game/deckProgression.ts` for deck progression helpers without changing the LocalStorage save shape.
 - Phase 31 improved Home deck progression display with locked, unlocked, completed, requirement text, and next unlock target.
 - Phase 32 added Encounter Intro before Monster, Elite, and Boss combat.
@@ -942,7 +944,9 @@ Current battle foundation rules:
 - Completing Starter Deck unlocks Food Deck.
 - Completing Food Deck unlocks Travel Deck.
 - Completing Travel Deck unlocks Nature Deck.
-- Completing Nature Deck shows more-decks-coming-soon reward feedback.
+- Completing Nature Deck unlocks Daily Life Deck.
+- Completing Daily Life Deck unlocks Emotion Deck.
+- Completing Emotion Deck shows more-decks-coming-soon reward feedback.
 - Completed deck ids persist in LocalStorage and are cleared only by Reset Progress.
 - Real Oxford 3000 progression beyond the manual sample decks and run rewards beyond deck completion are deferred.
 - Phase 18 added QA cleanup for stale shop selections, purchase guards, duplicate id safety, clearer shop warnings, Boss Available copy, and Run Complete actions.
@@ -961,10 +965,16 @@ Current deck model:
 - `Travel Deck` contains 20 manual travel-related word cards.
 - The fourth sample deck is `Nature Deck`.
 - `Nature Deck` contains 20 manual nature-related word cards.
+- The fifth sample deck is `Daily Life Deck`.
+- `Daily Life Deck` contains 20 manual daily action and object word cards.
+- The sixth sample deck is `Emotion Deck`.
+- `Emotion Deck` contains 20 manual feeling, mood, and expression word cards.
 - Starter Deck is unlocked by default.
 - Food Deck starts locked and unlocks after Starter Deck completion.
 - Travel Deck starts locked and unlocks after Food Deck completion.
 - Nature Deck starts locked and unlocks after Travel Deck completion.
+- Daily Life Deck starts locked and unlocks after Nature Deck completion.
+- Emotion Deck starts locked and unlocks after Daily Life Deck completion.
 - App-level selected deck state controls Deck Review, Training, Dungeon current-run deck creation, and Run Complete deck completion.
 - Changing decks starts a fresh temporary run without clearing word mastery or completed deck ids.
 - Seed vocabulary data lives in `src/data`.
@@ -1239,6 +1249,32 @@ Verification:
 - `npm run build` passed after the hotfix.
 
 Phase 51.1 is complete.
+
+## Phase 52 Content Expansion / More Manual Decks Summary
+
+Phase 52 expanded playable vocabulary content without adding gameplay systems or changing combat/save rules.
+
+Completed:
+
+- Added `Daily Life Deck` in `src/data/dailyLifeDeck.ts` with 20 manual everyday vocabulary cards.
+- Added `Emotion Deck` in `src/data/emotionDeck.ts` with 20 manual feelings and expression vocabulary cards.
+- Exported both decks through `availableDecks` after Nature Deck.
+- Extended the manual unlock chain to Starter Deck → Food Deck → Travel Deck → Nature Deck → Daily Life Deck → Emotion Deck.
+- Updated unlock normalization through existing `deckProgression.ts` rules without changing the LocalStorage save version.
+- Updated Home journey path copy and project documentation for the six-deck chain.
+- Updated `QA_CHECKLIST.md` with new deck progression and screen integration checks.
+
+Preserved:
+
+- No Oxford 3000 import was added.
+- No backend, database, auth, API, React Router, achievements, sound, final art, animation libraries, or external UI libraries were added.
+- Combat math, timers, mastery rules, shop/event/boss effects, Word Energy rules, save schema, and UI architecture were unchanged.
+
+Verification:
+
+- `npm run build` passed after Phase 52.
+
+Phase 52 is complete.
 
 ## Next Recommended Task
 

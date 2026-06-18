@@ -564,7 +564,7 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ### 2026-06-04: Multiple Decks Supported
 
-- Decision: Support multiple manual sample decks through `availableDecks`, currently Starter Deck, Food Deck, Travel Deck, and Nature Deck.
+- Decision: Support multiple manual sample decks through `availableDecks`, currently Starter Deck, Food Deck, Travel Deck, Nature Deck, Daily Life Deck, and Emotion Deck.
 - Reason: The app needs to prove the multi-deck flow before importing Oxford 3000 or building advanced unlock progression.
 - Status: Accepted
 
@@ -614,6 +614,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 - Decision: The manual deck unlock chain is Starter Deck → Food Deck → Travel Deck → Nature Deck, with Nature completion showing more-decks-coming-soon copy.
 - Reason: The prototype needs longer-term deck progression content before Oxford 3000 import or advanced progression systems.
+- Status: Superseded by Phase 52
+
+### 2026-06-18: Expanded Manual Deck Progression Through Emotion Deck
+
+- Decision: The manual deck unlock chain is Starter Deck → Food Deck → Travel Deck → Nature Deck → Daily Life Deck → Emotion Deck, with Emotion completion showing more-decks-coming-soon copy.
+- Reason: Phase 52 expands playable vocabulary content while keeping Oxford 3000 import, new gameplay systems, save redesign, and final art deferred.
 - Status: Accepted
 
 ### 2026-06-11: Deck Progression Helpers

@@ -4,6 +4,8 @@ export const starterDeckId = "starter-deck";
 export const foodDeckId = "food-deck";
 export const travelDeckId = "travel-deck";
 export const natureDeckId = "nature-deck";
+export const dailyLifeDeckId = "daily-life-deck";
+export const emotionDeckId = "emotion-deck";
 
 export const defaultUnlockedDeckIds = [starterDeckId];
 
@@ -11,6 +13,8 @@ export const deckUnlockRules = [
   { completedDeckId: starterDeckId, unlockedDeckId: foodDeckId },
   { completedDeckId: foodDeckId, unlockedDeckId: travelDeckId },
   { completedDeckId: travelDeckId, unlockedDeckId: natureDeckId },
+  { completedDeckId: natureDeckId, unlockedDeckId: dailyLifeDeckId },
+  { completedDeckId: dailyLifeDeckId, unlockedDeckId: emotionDeckId },
 ];
 
 export function getNextUnlockedDeckId(deckId: string) {

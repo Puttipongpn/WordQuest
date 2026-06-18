@@ -313,7 +313,7 @@ export function Home({
               fresh run. Locked decks appear here but cannot be selected yet.
             </p>
             <p className="mt-3 text-lg font-black text-amber-950">
-              Starter Deck → Food Deck → Travel Deck → Nature Deck
+              Starter Deck → Food Deck → Travel Deck → Nature Deck → Daily Life Deck → Emotion Deck
             </p>
             <p className="mt-3 rounded-lg border border-amber-900/10 bg-white/70 px-3 py-2 text-sm font-black text-amber-950">
               Next unlock target: {nextUnlockTarget}

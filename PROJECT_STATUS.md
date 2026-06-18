@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix is complete. GitHub backup is configured on `origin/main`.
+Phase 52 Content Expansion / More Manual Decks is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -654,6 +654,16 @@ Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix is complete. G
 - Verified the project with `npm run build` after Phase 51.1.
 - Confirmed production `dist` output does not include QA Helper UI strings after Phase 51.1.
 - Browser visual automation was unavailable in this session, so Phase 51.1 verification used production build, diff checks, production bundle string checks, and code-path review.
+- Applied Phase 52 Content Expansion / More Manual Decks.
+- Added `Daily Life Deck` with 20 manual everyday-action vocabulary cards in `src/data/dailyLifeDeck.ts`.
+- Added `Emotion Deck` with 20 manual feeling and expression vocabulary cards in `src/data/emotionDeck.ts`.
+- Exported both new decks through `availableDecks` after Nature Deck.
+- Extended manual deck order to Starter Deck → Food Deck → Travel Deck → Nature Deck → Daily Life Deck → Emotion Deck.
+- Extended deck unlock rules so completing Nature unlocks Daily Life, completing Daily Life unlocks Emotion, and completing Emotion shows more-decks-coming-soon copy.
+- Preserved LocalStorage save version `1` and the existing permanent-progress-only save shape.
+- Preserved combat math, timers, mastery rules, shop/event/boss effects, Word Energy rules, UI architecture, backend scope, and final-art deferral.
+- Updated `QA_CHECKLIST.md` with Daily Life / Emotion unlock, completion, screen integration, and LocalStorage safety checks.
+- Verified the project with `npm run build` after Phase 52.
 
 ## In Progress
 
@@ -661,7 +671,7 @@ Phase 51.1 Word Scramble Tile Input + Selected Card Layout Hotfix is complete. G
 
 ## Next Task
 
-Phase 51.1 is complete. Continue with the next explicitly requested phase or feature.
+Phase 52 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -763,7 +773,7 @@ The following documents are required and must be updated after every completed t
 - Boss defeat creates a Run Complete state
 - Boss defeat marks the current deck completed
 - Completed deck ids are permanent progress saved in LocalStorage
-- Manual deck progression currently extends through Nature Deck
+- Manual deck progression currently extends through Emotion Deck
 - Run rewards beyond the first deck completion marker are deferred
 - Phase 19 uses placeholder game-style UI, not final art assets
 - Multiple decks are supported through manual sample deck data
@@ -773,6 +783,8 @@ The following documents are required and must be updated after every completed t
 - Food Deck unlocks after Starter Deck completion
 - Travel Deck unlocks after Food Deck completion
 - Nature Deck unlocks after Travel Deck completion
+- Daily Life Deck unlocks after Nature Deck completion
+- Emotion Deck unlocks after Daily Life Deck completion
 - `unlockedDeckIds` are permanent progress saved in LocalStorage
 - Real Oxford 3000 progression beyond manual sample decks is deferred
 - Training focuses on recall, not only recognition

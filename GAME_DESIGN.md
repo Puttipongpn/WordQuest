@@ -183,6 +183,10 @@ Current decks:
 - Stored in `src/data/travelDeck.ts`
 - `Nature Deck`
 - Stored in `src/data/natureDeck.ts`
+- `Daily Life Deck`
+- Stored in `src/data/dailyLifeDeck.ts`
+- `Emotion Deck`
+- Stored in `src/data/emotionDeck.ts`
 - Each deck contains 20 manual sample vocabulary cards
 - All decks are exported through `availableDecks` from `src/data`
 
@@ -191,7 +195,7 @@ Current selected deck rules:
 - `Starter Deck` is selected by default.
 - Home acts as the main game hub.
 - Home shows the selected deck, selected deck status, deck description, card count, mastered word count, average mastery, mastery progress, and next recommended action.
-- Home shows the manual deck progression path: Starter Deck → Food Deck → Travel Deck → Nature Deck.
+- Home shows the manual deck progression path: Starter Deck → Food Deck → Travel Deck → Nature Deck → Daily Life Deck → Emotion Deck.
 - Home deck cards show locked, unlocked, selected, and completed states; unlock requirement copy; card count; mastery summary; and a select action when available.
 - Home mastery summaries are display-only and use existing saved word mastery.
 - Home Best Run summary uses existing saved permanent statistics.
@@ -201,10 +205,14 @@ Current selected deck rules:
 - Food Deck starts locked.
 - Travel Deck starts locked.
 - Nature Deck starts locked.
+- Daily Life Deck starts locked.
+- Emotion Deck starts locked.
 - Completing Starter Deck unlocks Food Deck.
 - Completing Food Deck unlocks Travel Deck.
 - Completing Travel Deck unlocks Nature Deck.
-- Completing Nature Deck marks it completed and shows `More decks coming soon`.
+- Completing Nature Deck unlocks Daily Life Deck.
+- Completing Daily Life Deck unlocks Emotion Deck.
+- Completing Emotion Deck marks it completed and shows `More decks coming soon`.
 - Deck Review uses the selected deck.
 - Training uses the selected deck.
 - Dungeon current-run deck starts as a temporary copy of the selected deck.
@@ -316,7 +324,7 @@ Current prototype targets:
 
 - Starter Deck should feel approachable for early learners.
 - Food Deck can feel slightly more demanding through vocabulary, not new combat rules.
-- Travel Deck and Nature Deck extend progression through vocabulary themes, not new combat rules.
+- Travel Deck, Nature Deck, Daily Life Deck, and Emotion Deck extend progression through vocabulary themes, not new combat rules.
 - A run should leave enough room to reach the first shop without feeling impossible.
 - The boss should feel stronger than regular monsters without being unfair.
 - Dungeon timers should add pressure but remain beginner-friendly.
@@ -508,9 +516,11 @@ Current battle rules:
 - If Starter Deck is completed, Food Deck is unlocked in `unlockedDeckIds`.
 - If Food Deck is completed, Travel Deck is unlocked in `unlockedDeckIds`.
 - If Travel Deck is completed, Nature Deck is unlocked in `unlockedDeckIds`.
-- If Nature Deck is completed, Run Complete shows that more decks are coming soon.
+- If Nature Deck is completed, Daily Life Deck is unlocked in `unlockedDeckIds`.
+- If Daily Life Deck is completed, Emotion Deck is unlocked in `unlockedDeckIds`.
+- If Emotion Deck is completed, Run Complete shows that more decks are coming soon.
 - Run Complete shows reward feedback that the selected deck was completed and permanent progress was saved.
-- Boss defeat does not unlock decks beyond Nature Deck yet.
+- Boss defeat does not unlock decks beyond Emotion Deck yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - Run Failed appears as a main battle-arena result screen with encouraging copy.
 - Run Failed shows selected deck name, failure reason, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
