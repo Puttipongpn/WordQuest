@@ -1084,6 +1084,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: QA tools should speed up testing without creating separate combat math, bypassing the Card Trigger System, or directly writing permanent progress.
 - Status: Accepted
 
+### 2026-06-22: Manual Deck Content Quality Standards
+
+- Decision: Manual deck cards use consistent Title Case part-of-speech labels, concise Thai meanings, beginner-friendly example sentences, and thematic lightweight effects.
+- Reason: Consistent content makes Deck Review, Training, Dungeon mini-games, and mobile answer choices easier to read across all manual decks.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

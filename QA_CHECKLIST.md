@@ -14,6 +14,13 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 
 ## Learning Screens
 
+- All 6 manual decks load.
+- All manual decks contain 20 cards.
+- Manual deck card ids are unique.
+- Manual deck English words are unique unless intentionally duplicated.
+- Thai meanings are reviewed for natural, concise wording.
+- Part of speech labels use `Noun`, `Verb`, `Adjective`, or `Adverb`.
+- Example sentences are reviewed for beginner-friendly cloze practice.
 - Deck Review loads the selected deck.
 - Deck Review filters and sorting are display-only and do not mutate progress.
 - Card details show word, Thai meaning, example sentence, difficulty, attack, effects, and mastery.
@@ -26,6 +33,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Emotion Deck works in Deck Review when unlocked and selected.
 - Daily Life Deck works in Training when unlocked and selected.
 - Emotion Deck works in Training when unlocked and selected.
+- Each deck can be used in Training.
 
 ## Dungeon Battle
 
@@ -48,6 +56,8 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Daily Life Deck works in Dungeon when unlocked and selected.
 - Emotion Deck works in Dungeon when unlocked and selected.
 - Word Scramble tile input works with Daily Life Deck and Emotion Deck words.
+- Each deck can be used in Dungeon after it is unlocked and selected.
+- Word Scramble tile input works with all current manual decks.
 
 ## Development QA Helper
 
@@ -95,6 +105,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Completing Nature Deck unlocks Daily Life Deck.
 - Completing Daily Life Deck unlocks Emotion Deck.
 - Completing Emotion Deck shows More decks coming soon.
+- Deck progression remains Starter → Food → Travel → Nature → Daily Life → Emotion.
 - Run Failed shows selected deck and summary stats.
 - Permanent best-run statistics update only after Run Complete or Run Failed.
 - Run restart resets HP, shield, gold, encounter state, boss state, run progress, current-run deck, shop upgrades, and Word Energy.

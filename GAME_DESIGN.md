@@ -272,6 +272,15 @@ Difficulty is numeric:
 
 CEFR levels are intentionally deferred.
 
+Manual deck content quality rules:
+
+- `partOfSpeech` labels use `Noun`, `Verb`, `Adjective`, or `Adverb`.
+- Thai meanings should be natural, concise, and focused on the meaning used by the example sentence.
+- Example sentences should be short, beginner-friendly, and include the target word clearly for cloze practice.
+- Base attack should stay within the current difficulty guidelines unless a future balance pass explicitly changes it.
+- Manual deck effects should stay thematic and lightweight, using only existing attack, shield, and element effects.
+- Manual deck card ids and English words should remain unique across current manual decks where practical.
+
 ## Word Mastery Concept
 
 Each word card has mastery from `0` to `5`.

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 52.1 QA Helper Hotfix + Battle Skip Tools complete.
+Current phase: Phase 53 Content QA + Vocabulary Quality Pass complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1308,6 +1308,46 @@ Verification:
 - Production `dist` output was checked for QA Helper strings after build.
 
 Phase 52.1 is complete.
+
+## Phase 53 Content QA + Vocabulary Quality Pass Summary
+
+Phase 53 reviewed and improved manual vocabulary content quality across all six current decks without adding gameplay systems.
+
+Completed:
+
+- Reviewed Starter Deck, Food Deck, Travel Deck, Nature Deck, Daily Life Deck, and Emotion Deck.
+- Normalized all manual deck `partOfSpeech` values to Title Case labels: `Noun`, `Verb`, and `Adjective`.
+- Confirmed each manual deck has exactly 20 cards.
+- Confirmed card ids are unique across all current manual cards.
+- Confirmed English words are unique across all current manual decks.
+- Cleaned up slash-heavy Thai meanings:
+  - Nature `wild`: `ป่า / ตามธรรมชาติ` -> `ป่า`
+  - Nature `fresh`: `สดชื่น / สดใหม่` -> `สดชื่น`
+  - Daily Life `study`: `เรียน / อ่านหนังสือ` -> `เรียน`
+  - Daily Life `carry`: `ถือ / แบก` -> `ถือ`
+  - Daily Life `call`: `โทรหา / เรียก` -> `โทรหา`
+  - Daily Life `watch`: `ดู / เฝ้าดู` -> `ดู`
+- Improved Travel `direction` example sentence from `Ask for direction if you are lost.` to `The arrow shows the direction.`
+- Improved card effect distribution with thematic additions:
+  - Food `rice`: added Earth element
+  - Food `milk`: added Water element
+  - Food `egg`: added Shield +1
+  - Food `dinner`: added Shield +2
+  - Travel `bridge`: added Shield +2
+
+Verification:
+
+- Automated content audit confirmed 20 cards per deck, no duplicate card ids, no duplicate English words, no baseAttack outliers, and no slash-heavy Thai meanings.
+- `npm run build` passed after Phase 53.
+
+Preserved:
+
+- No new decks or Oxford 3000 import were added.
+- No gameplay systems, combat math, timer values, mastery rules, Training rules, deck unlock rules, save schema, shop/event/boss effects, Word Energy rules, LocalStorage policy, UI redesign, backend, auth, API, final art, sound, or external libraries were added.
+- Phase 52 deck progression remains Starter Deck → Food Deck → Travel Deck → Nature Deck → Daily Life Deck → Emotion Deck.
+- Phase 52.1 QA Helper behavior remains dev-only.
+
+Phase 53 is complete.
 
 ## Next Recommended Task
 

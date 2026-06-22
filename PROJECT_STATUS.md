@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 52.1 QA Helper Hotfix + Battle Skip Tools is complete. GitHub backup is configured on `origin/main`.
+Phase 53 Content QA + Vocabulary Quality Pass is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -673,6 +673,19 @@ Phase 52.1 QA Helper Hotfix + Battle Skip Tools is complete. GitHub backup is co
 - Preserved Word Choice, Word Match, Word Scramble tile input, Word Match anti-hint behavior, combat math, timer values, mastery rules, shop/event/boss effects, deck unlocks, save schema, Word Energy rules, and Phase 52 decks.
 - Updated `QA_CHECKLIST.md` with QA Helper battle skip and production safety checks.
 - Verified the project with `npm run build` after Phase 52.1.
+- Applied Phase 53 Content QA + Vocabulary Quality Pass.
+- Reviewed all six manual vocabulary decks: Starter, Food, Travel, Nature, Daily Life, and Emotion.
+- Normalized `partOfSpeech` labels across all manual decks to `Noun`, `Verb`, and `Adjective`.
+- Confirmed every manual deck still has 20 cards.
+- Confirmed card ids and English words are unique across all manual decks.
+- Cleaned up slash-heavy Thai meanings in Nature and Daily Life cards.
+- Improved the Travel `direction` example sentence to better match the target word.
+- Improved effect distribution by adding intuitive Food and Travel effects without changing base attack values.
+- Added Earth to `rice`, Water to `milk`, Shield to `egg`, Shield to `dinner`, and Shield to `bridge`.
+- Confirmed baseAttack values still fit the current difficulty guidelines.
+- Preserved deck progression through Emotion Deck, Phase 52.1 QA Helper behavior, combat math, timer values, mastery rules, save schema, shop/event/boss effects, Word Energy rules, Word Scramble tile input, and Word Match anti-hint behavior.
+- Updated `QA_CHECKLIST.md` with six-deck content QA checks.
+- Verified the project with `npm run build` after Phase 53.
 
 ## In Progress
 
@@ -680,7 +693,7 @@ Phase 52.1 QA Helper Hotfix + Battle Skip Tools is complete. GitHub backup is co
 
 ## Next Task
 
-Phase 52.1 is complete. Continue with the next explicitly requested phase or feature.
+Phase 53 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
