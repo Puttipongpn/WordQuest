@@ -24,6 +24,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Deck Review loads the selected deck.
 - Deck Review filters and sorting are display-only and do not mutate progress.
 - Card details show word, Thai meaning, example sentence, difficulty, attack, effects, and mastery.
+- On desktop, Deck Review selected-card info panel stays below the sticky header/nav while scrolling and its long content remains reachable.
 - Training loads the selected deck.
 - Training question types rotate between recall/cloze styles.
 - Correct Training answers increase word mastery by 1 up to 5.
@@ -143,6 +144,26 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Home and Deck Review selected deck/card states are easy to identify.
 - Motion does not create horizontal overflow on mobile.
 - With reduced-motion enabled, the UI remains readable and usable without required animation.
+
+## Battle Stage
+
+- Player presentation appears in Dungeon battle.
+- Monster presentation appears in Dungeon battle.
+- Elite presentation is visually distinct.
+- Boss presentation is visually distinct.
+- Event presentation remains discovery-style, not combat stance.
+- Start Battle remains obvious.
+- Timer still starts only after Start Battle.
+- Quiz remains reachable on desktop.
+- Quiz remains reachable on mobile.
+- Result overlay actions remain reachable.
+- Word Choice still works.
+- Word Match still works.
+- Word Scramble tile input still works.
+- No answer is revealed before the player answers.
+- Reduced-motion mode remains usable.
+- Sound toggle still works.
+- QA Helper remains dev-only.
 
 ## Sound
 

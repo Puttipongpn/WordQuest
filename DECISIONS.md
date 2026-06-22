@@ -1114,6 +1114,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Native Web Audio can improve game feel without adding assets, dependencies, autoplay risk, or coupling sound preferences to permanent player progress.
 - Status: Accepted
 
+### 2026-06-22: Battle Stage Presentation Is Placeholder-Only
+
+- Decision: Battle stage and character presentation are placeholder-only and presentation-only for Version 1. They must not reduce quiz usability or change gameplay behavior.
+- Reason: Dungeon battles should feel more like a game scene while preserving the vocabulary quiz as the main interaction and avoiding final art, assets, dependencies, or rule changes.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

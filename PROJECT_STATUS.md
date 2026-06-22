@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 59 Sound FX Foundation is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 60 Battle Stage / Character Presentation is complete, with a follow-up Deck Review sticky info panel overlap hotfix. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -738,6 +738,21 @@ Phase 59 Sound FX Foundation is complete. The production demo is live on Vercel 
 - Added no external audio assets, sound libraries, dependencies, backend features, or deployment changes.
 - Preserved combat math, timer values, save schema, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, run progression, QA Helper production safety, and all six manual decks.
 - Verified the project with `npm run build` after Phase 59.
+- Applied Phase 60 Battle Stage / Character Presentation.
+- Reworked the active Dungeon stage into compact player side, battle lane, and encounter side presentation.
+- Added a simple placeholder Word Hero stance with HP, shield, gold, floor, and progress summary.
+- Improved Monster, Elite, and Boss encounter presentation with clearer stance panels, badges, HP bars, attack, boss move, and elite reward context.
+- Kept Event encounters as discovery-style presentation instead of a combat stance.
+- Lightly improved Encounter Intro with a compact Word Hero versus encounter preview while preserving Start Battle and timer behavior.
+- Preserved the quiz as the main playable area, mobile stacked usability, result overlay actions, sound toggle behavior, QA Helper dev-only safety, and all existing mini-game rules.
+- Added no final art assets, image files, animation libraries, external UI libraries, dependencies, backend features, or deployment changes.
+- Preserved combat math, timer values, save schema, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, run progression, and all six manual decks.
+- Verified the project with `npm run build` after Phase 60.
+- Applied a Deck Review sticky info panel overlap hotfix.
+- Increased the desktop sticky offset for the selected-card info panel so it no longer slides underneath the sticky header/nav while scrolling.
+- Added a desktop max-height and internal scroll to the selected-card info panel so long card details remain reachable.
+- Preserved Deck Review filters/sorting as display-only and made no gameplay, save, combat, timer, deck unlock, Word Energy, dependency, or deployment changes.
+- Verified the project with `npm run build` after the Deck Review hotfix.
 
 ## In Progress
 
@@ -745,7 +760,7 @@ Phase 59 Sound FX Foundation is complete. The production demo is live on Vercel 
 
 ## Next Task
 
-Phase 59 is complete. Continue with the next explicitly requested phase or feature.
+Phase 60 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

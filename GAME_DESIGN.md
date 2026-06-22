@@ -46,6 +46,13 @@ Current presentation rules:
 - If a wrong answer, timeout, or enemy hit reduces player HP to 0, result feedback should use `Defeated!` style messaging rather than generic wrong/timeout wording.
 - Compact result overlays can use stronger game-result titles such as Hit, Monster Defeated, Elite Defeated, Boss Defeated, Time Out, Wrong, and Defeated while preserving the underlying combat rules.
 - The compact battle stage strip can show short presentation-only feedback such as player attacks, shield blocked, encounter defeated, or run ended.
+- Phase 60 battle stage presentation uses placeholder-only CSS, Tailwind, emoji/text/icon-like visuals, and existing components.
+- Active Dungeon battles should read as a simple scene with player side, encounter side, and a compact action lane, while keeping the quiz as the primary playable area.
+- Player presentation may show only existing run information such as HP, shield, gold, floor, and run progress; it must not add customization, equipment, or new stats.
+- Monster, Elite, Boss, and Event presentation should be visually distinct. Events should remain discovery-style rather than combat stance.
+- Battle stage and character presentation are presentation-only and must never change combat math, timers, answer checking, run state, save behavior, deck unlocks, Word Energy, or encounter progression.
+- Battle stage visuals must not reveal hidden answers, trigger cards, correct answers, or result data before the player answers.
+- Mobile battle remains quiz-first; stage visuals must stay compact and must not push timer, quiz controls, result actions, Pause, or Abandon controls out of reach.
 - Battle stage motion uses CSS-only animation hooks such as hit flash, damage shake, shield pulse, attack pop, defeat glow, result pop, and floating combat text.
 - Motion effects are presentation-only and should never change combat rules, timer values, save behavior, or run progression.
 - Motion should remain subtle, readable, and safe for reduced-motion users.

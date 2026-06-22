@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 59 Sound FX Foundation complete.
+Current phase: Phase 60 Battle Stage / Character Presentation complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1588,6 +1588,47 @@ Preserved:
 Verification:
 
 - `npm run build` passed after Phase 59.
+
+## Phase 60 Battle Stage / Character Presentation Summary
+
+Phase 60 improved Dungeon battle-stage presentation with lightweight placeholder visuals only.
+
+Completed:
+
+- Reworked the active Dungeon stage into a clearer player side, battle lane, and encounter side layout.
+- Added a compact placeholder Word Hero stance with HP, shield, gold, floor, and run progress.
+- Improved Monster, Elite, and Boss presentation with stronger stance panels, badges, HP bars, attack labels, boss move display, and elite reward context.
+- Kept Events as discovery-style Dungeon cards instead of a combat stance.
+- Added a compact Encounter Intro preview showing Word Hero versus the current encounter before Start Battle.
+- Removed the older duplicate action-lane strip from visual display so stage feedback appears in one main stage area.
+
+Preserved:
+
+- The quiz remains the main playable area, and mobile/narrow screens keep a compact stacked stage with reachable timer, quiz controls, result actions, Pause, and Abandon controls.
+- No gameplay systems, decks, Oxford 3000 import, backend, database, auth, API, React Router, achievements, final art, image files, animation libraries, browser automation tooling, external UI libraries, new dependencies, combat math changes, timer value changes, mastery rule changes, save schema changes, shop/event/boss effect changes, deck unlock changes, Word Energy rule changes, sound system changes, or deployment setup changes were added.
+- Word Choice, Word Match anti-hint behavior, Word Scramble tile input, result overlays, QA Helper dev-only gate, LocalStorage permanent-progress-only policy, and all six manual decks remain unchanged.
+
+Verification:
+
+- `npm run build` passed after Phase 60.
+
+## Deck Review Sticky Info Panel Overlap Hotfix
+
+This follow-up fixed a Deck Review desktop scroll issue where the selected-card info panel could slide underneath the sticky app header/nav.
+
+Completed:
+
+- Increased the desktop sticky offset for the Deck Review selected-card info panel.
+- Added a desktop max-height and internal scroll so long selected-card details remain reachable below the sticky header.
+
+Preserved:
+
+- Deck Review filtering and sorting remain display-only.
+- No gameplay rules, combat math, timers, save schema, deck unlocks, Word Energy, dependencies, or deployment setup changed.
+
+Verification:
+
+- `npm run build` passed after the hotfix.
 
 ## Next Recommended Task
 

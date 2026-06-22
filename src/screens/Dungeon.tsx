@@ -2590,6 +2590,41 @@ export function Dungeon({
                   {lastEventResultMessage}
                 </p>
               )}
+              <div className="mx-auto mt-5 grid max-w-2xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 rounded-3xl border border-amber-100/15 bg-black/25 p-2 sm:gap-4 sm:p-3">
+                <div className="min-w-0 rounded-2xl border border-sky-100/15 bg-sky-950/25 p-2 text-left">
+                  <div className="flex items-center gap-2">
+                    <div className="grid size-11 place-items-center rounded-xl border-2 border-sky-200/35 bg-sky-100 text-sm font-black text-sky-950">
+                      WQ
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-black text-sky-50">
+                        Word Hero
+                      </p>
+                      <p className="text-xs font-bold text-sky-100/70">
+                        HP {playerHp} / {PLAYER_MAX_HP}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <p className="rounded-full border border-amber-200 bg-amber-100 px-2 py-1 text-xs font-black text-amber-950 shadow">
+                  VS
+                </p>
+                <div className="min-w-0 rounded-2xl border border-red-100/15 bg-red-950/25 p-2 text-left">
+                  <div className="flex items-center gap-2">
+                    <div className={`grid size-11 place-items-center rounded-xl border-2 text-2xl ${encounterPortraitClass}`}>
+                      {currentEncounter.imagePlaceholder}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-black text-red-50">
+                        {currentEncounter.name}
+                      </p>
+                      <p className="text-xs font-bold text-red-100/70">
+                        ATK {currentEncounter.attack}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="mx-auto mt-5 grid max-w-xl grid-cols-2 gap-3">
                 <div className="rounded-2xl border-2 border-red-200/20 bg-black/30 p-3 sm:p-4">
                   <p className="text-xs font-black uppercase text-red-100/70">
@@ -2696,101 +2731,188 @@ export function Dungeon({
             </div>
 
             <section
-              className={`rounded-2xl border-2 p-1.5 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] sm:p-2 ${encounterStageClass} ${battleStageMotionClass}`}
+              className={`relative overflow-hidden rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] sm:p-3 ${encounterStageClass} ${battleStageMotionClass}`}
             >
-              <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.78fr)] lg:items-center">
-                <div className="grid grid-cols-4 gap-1.5 sm:gap-2 md:grid-cols-[1.25fr_0.7fr_0.7fr_0.7fr_0.9fr]">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/10 to-transparent" />
+              {isEventEncounter ? (
+                <div className="relative grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:items-center">
+                  <div className="rounded-2xl border border-violet-100/20 bg-violet-950/30 p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="grid size-14 place-items-center rounded-2xl border-4 border-violet-200/35 bg-violet-100 text-4xl text-violet-950 shadow-lg sm:size-16">
+                        {currentEvent.icon}
+                      </div>
+                      <div className="min-w-0">
+                        <Badge tone="purple">Dungeon Discovery</Badge>
+                        <h3 className="mt-1 truncate text-2xl font-black leading-none text-amber-50">
+                          {currentEvent.title}
+                        </h3>
+                        <p className="mt-1 text-xs font-black uppercase tracking-[0.16em] text-violet-100/75">
+                          Choose a temporary run result
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
+                    <div className="rounded-xl border border-red-100/15 bg-red-950/25 px-2 py-1.5">
+                      <p className="text-xs font-black uppercase text-red-100/70">HP</p>
+                      <p className="text-lg font-black text-red-50">{playerHp}</p>
+                    </div>
+                    <div className="rounded-xl border border-sky-100/15 bg-sky-950/25 px-2 py-1.5">
+                      <p className="text-xs font-black uppercase text-sky-100/70">Shield</p>
+                      <p className="text-lg font-black text-sky-50">{shield}</p>
+                    </div>
+                    <div className="rounded-xl border border-amber-100/15 bg-amber-950/25 px-2 py-1.5">
+                      <p className="text-xs font-black uppercase text-amber-100/70">Gold</p>
+                      <p className="text-lg font-black text-amber-50">{runGold}</p>
+                    </div>
+                    <div className="rounded-xl border border-emerald-100/15 bg-emerald-950/25 px-2 py-1.5">
+                      <p className="text-xs font-black uppercase text-emerald-100/70">Floor</p>
+                      <p className="text-lg font-black text-emerald-50">{runProgress.currentFloor}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="relative grid gap-2 md:grid-cols-[minmax(0,0.95fr)_minmax(6.5rem,0.38fr)_minmax(0,1fr)] md:items-stretch">
                   <div
-                    className={`col-span-4 rounded-xl border px-2 py-1.5 transition sm:px-3 md:col-span-1 ${
+                    className={`rounded-2xl border p-2 transition sm:p-3 ${
                       playerTookHit
                         ? "damage-shake border-red-200/70 bg-red-800/45 shadow-[0_0_24px_rgba(248,113,113,0.28)]"
-                        : "border-red-100/15 bg-red-950/25"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between text-sm font-black text-red-50">
-                      <span>Player HP</span>
-                      <span>{playerHp} / {PLAYER_MAX_HP}</span>
-                    </div>
-                    <ProgressBar
-                      value={playerHp}
-                      max={PLAYER_MAX_HP}
-                      tone="red"
-                      label="Player HP"
-                    />
-                  </div>
-                  <div
-                    className={`rounded-xl border px-2 py-1.5 transition sm:px-3 ${
-                      shieldBlockedHit
-                        ? "shield-pulse border-sky-200/70 bg-sky-700/35 shadow-[0_0_24px_rgba(125,211,252,0.25)]"
                         : "border-sky-100/15 bg-sky-950/25"
                     }`}
                   >
-                    <p className="text-xs font-black uppercase text-sky-100/70">
-                      Shield
-                    </p>
-                    <p className="text-lg font-black text-sky-50 sm:text-xl">{shield}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="grid size-14 place-items-center rounded-2xl border-4 border-sky-200/35 bg-sky-100 text-lg font-black text-sky-950 shadow-lg sm:size-16">
+                        WQ
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <Badge tone="sky">Word Hero</Badge>
+                          <Badge tone="amber">Gold {runGold}</Badge>
+                        </div>
+                        <div className="mt-1 flex items-center justify-between gap-2 text-sm font-black text-red-50">
+                          <span>HP</span>
+                          <span>{playerHp} / {PLAYER_MAX_HP}</span>
+                        </div>
+                        <ProgressBar
+                          value={playerHp}
+                          max={PLAYER_MAX_HP}
+                          tone="red"
+                          label="Player HP"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
+                      <div
+                        className={`rounded-xl border px-2 py-1 transition ${
+                          shieldBlockedHit
+                            ? "shield-pulse border-sky-200/70 bg-sky-700/35"
+                            : "border-sky-100/15 bg-black/20"
+                        }`}
+                      >
+                        <p className="text-[10px] font-black uppercase text-sky-100/70">Shield</p>
+                        <p className="text-base font-black text-sky-50">{shield}</p>
+                      </div>
+                      <div className="rounded-xl border border-stone-100/15 bg-black/20 px-2 py-1">
+                        <p className="text-[10px] font-black uppercase text-stone-100/70">Floor</p>
+                        <p className="text-base font-black text-stone-50">{runProgress.currentFloor}</p>
+                      </div>
+                      <div className="rounded-xl border border-emerald-100/15 bg-black/20 px-2 py-1">
+                        <p className="text-[10px] font-black uppercase text-emerald-100/70">Progress</p>
+                        <p className="text-sm font-black text-emerald-50">
+                          {runProgress.monstersDefeated}/{runProgress.nextShopAt}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="rounded-xl border border-amber-100/15 bg-amber-950/25 px-2 py-1.5 sm:px-3">
-                    <p className="text-xs font-black uppercase text-amber-100/70">
-                      Gold
-                    </p>
-                    <p className="text-lg font-black text-amber-50 sm:text-xl">{runGold}</p>
-                  </div>
-                  <div className="rounded-xl border border-stone-100/15 bg-stone-950/25 px-2 py-1.5 sm:px-3">
-                    <p className="text-xs font-black uppercase text-stone-100/70">
-                      Floor
-                    </p>
-                    <p className="text-lg font-black text-stone-50 sm:text-xl">
-                      {runProgress.currentFloor}
-                    </p>
-                  </div>
-                  <div className="rounded-xl border border-emerald-100/15 bg-emerald-950/25 px-2 py-1.5 sm:px-3">
-                    <p className="text-xs font-black uppercase text-emerald-100/70">
-                      Progress
-                    </p>
-                    <p className="text-sm font-black text-emerald-50 sm:text-base">
-                      {runProgress.monstersDefeated} / {runProgress.nextShopAt}
-                    </p>
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2">
+                  <div className="flex min-h-20 flex-col items-center justify-center rounded-2xl border border-amber-100/15 bg-black/25 px-2 py-2 text-center">
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-100/65">
+                      Battle Lane
+                    </p>
+                    <p className="attack-pop mt-1 rounded-full border border-amber-200 bg-amber-100 px-3 py-1 text-sm font-black text-amber-950 shadow">
+                      {stageFeedbackText}
+                    </p>
+                    <p className="mt-1 text-2xl font-black leading-none text-amber-100">
+                      VS
+                    </p>
+                    {(floatingCombatText || elementCombatText) && (
+                      <div className="mt-1 flex max-w-full flex-wrap justify-center gap-1">
+                        {floatingCombatText && (
+                          <span className="attack-pop rounded-full border border-emerald-200 bg-emerald-100 px-2 py-0.5 text-[11px] font-black text-emerald-950 shadow">
+                            {floatingCombatText}
+                          </span>
+                        )}
+                        {elementCombatText && (
+                          <span className="attack-pop rounded-full border border-violet-200 bg-violet-100 px-2 py-0.5 text-[11px] font-black text-violet-950 shadow">
+                            {elementCombatText}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
                   <div
-                    className={`grid size-12 place-items-center rounded-xl border-4 text-3xl shadow-lg transition ${encounterPortraitClass} ${
-                      encounterTookHit
-                        ? "damage-shake scale-105 ring-4 ring-red-300/45"
-                        : encounterResolved
-                          ? "defeat-glow ring-4 ring-emerald-300/35"
-                          : ""
+                    className={`rounded-2xl border p-2 transition sm:p-3 ${
+                      isBossEncounter
+                        ? "border-red-200/45 bg-red-950/30 shadow-[0_0_32px_rgba(248,113,113,0.18)]"
+                        : encounterType === "elite"
+                          ? "border-amber-200/45 bg-amber-950/25 shadow-[0_0_28px_rgba(251,191,36,0.16)]"
+                          : "border-emerald-100/15 bg-emerald-950/20"
                     }`}
                   >
-                    {isEventEncounter
-                      ? currentEvent.icon
-                      : currentEncounter.imagePlaceholder}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <Badge
-                        tone={
-                          isBossEncounter
-                            ? "red"
-                            : encounterType === "elite"
-                              ? "amber"
-                              : isEventEncounter
-                                ? "purple"
-                                : "emerald"
-                        }
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`grid size-14 place-items-center rounded-2xl border-4 text-4xl shadow-lg transition sm:size-16 ${encounterPortraitClass} ${
+                          encounterTookHit
+                            ? "damage-shake scale-105 ring-4 ring-red-300/45"
+                            : encounterResolved
+                              ? "defeat-glow ring-4 ring-emerald-300/35"
+                              : ""
+                        }`}
                       >
-                        {isBossEncounter ? "BOSS" : encounterLabel}
-                      </Badge>
-                      {!isEventEncounter && (
-                        <Badge tone="red">ATK {currentEncounter.attack}</Badge>
-                      )}
-                      {isBossEncounter && getBossTitle(currentEncounter) && (
-                        <Badge tone="purple">
-                          {getBossTitle(currentEncounter)}
-                        </Badge>
-                      )}
+                        {currentEncounter.imagePlaceholder}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <Badge
+                            tone={
+                              isBossEncounter
+                                ? "red"
+                                : encounterType === "elite"
+                                  ? "amber"
+                                  : "emerald"
+                            }
+                          >
+                            {isBossEncounter ? "BOSS" : encounterLabel}
+                          </Badge>
+                          <Badge tone="red">ATK {currentEncounter.attack}</Badge>
+                          {isBossEncounter && getBossTitle(currentEncounter) && (
+                            <Badge tone="purple">
+                              {getBossTitle(currentEncounter)}
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="mt-1 flex items-center justify-between gap-3">
+                          <h3 className="truncate text-xl font-black leading-none text-amber-50 drop-shadow sm:text-2xl">
+                            {currentEncounter.name}
+                          </h3>
+                          <span className="shrink-0 text-sm font-black text-amber-100">
+                            {monsterHp} / {currentEncounter.maxHp}
+                          </span>
+                        </div>
+                        <ProgressBar
+                          value={monsterHp}
+                          max={currentEncounter.maxHp}
+                          label={`${isBossEncounter ? "BOSS " : ""}${currentEncounter.name} HP`}
+                          tone={
+                            isBossEncounter || encounterType === "elite"
+                              ? "red"
+                              : "emerald"
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
                       <Badge
                         tone={
                           hasCompletedBoss
@@ -2809,32 +2931,16 @@ export function Dungeon({
                               ? "Ready"
                               : `${runProgress.monstersDefeated}/${BOSS_MONSTER_REQUIREMENT}`}
                       </Badge>
-                    </div>
-                    <div className="mt-1 flex items-center justify-between gap-3">
-                      <h3 className="truncate text-xl font-black leading-none text-amber-50 drop-shadow sm:text-2xl">
-                        {isEventEncounter ? currentEvent.title : currentEncounter.name}
-                      </h3>
-                      {!isEventEncounter && (
-                        <span className="shrink-0 text-sm font-black text-amber-100">
-                          {monsterHp} / {currentEncounter.maxHp}
-                        </span>
+                      {isBossEncounter && (
+                        <Badge tone="red">{selectedBoss.specialMoveName}</Badge>
+                      )}
+                      {encounterType === "elite" && (
+                        <Badge tone="amber">Elite +{ELITE_GOLD_BONUS} gold</Badge>
                       )}
                     </div>
-                    {!isEventEncounter && (
-                      <ProgressBar
-                        value={monsterHp}
-                        max={currentEncounter.maxHp}
-                        label={`${isBossEncounter ? "BOSS " : ""}${currentEncounter.name} HP`}
-                        tone={
-                          isBossEncounter || encounterType === "elite"
-                            ? "red"
-                            : "emerald"
-                        }
-                      />
-                    )}
                   </div>
                 </div>
-              </div>
+              )}
             </section>
 
             <div
@@ -2889,7 +2995,7 @@ export function Dungeon({
               </section>
             )}
 
-            <section className="hidden h-10 shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-amber-200/15 bg-black/20 px-3 sm:grid">
+            <section className="hidden">
               <div className="flex items-center gap-2 text-sm font-black text-sky-100">
                 <span className="grid size-7 place-items-center rounded-full border border-sky-200/30 bg-sky-100/15">
                   🧙
