@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 53 Content QA + Vocabulary Quality Pass is complete. GitHub backup is configured on `origin/main`.
+Phase 54 Deploy Dry Run + Production Smoke Test is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -686,6 +686,15 @@ Phase 53 Content QA + Vocabulary Quality Pass is complete. GitHub backup is conf
 - Preserved deck progression through Emotion Deck, Phase 52.1 QA Helper behavior, combat math, timer values, mastery rules, save schema, shop/event/boss effects, Word Energy rules, Word Scramble tile input, and Word Match anti-hint behavior.
 - Updated `QA_CHECKLIST.md` with six-deck content QA checks.
 - Verified the project with `npm run build` after Phase 53.
+- Applied Phase 54 Deploy Dry Run + Production Smoke Test.
+- Verified `npm run build` passes with no TypeScript or production build errors.
+- Verified `npm run preview` serves the built app locally at `http://127.0.0.1:4173/`.
+- Confirmed production preview returns HTTP 200 for `index.html`, the generated JavaScript asset, and the generated CSS asset.
+- Confirmed production `dist` output does not contain QA Helper UI strings: `QA Helper`, `QA Correct`, `QA Wrong`, `Force Run Failed`, `Force Run Complete`, or `Development only`.
+- Reviewed README deployment guidance and documented the latest dry-run result.
+- Updated `QA_CHECKLIST.md` with production preview smoke-test items.
+- Preserved gameplay systems, combat math, timer values, mastery rules, save schema, shop/event/boss effects, deck unlock rules, Word Energy rules, UI systems, backend scope, and final-art deferral.
+- Browser-click smoke testing was not completed because the in-app browser was unavailable and Playwright is not installed locally; verification used production build, production preview HTTP checks, bundle string checks, and documentation review.
 
 ## In Progress
 
@@ -693,7 +702,7 @@ Phase 53 Content QA + Vocabulary Quality Pass is complete. GitHub backup is conf
 
 ## Next Task
 
-Phase 53 is complete. Continue with the next explicitly requested phase or feature.
+Phase 54 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

@@ -99,6 +99,16 @@ Suggested Vercel setup:
 
 No Vite config changes are currently required for Vercel. GitHub Pages may require a base-path configuration, so it is not the default deploy target for this prototype.
 
+## Latest Deploy Dry Run
+
+Phase 54 verified the static deployment path locally:
+
+- `npm run build` passed.
+- `npm run preview` served the production build at `http://127.0.0.1:4173/`.
+- Production HTML, JavaScript, and CSS assets returned HTTP 200.
+- Built output did not contain QA Helper player-facing strings such as `QA Helper`, `QA Correct`, `QA Wrong`, `Force Run Failed`, `Force Run Complete`, or `Development only`.
+- No real public deployment was performed.
+
 ## Prototype Limitations / Roadmap
 
 - No backend, database, authentication, or external API.
@@ -110,6 +120,7 @@ No Vite config changes are currently required for Vercel. GitHub Pages may requi
 - Element interactions are first-pass only.
 - More balance testing is needed.
 - Public deployment has been prepared but not performed yet.
+- Browser-click production smoke testing still needs one pass in an environment with browser automation or manual tester access.
 - `npm audit` currently reports a high-severity `esbuild` advisory through the Vite toolchain; npm recommends a force fix with breaking dependency changes, so it has not been applied in this stabilization pass.
 
 ## Project Documents

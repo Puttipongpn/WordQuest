@@ -138,7 +138,26 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - `npm run preview` serves the production build.
 - Production build opens on Home.
 - Production build does not expose QA Helper UI.
-- Searching `dist` for `QA Helper`, `Development only`, `QA Correct`, `QA Wrong`, and `Force Run Failed` returns no matches.
+- Production HTML, JavaScript, and CSS assets return HTTP 200 from the preview server.
+- Searching `dist` for `QA Helper`, `Development only`, `QA Correct`, `QA Wrong`, `Force Run Failed`, and `Force Run Complete` returns no matches.
+- Vercel settings are still: Vite preset, build command `npm run build`, output directory `dist`.
+- No backend, database, auth, API, or server runtime is required.
+
+## Production Preview Smoke Test
+
+- Home loads in production preview.
+- Deck selection shows all 6 manual decks with locked, unlocked, and completed states.
+- Deck Review loads for the selected unlocked deck.
+- Training loads for the selected unlocked deck and can save mastery.
+- Refreshing production preview keeps saved mastery.
+- Reset Progress clears word mastery, completed decks, unlocked decks back to default, and saved statistics.
+- Dungeon opens in production preview without QA Helper controls.
+- Encounter Intro appears before battle.
+- Start Battle starts an active timed question.
+- Word Choice, Word Match, and Word Scramble remain playable if encountered.
+- Pause and Abandon Run controls remain reachable.
+- Active run state is not restored after refresh.
+- Narrow/mobile viewport keeps important Home, Training, Dungeon, quiz, pause, and result controls reachable.
 
 ## Known Deferred Areas
 

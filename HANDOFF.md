@@ -1349,6 +1349,53 @@ Preserved:
 
 Phase 53 is complete.
 
+## Phase 54 Deploy Dry Run + Production Smoke Test Summary
+
+Phase 54 verified that the current prototype is ready for a simple static demo deployment dry run.
+
+Completed:
+
+- Ran `npm run build`; production build passed with no TypeScript or Vite build errors.
+- Ran `npm run preview -- --host 127.0.0.1`; production preview served at `http://127.0.0.1:4173/`.
+- Confirmed production preview returned HTTP 200 for:
+  - `/`
+  - generated JavaScript asset
+  - generated CSS asset
+- Confirmed the generated production HTML references the built JS and CSS assets correctly.
+- Searched `dist` for development-only QA Helper UI strings and found no matches for:
+  - `QA Helper`
+  - `Development only`
+  - `QA Correct`
+  - `QA Wrong`
+  - `Force Run Failed`
+  - `Force Run Complete`
+- Reviewed `README.md` deployment guidance.
+- Added a README note summarizing the latest local deploy dry run.
+- Updated `QA_CHECKLIST.md` with production preview smoke-test items and Vercel settings.
+
+Static deployment readiness:
+
+- Vercel remains the preferred target.
+- Use Vite preset.
+- Build command: `npm run build`.
+- Output directory: `dist`.
+- No backend, database, auth, API, or server runtime is required.
+- LocalStorage remains the only Version 1 save mechanism.
+
+Verification limitations:
+
+- The in-app browser connector was unavailable in this session.
+- Local Playwright is not installed in the project.
+- Browser-click production smoke testing was therefore not completed in this pass.
+- Verification used production build, production preview HTTP checks, production bundle string checks, and documentation review.
+- A manual or automated browser click-through should still verify Home, Deck Review, Training, Dungeon, Reset Progress, and narrow/mobile battle screens before a public demo.
+
+Preserved:
+
+- No gameplay systems, new decks, Oxford 3000 import, backend, database, auth, API, React Router, final art, sound, external UI libraries, combat math changes, timer value changes, mastery rule changes, save schema changes, shop/event/boss effect changes, deck unlock changes, or Word Energy rule changes were added.
+
+Phase 54 is complete.
+
 ## Next Recommended Task
 
 Recommended next task:

@@ -83,6 +83,14 @@ Deployment scope rules:
 - Production builds must not expose development QA Helper UI.
 - Deployment does not change LocalStorage behavior: permanent progress remains browser-local, and active run state remains temporary and unsaved.
 
+Phase 54 dry-run verification:
+
+- `npm run build` must pass before sharing or deploying.
+- `npm run preview` should serve the static production build locally.
+- Production preview should serve `index.html`, generated JavaScript, and generated CSS with HTTP 200.
+- Built output should not include development QA Helper UI strings.
+- A browser-click smoke test should still be completed manually or with browser automation before a public demo if automation is available.
+
 ## Core Loop
 
 1. Player receives or selects a vocabulary deck.
