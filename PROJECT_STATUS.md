@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 62 Run Continue / Exit Flow Cleanup is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 63 Shop Economy + Upgrade Feedback Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -773,6 +773,17 @@ Phase 62 Run Continue / Exit Flow Cleanup is complete. The production demo is li
 - Run Complete, Run Failed, Abandon Run, Reset Progress, deck change, and explicit fresh-run start clear or replace the active continue state.
 - Preserved combat math, timer values, save schema, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, deployment setup, asset plan, and all six manual decks.
 - Verified the project with `npm run build` after Phase 62.
+- Applied Phase 63 Shop Economy + Upgrade Feedback Pass.
+- Reviewed current shop economy values before tuning: starting gold `20`, monster gold `7`, elite bonus `10`, treasure/lost-backpack gold `10`, signpost/library gold `8`, cursed-door gold `15`, reroll `5`, Upgrade Attack `35`, Add Shield `35`, Add Element `45`, Remove Card `30`, Duplicate Card `50`.
+- Tuned shop item costs modestly while keeping gold income unchanged: Upgrade Attack `35 -> 30`, Add Shield `35 -> 30`, Add Element `45 -> 40`, Remove Card `30 -> 40`, Duplicate Card `50` unchanged, reroll `5` unchanged.
+- Preserved first-shop expected buying power at around `55` gold after five normal monsters, now usually enough for one basic upgrade and sometimes a reroll plus an upgrade without making every offer affordable.
+- Kept Remove Card and Duplicate Card strategic by making Remove more expensive than basic upgrades and leaving Duplicate at the highest cost.
+- Added clearer Shop offer affordability labels, current-run badge, and specific not-enough-gold copy.
+- Improved target modal previews with before/after values for ATK, SHD, element, deck size, current gold, cost, and gold after purchase.
+- Added a compact merchant receipt panel after purchases and rerolls showing affected card/action, before/after values, gold spent, remaining gold, and current-run-only reminder.
+- Preserved current-run-only shop behavior, LocalStorage permanent-progress-only policy, active-run memory-only behavior, combat math, timer values, mastery rules, shop effects, deck unlock rules, Word Energy rules, deployment setup, asset plan, and all six manual decks.
+- Added no backend, database, auth, API, React Router, cloud save, external state library, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, or Oxford 3000 import.
+- Verified the project with `npm run build` after Phase 63.
 
 ## In Progress
 
@@ -780,7 +791,7 @@ Phase 62 Run Continue / Exit Flow Cleanup is complete. The production demo is li
 
 ## Next Task
 
-Phase 62 is complete. Continue with the next explicitly requested phase or feature.
+Phase 63 is complete. Continue with the next explicitly requested phase or feature. Do not start Phase 64 unless explicitly requested.
 
 ## Required Project Documents
 

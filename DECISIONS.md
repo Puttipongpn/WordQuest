@@ -1138,6 +1138,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Separating these actions makes Dungeon exit choices clearer and reduces accidental loss of temporary run progress.
 - Status: Accepted
 
+### 2026-06-22: Shop Purchase Feedback Shows What Changed
+
+- Decision: Shop purchase feedback must clearly show what changed, including affected card, before/after values, gold spent, and remaining gold.
+- Reason: Purchases should feel useful and understandable instead of only silently reducing temporary gold.
+- Status: Accepted
+
+### 2026-06-22: First Shop Should Usually Afford One Meaningful Upgrade
+
+- Decision: Shop economy should let the first shop usually provide at least one meaningful upgrade while keeping Duplicate and Remove strategic.
+- Reason: The first shop should feel rewarding without making every offer free or weakening current-run deckbuilding decisions.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

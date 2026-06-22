@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 62 Run Continue / Exit Flow Cleanup complete.
+Current phase: Phase 63 Shop Economy + Upgrade Feedback Pass complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1699,8 +1699,64 @@ Verification:
 
 - `npm run build` passed after Phase 62.
 
+## Phase 63 Shop Economy + Upgrade Feedback Pass Summary
+
+Phase 63 improved the current-run Shop economy and purchase clarity without changing save rules or adding assets/dependencies.
+
+Completed:
+
+- Reviewed economy values before tuning:
+  - Starting gold: `20`
+  - Normal monster gold: `7`
+  - Elite bonus gold: `10`
+  - Event gold: Treasure Chest/Lost Backpack `10`, Ancient Library/Forgotten Signpost `8`, Cursed Door `15`
+  - Reroll: `5`
+  - Upgrade Attack: `35`
+  - Add Shield: `35`
+  - Add Element: `45`
+  - Remove Card: `30`
+  - Duplicate Card: `50`
+- Tuned shop costs modestly:
+  - Upgrade Attack `35 -> 30`
+  - Add Shield `35 -> 30`
+  - Add Element `45 -> 40`
+  - Remove Card `30 -> 40`
+  - Duplicate Card remains `50`
+  - Reroll remains `5`
+  - Starting gold, monster gold, elite bonus gold, and event gold remain unchanged
+- Added clearer offer-card affordability labels: `Affordable` or `Need +N`.
+- Added current-run badges to shop offers.
+- Improved target modal previews:
+  - Upgrade Attack shows `ATK before -> after`
+  - Add Shield shows `SHD before -> after`
+  - Add Element shows `Element before -> after`
+  - Remove Card shows deck size before/after
+  - Duplicate Card shows deck size before/after and copy-upgrade note
+  - Modal shows current gold, cost, and gold after trade
+- Added compact merchant receipt feedback after successful purchases and rerolls with affected card/action, before/after value, gold spent, remaining gold, and current-run-only reminder.
+- Improved insufficient-gold feedback with exact needed/current/missing gold.
+- Improved reroll feedback with visible gold before/after and refreshed-wares message.
+
+Balance reasoning:
+
+- The normal first shop should usually have about `55` gold after five normal monsters.
+- Basic upgrades at `30` make one meaningful upgrade easier without making every offer free.
+- A `5` gold reroll plus a basic upgrade is possible if the player reaches shop with enough gold.
+- Element items remain mid-cost at `40`.
+- Remove Card and Duplicate Card remain strategic and more expensive than basic upgrades.
+
+Preserved:
+
+- Shop upgrades remain current-run-only and are not persisted to LocalStorage.
+- Active runs remain in React memory only; no active-run persistence was added.
+- No backend, database, auth, API, React Router, cloud save, external state library, final art, image assets, audio assets, animation libraries, new dependencies, new decks, Oxford 3000 import, combat math changes outside the explicit shop economy costs, timer changes, mastery changes, save schema changes, deck unlock changes, Word Energy changes, or deployment changes were added.
+
+Verification:
+
+- `npm run build` passed after Phase 63.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. Do not start Phase 64 unless explicitly requested. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

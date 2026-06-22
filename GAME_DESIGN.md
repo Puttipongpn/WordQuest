@@ -437,10 +437,10 @@ Current shared values:
 - Word Match timer: `20` seconds
 - Word Scramble timer: `24` seconds
 - Shop reroll cost: `5` temporary gold
-- Upgrade Attack cost: `35` temporary gold
-- Add Shield cost: `35` temporary gold
-- Add Element cost: `45` temporary gold
-- Remove Card cost: `30` temporary gold
+- Upgrade Attack cost: `30` temporary gold
+- Add Shield cost: `30` temporary gold
+- Add Element cost: `40` temporary gold
+- Remove Card cost: `40` temporary gold
 - Duplicate Card cost: `50` temporary gold
 - Fire bonus damage: `+2`
 - Water shield gain: `+2`
@@ -468,6 +468,20 @@ Phase 49 made the first focused numeric tuning pass using the Phase 48 developme
 - Shop reroll cost remains `5`, but now lives in `src/game/balance.ts` with the other shop economy values.
 
 Phase 49 left player HP, starting gold, shop interval, boss requirement, monster stats, elite stats, boss stats, event rewards, encounter weights, mastery bonuses, element effects, and Word Energy thresholds unchanged.
+
+Phase 63 tuned Shop economy and feedback while leaving gold income and combat values unchanged:
+
+- Starting gold remains `20`.
+- Gold per normal monster remains `7`, so a normal first shop is usually around `55` gold after five defeated monsters.
+- Elite bonus gold remains `10`.
+- Event gold remains Treasure Chest/Lost Backpack `10`, Ancient Library/Forgotten Signpost `8`, and Cursed Door `15`.
+- Shop reroll remains `5`.
+- Upgrade Attack cost changed from `35` to `30`.
+- Add Shield cost changed from `35` to `30`.
+- Add Element cost changed from `45` to `40`.
+- Remove Card cost changed from `30` to `40` so deck trimming remains strategic instead of cheaper than basic upgrades.
+- Duplicate Card remains `50`.
+- The expected first-shop feel is one meaningful basic upgrade, or sometimes one reroll plus a basic upgrade, without letting players buy every offer.
 
 ## Training Mode
 
@@ -734,11 +748,17 @@ Current shop rules:
 - Shop upgrades are explained as temporary current-run upgrades.
 - The Shop uses limited randomized offers instead of exposing every deck-editing control at once.
 - Each shop visit shows 4 randomized item offers from the existing shop item pool.
-- Shop offer cards show icon placeholder, name, description, cost, type, and eligible target count.
+- Shop offer cards show icon placeholder, name, description, cost, type, eligible target count, current-run label, and affordability state.
 - Selecting a shop offer opens a focused modal with up to 4 eligible current-run word card targets.
 - Purchase confirmation happens in the modal before spending temporary gold or mutating the current-run deck.
+- Target modal previews show current gold, item cost, gold after purchase, and the target-specific before/after change.
+- Upgrade Attack previews show ATK before/after.
+- Add Shield previews show SHD before/after.
+- Add Element previews show element before/after.
+- Remove Card previews show deck size before/after and current-run-only removal copy.
+- Duplicate Card previews show deck size before/after and explain that copies keep current upgrades.
 - Shop offers can be rerolled for 5 temporary current-run gold.
-- Rerolling shop offers does not mutate the deck and is not saved to LocalStorage.
+- Rerolling shop offers spends gold, refreshes visible offers, shows reroll feedback, does not mutate the deck, and is not saved to LocalStorage.
 - `Upgrade Attack` is purchasable.
 - `Upgrade Attack` uses its existing shop item cost.
 - If the player has enough temporary gold, the player can choose one current-run card and increase its `baseAttack` by +2.
@@ -761,7 +781,8 @@ Current shop rules:
 - `Duplicate Card` uses its existing shop item cost.
 - If the player has enough temporary gold, the player can choose one current-run card and add a unique-id copy of it to the current-run deck.
 - Duplicates preserve current-run upgrades, including upgraded `baseAttack`, shield effects, and element effects.
-- If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback.
+- Successful purchases show a compact receipt with affected card/action, before/after values, gold spent, remaining gold, and current-run-only reminder.
+- If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback with needed/current/missing gold and does not mutate state.
 - If a selected current-run card becomes stale after deck mutation, purchase logic refuses the purchase and the Shop falls back to a valid selection.
 - Dungeon can route to Shop when a checkpoint is available.
 - Shop can route back to Dungeon.

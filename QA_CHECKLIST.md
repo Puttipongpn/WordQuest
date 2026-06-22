@@ -88,6 +88,30 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Duplicate Card preserves current-run upgrades and creates a unique card id.
 - Shop changes reset on run restart, run failure, deck change, page refresh, or Abandon Run.
 
+## Shop Economy And Feedback
+
+- First shop usually allows at least one basic upgrade after five normal monster defeats.
+- Upgrade Attack target preview shows ATK before/after.
+- Add Shield target preview shows SHD before/after.
+- Add Element target preview shows element before/after.
+- Remove Card target preview shows deck size before/after and current-run-only removal copy.
+- Duplicate Card target preview shows deck size before/after and copy-keeps-upgrades copy.
+- Purchase modal shows current gold, cost, and gold after purchase.
+- Purchase success feedback appears clearly after the modal closes.
+- Purchase receipt shows affected card or action.
+- Purchase receipt shows gold spent and remaining gold.
+- Insufficient gold shows needed/current/missing gold.
+- Insufficient gold does not spend gold.
+- Insufficient gold does not mutate cards or deck size.
+- Reroll success clearly refreshes offers and spends gold.
+- Reroll feedback shows gold before/after.
+- Reroll failure does not spend gold or change offers.
+- Shop offer cards show affordability state.
+- Shop upgrades remain current-run-only.
+- Shop changes reset on run end, abandon, refresh, deck change, or new run.
+- Mobile Shop target modal remains usable with reachable confirm/cancel buttons.
+- Sound toggle still works with shop buy/error/reroll sounds when enabled.
+
 ## Encounters
 
 - Event encounters show choices immediately.

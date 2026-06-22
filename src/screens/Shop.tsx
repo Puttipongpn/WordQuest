@@ -37,7 +37,11 @@ type ShopProps = {
 
 type PurchaseFeedback = {
   tone: "success" | "danger" | "neutral";
+  title: string;
   message: string;
+  details?: string[];
+  badge?: string;
+  affectedCardId?: string;
 };
 
 const offerCount = 4;
@@ -115,19 +119,19 @@ function getPurchasePreview(item: ShopItem, card: WordCard, deckSize: number) {
   const element = getShopItemElement(item);
 
   if (item.type === "upgrade-attack") {
-    return `Attack ${card.baseAttack} -> ${card.baseAttack + UPGRADE_ATTACK_AMOUNT}`;
+    return `ATK ${card.baseAttack} -> ${card.baseAttack + UPGRADE_ATTACK_AMOUNT}`;
   }
 
   if (item.type === "add-shield") {
     const currentShield = getCardShieldAmount(card);
 
-    return `Shield ${currentShield} -> ${currentShield + ADD_SHIELD_AMOUNT}`;
+    return `SHD +${currentShield} -> +${currentShield + ADD_SHIELD_AMOUNT}`;
   }
 
   if (element) {
     const currentElement = getCardElement(card);
 
-    return `${
+    return `Element ${
       currentElement ? formatElementName(currentElement.element) : "No element"
     } -> ${formatElementName(element)}`;
   }
@@ -141,6 +145,18 @@ function getPurchasePreview(item: ShopItem, card: WordCard, deckSize: number) {
   }
 
   return getCardEffectSummary(card);
+}
+
+function getPurchasePreviewHelper(item: ShopItem) {
+  if (item.type === "remove-card") {
+    return "Removed from this run only.";
+  }
+
+  if (item.type === "duplicate-card") {
+    return "Copy keeps current upgrades.";
+  }
+
+  return "Applies only to this run.";
 }
 
 function getOfferShortEffect(item: ShopItem) {
@@ -195,6 +211,120 @@ function getPurchaseSuccessMessage(item: ShopItem, card: WordCard) {
   return `${item.name} purchased.`;
 }
 
+function getPurchaseReceipt(
+  item: ShopItem,
+  card: WordCard,
+  deckSizeBefore: number,
+  goldBefore: number,
+): PurchaseFeedback {
+  const element = getShopItemElement(item);
+  const goldAfter = goldBefore - item.cost;
+  const goldLine = `Gold: ${goldBefore} -> ${goldAfter} (${item.cost} spent)`;
+  const currentRunLine =
+    "Current-run only: lost on run end, abandon, refresh, or deck change.";
+
+  if (item.type === "upgrade-attack") {
+    const attackAfter = card.baseAttack + UPGRADE_ATTACK_AMOUNT;
+
+    return {
+      tone: "success",
+      title: "Card Upgraded!",
+      badge: `+${UPGRADE_ATTACK_AMOUNT} ATK`,
+      affectedCardId: card.id,
+      message: `${card.word} upgraded: ATK ${card.baseAttack} -> ${attackAfter}.`,
+      details: [
+        `${card.word}: ATK ${card.baseAttack} -> ${attackAfter}`,
+        goldLine,
+        currentRunLine,
+      ],
+    };
+  }
+
+  if (item.type === "add-shield") {
+    const shieldBefore = getCardShieldAmount(card);
+    const shieldAfter = shieldBefore + ADD_SHIELD_AMOUNT;
+
+    return {
+      tone: "success",
+      title: "Ward Added!",
+      badge: `SHD +${ADD_SHIELD_AMOUNT}`,
+      affectedCardId: card.id,
+      message: `${card.word} upgraded: SHD +${shieldBefore} -> +${shieldAfter}.`,
+      details: [
+        `${card.word}: SHD +${shieldBefore} -> +${shieldAfter}`,
+        goldLine,
+        currentRunLine,
+      ],
+    };
+  }
+
+  if (element) {
+    const currentElement = getCardElement(card);
+    const beforeElement = currentElement
+      ? formatElementName(currentElement.element)
+      : "None";
+    const afterElement = formatElementName(element);
+
+    return {
+      tone: "success",
+      title: "Enchanted!",
+      badge: `${afterElement} Element`,
+      affectedCardId: card.id,
+      message: `${card.word} element changed: ${beforeElement} -> ${afterElement}.`,
+      details: [
+        `${card.word}: Element ${beforeElement} -> ${afterElement}`,
+        goldLine,
+        currentRunLine,
+      ],
+    };
+  }
+
+  if (item.type === "remove-card") {
+    return {
+      tone: "success",
+      title: "Deck Trimmed!",
+      badge: "Removed",
+      affectedCardId: card.id,
+      message: `${card.word} removed from the current-run deck.`,
+      details: [
+        `${card.word}: removed from this run only`,
+        `Deck size: ${deckSizeBefore} -> ${deckSizeBefore - 1}`,
+        goldLine,
+        currentRunLine,
+      ],
+    };
+  }
+
+  if (item.type === "duplicate-card") {
+    return {
+      tone: "success",
+      title: "Card Copied!",
+      badge: "Copied",
+      affectedCardId: card.id,
+      message: `${card.word} duplicated with current-run upgrades preserved.`,
+      details: [
+        `${card.word}: copy added`,
+        `Deck size: ${deckSizeBefore} -> ${deckSizeBefore + 1}`,
+        goldLine,
+        currentRunLine,
+      ],
+    };
+  }
+
+  return {
+    tone: "success",
+    title: "Trade Complete!",
+    badge: "Purchased",
+    affectedCardId: card.id,
+    message: `${getPurchaseSuccessMessage(item, card)} Temporary run change only.`,
+    details: [goldLine, currentRunLine],
+  };
+}
+
+function getNotEnoughGoldDetails(cost: number, runGold: number) {
+  return [`Need ${cost} gold. You have ${runGold}.`, `Missing ${cost - runGold} gold.`];
+}
+
 export function Shop({
   currentRunDeck,
   onNavigate,
@@ -215,6 +345,7 @@ export function Shop({
   const [selectedTargetId, setSelectedTargetId] = useState("");
   const [purchaseFeedback, setPurchaseFeedback] = useState<PurchaseFeedback>({
     tone: "neutral",
+    title: "Merchant Note",
     message:
       "Choose a limited shop offer, then pick from a small set of current-run card targets.",
   });
@@ -247,6 +378,7 @@ export function Shop({
     setSelectedTargetId("");
     setPurchaseFeedback({
       tone: "danger",
+      title: "Target Lost",
       message: "That target is no longer available in the current-run deck.",
     });
   }, [activeOffer, currentRunDeck, selectedTargetId]);
@@ -258,6 +390,7 @@ export function Shop({
       playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
+        title: "No Eligible Targets",
         message: `${item.name} has no eligible targets right now.`,
       });
       return;
@@ -271,7 +404,16 @@ export function Shop({
     playSound(runGold < item.cost ? "shop-error" : "ui-click");
     setPurchaseFeedback({
       tone: "neutral",
+      title: runGold >= item.cost ? "Inspect Ware" : "Not Enough Gold",
       message: `Choose one current-run card for ${item.name}. Gold is spent only after confirmation.`,
+      details:
+        runGold >= item.cost
+          ? [
+              `Current gold: ${runGold}`,
+              `Cost: ${item.cost}`,
+              `Gold after purchase: ${runGold - item.cost}`,
+            ]
+          : getNotEnoughGoldDetails(item.cost, runGold),
     });
   }
 
@@ -287,12 +429,15 @@ export function Shop({
       playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
+        title: "Choose A Target",
         message: "Choose a valid target before confirming the purchase.",
       });
       return;
     }
 
     const element = getShopItemElement(activeOffer);
+    const goldBefore = runGold;
+    const deckSizeBefore = currentRunDeck.length;
     const isPurchased =
       activeOffer.type === "upgrade-attack"
         ? onPurchaseAttackUpgrade(activeTarget.id, activeOffer.cost)
@@ -314,27 +459,39 @@ export function Shop({
       playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
+        title: runGold < activeOffer.cost ? "Not Enough Gold" : "Trade Blocked",
         message: `Unable to buy ${activeOffer.name}. Check gold, target validity, and current-run deck safety rules.`,
+        details:
+          runGold < activeOffer.cost
+            ? getNotEnoughGoldDetails(activeOffer.cost, runGold)
+            : [
+                "No gold was spent.",
+                "No card was changed.",
+                "Remove Card must preserve deck-size and distinct-word safety rules.",
+              ],
       });
       return;
     }
 
     playSound("shop-buy");
-    setPurchaseFeedback({
-      tone: "success",
-      message: `${getPurchaseSuccessMessage(activeOffer, activeTarget)} Temporary run change only.`,
-    });
+    setPurchaseFeedback(
+      getPurchaseReceipt(activeOffer, activeTarget, deckSizeBefore, goldBefore),
+    );
     setActiveOffer(null);
     setTargetCards([]);
     setSelectedTargetId("");
   }
 
   function rerollOffers() {
+    const goldBefore = runGold;
+
     if (!onSpendRunGold(SHOP_REROLL_COST)) {
       playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
-        message: `Reroll costs ${SHOP_REROLL_COST} gold.`,
+        title: "Not Enough Gold",
+        message: "The merchant keeps the current wares on the table.",
+        details: getNotEnoughGoldDetails(SHOP_REROLL_COST, runGold),
       });
       return;
     }
@@ -346,7 +503,13 @@ export function Shop({
     setSelectedTargetId("");
     setPurchaseFeedback({
       tone: "success",
-      message: `Shop offers rerolled for ${SHOP_REROLL_COST} current-run gold.`,
+      title: "Wares Refreshed!",
+      badge: "Rerolled",
+      message: `Shop offers refreshed for ${SHOP_REROLL_COST} current-run gold.`,
+      details: [
+        `Gold: ${goldBefore} -> ${goldBefore - SHOP_REROLL_COST}`,
+        "New limited offers are ready.",
+      ],
     });
   }
 
@@ -422,6 +585,7 @@ export function Shop({
           const eligibleTargetCount = offerTargetCounts[item.id] ?? 0;
           const hasEnoughGold = runGold >= item.cost;
           const canSelectOffer = eligibleTargetCount > 0;
+          const missingGold = Math.max(item.cost - runGold, 0);
 
           return (
             <CardPanel
@@ -432,9 +596,14 @@ export function Shop({
                 <div className="grid size-14 place-items-center rounded-xl border border-amber-900/15 bg-amber-100 text-sm font-black text-amber-950 shadow-inner">
                   {item.icon}
                 </div>
-                <Badge tone={canSelectOffer ? "emerald" : "red"}>
-                  {item.type.replaceAll("-", " ")}
-                </Badge>
+                <div className="flex flex-col items-end gap-2">
+                  <Badge tone={canSelectOffer ? "emerald" : "red"}>
+                    {item.type.replaceAll("-", " ")}
+                  </Badge>
+                  <Badge tone={hasEnoughGold ? "emerald" : "red"}>
+                    {hasEnoughGold ? "Affordable" : `Need +${missingGold}`}
+                  </Badge>
+                </div>
               </div>
               <div className="mt-4 flex flex-1 flex-col">
                 <h3 className="text-xl font-black text-amber-950">
@@ -450,6 +619,7 @@ export function Shop({
               <div className="mt-4 border-t border-amber-900/10 pt-3">
                 <div className="mb-3 flex items-center justify-between gap-3">
                   <Badge tone="amber">{item.cost} gold</Badge>
+                  <Badge tone="sky">Current-run</Badge>
                   <p className="text-xs font-black uppercase text-amber-800/70">
                     {eligibleTargetCount > 0
                       ? `${eligibleTargetCount} eligible`
@@ -467,7 +637,7 @@ export function Shop({
                 </Button>
                 {!hasEnoughGold && canSelectOffer && (
                   <p className="mt-2 text-xs font-bold text-red-700">
-                    Not enough gold to buy after selecting.
+                    Need {item.cost} gold. You have {runGold}.
                   </p>
                 )}
               </div>
@@ -485,10 +655,31 @@ export function Shop({
               : "border-amber-700/20 bg-amber-50"
         }`}
       >
-        <p className="font-black text-amber-950">Merchant Note</p>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="font-black text-amber-950">
+            {purchaseFeedback.title}
+          </p>
+          {purchaseFeedback.badge && (
+            <Badge tone={purchaseFeedback.tone === "danger" ? "red" : "emerald"}>
+              {purchaseFeedback.badge}
+            </Badge>
+          )}
+        </div>
         <p className="mt-1 text-sm font-medium text-amber-950/75">
           {purchaseFeedback.message}
         </p>
+        {purchaseFeedback.details && purchaseFeedback.details.length > 0 && (
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {purchaseFeedback.details.map((detail) => (
+              <p
+                key={detail}
+                className="rounded-lg border border-amber-900/10 bg-white/70 px-3 py-2 text-sm font-black text-amber-950"
+              >
+                {detail}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
 
       {activeOffer && (
@@ -510,6 +701,35 @@ export function Shop({
               </Badge>
             </div>
 
+            <div className="mt-3 grid gap-2 rounded-2xl border border-amber-900/10 bg-white/70 p-3 sm:grid-cols-3">
+              <div>
+                <p className="text-xs font-black uppercase text-amber-800/70">
+                  Current Gold
+                </p>
+                <p className="mt-1 text-xl font-black">{runGold}</p>
+              </div>
+              <div>
+                <p className="text-xs font-black uppercase text-amber-800/70">
+                  Cost
+                </p>
+                <p className="mt-1 text-xl font-black">{activeOffer.cost}</p>
+              </div>
+              <div>
+                <p className="text-xs font-black uppercase text-amber-800/70">
+                  After Trade
+                </p>
+                <p
+                  className={`mt-1 text-xl font-black ${
+                    runGold >= activeOffer.cost
+                      ? "text-emerald-800"
+                      : "text-red-700"
+                  }`}
+                >
+                  {runGold - activeOffer.cost}
+                </p>
+              </div>
+            </div>
+
             <div className="mt-3 grid gap-2 sm:mt-5 sm:grid-cols-2 sm:gap-3">
               {targetCards.map((card) => {
                 const isSelected = selectedTargetId === card.id;
@@ -518,13 +738,13 @@ export function Shop({
                   <button
                     key={card.id}
                     type="button"
-                  onClick={() => setSelectedTargetId(card.id)}
-                  className={`rounded-2xl border-2 p-2.5 text-left transition sm:p-3 ${
-                    isSelected
-                      ? "selected-glow border-emerald-500 bg-white shadow-md ring-2 ring-emerald-200"
-                      : "border-amber-900/10 bg-white/75 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md active:translate-y-0.5"
-                  }`}
-                >
+                    onClick={() => setSelectedTargetId(card.id)}
+                    className={`rounded-2xl border-2 p-2.5 text-left transition sm:p-3 ${
+                      isSelected
+                        ? "selected-glow border-emerald-500 bg-white shadow-md ring-2 ring-emerald-200"
+                        : "border-amber-900/10 bg-white/75 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md active:translate-y-0.5"
+                    }`}
+                  >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
                         <p className="truncate text-lg font-black capitalize sm:text-xl">
@@ -545,6 +765,9 @@ export function Shop({
                         card,
                         currentRunDeck.length,
                       )}
+                    </p>
+                    <p className="mt-2 text-xs font-bold text-amber-900/70">
+                      {getPurchasePreviewHelper(activeOffer)}
                     </p>
                   </button>
                 );
@@ -570,12 +793,12 @@ export function Shop({
                   runGold < activeOffer.cost
                 }
               >
-                Confirm Trade
+                Confirm Trade ({activeOffer.cost} gold)
               </Button>
             </div>
             {runGold < activeOffer.cost && (
               <p className="mt-3 text-right text-sm font-black text-red-700">
-                Not enough gold.
+                Not enough gold. Need {activeOffer.cost}; you have {runGold}.
               </p>
             )}
           </div>

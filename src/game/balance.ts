@@ -20,10 +20,10 @@ export const WORD_CHOICE_TIME_LIMIT = 14;
 export const WORD_MATCH_TIME_LIMIT = 20;
 export const WORD_SCRAMBLE_TIME_LIMIT = 24;
 
-export const SHOP_UPGRADE_ATTACK_COST = 35;
-export const SHOP_ADD_SHIELD_COST = 35;
-export const SHOP_ADD_ELEMENT_COST = 45;
-export const SHOP_REMOVE_CARD_COST = 30;
+export const SHOP_UPGRADE_ATTACK_COST = 30;
+export const SHOP_ADD_SHIELD_COST = 30;
+export const SHOP_ADD_ELEMENT_COST = 40;
+export const SHOP_REMOVE_CARD_COST = 40;
 export const SHOP_DUPLICATE_CARD_COST = 50;
 export const SHOP_REROLL_COST = 5;
 
