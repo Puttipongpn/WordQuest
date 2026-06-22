@@ -2996,7 +2996,7 @@ export function Dungeon({
           )}
         </CardPanel>
 
-        <aside className="grid min-h-0 gap-3 lg:grid-cols-2 xl:block xl:h-full xl:space-y-3 xl:overflow-hidden">
+        <aside className="grid min-h-0 gap-3 lg:grid-cols-2 xl:block xl:h-full xl:max-h-full xl:space-y-3 xl:overflow-y-auto xl:overscroll-contain xl:pr-1">
           {!isEventEncounter && (
             <section
               className={`hidden rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] xl:block ${
