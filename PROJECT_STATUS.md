@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 61 Asset Direction + Asset Manifest Prep is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 62 Run Continue / Exit Flow Cleanup is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -761,6 +761,18 @@ Phase 61 Asset Direction + Asset Manifest Prep is complete. The production demo 
 - Documented that missing future assets must fall back safely to emoji/text/CSS placeholders and must never change gameplay behavior.
 - Preserved combat math, timer values, save schema, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, deployment setup, and all six manual decks.
 - Verified the project with `npm run build` after Phase 61.
+- Applied Phase 62 Run Continue / Exit Flow Cleanup.
+- Preserved active Dungeon runs in React memory while navigating between Dungeon and Home during the same app session.
+- Added Home `Continue Run` presentation with selected deck, floor, monsters defeated, HP/shield, encounter, gold, shop progress, and boss progress summary.
+- Added Start New Run confirmation on Home when an active run already exists.
+- Simplified Pause modal to `Resume`, `Return Home`, and `Abandon Run`.
+- Added non-destructive `Return Home` from Pause; it keeps the run paused in memory and prevents the timer from running offscreen.
+- Cleaned Abandon confirmation to `Continue Run` and `Abandon Run`, removing `Abandon & Restart`.
+- Abandon Run now discards the current temporary run and returns Home without marking a fake Run Failed result.
+- Active run state still is not persisted to LocalStorage and can be lost on refresh or page close.
+- Run Complete, Run Failed, Abandon Run, Reset Progress, deck change, and explicit fresh-run start clear or replace the active continue state.
+- Preserved combat math, timer values, save schema, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, deployment setup, asset plan, and all six manual decks.
+- Verified the project with `npm run build` after Phase 62.
 
 ## In Progress
 
@@ -768,7 +780,7 @@ Phase 61 Asset Direction + Asset Manifest Prep is complete. The production demo 
 
 ## Next Task
 
-Phase 61 is complete. Continue with the next explicitly requested phase or feature.
+Phase 62 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

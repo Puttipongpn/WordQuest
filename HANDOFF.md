@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 61 Asset Direction + Asset Manifest Prep complete.
+Current phase: Phase 62 Run Continue / Exit Flow Cleanup complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1662,6 +1662,42 @@ Preserved:
 Verification:
 
 - `npm run build` passed after Phase 61.
+
+## Phase 62 Run Continue / Exit Flow Cleanup Summary
+
+Phase 62 cleaned up Dungeon exit and continue behavior without adding active-run persistence.
+
+Completed:
+
+- Added in-session active run tracking in React memory.
+- Kept the `Dungeon` component mounted while hidden so internal battle state can survive Return Home / Continue Run in the same app session.
+- Added Home `Continue Run` UI when an active in-memory run exists.
+- Home Continue Run summary shows selected deck, floor, monsters defeated, HP, shield, encounter/status, gold, shop progress, and boss progress.
+- Added Home confirmation when starting a new run while an active run exists:
+  - `Continue Current Run`
+  - `Start New Run`
+- Simplified Pause modal:
+  - `Resume`
+  - `Return Home`
+  - `Abandon Run`
+- `Return Home` pauses the run, navigates Home, and keeps temporary run state in memory.
+- `Continue Run` returns to Dungeon with the run still paused/resumable.
+- Cleaned Abandon confirmation:
+  - `Continue Run`
+  - `Abandon Run`
+- Removed/deprecated `Abandon & Restart` from the player flow.
+- Abandon Run discards only the temporary run and returns Home without creating a fake failed-run result.
+
+Preserved:
+
+- Active run state is still not saved to LocalStorage and can be lost on refresh or page close.
+- Permanent progress remains limited to word mastery, unlocked decks, completed decks, and saved statistics.
+- Run Complete, Run Failed, Abandon Run, Reset Progress, deck change, and explicit Start New Run clear or replace the active continue state.
+- No backend, database, auth, API, React Router, cloud save, external state library, new dependencies, final art, image assets, animation libraries, combat math changes, timer value changes, mastery rule changes, save schema changes, shop/event/boss effect changes, deck unlock changes, Word Energy rule changes, or deployment setup changes were added.
+
+Verification:
+
+- `npm run build` passed after Phase 62.
 
 ## Next Recommended Task
 

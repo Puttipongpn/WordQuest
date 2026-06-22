@@ -1,6 +1,7 @@
 export type {
   Boss,
   CardEffect,
+  ActiveRunSummary,
   DifficultyLevel,
   ElementType,
   MiniGameType,

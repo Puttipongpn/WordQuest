@@ -230,14 +230,25 @@ Sound settings are not player progress. They use a separate LocalStorage key and
 
 Dungeon uses explicit `Abandon Run` wording for leaving an active temporary run.
 
+Phase 62 adds an in-session Continue Run / Return Home flow.
+
+Continue Run rules:
+
+- Active dungeon runs may be preserved in React memory across screen navigation.
+- Version 1 still does not persist active run state to LocalStorage.
+- If the page is refreshed or closed, the active run can still be lost.
+- Return Home is non-destructive: it leaves Dungeon, pauses the timer, keeps the current run in memory, and lets Home show Continue Run.
+- Continue Run returns to the active in-memory run.
+- Starting a new run while an active run exists should require confirmation because it abandons the current temporary run.
+
 Abandon Run rules:
 
 - Abandon Run ends only the current temporary run.
 - Abandon Run never clears word mastery, unlocked decks, completed decks, or saved permanent statistics.
 - Abandon Run resets temporary HP, shield, gold, shop upgrades, card enchantments, duplicated cards, removed cards, current-run deck copy, monster state, boss state, event state, floor/progression state, and Word Energy.
 - Abandon Run requires confirmation before resetting the temporary run.
-- `Abandon & Go Home` resets temporary run state and returns to Home.
-- `Abandon & Restart` resets temporary run state and starts a fresh run with the same selected deck.
+- Confirmed Abandon Run resets temporary run state and returns Home.
+- `Abandon & Restart` is intentionally removed from the player-facing flow; players can start a new run after abandoning if they want a fresh run.
 - Run Complete and Run Failed navigation actions clear temporary run state before leaving Dungeon.
 
 Reset Progress is different from Abandon Run. Reset Progress is the only player action that clears permanent progress in LocalStorage.

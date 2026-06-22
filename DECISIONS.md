@@ -1126,6 +1126,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: WordQuest should be ready for real cozy fantasy pixel art later without making the current static demo depend on missing image files or altering the tested learning/combat loop.
 - Status: Accepted
 
+### 2026-06-22: Active Runs Can Continue In Memory Only
+
+- Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.
+- Reason: Players need a clearer Return Home / Continue Run flow during one app session without weakening the roguelike reset rules or changing the save schema.
+- Status: Accepted
+
+### 2026-06-22: Return Home Is Non-Destructive
+
+- Decision: Abandon Run means discarding the current temporary run. Returning Home is non-destructive and should preserve the active run in memory.
+- Reason: Separating these actions makes Dungeon exit choices clearer and reduces accidental loss of temporary run progress.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

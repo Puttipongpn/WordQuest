@@ -53,6 +53,7 @@ import {
   getMasteryStatusLabel,
 } from "../game/mastery";
 import type {
+  ActiveRunSummary,
   Monster,
   Boss,
   RunProgressState,
@@ -67,6 +68,8 @@ import { playSound } from "../utils/soundManager";
 type DungeonProps = {
   currentRunDeck: WordCard[];
   isSelectedDeckCompleted: boolean;
+  onAbandonRun: () => void;
+  onActiveRunStarted: () => void;
   onCompleteSelectedDeck: () => CompletionReward;
   onAddRandomElementToRunCard: () => { word: string; element: string } | null;
   onAddShieldToRandomRunCard: (amount?: number) => string | null;
@@ -83,6 +86,12 @@ type DungeonProps = {
   onResetRun: () => void;
   onResetWordFatigue: () => void;
   onRecoverWordEnergy: () => void;
+  onRunSnapshotChange: (
+    snapshot: Pick<
+      ActiveRunSummary,
+      "playerHp" | "shield" | "encounterName" | "statusLabel"
+    >,
+  ) => void;
   onUpgradeRandomRunCardAttack: (amount?: number) => string | null;
   onUpdateRunStatistics: (nextStatistics: RunStatistics) => void;
   runGold: number;
@@ -1010,6 +1019,8 @@ function getBossDefeatText(encounter: Monster) {
 export function Dungeon({
   currentRunDeck,
   isSelectedDeckCompleted,
+  onAbandonRun,
+  onActiveRunStarted,
   onCompleteSelectedDeck,
   onAddRandomElementToRunCard,
   onAddShieldToRandomRunCard,
@@ -1023,6 +1034,7 @@ export function Dungeon({
   onResetRun,
   onResetWordFatigue,
   onRecoverWordEnergy,
+  onRunSnapshotChange,
   onUpgradeRandomRunCardAttack,
   onUpdateRunStatistics,
   runGold,
@@ -1232,6 +1244,41 @@ export function Dungeon({
   const lastEventResultMessage = battleLog.message.startsWith("Event result:")
     ? battleLog.message
     : "";
+  const runSnapshotStatus =
+    isPaused
+      ? "Paused"
+      : battleStatus === "encounter-intro"
+        ? "At encounter"
+        : battleStatus === "event"
+          ? "At event"
+          : battleStatus === "monster-defeated"
+            ? "Checkpoint"
+            : battleStatus === "fighting"
+              ? isAnswered
+                ? "Answered"
+                : "In battle"
+              : battleStatus === "run-complete"
+                ? "Complete"
+                : battleStatus === "run-failed"
+                  ? "Run failed"
+                  : "Dungeon";
+
+  useEffect(() => {
+    onRunSnapshotChange({
+      playerHp,
+      shield,
+      encounterName: isEventEncounter ? currentEvent.title : currentEncounter.name,
+      statusLabel: runSnapshotStatus,
+    });
+  }, [
+    currentEncounter.name,
+    currentEvent.title,
+    isEventEncounter,
+    onRunSnapshotChange,
+    playerHp,
+    runSnapshotStatus,
+    shield,
+  ]);
 
   function getEventOptionUnavailableReason(
     option: DungeonEventOption,
@@ -1345,6 +1392,17 @@ export function Dungeon({
       tone: "neutral",
       message: "Battle resumed. Answer before the timer runs out.",
     });
+  }
+
+  function returnHomeWithRunPaused() {
+    playSound("ui-click");
+    setIsPaused(true);
+    setIsAbandonConfirmOpen(false);
+    setBattleLog({
+      tone: "neutral",
+      message: "Run paused and kept in memory. Continue Run from Home to resume.",
+    });
+    onNavigate("home");
   }
 
   function playDelayedSound(soundType: Parameters<typeof playSound>[0]) {
@@ -2157,6 +2215,7 @@ export function Dungeon({
     const nextMiniGameType = chooseBattleMiniGame();
 
     playSound("ui-click");
+    onActiveRunStarted();
     onResetRun();
     onResetWordFatigue();
     setPlayerHp(PLAYER_MAX_HP);
@@ -2187,14 +2246,9 @@ export function Dungeon({
   function abandonRunAndGoHome() {
     setIsAbandonConfirmOpen(false);
     setIsPaused(false);
-    onResetRun();
+    onAbandonRun();
     onResetWordFatigue();
     onNavigate("home");
-  }
-
-  function abandonRunAndRestart() {
-    setIsAbandonConfirmOpen(false);
-    handleRestartRun();
   }
 
   function leaveEndedRun(screen: ScreenName) {
@@ -3155,11 +3209,15 @@ export function Dungeon({
                 <Badge tone="amber">Paused</Badge>
                 <h3 className="mt-3 text-5xl font-black">PAUSED</h3>
                 <p className="mt-3 text-sm font-bold leading-6 text-amber-900/75">
-                  Timer stopped. Question inputs are disabled until you resume.
+                  Timer stopped. Resume continues this battle. Return Home keeps
+                  this run available in memory. Abandon Run discards it.
                 </p>
                 <div className="mt-6 grid gap-3">
                   <Button type="button" onClick={resumeBattle}>
                     Resume
+                  </Button>
+                  <Button type="button" onClick={returnHomeWithRunPaused} variant="secondary">
+                    Return Home
                   </Button>
                   <Button type="button" onClick={openAbandonRunConfirm} variant="danger">
                     Abandon Run
@@ -3190,10 +3248,7 @@ export function Dungeon({
                     Continue Run
                   </Button>
                   <Button type="button" variant="danger" onClick={abandonRunAndGoHome}>
-                    Abandon & Go Home
-                  </Button>
-                  <Button type="button" variant="ghost" onClick={abandonRunAndRestart}>
-                    Abandon & Restart
+                    Abandon Run
                   </Button>
                 </div>
               </div>

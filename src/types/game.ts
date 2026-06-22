@@ -122,6 +122,19 @@ export type RunProgressState = {
   nextShopAt: number;
 };
 
+export type ActiveRunSummary = {
+  deckName: string;
+  currentFloor: number;
+  monstersDefeated: number;
+  nextShopAt: number;
+  bossRequirement: number;
+  gold: number;
+  playerHp?: number;
+  shield?: number;
+  encounterName?: string;
+  statusLabel?: string;
+};
+
 export type Monster = {
   id: string;
   name: string;

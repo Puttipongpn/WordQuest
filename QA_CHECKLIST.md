@@ -118,9 +118,29 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Resume continues the active battle.
 - Abandon Run requires confirmation.
 - Abandon Run clears only temporary run state.
+- Abandon & Restart is removed or no longer shown.
 - Reset Progress requires confirmation.
 - Reset Progress clears word mastery, unlocked decks back to default, completed decks, and permanent statistics.
 - Reset Progress returns deck access to Starter Deck only.
+
+## Run Continue
+
+- Pause opens modal.
+- Resume continues current battle.
+- Return Home leaves Dungeon without abandoning the run.
+- Home shows Continue Run when an active run exists.
+- Continue Run returns to the active run.
+- Timer does not run while player is on Home.
+- Continue Run does not create duplicate timers.
+- Abandon Run requires confirmation.
+- Abandon Run discards current run.
+- Abandon Run does not clear word mastery, unlocked decks, completed decks, or permanent stats.
+- Abandon & Restart is removed or no longer shown.
+- Starting a new run while an active run exists requires confirmation.
+- Run Complete clears active continue state.
+- Run Failed clears active continue state.
+- Page refresh can still lose active run state for Version 1.
+- Reset Progress clears permanent progress and active run state.
 
 ## Responsive Smoke Test
 

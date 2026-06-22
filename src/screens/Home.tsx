@@ -8,6 +8,7 @@ import {
   getNextUnlockTarget,
 } from "../game/deckProgression";
 import type {
+  ActiveRunSummary,
   PlayerStatistics,
   ScreenName,
   VocabularyDeck,
@@ -15,11 +16,15 @@ import type {
 } from "../types";
 
 type HomeProps = {
+  activeRunSummary: ActiveRunSummary;
   availableDecks: VocabularyDeck[];
   completedDeckIds: string[];
+  hasActiveRun: boolean;
+  onContinueRun: () => void;
   onNavigate: (screen: ScreenName) => void;
   onResetProgress: () => void;
   onSelectDeck: (deckId: string) => void;
+  onStartNewRun: () => void;
   playerStatistics: PlayerStatistics;
   selectedDeckId: string;
   unlockedDeckIds: string[];
@@ -52,17 +57,23 @@ function getDeckMasterySummary(
 }
 
 export function Home({
+  activeRunSummary,
   availableDecks,
   completedDeckIds,
+  hasActiveRun,
+  onContinueRun,
   onNavigate,
   onResetProgress,
   onSelectDeck,
+  onStartNewRun,
   playerStatistics,
   selectedDeckId,
   unlockedDeckIds,
   wordMastery,
 }: HomeProps) {
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
+  const [isStartNewRunConfirmOpen, setIsStartNewRunConfirmOpen] =
+    useState(false);
   const selectedDeck =
     availableDecks.find((deck) => deck.id === selectedDeckId) ??
     availableDecks[0];
@@ -87,6 +98,20 @@ export function Home({
   function confirmResetProgress() {
     onResetProgress();
     setIsResetConfirmOpen(false);
+  }
+
+  function requestStartAdventure() {
+    if (hasActiveRun) {
+      setIsStartNewRunConfirmOpen(true);
+      return;
+    }
+
+    onStartNewRun();
+  }
+
+  function confirmStartNewRun() {
+    onStartNewRun();
+    setIsStartNewRunConfirmOpen(false);
   }
 
   return (
@@ -169,6 +194,11 @@ export function Home({
             shield, gold, shop upgrades, and Word Energy are temporary run state.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
+            {hasActiveRun && (
+              <Button type="button" onClick={onContinueRun}>
+                Continue Run
+              </Button>
+            )}
             <Button type="button" onClick={() => onNavigate("deck-review")}>
               Open Spellbook
             </Button>
@@ -181,13 +211,59 @@ export function Home({
             </Button>
             <Button
               type="button"
-              onClick={() => onNavigate("dungeon")}
+              onClick={requestStartAdventure}
+              variant={hasActiveRun ? "secondary" : "primary"}
             >
-              Start Adventure
+              {hasActiveRun ? "Start New Run" : "Start Adventure"}
             </Button>
           </div>
           </div>
         </CardPanel>
+        {hasActiveRun && (
+          <CardPanel className="border-sky-800/30 bg-gradient-to-br from-sky-100 via-emerald-50 to-amber-50">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <Badge tone="sky">Current run in progress</Badge>
+                <h3 className="mt-2 text-2xl font-black text-amber-950">
+                  Continue your paused dungeon run.
+                </h3>
+                <p className="mt-2 text-sm font-bold leading-6 text-amber-900/75">
+                  This run is kept only in memory for this app session. Refreshing
+                  or closing the page can still lose it.
+                </p>
+              </div>
+              <Button type="button" onClick={onContinueRun}>
+                Continue Run
+              </Button>
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              <StatCard
+                label="Deck"
+                value={activeRunSummary.deckName}
+                helper={activeRunSummary.statusLabel ?? "Paused"}
+                tone="sky"
+              />
+              <StatCard
+                label="Floor"
+                value={activeRunSummary.currentFloor}
+                helper={`${activeRunSummary.monstersDefeated} defeated`}
+                tone="amber"
+              />
+              <StatCard
+                label="HP / Shield"
+                value={`${activeRunSummary.playerHp ?? "?"} / ${activeRunSummary.shield ?? "?"}`}
+                helper={activeRunSummary.encounterName ?? "Dungeon"}
+                tone="red"
+              />
+              <StatCard
+                label="Gold"
+                value={activeRunSummary.gold}
+                helper={`Shop ${activeRunSummary.nextShopAt}, Boss ${activeRunSummary.monstersDefeated}/${activeRunSummary.bossRequirement}`}
+                tone="emerald"
+              />
+            </div>
+          </CardPanel>
+        )}
         <CardPanel className="border-emerald-800/30 bg-gradient-to-br from-emerald-100 to-amber-50">
           <div className="flex items-center gap-4">
             <p className="grid size-16 place-items-center rounded-lg border border-amber-900/20 bg-white/70 text-5xl shadow-inner" aria-hidden="true">
@@ -568,6 +644,41 @@ export function Home({
               </Button>
               <Button type="button" variant="danger" onClick={confirmResetProgress}>
                 Reset All Progress
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isStartNewRunConfirmOpen && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-stone-950/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-3xl border-2 border-amber-300 bg-amber-50 p-6 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)]">
+            <Badge tone="amber">Start New Run</Badge>
+            <h3 className="mt-3 text-3xl font-black">Start a new run?</h3>
+            <p className="mt-3 text-sm font-bold leading-6 text-amber-900/80">
+              This will abandon your current in-memory dungeon run. Permanent
+              progress stays safe.
+            </p>
+            <div className="mt-4 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold leading-6 text-sky-950">
+              <p>Current run: {activeRunSummary.deckName}</p>
+              <p>
+                Floor {activeRunSummary.currentFloor}, {activeRunSummary.gold} gold,
+                {` ${activeRunSummary.monstersDefeated}`} monsters defeated.
+              </p>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  setIsStartNewRunConfirmOpen(false);
+                  onContinueRun();
+                }}
+              >
+                Continue Current Run
+              </Button>
+              <Button type="button" variant="danger" onClick={confirmStartNewRun}>
+                Start New Run
               </Button>
             </div>
           </div>

@@ -11,6 +11,7 @@ import {
 import { availableDecks, starterDeck } from "./data";
 import {
   ADD_SHIELD_AMOUNT,
+  BOSS_MONSTER_REQUIREMENT,
   EVENT_CARD_SHIELD_UPGRADE_AMOUNT,
   EVENT_ATTACK_UPGRADE_AMOUNT,
   GOLD_PER_MONSTER,
@@ -31,6 +32,7 @@ import {
   type WordFatigueByWord,
 } from "./game/cardFatigue";
 import type {
+  ActiveRunSummary,
   ElementType,
   RunProgressState,
   RunStatistics,
@@ -141,6 +143,13 @@ export default function App() {
   const [isAudioEnabled, setIsAudioEnabled] = useState(
     () => getAudioSettings().enabled,
   );
+  const [hasActiveRun, setHasActiveRun] = useState(false);
+  const [activeRunSnapshot, setActiveRunSnapshot] =
+    useState<Pick<
+      ActiveRunSummary,
+      "playerHp" | "shield" | "encounterName" | "statusLabel"
+    > | null>(null);
+  const [dungeonRunInstance, setDungeonRunInstance] = useState(0);
   const [currentRunDeck, setCurrentRunDeck] = useState<WordCard[]>(
     () => createRunDeckCopy(starterDeck),
   );
@@ -157,6 +166,15 @@ export default function App() {
         deck.id === selectedDeckId && unlockedDeckIds.includes(deck.id),
     ) ?? starterDeck;
   const playerStatistics = playerProgress.statistics;
+  const activeRunSummary: ActiveRunSummary = {
+    deckName: selectedDeck.name,
+    currentFloor: runProgress.currentFloor,
+    monstersDefeated: runProgress.monstersDefeated,
+    nextShopAt: runProgress.nextShopAt,
+    bossRequirement: BOSS_MONSTER_REQUIREMENT,
+    gold: runGold,
+    ...activeRunSnapshot,
+  };
 
   function increaseWordMastery(cardId: string) {
     setPlayerProgress((currentProgress) => {
@@ -186,6 +204,9 @@ export default function App() {
     setRunGold(STARTING_GOLD);
     setRunStatistics(initialRunStatistics);
     setWordFatigue({});
+    setHasActiveRun(false);
+    setActiveRunSnapshot(null);
+    setDungeonRunInstance((current) => current + 1);
     setCurrentRunDeck(createRunDeckCopy(starterDeck));
   }
 
@@ -404,6 +425,8 @@ export default function App() {
     outcome: "completed" | "failed",
     finalRunStatistics: RunStatistics,
   ) {
+    setHasActiveRun(false);
+    setActiveRunSnapshot(null);
     setPlayerProgress((currentProgress) => {
       const nextStatistics = {
         ...currentProgress.statistics,
@@ -452,6 +475,30 @@ export default function App() {
     setCurrentRunDeck(createRunDeckCopy(selectedDeck));
   }
 
+  function startFreshDungeonRun() {
+    resetCurrentRun();
+    setActiveRunSnapshot(null);
+    setHasActiveRun(true);
+    setDungeonRunInstance((current) => current + 1);
+    setCurrentScreen("dungeon");
+  }
+
+  function continueActiveRun() {
+    if (!hasActiveRun) {
+      startFreshDungeonRun();
+      return;
+    }
+
+    setCurrentScreen("dungeon");
+  }
+
+  function abandonActiveRun() {
+    resetCurrentRun();
+    setHasActiveRun(false);
+    setActiveRunSnapshot(null);
+    setDungeonRunInstance((current) => current + 1);
+  }
+
   function resetWordFatigue() {
     setWordFatigue({});
   }
@@ -471,8 +518,18 @@ export default function App() {
       playSound("ui-click");
     }
 
-    if (currentScreen === "shop" && screen === "dungeon") {
-      recoverRunWordEnergy();
+    if (screen === "dungeon") {
+      if (currentScreen === "shop") {
+        recoverRunWordEnergy();
+      }
+
+      if (hasActiveRun) {
+        setCurrentScreen("dungeon");
+        return;
+      }
+
+      startFreshDungeonRun();
+      return;
     }
 
     setCurrentScreen(screen);
@@ -505,6 +562,9 @@ export default function App() {
     setRunGold(STARTING_GOLD);
     setRunStatistics(initialRunStatistics);
     setWordFatigue({});
+    setHasActiveRun(false);
+    setActiveRunSnapshot(null);
+    setDungeonRunInstance((current) => current + 1);
     setCurrentRunDeck(createRunDeckCopy(nextDeck));
   }
 
@@ -718,11 +778,15 @@ export default function App() {
       <main>
         {currentScreen === "home" && (
           <Home
+            activeRunSummary={activeRunSummary}
             availableDecks={availableDecks}
             completedDeckIds={completedDeckIds}
+            hasActiveRun={hasActiveRun}
+            onContinueRun={continueActiveRun}
             onNavigate={navigateToScreen}
             onResetProgress={resetPlayerProgress}
             onSelectDeck={selectDeck}
+            onStartNewRun={startFreshDungeonRun}
             playerStatistics={playerStatistics}
             selectedDeckId={selectedDeck.id}
             unlockedDeckIds={unlockedDeckIds}
@@ -746,33 +810,38 @@ export default function App() {
             onNavigate={navigateToScreen}
           />
         )}
-        {currentScreen === "dungeon" && (
-          <Dungeon
-            key={selectedDeck.id}
-            currentRunDeck={currentRunDeck}
-            isSelectedDeckCompleted={completedDeckIds.includes(selectedDeck.id)}
-            onCompleteSelectedDeck={markSelectedDeckCompleted}
-            onIncreaseWordFatigue={increaseWordFatigue}
-            onGainRunGold={gainRunGold}
-            onMonsterDefeated={recordMonsterDefeated}
-            onNavigate={navigateToScreen}
-            onRecordRunEnded={recordRunEnded}
-            onResetRun={resetCurrentRun}
-            onResetWordFatigue={resetWordFatigue}
-            onUpgradeRandomRunCardAttack={upgradeRandomRunCardAttack}
-            onAddRandomElementToRunCard={addRandomElementToRunCard}
-            onAddShieldToRandomRunCard={addShieldToRandomRunCard}
-            onQaAddRunGold={qaAddRunGold}
-            onQaSetRunProgress={qaSetRunProgress}
-            onRecoverWordEnergy={recoverRunWordEnergy}
-            onUpdateRunStatistics={updateRunStatistics}
-            runGold={runGold}
-            runProgress={runProgress}
-            runStatistics={runStatistics}
-            selectedDeck={selectedDeck}
-            wordFatigue={wordFatigue}
-            wordMastery={wordMastery}
-          />
+        {(hasActiveRun || currentScreen === "dungeon") && (
+          <div className={currentScreen === "dungeon" ? "block" : "hidden"}>
+            <Dungeon
+              key={`${selectedDeck.id}-${dungeonRunInstance}`}
+              currentRunDeck={currentRunDeck}
+              isSelectedDeckCompleted={completedDeckIds.includes(selectedDeck.id)}
+              onAbandonRun={abandonActiveRun}
+              onActiveRunStarted={() => setHasActiveRun(true)}
+              onCompleteSelectedDeck={markSelectedDeckCompleted}
+              onIncreaseWordFatigue={increaseWordFatigue}
+              onGainRunGold={gainRunGold}
+              onMonsterDefeated={recordMonsterDefeated}
+              onNavigate={navigateToScreen}
+              onRecordRunEnded={recordRunEnded}
+              onResetRun={resetCurrentRun}
+              onResetWordFatigue={resetWordFatigue}
+              onRunSnapshotChange={setActiveRunSnapshot}
+              onUpgradeRandomRunCardAttack={upgradeRandomRunCardAttack}
+              onAddRandomElementToRunCard={addRandomElementToRunCard}
+              onAddShieldToRandomRunCard={addShieldToRandomRunCard}
+              onQaAddRunGold={qaAddRunGold}
+              onQaSetRunProgress={qaSetRunProgress}
+              onRecoverWordEnergy={recoverRunWordEnergy}
+              onUpdateRunStatistics={updateRunStatistics}
+              runGold={runGold}
+              runProgress={runProgress}
+              runStatistics={runStatistics}
+              selectedDeck={selectedDeck}
+              wordFatigue={wordFatigue}
+              wordMastery={wordMastery}
+            />
+          </div>
         )}
         {currentScreen === "shop" && (
           <Shop
