@@ -63,6 +63,11 @@ Current QA helper rules:
 - QA helper state is not saved to LocalStorage.
 - QA helper actions may mutate temporary run state for testing, such as HP, shield, gold, monster/event/boss state, run progress, and current encounter type.
 - QA helper actions must not directly write word mastery, unlocked deck ids, completed deck ids, or permanent statistics.
+- QA Helper `Go To Shop Checkpoint` should leave Dungeon in the same safe result/action state as a real shop checkpoint, not in a half-active battle question.
+- Development-only `QA Correct` and `QA Wrong` buttons may simulate battle answers only through the same resolution paths used by real Word Choice, Word Match, and Word Scramble submissions.
+- QA Correct can trigger existing card effects, damage, mastery bonuses, element effects, shield effects, Word Energy usage, encounter defeat, and boss completion through the normal Card Trigger System.
+- QA Wrong can trigger existing enemy attack, shield absorption, HP damage, and Run Failed behavior through the normal wrong-answer path.
+- QA Correct and QA Wrong are available only during active unanswered Dungeon battle questions.
 - Run completion should still be tested through the real boss defeat flow. Force Run Complete is intentionally deferred to avoid bypassing completion reward logic.
 
 ## Prototype Deployment Scope

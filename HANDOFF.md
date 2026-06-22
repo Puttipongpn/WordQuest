@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 52 Content Expansion / More Manual Decks complete.
+Current phase: Phase 52.1 QA Helper Hotfix + Battle Skip Tools complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -445,11 +445,16 @@ Current QA Helper actions:
 - Heal Player: restores player HP to max.
 - Add +50 Gold: adds temporary current-run gold without writing permanent progress.
 - Go To Shop Checkpoint: sets defeated monster progress to the current shop checkpoint and shows result actions that can route to Shop.
+- Go To Shop Checkpoint now clears active mini-game selections, marks the active question resolved, stops timer progression, and lands on the normal shop checkpoint result/action flow.
 - Trigger Event: forces an immediate Event encounter.
 - Trigger Elite: forces an Elite Encounter Intro.
 - Unlock Boss Test: sets defeated monster progress to the boss requirement and shows Boss Available result actions.
 - Start Boss Test: starts the existing boss intro flow without marking the deck completed.
 - Force Run Failed: uses the existing run-ended statistics handler to test Run Failed summary and ending actions.
+- QA Correct: development-only active battle helper that uses the same correct-answer resolution path as real mini-game submissions.
+- QA Wrong: development-only active battle helper that uses the same wrong-answer / enemy-attack path as real mini-game submissions.
+
+QA Correct and QA Wrong are disabled unless a Dungeon battle is active, unpaused, unanswered, and not blocked by abandon confirmation. They support Word Choice, Word Match, and Word Scramble without changing combat math, timer values, Word Energy rules, mastery rules, or save behavior.
 
 Force Run Complete is intentionally deferred. Boss completion should be tested by using Start Boss Test and defeating the boss through the existing battle flow so the real completion and unlock logic runs.
 
@@ -1275,6 +1280,34 @@ Verification:
 - `npm run build` passed after Phase 52.
 
 Phase 52 is complete.
+
+## Phase 52.1 QA Helper Hotfix + Battle Skip Tools Summary
+
+Phase 52.1 fixed QA Helper state safety and added development-only battle skip tools.
+
+Completed:
+
+- Fixed `Go To Shop Checkpoint` so it no longer leaves an active mini-game, timer, or selected answer state half-resolved.
+- `Go To Shop Checkpoint` now moves the run to a shop checkpoint result state that can use the normal Go To Shop / Continue Dungeon flow.
+- Added `QA Correct` and `QA Wrong` to the existing development-only QA Helper panel.
+- QA Correct reuses the real correct-answer resolution path, including Card Trigger System effects, mastery damage, element effects, shield effects, Word Energy usage, encounter defeat, and boss completion.
+- QA Wrong reuses the real wrong-answer path, including enemy attack, shield absorption, HP damage, and Run Failed when HP reaches 0.
+- QA Correct and QA Wrong are disabled outside active unanswered combat.
+- Updated `QA_CHECKLIST.md` with QA Helper skip checks and production safety checks.
+
+Preserved:
+
+- No player-facing cheat system was added.
+- QA tools remain gated by `import.meta.env.DEV`.
+- No permanent progress is directly written by QA Correct, QA Wrong, or Go To Shop QA.
+- Combat math, timer values, mastery rules, Training behavior, deck unlocks, save schema, shop effects, event effects, boss requirement, boss completion reward, Word Energy rules, and Phase 52 decks were unchanged.
+
+Verification:
+
+- `npm run build` passed after Phase 52.1.
+- Production `dist` output was checked for QA Helper strings after build.
+
+Phase 52.1 is complete.
 
 ## Next Recommended Task
 

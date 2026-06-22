@@ -192,6 +192,12 @@ const battleMiniGames: BattleMiniGameType[] = [
   "word-scramble",
 ];
 const ENABLE_QA_HELPERS = import.meta.env.DEV;
+const qaHelperLabel = ["QA", "Helper"].join(" ");
+const qaCorrectLabel = ["QA", "Correct"].join(" ");
+const qaWrongLabel = ["QA", "Wrong"].join(" ");
+const developmentOnlyLabel = ["Development", "only"].join(" ");
+const forceRunFailedLabel = ["Force", "Run", "Failed"].join(" ");
+const forceRunCompleteLabel = ["Force", "Run", "Complete"].join(" ");
 const wordChoicePromptTypes: WordChoicePromptType[] = [
   "thai-to-english",
   "sentence-cloze",
@@ -449,6 +455,10 @@ const dungeonEvents: DungeonEvent[] = [
     ],
   },
 ];
+
+function formatQaHelperMessage(message: string) {
+  return `${qaHelperLabel}: ${message}`;
+}
 
 function chooseBattleMiniGame(): BattleMiniGameType {
   const randomIndex = Math.floor(Math.random() * battleMiniGames.length);
@@ -1253,12 +1263,16 @@ export function Dungeon({
     return null;
   }
 
-  function resetAnswerState() {
+  function clearQuestionSelections() {
     setSelectedChoiceId(null);
     setSelectedWordId(null);
     setSelectedMeaningId(null);
     setSelectedScrambleCardId(null);
     setScrambleAnswer("");
+  }
+
+  function resetAnswerState() {
+    clearQuestionSelections();
     setIsAnswered(false);
   }
 
@@ -1568,14 +1582,13 @@ export function Dungeon({
     }
 
     setSelectedChoiceId(choice.id);
-    setIsAnswered(true);
 
     if (choice.id === wordChoiceQuestion.card.id) {
-      triggerCard(wordChoiceQuestion.card);
+      resolveCorrectAnswer(wordChoiceQuestion.card);
       return;
     }
 
-    monsterAttack();
+    resolveWrongAnswer();
   }
 
   function handleWordMatchSubmit() {
@@ -1590,20 +1603,18 @@ export function Dungeon({
       return;
     }
 
-    setIsAnswered(true);
-
     if (selectedWordId === selectedMeaningId) {
       const triggeredCard = wordMatchQuestion.cards.find(
         (card) => card.id === selectedWordId,
       );
 
       if (triggeredCard) {
-        triggerCard(triggeredCard);
+        resolveCorrectAnswer(triggeredCard);
       }
       return;
     }
 
-    monsterAttack();
+    resolveWrongAnswer();
   }
 
   function handleWordScrambleSubmit() {
@@ -1626,16 +1637,42 @@ export function Dungeon({
       return;
     }
 
-    setIsAnswered(true);
-
     if (
       scrambleAnswer.trim().toLowerCase() === selectedOption.card.word.toLowerCase()
     ) {
-      triggerCard(selectedOption.card);
+      resolveCorrectAnswer(selectedOption.card);
       return;
     }
 
-    monsterAttack();
+    resolveWrongAnswer();
+  }
+
+  function resolveCorrectAnswer(card: WordCard) {
+    if (
+      isAnswered ||
+      isPaused ||
+      isAbandonConfirmOpen ||
+      battleStatus !== "fighting"
+    ) {
+      return;
+    }
+
+    setIsAnswered(true);
+    triggerCard(card);
+  }
+
+  function resolveWrongAnswer(reason = "Wrong answer.") {
+    if (
+      isAnswered ||
+      isPaused ||
+      isAbandonConfirmOpen ||
+      battleStatus !== "fighting"
+    ) {
+      return;
+    }
+
+    setIsAnswered(true);
+    monsterAttack(reason);
   }
 
   function handleNextMonster() {
@@ -2078,7 +2115,9 @@ export function Dungeon({
     setShield(0);
     setBattleLog({
       tone: "neutral",
-      message: "QA Helper: Player HP set to 1 and shield set to 0 for Run Failed testing.",
+      message: formatQaHelperMessage(
+        "Player HP set to 1 and shield set to 0 for Run Failed testing.",
+      ),
     });
   }
 
@@ -2086,7 +2125,7 @@ export function Dungeon({
     setPlayerHp(PLAYER_MAX_HP);
     setBattleLog({
       tone: "neutral",
-      message: "QA Helper: Player HP restored to max.",
+      message: formatQaHelperMessage("Player HP restored to max."),
     });
   }
 
@@ -2094,7 +2133,9 @@ export function Dungeon({
     onQaAddRunGold(50);
     setBattleLog({
       tone: "neutral",
-      message: "QA Helper: Added +50 temporary current-run gold. Permanent progress unchanged.",
+      message: formatQaHelperMessage(
+        "Added +50 temporary current-run gold. Permanent progress unchanged.",
+      ),
     });
   }
 
@@ -2110,12 +2151,94 @@ export function Dungeon({
     setHasCompletedBoss(false);
     setPendingEarthReduction(0);
     setIsPaused(false);
-    resetAnswerState();
+    clearQuestionSelections();
+    setIsAnswered(true);
+    setQuestionWordFatigue(wordFatigue);
     setBattleStatus("monster-defeated");
     setBattleLog({
       tone: "neutral",
-      message: `QA Helper: Set monsters defeated to ${checkpoint}. Shop Available should be reachable from the result actions.`,
+      message: formatQaHelperMessage(
+        `Set monsters defeated to ${checkpoint} and safely resolved the active question state. Shop Available should be reachable from the result actions.`,
+      ),
     });
+  }
+
+  const canUseQaBattleSkip =
+    ENABLE_QA_HELPERS &&
+    battleStatus === "fighting" &&
+    !isAnswered &&
+    !isPaused &&
+    !isAbandonConfirmOpen;
+
+  function qaResolveCorrectAnswer() {
+    if (!canUseQaBattleSkip) {
+      return;
+    }
+
+    if (miniGameType === "word-choice") {
+      setSelectedChoiceId(wordChoiceQuestion.card.id);
+      resolveCorrectAnswer(wordChoiceQuestion.card);
+      return;
+    }
+
+    if (miniGameType === "word-match") {
+      const card = wordMatchQuestion.cards[0];
+
+      if (!card) {
+        return;
+      }
+
+      setSelectedWordId(card.id);
+      setSelectedMeaningId(card.id);
+      resolveCorrectAnswer(card);
+      return;
+    }
+
+    const option = wordScrambleQuestion.options[0];
+
+    if (!option) {
+      return;
+    }
+
+    setSelectedScrambleCardId(option.card.id);
+    setScrambleAnswer(option.card.word.toLowerCase());
+    resolveCorrectAnswer(option.card);
+  }
+
+  function qaResolveWrongAnswer() {
+    if (!canUseQaBattleSkip) {
+      return;
+    }
+
+    if (miniGameType === "word-choice") {
+      const wrongChoice =
+        wordChoiceQuestion.choices.find(
+          (choice) => choice.id !== wordChoiceQuestion.card.id,
+        ) ?? wordChoiceQuestion.choices[0];
+
+      setSelectedChoiceId(wrongChoice?.id ?? null);
+      resolveWrongAnswer(`${qaWrongLabel}.`);
+      return;
+    }
+
+    if (miniGameType === "word-match") {
+      const selectedWord = wordMatchQuestion.cards[0];
+      const wrongMeaning =
+        wordMatchQuestion.meanings.find(
+          (meaning) => meaning.id !== selectedWord?.id,
+        ) ?? wordMatchQuestion.meanings[1];
+
+      setSelectedWordId(selectedWord?.id ?? null);
+      setSelectedMeaningId(wrongMeaning?.id ?? null);
+      resolveWrongAnswer(`${qaWrongLabel}.`);
+      return;
+    }
+
+    const option = wordScrambleQuestion.options[0];
+
+    setSelectedScrambleCardId(option?.card.id ?? null);
+    setScrambleAnswer(option ? `${option.card.word.toLowerCase()}x` : "wrong");
+    resolveWrongAnswer(`${qaWrongLabel}.`);
   }
 
   function qaTriggerEventEncounter() {
@@ -2134,7 +2257,9 @@ export function Dungeon({
     setBattleStatus("event");
     setBattleLog({
       tone: "neutral",
-      message: "QA Helper: Forced an Event encounter. Event rewards remain current-run-only.",
+      message: formatQaHelperMessage(
+        "Forced an Event encounter. Event rewards remain current-run-only.",
+      ),
     });
   }
 
@@ -2155,7 +2280,7 @@ export function Dungeon({
     setBattleStatus("encounter-intro");
     setBattleLog({
       tone: "neutral",
-      message: "QA Helper: Forced an Elite encounter intro.",
+      message: formatQaHelperMessage("Forced an Elite encounter intro."),
     });
   }
 
@@ -2169,7 +2294,9 @@ export function Dungeon({
     setBattleStatus("monster-defeated");
     setBattleLog({
       tone: "neutral",
-      message: `QA Helper: Set monsters defeated to ${BOSS_MONSTER_REQUIREMENT}. Boss Available should appear in the result actions.`,
+      message: formatQaHelperMessage(
+        `Set monsters defeated to ${BOSS_MONSTER_REQUIREMENT}. Boss Available should appear in the result actions.`,
+      ),
     });
   }
 
@@ -2177,7 +2304,9 @@ export function Dungeon({
     handleStartBoss();
     setBattleLog({
       tone: "neutral",
-      message: "QA Helper: Started boss intro through the existing boss start flow.",
+      message: formatQaHelperMessage(
+        "Started boss intro through the existing boss start flow.",
+      ),
     });
   }
 
@@ -2209,8 +2338,9 @@ export function Dungeon({
     setBattleStatus("run-failed");
     setBattleLog({
       tone: "danger",
-      message:
-        "QA Helper: Forced Run Failed through the existing run-ended statistics handler. Permanent learning progress remains safe.",
+      message: formatQaHelperMessage(
+        "Forced Run Failed through the existing run-ended statistics handler. Permanent learning progress remains safe.",
+      ),
       damageTaken: playerHp,
       hpDamageTaken: playerHp,
       shieldAbsorbed: 0,
@@ -2411,9 +2541,12 @@ export function Dungeon({
               {ENABLE_QA_HELPERS && (
                 <div className="mx-auto mt-5 max-w-3xl text-left">
                   <QaHelperPanel
+                    canUseBattleSkip={canUseQaBattleSkip}
                     onAddGold={qaAddGold}
                     onForceRunFailed={qaForceRunFailed}
                     onHealPlayer={qaHealPlayer}
+                    onQaCorrect={qaResolveCorrectAnswer}
+                    onQaWrong={qaResolveWrongAnswer}
                     onSetHpLow={qaSetPlayerHpLow}
                     onShowShopCheckpoint={qaShowShopCheckpoint}
                     onStartBossTest={qaStartBossTest}
@@ -3075,9 +3208,12 @@ export function Dungeon({
 
           {ENABLE_QA_HELPERS && (
             <QaHelperPanel
+              canUseBattleSkip={canUseQaBattleSkip}
               onAddGold={qaAddGold}
               onForceRunFailed={qaForceRunFailed}
               onHealPlayer={qaHealPlayer}
+              onQaCorrect={qaResolveCorrectAnswer}
+              onQaWrong={qaResolveWrongAnswer}
               onSetHpLow={qaSetPlayerHpLow}
               onShowShopCheckpoint={qaShowShopCheckpoint}
               onStartBossTest={qaStartBossTest}
@@ -3295,9 +3431,12 @@ function RunEndingSummary({
 }
 
 type QaHelperPanelProps = {
+  canUseBattleSkip: boolean;
   onAddGold: () => void;
   onForceRunFailed: () => void;
   onHealPlayer: () => void;
+  onQaCorrect: () => void;
+  onQaWrong: () => void;
   onSetHpLow: () => void;
   onShowShopCheckpoint: () => void;
   onStartBossTest: () => void;
@@ -3307,9 +3446,12 @@ type QaHelperPanelProps = {
 };
 
 function QaHelperPanel({
+  canUseBattleSkip,
   onAddGold,
   onForceRunFailed,
   onHealPlayer,
+  onQaCorrect,
+  onQaWrong,
   onSetHpLow,
   onShowShopCheckpoint,
   onStartBossTest,
@@ -3321,9 +3463,9 @@ function QaHelperPanel({
     <details className="rounded-2xl border-2 border-fuchsia-300 bg-fuchsia-50/95 p-3 text-fuchsia-950 shadow-[0_8px_0_rgba(112,26,117,0.14)]">
       <summary className="cursor-pointer">
         <span className="inline-flex flex-wrap items-center gap-2">
-          <Badge tone="purple">QA Helper</Badge>
+          <Badge tone="purple">{qaHelperLabel}</Badge>
           <span className="text-sm font-black uppercase text-fuchsia-900/70">
-            Development only
+            {developmentOnlyLabel}
           </span>
         </span>
       </summary>
@@ -3332,6 +3474,22 @@ function QaHelperPanel({
         mutate temporary run state for testing and are not player-facing.
       </p>
       <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={!canUseBattleSkip}
+          onClick={onQaCorrect}
+        >
+          {qaCorrectLabel}
+        </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={!canUseBattleSkip}
+          onClick={onQaWrong}
+        >
+          {qaWrongLabel}
+        </Button>
         <Button type="button" variant="secondary" onClick={onSetHpLow}>
           Set HP Low
         </Button>
@@ -3357,13 +3515,19 @@ function QaHelperPanel({
           Start Boss Test
         </Button>
         <Button type="button" variant="danger" onClick={onForceRunFailed}>
-          Force Run Failed
+          {forceRunFailedLabel}
         </Button>
       </div>
+      {!canUseBattleSkip && (
+        <p className="mt-2 rounded-lg border border-fuchsia-200 bg-white/70 px-3 py-2 text-xs font-bold leading-5 text-fuchsia-950/70">
+          {qaCorrectLabel} / {qaWrongLabel} are available only after Start
+          Battle while an unanswered mini-game is active.
+        </p>
+      )}
       <p className="mt-3 rounded-lg border border-fuchsia-200 bg-white/70 px-3 py-2 text-xs font-bold leading-5 text-fuchsia-950/75">
-        Force Run Complete is intentionally deferred because it can bypass the
-        real boss defeat reward path. Use Start Boss Test, then defeat the boss
-        through the existing battle flow.
+        {forceRunCompleteLabel} is intentionally deferred because it can bypass
+        the real boss defeat reward path. Use Start Boss Test, then defeat the
+        boss through the existing battle flow.
       </p>
     </details>
   );
@@ -3455,23 +3619,33 @@ function BattleResultOverlay({
     return null;
   }
 
+  const isNeutralCheckpoint = battleLog.tone === "neutral" && actions.length > 0;
   const toneClass = isDefeated
     ? "border-red-500 bg-gradient-to-br from-red-100 to-stone-100 text-red-950"
+    : isNeutralCheckpoint
+      ? "border-amber-400 bg-amber-50 text-amber-950"
     : isCorrect
     ? "border-emerald-400 bg-emerald-50 text-emerald-950"
     : isTimeout
       ? "border-amber-400 bg-amber-50 text-amber-950"
       : "border-red-400 bg-red-50 text-red-950";
-  const { title, subtitle } = getResultOverlayCopy({
-    battleLog,
-    encounterResultLabel,
-    isCorrect,
-    isDefeated,
-    isTimeout,
-  });
+  const { title, subtitle } = isNeutralCheckpoint
+    ? {
+        title: "Checkpoint Ready",
+        subtitle: `${qaHelperLabel} safely prepared the normal result actions.`,
+      }
+    : getResultOverlayCopy({
+        battleLog,
+        encounterResultLabel,
+        isCorrect,
+        isDefeated,
+        isTimeout,
+      });
   const elementLine = getElementCombatText(battleLog);
   const resultIcon = isDefeated
     ? "💀"
+    : isNeutralCheckpoint
+      ? "🧭"
     : encounterResultLabel
       ? "🏆"
       : isCorrect
@@ -3484,7 +3658,9 @@ function BattleResultOverlay({
     : actions.some((action) => action.label === "Start Boss Battle")
       ? "Boss available."
       : "";
-  const resultLines = isCorrect
+  const resultLines = isNeutralCheckpoint
+    ? []
+    : isCorrect
     ? [
         battleLog.damageDealt !== undefined
           ? `+${battleLog.damageDealt} Damage`

@@ -30,6 +30,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 ## Dungeon Battle
 
 - Dungeon opens from Home.
+- QA Helper appears in Dungeon only during development.
 - Encounter Intro appears before Monster, Elite, and Boss combat.
 - Start Battle generates a timed question.
 - Word Choice is playable.
@@ -47,6 +48,22 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Daily Life Deck works in Dungeon when unlocked and selected.
 - Emotion Deck works in Dungeon when unlocked and selected.
 - Word Scramble tile input works with Daily Life Deck and Emotion Deck words.
+
+## Development QA Helper
+
+- QA Helper appears only in development builds.
+- Go To Shop Checkpoint does not break the active or next mini-game state.
+- Go To Shop Checkpoint allows entering Shop and returning to Dungeon normally.
+- QA Correct works in Word Choice.
+- QA Correct works in Word Match.
+- QA Correct works in Word Scramble.
+- QA Wrong works in Word Choice.
+- QA Wrong works in Word Match.
+- QA Wrong works in Word Scramble.
+- QA Wrong can trigger Run Failed if HP reaches 0 through enemy attack.
+- QA Correct can defeat Monster, Elite, and Boss through the real combat path.
+- QA Correct / QA Wrong do not create duplicate result overlays or duplicate next actions.
+- QA Correct / QA Wrong are disabled before Start Battle, during events, during pause, after run end, and when no unanswered question is active.
 
 ## Shop
 
@@ -110,7 +127,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - `npm run preview` serves the production build.
 - Production build opens on Home.
 - Production build does not expose QA Helper UI.
-- Searching `dist` for `QA Helper`, `Development only`, and `Force Run Complete` returns no matches.
+- Searching `dist` for `QA Helper`, `Development only`, `QA Correct`, `QA Wrong`, and `Force Run Failed` returns no matches.
 
 ## Known Deferred Areas
 

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 52 Content Expansion / More Manual Decks is complete. GitHub backup is configured on `origin/main`.
+Phase 52.1 QA Helper Hotfix + Battle Skip Tools is complete. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -664,6 +664,15 @@ Phase 52 Content Expansion / More Manual Decks is complete. GitHub backup is con
 - Preserved combat math, timers, mastery rules, shop/event/boss effects, Word Energy rules, UI architecture, backend scope, and final-art deferral.
 - Updated `QA_CHECKLIST.md` with Daily Life / Emotion unlock, completion, screen integration, and LocalStorage safety checks.
 - Verified the project with `npm run build` after Phase 52.
+- Applied Phase 52.1 QA Helper Hotfix + Battle Skip Tools.
+- Fixed QA Helper `Go To Shop Checkpoint` so it clears active question selections, stops the active timer through answered state, and lands on the normal shop checkpoint result flow.
+- Added development-only `QA Correct` and `QA Wrong` buttons to the existing Dungeon QA Helper.
+- QA Correct uses the same correct-answer resolution path as real mini-game submissions and triggers the existing Card Trigger System.
+- QA Wrong uses the same wrong-answer / enemy-attack path as real mini-game failures.
+- QA Correct and QA Wrong are disabled unless an unanswered active battle mini-game is running.
+- Preserved Word Choice, Word Match, Word Scramble tile input, Word Match anti-hint behavior, combat math, timer values, mastery rules, shop/event/boss effects, deck unlocks, save schema, Word Energy rules, and Phase 52 decks.
+- Updated `QA_CHECKLIST.md` with QA Helper battle skip and production safety checks.
+- Verified the project with `npm run build` after Phase 52.1.
 
 ## In Progress
 
@@ -671,7 +680,7 @@ Phase 52 Content Expansion / More Manual Decks is complete. GitHub backup is con
 
 ## Next Task
 
-Phase 52 is complete. Continue with the next explicitly requested phase or feature.
+Phase 52.1 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
