@@ -1120,6 +1120,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Dungeon battles should feel more like a game scene while preserving the vocabulary quiz as the main interaction and avoiding final art, assets, dependencies, or rule changes.
 - Status: Accepted
 
+### 2026-06-22: Future Art Assets Need Safe Placeholder Fallbacks
+
+- Decision: Final art assets are deferred. Future pixel-art assets must be integrated gradually with safe placeholder fallbacks and must not change gameplay behavior.
+- Reason: WordQuest should be ready for real cozy fantasy pixel art later without making the current static demo depend on missing image files or altering the tested learning/combat loop.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

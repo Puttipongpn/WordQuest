@@ -71,6 +71,23 @@ Current presentation rules:
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
 - Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual or sound passes.
 
+## Future Asset Direction
+
+Phase 61 prepares future real assets through `ASSET_PLAN.md` only.
+
+Asset direction rules:
+
+- Future real assets should use cozy fantasy pixel art.
+- The style should stay friendly, readable, warm, beginner-friendly, and suitable for vocabulary learning.
+- Side-view battle art should support the current Phase 60 layout: player on the left, encounter on the right, quiz as the main playable area.
+- Future assets should be integrated gradually and must always have safe emoji/text/CSS placeholder fallbacks.
+- Missing or failed assets must never crash the app or block gameplay.
+- Assets must not reveal hidden answers, target cards, correct answers, or result information before the player answers.
+- Assets must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, deck unlocks, save behavior, shop/event/boss effects, or encounter progression.
+- Mobile readability is more important than visual detail.
+- No final art assets or image files are added in Phase 61.
+- Future generated assets should follow `ASSET_PLAN.md` for style, specs, naming, prompts, and integration rules.
+
 ## Development QA Helpers
 
 Dungeon can include development-only QA helpers to speed up prototype testing.

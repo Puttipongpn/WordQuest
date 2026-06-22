@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 60 Battle Stage / Character Presentation complete.
+Current phase: Phase 61 Asset Direction + Asset Manifest Prep complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1629,6 +1629,39 @@ Preserved:
 Verification:
 
 - `npm run build` passed after the hotfix.
+
+## Phase 61 Asset Direction + Asset Manifest Prep Summary
+
+Phase 61 prepared the project for future real pixel-art assets without adding final art.
+
+Completed:
+
+- Created `ASSET_PLAN.md`.
+- Documented cozy fantasy pixel-art direction for future assets.
+- Documented recommended sprite specs:
+  - 64x64 first-pass character and monster sprites
+  - optional 128x128 boss/presentation sprites
+  - 32x32 or 64x64 UI icons and effects
+  - transparent PNG sprites
+  - side-view player facing right and enemies facing left
+- Documented animation frame recommendations for idle, attack, hit, defeat, special, and effect states.
+- Chose lowercase snake_case for future asset filenames and ids.
+- Documented the future `src/assets` folder structure without creating empty folders.
+- Added a document-only asset manifest covering the Word Hero, all current monsters, all current bosses, effects, UI icons, and backgrounds.
+- Mapped current data names to future asset filenames.
+- Added future ChatGPT image-generation prompt templates for player, normal monsters, elite monsters, bosses, element effects, UI icons, and backgrounds.
+- Documented current placeholder areas to replace later.
+
+Preserved:
+
+- No final art assets, generated image files, image folders, runtime asset imports, asset manifest code, TypeScript data model changes, new dependencies, backend, database, auth, API, React Router, achievements, animation libraries, browser automation tooling, external UI libraries, or deployment setup changes were added.
+- Current emoji/text/CSS placeholders remain active.
+- Future missing assets must fall back safely to placeholders.
+- No gameplay systems, decks, Oxford 3000 import, combat math changes, timer value changes, mastery rule changes, save schema changes, shop/event/boss effect changes, deck unlock changes, or Word Energy rule changes were added.
+
+Verification:
+
+- `npm run build` passed after Phase 61.
 
 ## Next Recommended Task
 

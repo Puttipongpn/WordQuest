@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 60 Battle Stage / Character Presentation is complete, with a follow-up Deck Review sticky info panel overlap hotfix. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 61 Asset Direction + Asset Manifest Prep is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -753,6 +753,14 @@ Phase 60 Battle Stage / Character Presentation is complete, with a follow-up Dec
 - Added a desktop max-height and internal scroll to the selected-card info panel so long card details remain reachable.
 - Preserved Deck Review filters/sorting as display-only and made no gameplay, save, combat, timer, deck unlock, Word Energy, dependency, or deployment changes.
 - Verified the project with `npm run build` after the Deck Review hotfix.
+- Applied Phase 61 Asset Direction + Asset Manifest Prep.
+- Created `ASSET_PLAN.md` as the future asset direction and manifest planning document.
+- Documented cozy fantasy pixel-art direction, sprite specs, animation frame recommendations, snake_case naming, future folder structure, current data-to-asset mapping, future asset manifest, integration rules, prompt templates, and current placeholder replacement notes.
+- Included all current monsters and bosses in the document-only future manifest.
+- Kept Phase 61 document-only: no final art assets, generated image files, runtime asset imports, asset folders, new dependencies, type model changes, or gameplay systems were added.
+- Documented that missing future assets must fall back safely to emoji/text/CSS placeholders and must never change gameplay behavior.
+- Preserved combat math, timer values, save schema, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, deployment setup, and all six manual decks.
+- Verified the project with `npm run build` after Phase 61.
 
 ## In Progress
 
@@ -760,7 +768,7 @@ Phase 60 Battle Stage / Character Presentation is complete, with a follow-up Dec
 
 ## Next Task
 
-Phase 60 is complete. Continue with the next explicitly requested phase or feature.
+Phase 61 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -939,9 +947,7 @@ Keep game playable and simple.
 ## Known Missing Features
 
 - Real Oxford 3000 import
-- Final card art
-- Monster art
-- Shopkeeper art
+- Final card art, monster art, shopkeeper art, and other real assets remain deferred; future work should follow `ASSET_PLAN.md`
 - Expanded sound design beyond the current optional browser-generated foundation
 - More mini-games
 - Full dungeon battle logic

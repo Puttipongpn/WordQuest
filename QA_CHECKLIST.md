@@ -187,6 +187,25 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - No important feedback depends only on sound.
 - No external audio assets were added.
 
+## Asset Prep
+
+- `ASSET_PLAN.md` exists.
+- Future cozy fantasy pixel-art direction is documented.
+- Future asset naming convention is documented.
+- Future sprite specs are documented.
+- Future animation frame recommendations are documented.
+- Future player asset list is documented.
+- Future monster asset list is documented.
+- Future boss asset list is documented.
+- Future effects asset list is documented.
+- Future UI and background asset lists are documented.
+- Current monster and boss names are mapped to future asset filenames.
+- Future image-generation prompt templates are documented.
+- No real image assets are required for build.
+- Missing assets cannot crash the current runtime.
+- Current placeholder UI still works.
+- Build passes.
+
 ## Production Readiness
 
 - `npm install` completes.
