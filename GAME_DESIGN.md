@@ -37,6 +37,7 @@ Current presentation rules:
 - Mobile battle layout should prioritize playable quiz controls first; secondary battle log, learning, and trigger details can collapse or move below the arena.
 - On mobile and narrow screens, Dungeon battle can scroll vertically when needed; quiz controls, timer, player/enemy status, result actions, Pause, and Abandon controls must remain reachable rather than being clipped by fixed viewport assumptions.
 - Mobile Dungeon uses a compact top battle status and timer/control strip near the quiz, while secondary panels move below the active play area.
+- Post-deploy mobile polish should remain targeted: reduce mobile spacing, keep Word Match and Word Scramble controls tappable, keep result and modal actions reachable, and avoid full UI redesigns unless explicitly requested.
 - A compact battle-stage strip may reserve space for future player/monster presentation, but it should not reduce quiz usability or add gameplay rules.
 - Monster, Elite, Boss, and Event encounters should feel visually distinct while using placeholder assets only.
 - Combat feedback should make damage, hits, shield gain, shield absorption, timeout state, and triggered card effects easy to scan.
@@ -76,9 +77,11 @@ The current prototype is prepared for simple static demo deployment.
 
 Deployment scope rules:
 
+- Production demo URL is `https://word-quest-hazel.vercel.app/`.
 - Recommended deployment target is Vercel with the Vite preset.
 - Build command is `npm run build`.
 - Output directory is `dist`.
+- Deployment status is live on Vercel.
 - Deployment prep does not add backend services, databases, authentication, APIs, React Router, final art assets, sound, or new gameplay systems.
 - Production builds must not expose development QA Helper UI.
 - Deployment does not change LocalStorage behavior: permanent progress remains browser-local, and active run state remains temporary and unsaved.
@@ -90,6 +93,12 @@ Phase 54 dry-run verification:
 - Production preview should serve `index.html`, generated JavaScript, and generated CSS with HTTP 200.
 - Built output should not include development QA Helper UI strings.
 - A browser-click smoke test should still be completed manually or with browser automation before a public demo if automation is available.
+
+Phase 56 live verification:
+
+- The production URL returned HTTP 200 from Vercel.
+- The generated JavaScript and CSS assets returned HTTP 200.
+- Post-deploy mobile polish changed presentation only and did not alter combat math, timers, mastery, save schema, shop/event/boss effects, deck unlocks, or Word Energy rules.
 
 ## Core Loop
 

@@ -1396,6 +1396,96 @@ Preserved:
 
 Phase 54 is complete.
 
+## Phase 56 Post-Deploy Mobile Polish + Live Smoke Test Summary
+
+Phase 56 verified the first live Vercel deployment and applied targeted mobile usability polish.
+
+Production deployment:
+
+- Live URL: `https://word-quest-hazel.vercel.app/`
+- Deployment target: Vercel
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
+- Environment variables: none
+- Save behavior: browser-local LocalStorage only
+
+Live HTTP/static smoke check:
+
+- Production URL returned HTTP 200 from Vercel.
+- Production HTML served the app shell.
+- Generated JavaScript asset returned HTTP 200.
+- Generated CSS asset returned HTTP 200.
+
+Targeted mobile polish applied:
+
+- Dungeon result overlay uses tighter mobile sizing, `dvh` max-height, narrower mobile width, and more compact title spacing so action buttons stay reachable.
+- Word Match uses smaller mobile card heights and tighter spacing.
+- Word Match selected-pair footer uses compact mobile text and a full-width `Check Pair` button on mobile.
+- Word Scramble option cards use tighter mobile padding and smaller scrambled text on narrow screens.
+- Word Scramble answer and letter tile areas use smaller mobile tiles, tighter gaps, and more compact padding while preserving duplicate-letter tile behavior.
+- Pause and Abandon Run modals use smaller mobile padding and `dvh` max-height with internal scrolling.
+- Shop target modal uses smaller mobile padding, tighter target-card spacing, and a compact sticky action footer.
+
+Preserved:
+
+- No gameplay systems, new decks, Oxford 3000 import, backend, database, auth, API, React Router, achievements, sound, final art assets, animation libraries, external UI libraries, combat math changes, timer value changes, mastery rule changes, save schema changes, shop/event/boss effect changes, deck unlock changes, or Word Energy rule changes were added.
+- QA Helper remains development-only.
+- Vercel static deployment setup remains unchanged.
+
+Verification:
+
+- `npm run build` passed after Phase 56.
+- Live deployment HTTP/static checks passed.
+- Browser automation was not available in this environment, so full live browser click-through should still be completed manually on a phone or with browser automation when available.
+
+Phase 56 is complete.
+
+## Phase 56.1 Deploy Sync + Manual Click-Through Smoke Test Prep Summary
+
+Phase 56.1 syncs the Phase 56 mobile polish to GitHub/Vercel and prepares live manual smoke testing.
+
+Completed:
+
+- Reviewed git status before syncing.
+- Confirmed changed files are limited to Phase 56 mobile polish and documentation:
+  - `src/screens/Dungeon.tsx`
+  - `src/screens/Shop.tsx`
+  - `README.md`
+  - `PROJECT_STATUS.md`
+  - `HANDOFF.md`
+  - `GAME_DESIGN.md`
+  - `QA_CHECKLIST.md`
+- Confirmed no generated `dist`, `node_modules`, local env files, logs, or screenshots are part of the working tree.
+- Added a dedicated `Production Manual Click-Through` checklist to `QA_CHECKLIST.md`.
+- Verified `npm run build` passes before commit.
+- Verified `git diff --check` passes.
+- Verified production `dist` output does not include QA Helper UI strings.
+- Verified local production preview served HTML, JavaScript, and CSS with HTTP 200.
+
+Deployment sync:
+
+- Commit message: `Phase 56.1 deploy sync and manual smoke prep`
+- Push target: `origin main`
+- Vercel is expected to redeploy automatically from GitHub after the push.
+- Existing Vercel settings remain unchanged:
+  - Framework preset: Vite
+  - Build command: `npm run build`
+  - Output directory: `dist`
+  - Environment variables: none
+
+Manual verification still recommended:
+
+- Browser automation was not available in this environment.
+- No Playwright or browser automation dependency was added.
+- After Vercel finishes redeploying, manually open `https://word-quest-hazel.vercel.app/` on desktop and phone and use the `Production Manual Click-Through` checklist in `QA_CHECKLIST.md`.
+
+Preserved:
+
+- No gameplay systems, new decks, Oxford 3000 import, backend, database, auth, API, React Router, achievements, sound, final art assets, animation libraries, external UI libraries, combat math changes, timer value changes, mastery rule changes, save schema changes, shop/event/boss effect changes, deck unlock changes, or Word Energy rule changes were added.
+
+Phase 56.1 is complete.
+
 ## Next Recommended Task
 
 Recommended next task:

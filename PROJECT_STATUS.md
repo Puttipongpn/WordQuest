@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 54 Deploy Dry Run + Production Smoke Test is complete. GitHub backup is configured on `origin/main`.
+Phase 56.1 Deploy Sync + Manual Click-Through Smoke Test Prep is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -695,6 +695,23 @@ Phase 54 Deploy Dry Run + Production Smoke Test is complete. GitHub backup is co
 - Updated `QA_CHECKLIST.md` with production preview smoke-test items.
 - Preserved gameplay systems, combat math, timer values, mastery rules, save schema, shop/event/boss effects, deck unlock rules, Word Energy rules, UI systems, backend scope, and final-art deferral.
 - Browser-click smoke testing was not completed because the in-app browser was unavailable and Playwright is not installed locally; verification used production build, production preview HTTP checks, bundle string checks, and documentation review.
+- Applied Phase 56 Post-Deploy Mobile Polish + Live Smoke Test.
+- Documented the production demo URL: `https://word-quest-hazel.vercel.app/`.
+- Confirmed the live Vercel deployment returns HTTP 200 for `index.html`, the generated JavaScript asset, and the generated CSS asset.
+- Confirmed deployment target remains Vercel with Vite preset, build command `npm run build`, output directory `dist`, and no environment variables.
+- Added targeted mobile polish to Dungeon result overlays, Word Match spacing and selected-pair footer, Word Scramble tile spacing and tile sizes, Pause/Abandon modals, and Shop target modal spacing.
+- Preserved combat math, timer values, mastery rules, save schema, shop/event/boss effects, deck unlock rules, Word Energy rules, all six manual decks, QA Helper dev-only gating, backend scope, and final-art deferral.
+- Updated `README.md`, `HANDOFF.md`, `GAME_DESIGN.md`, and `QA_CHECKLIST.md` with live deployment and post-deploy mobile smoke-test notes.
+- Verified the project with `npm run build` after Phase 56.
+- Applied Phase 56.1 Deploy Sync + Manual Click-Through Smoke Test Prep.
+- Added a dedicated `Production Manual Click-Through` section to `QA_CHECKLIST.md`.
+- Confirmed current git changes are limited to Phase 56 mobile polish and documentation files, with no generated `dist`, `node_modules`, env files, logs, or screenshots staged.
+- Reconfirmed `npm run build` passes before sync.
+- Reconfirmed production `dist` output does not include QA Helper UI strings.
+- Reconfirmed local production preview serves HTML, JavaScript, and CSS with HTTP 200.
+- Phase 56.1 commit/push syncs the mobile polish to `origin/main`; Vercel is expected to redeploy from GitHub using the existing static setup.
+- Browser automation remains unavailable in this environment, and no Playwright dependency was added. Manual click-through testing on the live Vercel URL is still recommended after redeploy.
+- No gameplay systems, save rules, combat math, timers, mastery, shop/event/boss effects, deck unlock rules, Word Energy rules, backend, auth, API, final art, sound, or external libraries were changed.
 
 ## In Progress
 
@@ -702,7 +719,7 @@ Phase 54 Deploy Dry Run + Production Smoke Test is complete. GitHub backup is co
 
 ## Next Task
 
-Phase 54 is complete. Continue with the next explicitly requested phase or feature.
+Phase 56.1 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

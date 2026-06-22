@@ -468,8 +468,8 @@ export function Shop({
       </div>
 
       {activeOffer && (
-        <div className="fixed inset-0 z-40 grid place-items-center bg-stone-950/70 p-4 backdrop-blur-sm">
-          <div className="max-h-[min(92vh,48rem)] w-full max-w-3xl overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-4 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:p-5">
+        <div className="fixed inset-0 z-40 grid place-items-center bg-stone-950/70 p-2 backdrop-blur-sm sm:p-4">
+          <div className="max-h-[min(88dvh,48rem)] w-full max-w-3xl overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-3 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:max-h-[min(92vh,48rem)] sm:p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <Badge tone="emerald">Enchant a card</Badge>
@@ -486,7 +486,7 @@ export function Shop({
               </Badge>
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className="mt-3 grid gap-2 sm:mt-5 sm:grid-cols-2 sm:gap-3">
               {targetCards.map((card) => {
                 const isSelected = selectedTargetId === card.id;
 
@@ -495,7 +495,7 @@ export function Shop({
                     key={card.id}
                     type="button"
                     onClick={() => setSelectedTargetId(card.id)}
-                    className={`rounded-2xl border-2 p-3 text-left transition ${
+                    className={`rounded-2xl border-2 p-2.5 text-left transition sm:p-3 ${
                       isSelected
                         ? "border-emerald-500 bg-white shadow-md ring-2 ring-emerald-200"
                         : "border-amber-900/10 bg-white/75 hover:border-emerald-400"
@@ -503,7 +503,7 @@ export function Shop({
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="truncate text-xl font-black capitalize">
+                        <p className="truncate text-lg font-black capitalize sm:text-xl">
                           {card.word}
                         </p>
                         <p className="mt-1 truncate text-sm font-bold text-amber-900/65">
@@ -515,7 +515,7 @@ export function Shop({
                       </div>
                       {isSelected && <Badge tone="emerald">Selected</Badge>}
                     </div>
-                    <p className="mt-3 rounded-lg bg-amber-100 px-3 py-2 text-sm font-black text-amber-950">
+                    <p className="mt-2 rounded-lg bg-amber-100 px-2.5 py-2 text-sm font-black text-amber-950 sm:mt-3 sm:px-3">
                       {getPurchasePreview(
                         activeOffer,
                         card,
@@ -533,7 +533,7 @@ export function Shop({
               </p>
             )}
 
-            <div className="sticky bottom-0 mt-5 flex flex-col gap-3 border-t border-amber-900/10 bg-amber-50 pt-3 sm:flex-row sm:justify-end">
+            <div className="sticky bottom-0 mt-3 flex flex-col gap-2 border-t border-amber-900/10 bg-amber-50 pt-3 sm:mt-5 sm:flex-row sm:justify-end sm:gap-3">
               <Button type="button" variant="ghost" onClick={closeOfferModal}>
                 Cancel
               </Button>

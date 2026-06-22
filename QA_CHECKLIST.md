@@ -142,6 +142,9 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Searching `dist` for `QA Helper`, `Development only`, `QA Correct`, `QA Wrong`, `Force Run Failed`, and `Force Run Complete` returns no matches.
 - Vercel settings are still: Vite preset, build command `npm run build`, output directory `dist`.
 - No backend, database, auth, API, or server runtime is required.
+- Production demo URL is live: `https://word-quest-hazel.vercel.app/`.
+- Live Vercel deployment returns HTTP 200 for HTML, generated JavaScript, and generated CSS.
+- Progress on the live demo is saved locally in the user's browser with LocalStorage only.
 
 ## Production Preview Smoke Test
 
@@ -158,6 +161,50 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Pause and Abandon Run controls remain reachable.
 - Active run state is not restored after refresh.
 - Narrow/mobile viewport keeps important Home, Training, Dungeon, quiz, pause, and result controls reachable.
+
+## Post-Deploy Mobile Smoke Test
+
+- Open `https://word-quest-hazel.vercel.app/` on a phone.
+- Home is usable and deck progression cards do not overflow horizontally.
+- Training is usable and answer buttons are tappable.
+- Dungeon starts and Encounter Intro shows a reachable Start Battle button.
+- Word Choice is playable on mobile.
+- Word Match is playable on mobile.
+- Word Match selected-pair footer and Check Pair button are reachable.
+- Word Scramble tile input is playable on mobile.
+- Word Scramble letter tiles wrap cleanly and duplicate letters still work.
+- Result overlays keep action buttons reachable.
+- Pause modal is usable and Resume is reachable.
+- Abandon Run confirmation is usable and destructive actions are clear.
+- Shop target modal is usable if reached.
+- Run Complete / Run Failed summary is readable if reached.
+- QA Helper, QA Correct, and QA Wrong do not appear on the production URL.
+- Full boss clear may still require longer manual playtesting.
+
+## Production Manual Click-Through
+
+- Open `https://word-quest-hazel.vercel.app/` on desktop.
+- Open `https://word-quest-hazel.vercel.app/` on mobile.
+- Confirm Home loads.
+- Confirm all 6 decks appear.
+- Confirm locked decks show requirement copy.
+- Enter Training.
+- Answer one Training question correctly.
+- Refresh page and confirm mastery persists.
+- Enter Dungeon.
+- Confirm Encounter Intro appears.
+- Tap Start Battle.
+- Confirm timer starts only after Start Battle.
+- Play Word Choice if encountered.
+- Play Word Match if encountered.
+- Play Word Scramble tile input if encountered.
+- Confirm Pause works.
+- Confirm Abandon Run confirmation works.
+- Confirm result overlay buttons are reachable.
+- Confirm no QA Helper appears on production.
+- Confirm no horizontal overflow on mobile.
+- Confirm Reset Progress still requires confirmation.
+- Full boss clear may still require longer manual playtesting.
 
 ## Known Deferred Areas
 

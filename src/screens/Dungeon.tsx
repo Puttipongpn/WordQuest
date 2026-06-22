@@ -2945,8 +2945,8 @@ export function Dungeon({
           </div>
 
           {isPaused && (
-            <div className="absolute inset-0 z-20 grid place-items-center bg-stone-950/70 p-3 backdrop-blur-sm sm:p-5">
-              <div className="max-h-[min(90vh,34rem)] w-full max-w-md overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-4 text-center text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:p-6">
+            <div className="absolute inset-0 z-20 grid place-items-center bg-stone-950/70 p-2 backdrop-blur-sm sm:p-5">
+              <div className="max-h-[min(86dvh,34rem)] w-full max-w-md overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-3 text-center text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:max-h-[min(90vh,34rem)] sm:p-6">
                 <Badge tone="amber">Paused</Badge>
                 <h3 className="mt-3 text-5xl font-black">PAUSED</h3>
                 <p className="mt-3 text-sm font-bold leading-6 text-amber-900/75">
@@ -2965,8 +2965,8 @@ export function Dungeon({
           )}
 
           {isAbandonConfirmOpen && (
-            <div className="absolute inset-0 z-30 grid place-items-center bg-stone-950/75 p-3 backdrop-blur-sm sm:p-5">
-              <div className="max-h-[min(90vh,38rem)] w-full max-w-lg overflow-y-auto rounded-3xl border-2 border-red-300 bg-amber-50 p-4 text-amber-950 shadow-[0_18px_0_rgba(127,29,29,0.24)] sm:p-6">
+            <div className="absolute inset-0 z-30 grid place-items-center bg-stone-950/75 p-2 backdrop-blur-sm sm:p-5">
+              <div className="max-h-[min(86dvh,38rem)] w-full max-w-lg overflow-y-auto rounded-3xl border-2 border-red-300 bg-amber-50 p-3 text-amber-950 shadow-[0_18px_0_rgba(127,29,29,0.24)] sm:max-h-[min(90vh,38rem)] sm:p-6">
                 <Badge tone="red">Abandon Run</Badge>
                 <h3 className="mt-3 text-3xl font-black">
                   Abandon current run?
@@ -3682,11 +3682,11 @@ function BattleResultOverlay({
 
   return (
     <div className="absolute inset-0 z-10 grid place-items-center rounded-2xl bg-stone-950/45 p-2 backdrop-blur-[2px] sm:p-3">
-      <div className={`result-pop pointer-events-auto max-h-[min(88vh,32rem)] w-full max-w-[min(22rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border-2 p-3 text-center shadow-[0_18px_0_rgba(28,25,23,0.22)] sm:p-4 ${toneClass}`}>
+      <div className={`result-pop pointer-events-auto max-h-[min(82dvh,30rem)] w-full max-w-[min(21rem,calc(100vw-1rem))] overflow-y-auto rounded-2xl border-2 p-2.5 text-center shadow-[0_18px_0_rgba(28,25,23,0.22)] sm:max-h-[min(88vh,32rem)] sm:max-w-[min(22rem,calc(100vw-2rem))] sm:p-4 ${toneClass}`}>
         <p className="text-3xl leading-none" aria-hidden="true">
           {resultIcon}
         </p>
-        <p className="text-2xl font-black leading-none sm:text-3xl">{title}</p>
+        <p className="text-xl font-black leading-none sm:text-3xl">{title}</p>
         <p className="mt-1 text-xs font-black uppercase opacity-70">
           {subtitle}
         </p>
@@ -3892,7 +3892,7 @@ function WordMatchBattle({
         isDefeated={isDefeated}
         isTimeout={selectedWordId === null && selectedMeaningId === null}
       />
-      <div className="grid min-h-0 flex-1 gap-2 md:grid-cols-2">
+      <div className="grid min-h-0 flex-1 gap-1.5 sm:gap-2 md:grid-cols-2">
         <div className="min-h-0">
           <p className="mb-1 text-xs font-black uppercase tracking-wide text-emerald-800/75">
             เลือกการ์ด
@@ -3911,7 +3911,7 @@ function WordMatchBattle({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => onSelectWord(card.id)}
-                  className={`min-h-20 rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`min-h-16 rounded-xl border-2 px-2.5 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:min-h-20 sm:px-3 ${
                     showCorrect
                       ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
@@ -3964,7 +3964,7 @@ function WordMatchBattle({
                   type="button"
                   disabled={isAnswered}
                   onClick={() => onSelectMeaning(card.id)}
-                  className={`min-h-20 rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                  className={`min-h-16 rounded-xl border-2 px-2.5 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:min-h-20 sm:px-3 ${
                     showCorrect
                       ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
@@ -3998,15 +3998,15 @@ function WordMatchBattle({
         </div>
       </div>
 
-      <div className="sticky bottom-0 z-[1] mt-2 flex shrink-0 flex-col gap-2 rounded-xl border-2 border-amber-900/10 bg-amber-50/95 px-3 py-2 shadow-md sm:flex-row sm:items-center sm:justify-between">
-        <p className="truncate text-sm font-black text-amber-950">
+      <div className="sticky bottom-0 z-[1] mt-2 flex shrink-0 flex-col gap-2 rounded-xl border-2 border-amber-900/10 bg-amber-50/95 px-2.5 py-2 shadow-md sm:flex-row sm:items-center sm:justify-between sm:px-3">
+        <p className="line-clamp-2 text-xs font-black text-amber-950 sm:truncate sm:text-sm">
           {selectedPairText}
         </p>
         <Button
           type="button"
           disabled={isAnswered || !selectedWordId || !selectedMeaningId}
           onClick={onSubmit}
-          className="shrink-0"
+          className="w-full shrink-0 sm:w-auto"
         >
           Check Pair
         </Button>
@@ -4179,7 +4179,7 @@ function WordScrambleBattle({
         isDefeated={isDefeated}
         isTimeout={isAnswered && selectedOption === undefined}
       />
-      <div className="grid gap-2 sm:grid-cols-3">
+      <div className="grid gap-1.5 sm:grid-cols-3 sm:gap-2">
         {question.options.map((option) => {
           const isSelected = selectedCardId === option.card.id;
           const showCorrect = isCorrect && isSelected;
@@ -4191,7 +4191,7 @@ function WordScrambleBattle({
               type="button"
               disabled={isAnswered}
               onClick={() => selectScrambledOption(option.card.id)}
-              className={`rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`rounded-xl border-2 px-2 py-1.5 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:px-3 sm:py-2 ${
                 showCorrect
                   ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                   : showWrong
@@ -4203,7 +4203,7 @@ function WordScrambleBattle({
             >
               <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <div className="min-w-0">
-                  <p className="break-words font-mono text-lg font-bold tracking-wide text-slate-950 sm:text-xl">
+                  <p className="break-words font-mono text-base font-bold tracking-wide text-slate-950 sm:text-xl">
                     {option.scrambledWord}
                   </p>
                 </div>
@@ -4215,7 +4215,7 @@ function WordScrambleBattle({
                   {showWrong && <Badge tone="red">Wrong</Badge>}
                 </div>
               </div>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-1.5 flex flex-wrap gap-1.5 sm:mt-2 sm:gap-2">
                 <CardStatChips
                   card={option.card}
                   wordFatigue={wordFatigue}
@@ -4228,7 +4228,7 @@ function WordScrambleBattle({
       </div>
 
       <div className="mt-2 rounded-2xl border-2 border-amber-900/10 bg-white p-2 shadow-inner">
-        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+        <div className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-xs font-black uppercase tracking-wide text-amber-800/75">
@@ -4240,23 +4240,23 @@ function WordScrambleBattle({
                 </Badge>
               )}
             </div>
-            <div className="mt-2 min-h-14 rounded-xl border-2 border-dashed border-amber-300 bg-amber-50/80 p-2">
+            <div className="mt-1.5 min-h-12 rounded-xl border-2 border-dashed border-amber-300 bg-amber-50/80 p-1.5 sm:mt-2 sm:min-h-14 sm:p-2">
               {answerTiles.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {answerTiles.map((tile) => (
                     <button
                       key={tile.id}
                       type="button"
                       disabled={isAnswered}
                       onClick={() => returnTileToBank(tile)}
-                      className="grid size-11 place-items-center rounded-lg border-2 border-emerald-500 bg-emerald-100 font-mono text-xl font-black uppercase text-emerald-950 shadow-[0_3px_0_rgba(6,95,70,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:cursor-default disabled:hover:translate-y-0"
+                      className="grid size-10 place-items-center rounded-lg border-2 border-emerald-500 bg-emerald-100 font-mono text-lg font-black uppercase text-emerald-950 shadow-[0_3px_0_rgba(6,95,70,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:cursor-default disabled:hover:translate-y-0 sm:size-11 sm:text-xl"
                     >
                       {tile.letter}
                     </button>
                   ))}
                 </div>
               ) : (
-                <p className="px-2 py-3 text-sm font-bold text-amber-900/65">
+                <p className="px-2 py-2 text-sm font-bold text-amber-900/65 sm:py-3">
                   {selectedOption
                     ? "Tap letters below to build the word."
                     : "Choose a scrambled word first."}
@@ -4264,7 +4264,7 @@ function WordScrambleBattle({
               )}
             </div>
 
-            <div className="mt-3">
+            <div className="mt-2 sm:mt-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-xs font-black uppercase tracking-wide text-amber-800/75">
                   Letter Tiles
@@ -4279,16 +4279,16 @@ function WordScrambleBattle({
                   Clear Answer
                 </Button>
               </div>
-              <div className="mt-2 min-h-14 rounded-xl border border-amber-900/10 bg-slate-50 p-2">
+              <div className="mt-1.5 min-h-12 rounded-xl border border-amber-900/10 bg-slate-50 p-1.5 sm:mt-2 sm:min-h-14 sm:p-2">
                 {availableTiles.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {availableTiles.map((tile) => (
                       <button
                         key={tile.id}
                         type="button"
                         disabled={isAnswered || !selectedOption}
                         onClick={() => moveTileToAnswer(tile)}
-                        className="grid size-11 place-items-center rounded-lg border-2 border-amber-300 bg-gradient-to-b from-amber-100 to-yellow-200 font-mono text-xl font-black uppercase text-amber-950 shadow-[0_3px_0_rgba(120,53,15,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:cursor-default disabled:opacity-60 disabled:hover:translate-y-0"
+                        className="grid size-10 place-items-center rounded-lg border-2 border-amber-300 bg-gradient-to-b from-amber-100 to-yellow-200 font-mono text-lg font-black uppercase text-amber-950 shadow-[0_3px_0_rgba(120,53,15,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:cursor-default disabled:opacity-60 disabled:hover:translate-y-0 sm:size-11 sm:text-xl"
                       >
                         {tile.letter}
                       </button>

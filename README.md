@@ -4,6 +4,8 @@ WordQuest is a vocabulary learning roguelike deckbuilder prototype. Players revi
 
 The project is a local-first prototype focused on proving the learning and roguelike loop before final art, backend services, or large vocabulary imports.
 
+Live demo: https://word-quest-hazel.vercel.app/
+
 ## Tech Stack
 
 - Vite
@@ -88,6 +90,8 @@ The Dungeon QA Helper is development-only and gated by `import.meta.env.DEV`.
 
 Recommended target: Vercel static deployment.
 
+Current deployment status: live on Vercel at https://word-quest-hazel.vercel.app/
+
 Suggested Vercel setup:
 
 1. Push the project to GitHub.
@@ -99,6 +103,8 @@ Suggested Vercel setup:
 
 No Vite config changes are currently required for Vercel. GitHub Pages may require a base-path configuration, so it is not the default deploy target for this prototype.
 
+Progress remains local to each browser through LocalStorage. The live demo does not use accounts, cloud saves, backend services, databases, authentication, or APIs.
+
 ## Latest Deploy Dry Run
 
 Phase 54 verified the static deployment path locally:
@@ -108,6 +114,13 @@ Phase 54 verified the static deployment path locally:
 - Production HTML, JavaScript, and CSS assets returned HTTP 200.
 - Built output did not contain QA Helper player-facing strings such as `QA Helper`, `QA Correct`, `QA Wrong`, `Force Run Failed`, `Force Run Complete`, or `Development only`.
 - No real public deployment was performed.
+
+Phase 56 verified the first live Vercel deployment with HTTP/static checks:
+
+- Production URL: https://word-quest-hazel.vercel.app/
+- Production HTML returned HTTP 200 from Vercel.
+- Generated JavaScript and CSS assets returned HTTP 200.
+- Post-deploy mobile polish was applied to Dungeon mini-games, result overlays, pause/abandon modals, and the Shop target modal without changing gameplay rules.
 
 ## Prototype Limitations / Roadmap
 
