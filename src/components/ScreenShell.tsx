@@ -21,7 +21,7 @@ export function ScreenShell({
 }: ScreenShellProps) {
   if (gameMode) {
     return (
-      <section className="min-h-[calc(100vh-3.5rem)] overflow-x-hidden px-2 py-2 sm:min-h-[calc(100vh-4rem)] sm:px-3 xl:h-[calc(100vh-4rem)] xl:overflow-hidden">
+      <section className="min-h-[calc(100vh-3.5rem)] overflow-x-hidden px-1 py-1 sm:min-h-[calc(100vh-4rem)] sm:px-3 sm:py-2 xl:h-[calc(100vh-4rem)] xl:overflow-hidden">
         {children}
       </section>
     );

@@ -38,6 +38,8 @@ Current presentation rules:
 - On mobile and narrow screens, Dungeon battle can scroll vertically when needed; quiz controls, timer, player/enemy status, result actions, Pause, and Abandon controls must remain reachable rather than being clipped by fixed viewport assumptions.
 - Mobile Dungeon uses a compact top battle status and timer/control strip near the quiz, while secondary panels move below the active play area.
 - Post-deploy mobile polish should remain targeted: reduce mobile spacing, keep Word Match and Word Scramble controls tappable, keep result and modal actions reachable, and avoid full UI redesigns unless explicitly requested.
+- Mobile Dungeon should minimize side padding in active battle so the real play area is as wide as possible.
+- When a new active Dungeon question starts on mobile, the screen may automatically scroll to the top of the play area near the timer and quiz to reduce repeated manual scrolling.
 - A compact battle-stage strip may reserve space for future player/monster presentation, but it should not reduce quiz usability or add gameplay rules.
 - Monster, Elite, Boss, and Event encounters should feel visually distinct while using placeholder assets only.
 - Combat feedback should make damage, hits, shield gain, shield absorption, timeout state, and triggered card effects easy to scan.

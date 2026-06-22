@@ -127,6 +127,8 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Deck Review is usable on desktop and narrow/mobile viewport.
 - Training is usable on desktop and narrow/mobile viewport.
 - Dungeon active battle keeps player HP, enemy HP, timer, quiz, and answer controls reachable.
+- Dungeon active battle uses reduced mobile side padding so the play area is wider.
+- Starting a new Dungeon question on mobile scrolls near the timer and quiz area.
 - Shop modal is usable on desktop and narrow/mobile viewport.
 - Run Complete and Run Failed summaries are readable on desktop and narrow/mobile viewport.
 
@@ -173,6 +175,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Word Match selected-pair footer and Check Pair button are reachable.
 - Word Scramble tile input is playable on mobile.
 - Word Scramble letter tiles wrap cleanly and duplicate letters still work.
+- New questions should bring the mobile viewport back near the active timer/quiz area.
 - Result overlays keep action buttons reachable.
 - Pause modal is usable and Resume is reachable.
 - Abandon Run confirmation is usable and destructive actions are clear.

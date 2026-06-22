@@ -1090,6 +1090,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Consistent content makes Deck Review, Training, Dungeon mini-games, and mobile answer choices easier to read across all manual decks.
 - Status: Accepted
 
+### 2026-06-22: Mobile Dungeon Auto-Scrolls To Active Play Area
+
+- Decision: On mobile and narrow screens, new active Dungeon questions may automatically scroll near the timer and quiz area.
+- Reason: Phone players should not need to repeatedly scroll back up after each question when long battle content overflows vertically.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 56.1 Deploy Sync + Manual Click-Through Smoke Test Prep is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Mobile Dungeon vertical usability adjustment is complete after Phase 56.1. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -712,6 +712,10 @@ Phase 56.1 Deploy Sync + Manual Click-Through Smoke Test Prep is complete. The p
 - Phase 56.1 commit/push syncs the mobile polish to `origin/main`; Vercel is expected to redeploy from GitHub using the existing static setup.
 - Browser automation remains unavailable in this environment, and no Playwright dependency was added. Manual click-through testing on the live Vercel URL is still recommended after redeploy.
 - No gameplay systems, save rules, combat math, timers, mastery, shop/event/boss effects, deck unlock rules, Word Energy rules, backend, auth, API, final art, sound, or external libraries were changed.
+- Applied a targeted mobile Dungeon vertical usability adjustment after phone feedback.
+- Reduced mobile game-mode and Dungeon battle padding so the active play area has more horizontal room.
+- Added mobile-only auto-scroll to bring new active Dungeon questions back near the timer and quiz area.
+- Preserved combat logic, timers, progression, save rules, mastery, elements, events, elites, boss behavior, shop behavior, statistics, QA Helper gating, and LocalStorage behavior.
 
 ## In Progress
 
@@ -719,7 +723,7 @@ Phase 56.1 Deploy Sync + Manual Click-Through Smoke Test Prep is complete. The p
 
 ## Next Task
 
-Phase 56.1 is complete. Continue with the next explicitly requested phase or feature.
+Mobile Dungeon vertical usability adjustment is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

@@ -1486,6 +1486,28 @@ Preserved:
 
 Phase 56.1 is complete.
 
+## Mobile Dungeon Vertical Usability Adjustment Summary
+
+This follow-up addressed phone feedback after Phase 56.1.
+
+Completed:
+
+- Reduced mobile `gameMode` shell padding so Dungeon has less side margin on portrait phone screens.
+- Reduced mobile padding inside the active Dungeon battle frame and quiz arena.
+- Added a mobile-only scroll anchor near the active timer/quiz area.
+- Added an effect that scrolls to the play-area anchor when a new active Dungeon question starts.
+- Updated documentation and QA checklist items for reduced mobile padding and question-start auto-scroll.
+
+Rules preserved:
+
+- No combat logic, timer values, progression, save rules, mastery rules, element rules, event rules, boss rules, shop rules, statistics behavior, QA Helper production gating, or LocalStorage behavior changed.
+- The scroll behavior is presentation-only and runs only for mobile/narrow active Dungeon questions.
+
+Manual QA recommendation:
+
+- On a phone, start Dungeon, answer or timeout into the next mini-game, and confirm the viewport returns near the timer/quiz area instead of forcing the player to manually scroll back up.
+- Confirm the wider mobile battle area does not introduce horizontal overflow.
+
 ## Next Recommended Task
 
 Recommended next task:

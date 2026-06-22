@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
 import {
   Badge,
@@ -1031,6 +1031,7 @@ export function Dungeon({
   wordFatigue,
   wordMastery,
 }: DungeonProps) {
+  const mobilePlayAreaRef = useRef<HTMLDivElement | null>(null);
   const initialMiniGameType = useMemo(() => chooseBattleMiniGame(), []);
   const [playerHp, setPlayerHp] = useState(PLAYER_MAX_HP);
   const [shield, setShield] = useState(INITIAL_SHIELD);
@@ -1148,6 +1149,10 @@ export function Dungeon({
   const canAbandonRun =
     battleStatus !== "run-complete" && battleStatus !== "run-failed";
   const canShowTriggeredCardDetails = battleLog.triggeredCard !== undefined;
+  const activeQuestionScrollKey =
+    battleStatus === "fighting" && !isAnswered
+      ? `${miniGameType}-${questionSeed}-${currentEncounter.id}`
+      : "";
   const encounterFlavorText = getEncounterFlavorText(currentEncounter, {
     isBossEncounter,
     encounterType,
@@ -1543,6 +1548,28 @@ export function Dungeon({
       earthAttackReduction: attackReduction,
     });
   }
+
+  useEffect(() => {
+    if (!activeQuestionScrollKey) {
+      return;
+    }
+
+    if (
+      typeof window === "undefined" ||
+      window.matchMedia("(min-width: 768px)").matches
+    ) {
+      return;
+    }
+
+    const scrollTimeoutId = window.setTimeout(() => {
+      mobilePlayAreaRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 80);
+
+    return () => window.clearTimeout(scrollTimeoutId);
+  }, [activeQuestionScrollKey]);
 
   useEffect(() => {
     if (!isTimerRunning) {
@@ -2560,8 +2587,8 @@ export function Dungeon({
           </section>
         </CardPanel>
       ) : (
-      <div className="grid gap-3 xl:h-full xl:min-h-0 xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]">
-        <CardPanel className="relative min-h-0 border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-2 text-amber-50 sm:p-3 xl:h-full xl:overflow-hidden">
+      <div className="grid gap-2 sm:gap-3 xl:h-full xl:min-h-0 xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]">
+        <CardPanel className="relative min-h-0 border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-1 text-amber-50 sm:p-3 xl:h-full xl:overflow-hidden">
           <div className="flex min-h-0 flex-col gap-2 sm:gap-3 xl:h-full">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-wrap gap-2">
@@ -2744,9 +2771,15 @@ export function Dungeon({
               </div>
             </section>
 
+            <div
+              ref={mobilePlayAreaRef}
+              className="-mt-1 scroll-mt-1"
+              aria-hidden="true"
+            />
+
             {!isEventEncounter && (
               <section
-                className={`rounded-2xl border-2 p-2 xl:hidden ${
+                className={`rounded-2xl border-2 p-1.5 xl:hidden ${
                   timeRemaining === 0
                     ? "border-red-400 bg-red-100 text-red-950"
                     : isTimerLow && isTimerRunning
@@ -2835,8 +2868,8 @@ export function Dungeon({
               </div>
             </section>
 
-            <section className="flex min-h-0 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-2 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)] xl:flex-1">
-              <div className="min-h-[18rem] rounded-2xl border-2 border-amber-900/10 bg-white/80 p-2 shadow-inner xl:min-h-0 xl:flex-1">
+            <section className="flex min-h-0 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-1 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)] sm:p-2 xl:flex-1">
+              <div className="min-h-[18rem] rounded-2xl border-2 border-amber-900/10 bg-white/80 p-1.5 shadow-inner sm:p-2 xl:min-h-0 xl:flex-1">
                 {battleStatus === "run-complete" ||
                 battleStatus === "run-failed" ? (
                   <RunEndingSummary
