@@ -52,10 +52,17 @@ Current presentation rules:
 - Phase 58 expands game-feel motion with CSS-only reward pulses, selected-card glow, mastery pulse, answer feedback motion, shop feedback motion, and tile/button press feedback.
 - Motion must not reveal hidden answers, trigger cards, or result information before the player answers.
 - Reduced-motion users should receive readable state changes without required animation.
+- Phase 59 adds optional sound effects using browser-native Web Audio generation only.
+- Sound is off by default, player-controlled, subtle, and presentation-only.
+- Sound must initialize only after player interaction and must fail safely if the browser blocks or lacks audio support.
+- Sound settings are UI preferences saved separately from player progress with `wordquest_audio_settings`.
+- Sound must never change combat math, timers, answer checking, HP, shield, run state, save behavior, deck unlocks, Word Energy, shop/event/boss effects, or encounter progression.
+- Important feedback must always remain visible through text, UI state, and motion; sound must never communicate critical information by itself.
+- Do not add external audio assets, generated audio files, sound libraries, new dependencies, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, advanced element interactions, or deployment changes as part of sound passes.
 - Post-question and post-encounter actions should appear in one result overlay/action area to avoid duplicated battle controls.
 - Player-facing encounter continuation should use labels such as `Next Encounter` or `Continue Dungeon`, not `Spawn Next Monster`.
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
-- Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual passes.
+- Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual or sound passes.
 
 ## Development QA Helpers
 
@@ -87,7 +94,7 @@ Deployment scope rules:
 - Build command is `npm run build`.
 - Output directory is `dist`.
 - Deployment status is live on Vercel.
-- Deployment prep does not add backend services, databases, authentication, APIs, React Router, final art assets, sound, or new gameplay systems.
+- Deployment prep does not add backend services, databases, authentication, APIs, React Router, final art assets, audio asset files, or new gameplay systems.
 - Production builds must not expose development QA Helper UI.
 - Deployment does not change LocalStorage behavior: permanent progress remains browser-local, and active run state remains temporary and unsaved.
 
@@ -192,6 +199,8 @@ Current saved data intentionally excludes:
 - Current dungeon run state
 
 Run summary statistics are saved only after a run completes or fails. Active run state is never persisted.
+
+Sound settings are not player progress. They use a separate LocalStorage key and must not change the saved player progress schema.
 
 ## Run Exit Safety
 

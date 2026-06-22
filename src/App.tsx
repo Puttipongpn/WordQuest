@@ -45,6 +45,11 @@ import {
   resetSavedProgress,
   savePlayerProgress,
 } from "./utils/playerProgressStorage";
+import {
+  getAudioSettings,
+  playSound,
+  setSoundEnabled,
+} from "./utils/soundManager";
 
 let duplicateCardSequence = 0;
 
@@ -133,6 +138,9 @@ export default function App() {
   const [runStatistics, setRunStatistics] =
     useState<RunStatistics>(initialRunStatistics);
   const [wordFatigue, setWordFatigue] = useState<WordFatigueByWord>({});
+  const [isAudioEnabled, setIsAudioEnabled] = useState(
+    () => getAudioSettings().enabled,
+  );
   const [currentRunDeck, setCurrentRunDeck] = useState<WordCard[]>(
     () => createRunDeckCopy(starterDeck),
   );
@@ -459,11 +467,26 @@ export default function App() {
   }
 
   function navigateToScreen(screen: ScreenName) {
+    if (screen !== currentScreen) {
+      playSound("ui-click");
+    }
+
     if (currentScreen === "shop" && screen === "dungeon") {
       recoverRunWordEnergy();
     }
 
     setCurrentScreen(screen);
+  }
+
+  function toggleSound() {
+    const nextEnabled = !isAudioEnabled;
+
+    setIsAudioEnabled(nextEnabled);
+    setSoundEnabled(nextEnabled);
+
+    if (nextEnabled) {
+      playSound("ui-click");
+    }
   }
 
   function selectDeck(deckId: string) {
@@ -686,7 +709,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <AppHeader currentScreen={currentScreen} onNavigate={navigateToScreen} />
+      <AppHeader
+        currentScreen={currentScreen}
+        isSoundEnabled={isAudioEnabled}
+        onNavigate={navigateToScreen}
+        onToggleSound={toggleSound}
+      />
       <main>
         {currentScreen === "home" && (
           <Home

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 58 Game Feel / Motion Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 59 Sound FX Foundation is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -728,7 +728,16 @@ Phase 58 Game Feel / Motion Pass is complete. The production demo is live on Ver
 - Added CSS-only `reward-pulse`, `selected-glow`, and `mastery-pulse` motion helpers with reduced-motion support.
 - Added subtle feedback motion to Dungeon answer states, result lines, card trigger details, Word Scramble tiles, Shop purchase feedback, Shop target selection, Training answer feedback, mastery increases, Home deck selection, and Deck Review selected cards.
 - Preserved combat math, timer values, save behavior, run progression, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, QA Helper production safety, all six manual decks, backend scope, final-art deferral, and external library restrictions.
-- Verified the project with `npm run build` after Phase 57.
+- Verified the project with `npm run build` after Phase 58.
+- Applied Phase 59 Sound FX Foundation.
+- Added `src/utils/soundManager.ts` for optional browser-generated Web Audio sound effects.
+- Added a compact player-controlled Sound On / Sound Off toggle in the app header.
+- Sound starts off by default and is initialized only after player interaction.
+- Sound settings persist separately from player progress with the `wordquest_audio_settings` LocalStorage key.
+- Added subtle sound hooks for navigation clicks, Training answers and completion, Dungeon correct/wrong/timeout/shield/defeat/victory/event outcomes, and Shop inspect/purchase/error/reroll feedback.
+- Added no external audio assets, sound libraries, dependencies, backend features, or deployment changes.
+- Preserved combat math, timer values, save schema, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, run progression, QA Helper production safety, and all six manual decks.
+- Verified the project with `npm run build` after Phase 59.
 
 ## In Progress
 
@@ -736,7 +745,7 @@ Phase 58 Game Feel / Motion Pass is complete. The production demo is live on Ver
 
 ## Next Task
 
-Phase 57 is complete. Continue with the next explicitly requested phase or feature.
+Phase 59 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 
@@ -918,7 +927,7 @@ Keep game playable and simple.
 - Final card art
 - Monster art
 - Shopkeeper art
-- Sound effects
+- Expanded sound design beyond the current optional browser-generated foundation
 - More mini-games
 - Full dungeon battle logic
 - Run rewards

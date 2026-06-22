@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 58 Game Feel / Motion Pass complete.
+Current phase: Phase 59 Sound FX Foundation complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1562,6 +1562,32 @@ Preserved:
 Verification:
 
 - `npm run build` passed after Phase 58.
+
+## Phase 59 Sound FX Foundation Summary
+
+Phase 59 added a lightweight optional sound effects foundation without changing gameplay.
+
+Completed:
+
+- Added `src/utils/soundManager.ts` for browser-native Web Audio oscillator/envelope sounds.
+- Added a compact Sound On / Sound Off toggle in `AppHeader`.
+- Sound starts off by default and initializes/resumes audio only after player interaction.
+- Saved sound preference separately from player progress in `wordquest_audio_settings`.
+- Added subtle sound hooks for:
+  - navigation/UI clicks
+  - Training correct/wrong answers, mastery increases, and session completion
+  - Dungeon correct answers, wrong answers, timeouts, shield blocks/gains, defeat, victory, and event results
+  - Shop offer inspection, successful purchases, blocked purchases, rerolls, and modal cancel
+
+Preserved:
+
+- No external audio files, generated audio assets, audio libraries, new dependencies, backend, database, auth, API, React Router, achievements, final art, browser automation tooling, or deployment setup changes were added.
+- Sound is presentation-only and optional. It does not affect damage, HP, shield, timers, answer checking, run state, save data, deck unlocks, LocalStorage player progress, encounter progression, combat math, mastery rules, shop/event/boss effects, or Word Energy rules.
+- Visual/text feedback remains the source of important game information; sound never communicates critical information by itself.
+
+Verification:
+
+- `npm run build` passed after Phase 59.
 
 ## Next Recommended Task
 

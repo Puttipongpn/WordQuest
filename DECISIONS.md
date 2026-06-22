@@ -1108,6 +1108,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The prototype should feel more alive while preserving the tested gameplay loop, mobile usability, and reduced-motion accessibility.
 - Status: Accepted
 
+### 2026-06-22: Sound Effects Are Optional And Presentation-Only
+
+- Decision: Sound effects are optional, player-controlled, browser-generated, and presentation-only. Sound must never communicate critical information by itself or change gameplay behavior.
+- Reason: Native Web Audio can improve game feel without adding assets, dependencies, autoplay risk, or coupling sound preferences to permanent player progress.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

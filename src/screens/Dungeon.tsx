@@ -62,6 +62,7 @@ import type {
   WordCard,
   WordMasteryByCardId,
 } from "../types";
+import { playSound } from "../utils/soundManager";
 
 type DungeonProps = {
   currentRunDeck: WordCard[];
@@ -1300,6 +1301,7 @@ export function Dungeon({
   function startBattleFromIntro() {
     const nextMiniGameType = chooseBattleMiniGame();
 
+    playSound("ui-click");
     setIsPaused(false);
     resetAnswerState();
     setQuestionWordFatigue(wordFatigue);
@@ -1318,6 +1320,7 @@ export function Dungeon({
       return;
     }
 
+    playSound("ui-click");
     setIsPaused(true);
     setBattleLog({
       tone: "neutral",
@@ -1326,19 +1329,64 @@ export function Dungeon({
   }
 
   function openAbandonRunConfirm() {
+    playSound("ui-click");
     setIsAbandonConfirmOpen(true);
   }
 
   function closeAbandonRunConfirm() {
+    playSound("ui-click");
     setIsAbandonConfirmOpen(false);
   }
 
   function resumeBattle() {
+    playSound("ui-click");
     setIsPaused(false);
     setBattleLog({
       tone: "neutral",
       message: "Battle resumed. Answer before the timer runs out.",
     });
+  }
+
+  function playDelayedSound(soundType: Parameters<typeof playSound>[0]) {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.setTimeout(() => playSound(soundType), 95);
+  }
+
+  function playCardTriggerSound(options: {
+    isDefeated: boolean;
+    shieldGained: number;
+  }) {
+    playSound(options.isDefeated ? "victory" : "correct");
+
+    if (!options.isDefeated && options.shieldGained > 0) {
+      playDelayedSound("shield");
+    }
+  }
+
+  function playEnemyAttackSound(options: {
+    isTimeout: boolean;
+    isRunFailed: boolean;
+    shieldAbsorbed: number;
+    hpDamageTaken: number;
+  }) {
+    if (options.isRunFailed) {
+      playSound("defeated");
+      return;
+    }
+
+    playSound(options.isTimeout ? "timeout" : "wrong");
+
+    if (options.shieldAbsorbed > 0) {
+      playDelayedSound("shield");
+      return;
+    }
+
+    if (options.hpDamageTaken > 0) {
+      playDelayedSound("enemy-hit");
+    }
   }
 
   function triggerCard(card: WordCard) {
@@ -1406,6 +1454,10 @@ export function Dungeon({
       onGainRunGold(windGoldGained);
     }
     onIncreaseWordFatigue(card.word);
+    playCardTriggerSound({
+      isDefeated,
+      shieldGained: totalShieldGained,
+    });
 
     const nextRunStatistics: RunStatistics = {
       ...runStatistics,
@@ -1519,6 +1571,12 @@ export function Dungeon({
     setPendingEarthReduction(0);
     setShield(nextShield);
     setPlayerHp(nextPlayerHp);
+    playEnemyAttackSound({
+      isTimeout,
+      isRunFailed: nextPlayerHp === 0,
+      shieldAbsorbed,
+      hpDamageTaken,
+    });
 
     if (nextPlayerHp === 0) {
       onResetWordFatigue();
@@ -1710,6 +1768,7 @@ export function Dungeon({
     const nextEliteMonster = createEliteMonster(nextMonster);
     const isNextEvent = nextEncounterType === "event";
 
+    playSound("ui-click");
     setMonsterIndex(nextMonsterIndex);
     setEncounterType(nextEncounterType);
     setMonsterHp(
@@ -1742,6 +1801,7 @@ export function Dungeon({
     const nextEliteMonster = createEliteMonster(nextMonster);
     const isNextEvent = nextEncounterType === "event";
 
+    playSound("event");
     setMonsterIndex(nextMonsterIndex);
     setEncounterType(nextEncounterType);
     setMonsterHp(
@@ -1779,6 +1839,7 @@ export function Dungeon({
       : null;
 
     if (unavailableReason) {
+      playSound("shop-error");
       setBattleLog({
         tone: "danger",
         message: `${currentEvent.title}: ${unavailableReason}`,
@@ -1843,6 +1904,7 @@ export function Dungeon({
       setPlayerHp(nextPlayerHp);
 
       if (nextPlayerHp === 0) {
+        playSound("defeated");
         onResetWordFatigue();
         setEndedRunGold(runGold);
         setEndedRunStatistics(nextRunStatistics);
@@ -1951,6 +2013,7 @@ export function Dungeon({
       setPlayerHp(nextPlayerHp);
 
       if (nextPlayerHp === 0) {
+        playSound("defeated");
         onResetWordFatigue();
         setEndedRunGold(runGold);
         setEndedRunStatistics(nextRunStatistics);
@@ -1979,6 +2042,7 @@ export function Dungeon({
       setPlayerHp(nextPlayerHp);
 
       if (nextPlayerHp === 0) {
+        playSound("defeated");
         onResetWordFatigue();
         setEndedRunGold(runGold);
         setEndedRunStatistics(nextRunStatistics);
@@ -2070,6 +2134,7 @@ export function Dungeon({
     const nextMiniGameType = chooseBattleMiniGame();
     const nextBoss = chooseBoss(runProgress.monstersDefeated + questionSeed);
 
+    playSound("ui-click");
     setIsBossEncounter(true);
     setSelectedBoss(nextBoss);
     setEncounterType("monster");
@@ -2091,6 +2156,7 @@ export function Dungeon({
   function handleRestartRun() {
     const nextMiniGameType = chooseBattleMiniGame();
 
+    playSound("ui-click");
     onResetRun();
     onResetWordFatigue();
     setPlayerHp(PLAYER_MAX_HP);

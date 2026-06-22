@@ -14,6 +14,7 @@ import type {
   WordCard,
   WordMasteryByCardId,
 } from "../types";
+import { playSound } from "../utils/soundManager";
 
 type AnswerResult = "correct" | "wrong";
 type TrainingQuestionType =
@@ -358,6 +359,7 @@ export function Training({
     resetAnswerState();
     resetStats();
     setPhase("active");
+    playSound("ui-click");
   }
 
   function handleAnswer(choice: WordCard) {
@@ -375,6 +377,7 @@ export function Training({
     setResult(isCorrect ? "correct" : "wrong");
 
     if (isCorrect) {
+      playSound(willIncreaseMastery ? "mastery-up" : "correct");
       setStats((currentStats) => ({
         ...currentStats,
         correct: currentStats.correct + 1,
@@ -388,6 +391,7 @@ export function Training({
       return;
     }
 
+    playSound("wrong");
     setStats((currentStats) => ({
       ...currentStats,
       incorrect: currentStats.incorrect + 1,
@@ -399,6 +403,7 @@ export function Training({
 
     if (isLastQuestion) {
       setPhase("complete");
+      playSound("victory");
       return;
     }
 

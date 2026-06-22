@@ -16,6 +16,7 @@ import type {
   ShopItem,
   WordCard,
 } from "../types";
+import { playSound } from "../utils/soundManager";
 
 type ShopProps = {
   currentRunDeck: WordCard[];
@@ -254,6 +255,7 @@ export function Shop({
     const eligibleTargets = getEligibleTargets(item, currentRunDeck);
 
     if (eligibleTargets.length === 0) {
+      playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
         message: `${item.name} has no eligible targets right now.`,
@@ -266,6 +268,7 @@ export function Shop({
     setActiveOffer(item);
     setTargetCards(nextTargets);
     setSelectedTargetId(nextTargets[0]?.id ?? "");
+    playSound(runGold < item.cost ? "shop-error" : "ui-click");
     setPurchaseFeedback({
       tone: "neutral",
       message: `Choose one current-run card for ${item.name}. Gold is spent only after confirmation.`,
@@ -273,6 +276,7 @@ export function Shop({
   }
 
   function closeOfferModal() {
+    playSound("ui-click");
     setActiveOffer(null);
     setTargetCards([]);
     setSelectedTargetId("");
@@ -280,6 +284,7 @@ export function Shop({
 
   function confirmPurchase() {
     if (!activeOffer || !activeTarget) {
+      playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
         message: "Choose a valid target before confirming the purchase.",
@@ -306,6 +311,7 @@ export function Shop({
                 : false;
 
     if (!isPurchased) {
+      playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
         message: `Unable to buy ${activeOffer.name}. Check gold, target validity, and current-run deck safety rules.`,
@@ -313,15 +319,19 @@ export function Shop({
       return;
     }
 
+    playSound("shop-buy");
     setPurchaseFeedback({
       tone: "success",
       message: `${getPurchaseSuccessMessage(activeOffer, activeTarget)} Temporary run change only.`,
     });
-    closeOfferModal();
+    setActiveOffer(null);
+    setTargetCards([]);
+    setSelectedTargetId("");
   }
 
   function rerollOffers() {
     if (!onSpendRunGold(SHOP_REROLL_COST)) {
+      playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
         message: `Reroll costs ${SHOP_REROLL_COST} gold.`,
@@ -329,8 +339,11 @@ export function Shop({
       return;
     }
 
+    playSound("reroll");
     setShopOffers(getRandomOffers());
-    closeOfferModal();
+    setActiveOffer(null);
+    setTargetCards([]);
+    setSelectedTargetId("");
     setPurchaseFeedback({
       tone: "success",
       message: `Shop offers rerolled for ${SHOP_REROLL_COST} current-run gold.`,

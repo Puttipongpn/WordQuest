@@ -2,7 +2,9 @@ import type { ScreenName } from "../types";
 
 type AppHeaderProps = {
   currentScreen: ScreenName;
+  isSoundEnabled: boolean;
   onNavigate: (screen: ScreenName) => void;
+  onToggleSound: () => void;
 };
 
 const navItems: Array<{ screen: ScreenName; label: string; icon: string }> = [
@@ -14,7 +16,12 @@ const navItems: Array<{ screen: ScreenName; label: string; icon: string }> = [
   { screen: "run-result", label: "Result", icon: "🏆" },
 ];
 
-export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
+export function AppHeader({
+  currentScreen,
+  isSoundEnabled,
+  onNavigate,
+  onToggleSound,
+}: AppHeaderProps) {
   if (currentScreen === "dungeon") {
     return (
       <header className="h-14 border-b-2 border-amber-300/20 bg-stone-950/95 text-amber-50 shadow-lg sm:h-16">
@@ -32,9 +39,15 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
               </h1>
             </div>
           </div>
-          <p className="hidden text-xs font-black uppercase tracking-[0.2em] text-amber-100/70 sm:block">
-            Battle Mode
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="hidden text-xs font-black uppercase tracking-[0.2em] text-amber-100/70 sm:block">
+              Battle Mode
+            </p>
+            <SoundToggle
+              isSoundEnabled={isSoundEnabled}
+              onToggleSound={onToggleSound}
+            />
+          </div>
         </div>
       </header>
     );
@@ -56,6 +69,10 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
             </h1>
           </div>
         </div>
+        <SoundToggle
+          isSoundEnabled={isSoundEnabled}
+          onToggleSound={onToggleSound}
+        />
         <nav
           className="flex gap-2 overflow-x-auto pb-1"
           aria-label="Main screens"
@@ -84,5 +101,27 @@ export function AppHeader({ currentScreen, onNavigate }: AppHeaderProps) {
         </nav>
       </div>
     </header>
+  );
+}
+
+type SoundToggleProps = {
+  isSoundEnabled: boolean;
+  onToggleSound: () => void;
+};
+
+function SoundToggle({ isSoundEnabled, onToggleSound }: SoundToggleProps) {
+  return (
+    <button
+      type="button"
+      onClick={onToggleSound}
+      aria-pressed={isSoundEnabled}
+      className={`w-fit shrink-0 rounded-lg border px-3 py-2 text-xs font-black uppercase tracking-[0.08em] transition hover:-translate-y-0.5 active:translate-y-0.5 ${
+        isSoundEnabled
+          ? "border-emerald-200 bg-emerald-200 text-emerald-950 shadow-[0_3px_0_rgba(6,78,59,0.45)]"
+          : "border-amber-100/20 bg-amber-50/10 text-amber-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:border-amber-300 hover:bg-amber-100/20"
+      }`}
+    >
+      {isSoundEnabled ? "Sound On" : "Sound Off"}
+    </button>
   );
 }

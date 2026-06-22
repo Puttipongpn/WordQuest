@@ -144,6 +144,28 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Motion does not create horizontal overflow on mobile.
 - With reduced-motion enabled, the UI remains readable and usable without required animation.
 
+## Sound
+
+- Sound starts off by default.
+- Sound toggle is visible and usable on desktop and mobile.
+- Turning sound on does not crash the app.
+- Turning sound off stops future sound effects.
+- Sound preference persists separately from player progress.
+- Correct Training answer sound plays when enabled.
+- Wrong Training answer sound plays when enabled.
+- Training completion sound plays once when enabled.
+- Correct Dungeon answer sound plays when enabled.
+- Wrong Dungeon answer sound plays when enabled.
+- Timeout sound plays when enabled.
+- Shield, hit, defeat, and victory sounds are subtle if encountered.
+- Shop purchase sound plays when enabled.
+- Shop not-enough-gold or blocked-purchase sound plays when enabled.
+- Shop reroll sound plays when enabled.
+- App works normally if sound is off.
+- App works normally if the browser blocks or suspends audio.
+- No important feedback depends only on sound.
+- No external audio assets were added.
+
 ## Production Readiness
 
 - `npm install` completes.
@@ -152,6 +174,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - `npm run preview` serves the production build.
 - Production build opens on Home.
 - Production build does not expose QA Helper UI.
+- Production build does not require audio asset files.
 - Production HTML, JavaScript, and CSS assets return HTTP 200 from the preview server.
 - Searching `dist` for `QA Helper`, `Development only`, `QA Correct`, `QA Wrong`, `Force Run Failed`, and `Force Run Complete` returns no matches.
 - Vercel settings are still: Vite preset, build command `npm run build`, output directory `dist`.
