@@ -432,7 +432,7 @@ export function DeckReview({
                   onClick={() => setSelectedCard(card)}
                   className={`min-h-48 rounded-xl border-2 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-4 text-left shadow-[0_8px_0_rgba(120,53,15,0.14)] transition hover:-translate-y-1 hover:border-amber-600 hover:shadow-[0_12px_0_rgba(120,53,15,0.18)] focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                     isSelected
-                      ? "border-amber-700 ring-2 ring-amber-300"
+                      ? "selected-glow border-amber-700 ring-2 ring-amber-300"
                       : "border-amber-900/20"
                   }`}
                 >
@@ -488,7 +488,7 @@ export function DeckReview({
           </section>
         </div>
 
-        <aside className="rounded-xl border-2 border-emerald-800/30 bg-gradient-to-br from-emerald-100 via-amber-50 to-yellow-50 p-5 shadow-[0_10px_0_rgba(120,53,15,0.18)] lg:sticky lg:top-32 lg:self-start">
+        <aside className="result-pop rounded-xl border-2 border-emerald-800/30 bg-gradient-to-br from-emerald-100 via-amber-50 to-yellow-50 p-5 shadow-[0_10px_0_rgba(120,53,15,0.18)] lg:sticky lg:top-32 lg:self-start">
           <div className="flex items-start gap-4">
             <span className="grid size-20 shrink-0 place-items-center rounded-lg border border-amber-900/20 bg-white/80 text-5xl shadow-inner">
               {selectedCard.imagePlaceholder}

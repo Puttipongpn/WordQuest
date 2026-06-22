@@ -413,7 +413,7 @@ export function Shop({
           return (
             <CardPanel
               key={item.id}
-              className="flex min-h-64 flex-col border-amber-700/30 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50"
+              className="flex min-h-64 flex-col border-amber-700/30 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 transition hover:-translate-y-0.5 hover:shadow-[0_10px_0_rgba(120,53,15,0.16),0_20px_38px_rgba(35,22,14,0.18),inset_0_1px_0_rgba(255,255,255,0.75)]"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="grid size-14 place-items-center rounded-xl border border-amber-900/15 bg-amber-100 text-sm font-black text-amber-950 shadow-inner">
@@ -466,9 +466,9 @@ export function Shop({
       <div
         className={`mt-5 rounded-xl border-2 p-4 ${
           purchaseFeedback.tone === "success"
-            ? "border-emerald-300 bg-emerald-100"
+            ? "reward-pulse border-emerald-300 bg-emerald-100"
             : purchaseFeedback.tone === "danger"
-              ? "border-red-300 bg-red-100"
+              ? "damage-shake border-red-300 bg-red-100"
               : "border-amber-700/20 bg-amber-50"
         }`}
       >
@@ -505,13 +505,13 @@ export function Shop({
                   <button
                     key={card.id}
                     type="button"
-                    onClick={() => setSelectedTargetId(card.id)}
-                    className={`rounded-2xl border-2 p-2.5 text-left transition sm:p-3 ${
-                      isSelected
-                        ? "border-emerald-500 bg-white shadow-md ring-2 ring-emerald-200"
-                        : "border-amber-900/10 bg-white/75 hover:border-emerald-400"
-                    }`}
-                  >
+                  onClick={() => setSelectedTargetId(card.id)}
+                  className={`rounded-2xl border-2 p-2.5 text-left transition sm:p-3 ${
+                    isSelected
+                      ? "selected-glow border-emerald-500 bg-white shadow-md ring-2 ring-emerald-200"
+                      : "border-amber-900/10 bg-white/75 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md active:translate-y-0.5"
+                  }`}
+                >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
                         <p className="truncate text-lg font-black capitalize sm:text-xl">

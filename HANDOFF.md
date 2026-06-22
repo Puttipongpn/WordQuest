@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 53 Content QA + Vocabulary Quality Pass complete.
+Current phase: Phase 58 Game Feel / Motion Pass complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1540,6 +1540,28 @@ Verification:
 
 - `npm run build` passed after Phase 57.
 - QA Helper production-safety string checks remained clean in the production build.
+
+## Phase 58 Game Feel / Motion Pass Summary
+
+Phase 58 added subtle CSS-only motion and micro-feedback without changing gameplay.
+
+Completed:
+
+- Added shared CSS animation helpers for reward pulse, selected glow, and mastery pulse.
+- Confirmed all motion helpers have `prefers-reduced-motion: reduce` fallbacks.
+- Improved Dungeon feedback motion for correct/wrong answer states, result overlay lines, Card Trigger details, and Word Scramble letter tile press states.
+- Improved Shop presentation feedback for wares, selected target cards, purchase success, and not-enough-gold/error states.
+- Improved Training feedback motion for correct/wrong answers and mastery increases.
+- Improved Home and Deck Review selected-card/deck feedback.
+
+Preserved:
+
+- No combat math, timer values, mastery rules, save schema, shop/event/boss effects, deck unlock rules, Word Energy rules, gameplay systems, decks, Oxford import, backend, database, auth, API, router, final art assets, sound, animation libraries, browser automation, or external UI libraries were added or changed.
+- Motion is presentation-only and must not reveal answers, trigger cards, or result data before the player answers.
+
+Verification:
+
+- `npm run build` passed after Phase 58.
 
 ## Next Recommended Task
 

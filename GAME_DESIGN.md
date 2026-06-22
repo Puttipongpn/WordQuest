@@ -49,6 +49,9 @@ Current presentation rules:
 - Battle stage motion uses CSS-only animation hooks such as hit flash, damage shake, shield pulse, attack pop, defeat glow, result pop, and floating combat text.
 - Motion effects are presentation-only and should never change combat rules, timer values, save behavior, or run progression.
 - Motion should remain subtle, readable, and safe for reduced-motion users.
+- Phase 58 expands game-feel motion with CSS-only reward pulses, selected-card glow, mastery pulse, answer feedback motion, shop feedback motion, and tile/button press feedback.
+- Motion must not reveal hidden answers, trigger cards, or result information before the player answers.
+- Reduced-motion users should receive readable state changes without required animation.
 - Post-question and post-encounter actions should appear in one result overlay/action area to avoid duplicated battle controls.
 - Player-facing encounter continuation should use labels such as `Next Encounter` or `Continue Dungeon`, not `Spawn Next Monster`.
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.

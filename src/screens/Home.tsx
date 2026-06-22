@@ -426,7 +426,7 @@ export function Home({
                   !isUnlocked
                     ? "border-slate-300 bg-slate-100/80 opacity-75"
                     : isSelected
-                      ? "border-amber-700 bg-white ring-2 ring-amber-300"
+                      ? "selected-glow border-amber-700 bg-white ring-2 ring-amber-300"
                       : "border-amber-900/15 bg-white/70 hover:border-amber-500"
                 }`}
               >
@@ -441,7 +441,9 @@ export function Home({
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {isSelected && isUnlocked && (
-                      <Badge tone="amber">Selected</Badge>
+                      <Badge tone="amber" className="attack-pop">
+                        Selected
+                      </Badge>
                     )}
                     <Badge
                       tone={

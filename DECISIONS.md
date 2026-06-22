@@ -1102,6 +1102,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: External playtesters need clear rules, but the prototype must keep mobile battle quiz-first and avoid tutorial flows that change gameplay.
 - Status: Accepted
 
+### 2026-06-22: Motion Is CSS-Only And Presentation-Only
+
+- Decision: Game feel motion uses CSS-only presentation hooks and must never change combat rules, timer values, save behavior, run progression, or hidden-answer visibility.
+- Reason: The prototype should feel more alive while preserving the tested gameplay loop, mobile usability, and reduced-motion accessibility.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

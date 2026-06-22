@@ -3146,7 +3146,7 @@ export function Dungeon({
           ) : null}
 
           {canShowTriggeredCardDetails && (
-          <details className="rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-3 shadow-[0_10px_0_rgba(120,53,15,0.16)]" open>
+          <details className="result-pop rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-3 shadow-[0_10px_0_rgba(120,53,15,0.16)]" open>
             <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2">
               <span className="flex flex-wrap gap-2">
                 <Badge tone="purple">Card Trigger</Badge>
@@ -3179,7 +3179,7 @@ export function Dungeon({
               </div>
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2">
-              <div className="rounded-xl border border-red-200 bg-red-50 p-2">
+              <div className="attack-pop rounded-xl border border-red-200 bg-red-50 p-2">
                 <p className="text-xs font-black uppercase text-red-800/70">
                   Base
                 </p>
@@ -3187,7 +3187,7 @@ export function Dungeon({
                   {battleLog.baseDamageDealt ?? sidePanelCard.baseAttack}
                 </p>
               </div>
-              <div className="rounded-xl border border-violet-200 bg-violet-50 p-2">
+              <div className="attack-pop rounded-xl border border-violet-200 bg-violet-50 p-2">
                 <p className="text-xs font-black uppercase text-violet-800/70">
                   Element
                 </p>
@@ -3195,7 +3195,7 @@ export function Dungeon({
                   +{battleLog.elementBonusDamage ?? 0}
                 </p>
               </div>
-              <div className="rounded-xl border border-amber-200 bg-amber-50 p-2">
+              <div className="mastery-pulse rounded-xl border border-amber-200 bg-amber-50 p-2">
                 <p className="text-xs font-black uppercase text-amber-800/70">
                   Mastery
                 </p>
@@ -3730,7 +3730,7 @@ function BattleResultOverlay({
   return (
     <div className="absolute inset-0 z-10 grid place-items-center rounded-2xl bg-stone-950/45 p-2 backdrop-blur-[2px] sm:p-3">
       <div className={`result-pop pointer-events-auto max-h-[min(82dvh,30rem)] w-full max-w-[min(21rem,calc(100vw-1rem))] overflow-y-auto rounded-2xl border-2 p-2.5 text-center shadow-[0_18px_0_rgba(28,25,23,0.22)] sm:max-h-[min(88vh,32rem)] sm:max-w-[min(22rem,calc(100vw-2rem))] sm:p-4 ${toneClass}`}>
-        <p className="text-3xl leading-none" aria-hidden="true">
+        <p className="attack-pop text-3xl leading-none" aria-hidden="true">
           {resultIcon}
         </p>
         <p className="text-xl font-black leading-none sm:text-3xl">{title}</p>
@@ -3740,7 +3740,12 @@ function BattleResultOverlay({
         {resultLines.length > 0 && (
           <div className="mt-3 grid gap-1">
             {resultLines.slice(0, 4).map((line) => (
-              <p key={line} className="rounded-lg bg-white/60 px-2 py-1 text-sm font-black shadow-inner">
+              <p
+                key={line}
+                className={`rounded-lg bg-white/60 px-2 py-1 text-sm font-black shadow-inner ${
+                  isCorrect ? "reward-pulse" : "damage-shake"
+                }`}
+              >
                 {line}
               </p>
             ))}
@@ -3849,10 +3854,10 @@ function WordChoiceBattle({
               onClick={() => onAnswer(choice)}
               className={`min-h-12 rounded-xl border-2 px-3 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                 showCorrect
-                  ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
+                  ? "reward-pulse border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                   : showWrong
-                    ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
-                    : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
+                    ? "damage-shake border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
+                    : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md active:translate-y-0.5"
               } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
             >
               <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -3960,12 +3965,12 @@ function WordMatchBattle({
                   onClick={() => onSelectWord(card.id)}
                   className={`min-h-16 rounded-xl border-2 px-2.5 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:min-h-20 sm:px-3 ${
                     showCorrect
-                      ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
+                      ? "reward-pulse border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
-                        ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
+                        ? "damage-shake border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
                         : isSelected
-                          ? "border-emerald-500 bg-white shadow-md"
-                          : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
+                          ? "selected-glow border-emerald-500 bg-white shadow-md"
+                          : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md active:translate-y-0.5"
                   }`}
                 >
                   <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -4013,12 +4018,12 @@ function WordMatchBattle({
                   onClick={() => onSelectMeaning(card.id)}
                   className={`min-h-16 rounded-xl border-2 px-2.5 py-2 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:min-h-20 sm:px-3 ${
                     showCorrect
-                      ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
+                      ? "reward-pulse border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                       : showWrong
-                        ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
+                        ? "damage-shake border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
                         : isSelected
-                          ? "border-emerald-500 bg-white shadow-md"
-                          : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
+                          ? "selected-glow border-emerald-500 bg-white shadow-md"
+                          : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md active:translate-y-0.5"
                   }`}
                 >
                   <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -4240,12 +4245,12 @@ function WordScrambleBattle({
               onClick={() => selectScrambledOption(option.card.id)}
               className={`rounded-xl border-2 px-2 py-1.5 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-500 sm:px-3 sm:py-2 ${
                 showCorrect
-                  ? "border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
+                  ? "reward-pulse border-emerald-500 bg-emerald-50 shadow-[0_5px_0_rgba(6,95,70,0.18)]"
                   : showWrong
-                    ? "border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
+                    ? "damage-shake border-red-400 bg-red-50 shadow-[0_5px_0_rgba(127,29,29,0.16)]"
                     : isSelected
-                      ? "border-emerald-500 bg-white shadow-md"
-                      : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md"
+                      ? "selected-glow border-emerald-500 bg-white shadow-md"
+                      : "border-amber-900/10 bg-white hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md active:translate-y-0.5"
               }`}
             >
               <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -4296,7 +4301,7 @@ function WordScrambleBattle({
                       type="button"
                       disabled={isAnswered}
                       onClick={() => returnTileToBank(tile)}
-                      className="grid size-10 place-items-center rounded-lg border-2 border-emerald-500 bg-emerald-100 font-mono text-lg font-black uppercase text-emerald-950 shadow-[0_3px_0_rgba(6,95,70,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:cursor-default disabled:hover:translate-y-0 sm:size-11 sm:text-xl"
+                      className="grid size-10 place-items-center rounded-lg border-2 border-emerald-500 bg-emerald-100 font-mono text-lg font-black uppercase text-emerald-950 shadow-[0_3px_0_rgba(6,95,70,0.22)] transition hover:-translate-y-0.5 active:translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:cursor-default disabled:hover:translate-y-0 sm:size-11 sm:text-xl"
                     >
                       {tile.letter}
                     </button>
@@ -4335,7 +4340,7 @@ function WordScrambleBattle({
                         type="button"
                         disabled={isAnswered || !selectedOption}
                         onClick={() => moveTileToAnswer(tile)}
-                        className="grid size-10 place-items-center rounded-lg border-2 border-amber-300 bg-gradient-to-b from-amber-100 to-yellow-200 font-mono text-lg font-black uppercase text-amber-950 shadow-[0_3px_0_rgba(120,53,15,0.22)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:cursor-default disabled:opacity-60 disabled:hover:translate-y-0 sm:size-11 sm:text-xl"
+                        className="grid size-10 place-items-center rounded-lg border-2 border-amber-300 bg-gradient-to-b from-amber-100 to-yellow-200 font-mono text-lg font-black uppercase text-amber-950 shadow-[0_3px_0_rgba(120,53,15,0.22)] transition hover:-translate-y-0.5 active:translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:cursor-default disabled:opacity-60 disabled:hover:translate-y-0 sm:size-11 sm:text-xl"
                       >
                         {tile.letter}
                       </button>

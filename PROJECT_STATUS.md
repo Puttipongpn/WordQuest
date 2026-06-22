@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 57 How to Play + Playtest Feedback Prep is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 58 Game Feel / Motion Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -724,6 +724,10 @@ Phase 57 How to Play + Playtest Feedback Prep is complete. The production demo i
 - Added README share copy and suggested playtester questions for the live prototype.
 - Added external playtest feedback prompts to `QA_CHECKLIST.md`.
 - Preserved gameplay rules, save rules, combat math, timer values, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, QA Helper production safety, all six manual decks, backend scope, final-art deferral, and Vercel static deployment.
+- Applied Phase 58 Game Feel / Motion Pass.
+- Added CSS-only `reward-pulse`, `selected-glow`, and `mastery-pulse` motion helpers with reduced-motion support.
+- Added subtle feedback motion to Dungeon answer states, result lines, card trigger details, Word Scramble tiles, Shop purchase feedback, Shop target selection, Training answer feedback, mastery increases, Home deck selection, and Deck Review selected cards.
+- Preserved combat math, timer values, save behavior, run progression, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, QA Helper production safety, all six manual decks, backend scope, final-art deferral, and external library restrictions.
 - Verified the project with `npm run build` after Phase 57.
 
 ## In Progress

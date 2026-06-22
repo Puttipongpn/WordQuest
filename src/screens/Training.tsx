@@ -717,10 +717,10 @@ function TrainingSession({
                 onClick={() => onAnswer(choice)}
                 className={`min-h-24 rounded-xl border-2 p-4 text-left shadow-sm transition focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                   showCorrect
-                    ? "border-emerald-500 bg-emerald-100 ring-1 ring-emerald-200"
+                    ? "reward-pulse border-emerald-500 bg-emerald-100 ring-1 ring-emerald-200"
                     : showWrong
-                      ? "border-red-400 bg-red-100 ring-1 ring-red-200"
-                      : "border-amber-900/15 bg-white hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md"
+                      ? "damage-shake border-red-400 bg-red-100 ring-1 ring-red-200"
+                      : "border-amber-900/15 bg-white hover:-translate-y-0.5 hover:border-amber-500 hover:shadow-md active:translate-y-0.5"
                 } ${isAnswered ? "cursor-default" : "cursor-pointer"}`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -763,7 +763,7 @@ function TrainingSession({
                   {currentQuestion.card.exampleSentence}
                 </p>
                 {result === "correct" && masteryBeforeAnswer !== null && (
-                  <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
+                  <div className="mastery-pulse mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
                     <p className="text-sm font-black text-emerald-900">
                       {masteryAfterCorrectAnswer > masteryBeforeAnswer
                         ? "Mastery increased"

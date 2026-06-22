@@ -132,6 +132,18 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Shop modal is usable on desktop and narrow/mobile viewport.
 - Run Complete and Run Failed summaries are readable on desktop and narrow/mobile viewport.
 
+## Motion And Feedback
+
+- Dungeon correct answers show reward-style feedback without changing combat math.
+- Dungeon wrong answers and timeouts show damage/error feedback without changing timer or attack rules.
+- Card Trigger details appear only after answer or timeout resolution.
+- Word Scramble letter tiles have press feedback and remain tappable on mobile.
+- Shop success and not-enough-gold feedback are visually distinct.
+- Training correct/wrong answers and mastery increases are visually distinct.
+- Home and Deck Review selected deck/card states are easy to identify.
+- Motion does not create horizontal overflow on mobile.
+- With reduced-motion enabled, the UI remains readable and usable without required animation.
+
 ## Production Readiness
 
 - `npm install` completes.
