@@ -497,6 +497,8 @@ function TrainingSetup({
         <p className="mt-2 max-w-2xl text-sm font-bold leading-6 text-amber-950/75">
           Training improves permanent word mastery only. It does not affect HP,
           shield, gold, Word Energy, shop upgrades, or dungeon run state.
+          Mastery can add small Dungeon damage bonuses when that word card
+          triggers later.
         </p>
 
         <div className="mt-5 grid gap-3 md:grid-cols-2">
@@ -815,7 +817,8 @@ function TrainingSession({
               Deck: {deck.name}
             </p>
             <p className="mt-1 text-sm font-medium text-amber-950/70">
-              Training is untimed and does not affect active dungeon runs.
+              Training is untimed. Correct answers save mastery, wrong answers
+              do not reduce mastery, and active dungeon runs are untouched.
             </p>
             <Button
               type="button"

@@ -356,6 +356,17 @@ export function Shop({
               current-run deck. Permanent mastery is not changed by shop
               purchases.
             </p>
+            <details className="mt-3 rounded-xl border border-amber-900/10 bg-white/65 px-3 py-2">
+              <summary className="cursor-pointer text-sm font-black text-amber-950">
+                How the shop works
+              </summary>
+              <p className="mt-2 text-sm font-bold leading-6 text-amber-900/75">
+                Each visit shows limited offers. Refresh Wares spends run gold
+                to reroll them. Inspect an offer, choose a target card, then
+                confirm the trade. All shop changes are lost after run end,
+                abandon, refresh, or deck change.
+              </p>
+            </details>
           </div>
           <div className="grid gap-3 sm:grid-cols-4 lg:min-w-[34rem]">
             <StatCard label="Gold" value={runGold} helper="Temporary" tone="amber" />

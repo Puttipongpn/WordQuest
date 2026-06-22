@@ -3232,11 +3232,25 @@ export function Dungeon({
             <summary className="cursor-pointer font-black text-amber-950">
               Learning Info
             </summary>
-            <p className="mt-2 text-sm font-medium leading-6 text-amber-950/75">
-              Correct answers trigger the selected word card. Incorrect answers
-              and timeouts let the encounter attack, with shield absorbing
-              damage before HP.
-            </p>
+            <div className="mt-2 grid gap-2 text-sm font-medium leading-6 text-amber-950/75">
+              <p>
+                Tap Start Battle before the timer begins. Correct answers
+                trigger the selected word card.
+              </p>
+              <p>
+                Card stats show attack, shield, element, mastery, and Word
+                Energy. Wrong answers and timeouts let the encounter attack,
+                with shield absorbing damage before HP.
+              </p>
+              <p>
+                Pause stops the timer. Abandon Run exits only the current
+                temporary run; permanent mastery and deck progress stay safe.
+              </p>
+              <p>
+                Word Energy encourages variety: fresh words appear more often,
+                overused words appear less often, and it resets after the run.
+              </p>
+            </div>
           </details>
 
           {ENABLE_QA_HELPERS && (

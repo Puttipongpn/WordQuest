@@ -1096,6 +1096,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Phone players should not need to repeatedly scroll back up after each question when long battle content overflows vertically.
 - Status: Accepted
 
+### 2026-06-22: Player Guidance Stays Compact And Non-Blocking
+
+- Decision: How to Play and prototype guidance should live in compact or collapsible areas and should not block Training, Dungeon battles, Shop purchases, or other core interactions.
+- Reason: External playtesters need clear rules, but the prototype must keep mobile battle quiz-first and avoid tutorial flows that change gameplay.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

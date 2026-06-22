@@ -53,6 +53,25 @@ npm run preview
 - Boss: defeat the boss after dungeon progression to complete the selected deck.
 - Run Complete / Run Failed: view run summaries and update permanent statistics only after a run ends.
 
+## Share For Playtesting
+
+Try the prototype: https://word-quest-hazel.vercel.app/
+
+This is an early vocabulary roguelike demo. Please test Home, Deck Review,
+Training, Dungeon battles, Shop if reached, mobile usability, and whether the
+rules are clear. Progress is saved only in your current browser.
+
+Suggested playtester questions:
+
+- Did you understand what to do on Home?
+- Was Training useful?
+- Were the Dungeon mini-games clear?
+- Was mobile layout playable?
+- Was the Shop understandable?
+- Did you understand what is permanent vs temporary?
+- Was anything confusing or too hard?
+- Did any screen feel broken on your phone?
+
 ## Save Behavior
 
 Permanent progress is saved locally in the browser with LocalStorage:
@@ -132,8 +151,8 @@ Phase 56 verified the first live Vercel deployment with HTTP/static checks:
 - Advanced animations are intentionally limited.
 - Element interactions are first-pass only.
 - More balance testing is needed.
-- Public deployment has been prepared but not performed yet.
-- Browser-click production smoke testing still needs one pass in an environment with browser automation or manual tester access.
+- Full boss clear takes time and still needs longer playtesting.
+- Browser-click production smoke testing still needs manual tester access or an environment with browser automation.
 - `npm audit` currently reports a high-severity `esbuild` advisory through the Vite toolchain; npm recommends a force fix with breaking dependency changes, so it has not been applied in this stabilization pass.
 
 ## Project Documents

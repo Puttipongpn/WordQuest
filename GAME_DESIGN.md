@@ -114,6 +114,19 @@ Phase 56 live verification:
 8. Every 20 monsters, a boss appears.
 9. Defeating the boss completes the run and marks the current deck completed.
 
+## Player Guidance
+
+WordQuest includes lightweight player-facing guidance for external playtesting.
+
+Guidance rules:
+
+- Home includes a compact collapsible How to Play guide.
+- How to Play explains Deck Review, Training, Dungeon, Shop, Boss completion, permanent progress, temporary run progress, and LocalStorage prototype limits.
+- Training guidance explains that practice is untimed, correct answers increase mastery, wrong answers do not reduce mastery, and mastery can improve Dungeon damage.
+- Dungeon guidance stays compact and collapsible so mobile battle remains quiz-first.
+- Shop guidance explains limited offers, rerolls, target-card selection, and current-run-only upgrades.
+- Feedback collection is documentation-only unless a real feedback URL is provided later.
+
 ## Permanent Progress vs Run Progress
 
 The game separates long-term learning progress from temporary roguelike run progress.

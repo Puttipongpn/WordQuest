@@ -209,6 +209,18 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Confirm Reset Progress still requires confirmation.
 - Full boss clear may still require longer manual playtesting.
 
+## External Playtest Feedback
+
+- Ask whether the player understood what to do on Home.
+- Ask whether Training felt useful and safe.
+- Ask whether Dungeon mini-games were clear.
+- Ask whether mobile layout was playable.
+- Ask whether Shop offers and temporary upgrades were understandable.
+- Ask whether permanent progress versus temporary run progress was clear.
+- Ask whether anything felt confusing, too hard, or too easy.
+- Ask whether any screen felt broken or hard to use on their phone.
+- Record device/browser details for mobile layout issues when possible.
+
 ## Known Deferred Areas
 
 - Real Oxford 3000 import.

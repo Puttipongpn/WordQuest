@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Mobile Dungeon vertical usability adjustment is complete after Phase 56.1. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 57 How to Play + Playtest Feedback Prep is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -716,6 +716,15 @@ Mobile Dungeon vertical usability adjustment is complete after Phase 56.1. The p
 - Reduced mobile game-mode and Dungeon battle padding so the active play area has more horizontal room.
 - Added mobile-only auto-scroll to bring new active Dungeon questions back near the timer and quiz area.
 - Preserved combat logic, timers, progression, save rules, mastery, elements, events, elites, boss behavior, shop behavior, statistics, QA Helper gating, and LocalStorage behavior.
+- Applied Phase 57 How to Play + Playtest Feedback Prep.
+- Added a collapsible Home `How to Play` guide covering Deck Review, Training, Dungeon, Shop, Boss completion, permanent progress, temporary run progress, and LocalStorage prototype limits.
+- Added short Training guidance explaining untimed practice, saved mastery, wrong-answer safety, and Dungeon mastery bonus context.
+- Expanded the compact Dungeon `Learning Info` accordion with Start Battle, card trigger, timer, pause, abandon, and Word Energy guidance.
+- Added compact Shop guidance explaining limited offers, rerolls, target-card selection, and current-run-only upgrades.
+- Added README share copy and suggested playtester questions for the live prototype.
+- Added external playtest feedback prompts to `QA_CHECKLIST.md`.
+- Preserved gameplay rules, save rules, combat math, timer values, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, QA Helper production safety, all six manual decks, backend scope, final-art deferral, and Vercel static deployment.
+- Verified the project with `npm run build` after Phase 57.
 
 ## In Progress
 
@@ -723,7 +732,7 @@ Mobile Dungeon vertical usability adjustment is complete after Phase 56.1. The p
 
 ## Next Task
 
-Mobile Dungeon vertical usability adjustment is complete. Continue with the next explicitly requested phase or feature.
+Phase 57 is complete. Continue with the next explicitly requested phase or feature.
 
 ## Required Project Documents
 

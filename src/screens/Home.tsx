@@ -240,6 +240,85 @@ export function Home({
         </CardPanel>
       </div>
 
+      <CardPanel className="mt-6 border-sky-800/25 bg-gradient-to-br from-sky-50 via-amber-50 to-emerald-50">
+        <details>
+          <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-3">
+            <span>
+              <Badge tone="sky">How to Play</Badge>
+              <span className="ml-3 text-xl font-black text-amber-950">
+                New adventurer guide
+              </span>
+            </span>
+            <span className="text-sm font-black uppercase text-amber-800/70">
+              Tap to open
+            </span>
+          </summary>
+          <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+            <div className="rounded-2xl border border-amber-900/10 bg-white/75 p-4">
+              <Badge tone="purple">1. Review Deck</Badge>
+              <p className="mt-2 text-sm font-bold leading-6 text-amber-950/75">
+                Inspect cards, Thai meanings, examples, attack, effects, and
+                mastery before you fight.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-amber-900/10 bg-white/75 p-4">
+              <Badge tone="sky">2. Training</Badge>
+              <p className="mt-2 text-sm font-bold leading-6 text-amber-950/75">
+                Practice safely with no timer. Correct answers increase mastery;
+                wrong answers do not reduce it.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-amber-900/10 bg-white/75 p-4">
+              <Badge tone="red">3. Dungeon</Badge>
+              <p className="mt-2 text-sm font-bold leading-6 text-amber-950/75">
+                Start battles, answer timed mini-games, and trigger cards.
+                Wrong answers or timeouts let enemies attack.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-amber-900/10 bg-white/75 p-4">
+              <Badge tone="amber">4. Shop</Badge>
+              <p className="mt-2 text-sm font-bold leading-6 text-amber-950/75">
+                Spend run gold on temporary card upgrades. Shop changes vanish
+                when the run ends or resets.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-amber-900/10 bg-white/75 p-4">
+              <Badge tone="emerald">5. Boss</Badge>
+              <p className="mt-2 text-sm font-bold leading-6 text-amber-950/75">
+                Defeat the boss to complete the selected deck and unlock the
+                next deck in the path.
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 grid gap-3 lg:grid-cols-2">
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+              <p className="font-black text-emerald-950">
+                Permanent progress
+              </p>
+              <p className="mt-2 text-sm font-bold leading-6 text-emerald-900/80">
+                Word mastery, unlocked decks, completed decks, and saved stats
+                stay in this browser.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <p className="font-black text-amber-950">
+                Temporary run progress
+              </p>
+              <p className="mt-2 text-sm font-bold leading-6 text-amber-900/80">
+                HP, shield, gold, shop upgrades, duplicated or removed cards,
+                enchantments, Word Energy, and the current run reset when the
+                run ends, is abandoned, refreshes, or decks change.
+              </p>
+            </div>
+          </div>
+          <p className="mt-4 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-bold leading-6 text-sky-950">
+            WordQuest is an early prototype. No account is required, there is
+            no cloud save, and clearing browser data can clear LocalStorage
+            progress.
+          </p>
+        </details>
+      </CardPanel>
+
       <CardPanel className="mt-6 border-emerald-800/30 bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>

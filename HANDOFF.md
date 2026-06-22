@@ -1508,6 +1508,39 @@ Manual QA recommendation:
 - On a phone, start Dungeon, answer or timeout into the next mini-game, and confirm the viewport returns near the timer/quiz area instead of forcing the player to manually scroll back up.
 - Confirm the wider mobile battle area does not introduce horizontal overflow.
 
+## Phase 57 How to Play + Playtest Feedback Prep Summary
+
+Phase 57 prepared the live prototype for external playtesting without changing gameplay.
+
+Completed:
+
+- Added a collapsible Home `How to Play` guide.
+- Home How to Play explains:
+  - Review Deck
+  - Training
+  - Dungeon
+  - Shop
+  - Boss completion
+  - Permanent progress
+  - Temporary run progress
+  - LocalStorage-only prototype save limits
+- Added Training helper copy explaining that Training is untimed, correct answers increase mastery, wrong answers do not reduce mastery, and mastery can add small Dungeon damage bonuses.
+- Expanded Dungeon's compact `Learning Info` accordion with Start Battle, card trigger, wrong/timeout attacks, shield, Pause, Abandon Run, and Word Energy guidance.
+- Added Shop helper copy explaining limited offers, rerolls, target-card selection, and current-run-only upgrades.
+- Added README share-ready playtest copy for `https://word-quest-hazel.vercel.app/`.
+- Added suggested external playtester questions to README and `QA_CHECKLIST.md`.
+
+Preserved:
+
+- No gameplay systems, decks, Oxford 3000 import, backend, database, auth, API, React Router, achievements, sound, final art assets, animation libraries, browser automation tooling, external UI libraries, combat math changes, timer value changes, mastery rule changes, save schema changes, shop/event/boss effect changes, deck unlock changes, or Word Energy rule changes were added.
+- Guidance is compact/collapsible where needed so mobile battle remains quiz-first.
+- Feedback collection is documentation-only; no feedback form or backend was added.
+
+Verification:
+
+- `npm run build` passed after Phase 57.
+- QA Helper production-safety string checks remained clean in the production build.
+
 ## Next Recommended Task
 
 Recommended next task:
