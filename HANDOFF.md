@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 70A Pixel Art Asset Prompt Pack + Style Bible complete.
+Current phase: canonical main hero identity locked for future asset production.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2012,8 +2012,48 @@ Verification:
 
 - `git diff --check` passed after Phase 70A documentation updates.
 
+## Locked Main Hero Identity Summary
+
+The WordQuest player-character concept phase is complete. The canonical playable hero for future asset production is now locked as the `Word Mage`.
+
+Locked identity:
+
+- Young male mage adventurer
+- Fluffy short brown hair
+- Bright blue eyes
+- Blue cape with gold trim
+- Cream-and-brown fantasy adventurer mage outfit
+- Magical staff with blue crystal
+- Blue-and-gold spellbook / tome
+- Cozy fantasy pixel art
+- Chibi proportions
+- Friendly beginner-hero vibe
+- Vocabulary-learning elemental mage theme
+- Not a swordsman, knight, rogue, archer, armored warrior, or generic adventurer
+
+Asset production guidance:
+
+- Future player sprites, animation sheets, battle-scene assets, portraits, and prompt variants should preserve this identity consistently.
+- The player fantasy is vocabulary-powered spellcasting through staff, spellbook, elemental card triggers, protective word barriers, and mastery-enhanced spells.
+- `ASSET_PROMPTS.md` now contains a reusable canonical visual identity summary for future image-generation sessions.
+- `ASSET_PLAN.md` now treats `player_word_mage_*` as the preferred future production naming pattern, with older `player_word_hero_*` references treated as legacy aliases for the same locked identity.
+
+Recommended next main-hero animation-sheet production order:
+
+1. Idle
+2. Walk
+3. Cast / attack
+4. Defend
+5. Hurt
+6. Victory
+
+Preserved:
+
+- Documentation-only update.
+- No gameplay logic, UI code, save rules, combat systems, runtime asset imports, image assets, new dependencies, deployment setup, backend, database, auth, API, deck unlock rules, mastery rules, timer values, shop/event/boss effects, or Word Energy rules changed.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next asset phase is Phase 70B asset generation or asset integration planning. Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for any future asset work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next asset task is main-hero animation-sheet production for the locked Word Mage, starting with idle, walk, cast/attack, defend, hurt, and victory sheets. Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for any future asset work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or runtime art integration unless explicitly requested.

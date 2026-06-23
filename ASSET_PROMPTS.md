@@ -29,6 +29,33 @@ WordQuest art direction:
 - Readable on mobile.
 - Visuals must not reduce quiz readability, hide controls, obscure Thai text, or make answer choices harder to scan.
 
+## Canonical Main Hero Identity
+
+The player character concept is locked. Future image-generation sessions should reuse this identity consistently and should not reinterpret the protagonist as a different class.
+
+Canonical protagonist:
+
+- Young male `Word Mage` / mage adventurer
+- Fluffy short brown hair
+- Bright blue eyes
+- Blue cape with gold trim
+- Cream-and-brown fantasy adventurer mage outfit
+- Magical staff with blue crystal
+- Blue-and-gold spellbook / tome
+- Cozy fantasy pixel art
+- Chibi proportions
+- Friendly beginner-hero vibe
+- Vocabulary-learning elemental mage theme
+- Not a swordsman, knight, rogue, archer, armored warrior, or generic adventurer
+
+Reusable identity phrase:
+
+```text
+canonical WordQuest Word Mage: young male chibi mage adventurer, fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy adventurer mage outfit, magical staff with blue crystal, blue-and-gold spellbook/tome, friendly beginner-hero vibe, vocabulary-learning elemental mage theme
+```
+
+Use staff-and-spellbook spellcasting as the default action language. Avoid sword, dagger, bow, shield-warrior, knight armor, rogue hood, or generic adventurer language in player prompts.
+
 ## Shared Prompt Rules
 
 Use these rules in every prompt unless a specific asset says otherwise:
@@ -65,11 +92,12 @@ Do not generate these files in Phase 70A. This is the first planned generation b
 
 ### Batch 1A - Player Test
 
-- `player_word_hero_idle_sheet.png`
-- `player_word_hero_attack_sheet.png`
-- `player_word_hero_hit_sheet.png`
-- `player_word_hero_shield_sheet.png`
-- `player_word_hero_defeat_sheet.png`
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+- `player_word_mage_cast_attack_sheet.png`
+- `player_word_mage_defend_sheet.png`
+- `player_word_mage_hurt_sheet.png`
+- `player_word_mage_victory_sheet.png`
 
 ### Batch 1B - Monster Test
 
@@ -152,22 +180,22 @@ Integration notes:
 
 ## Player Character Prompt Templates
 
-The player is a small Word Hero / learner adventurer. Keep the character friendly, readable, and not too violent. The character can hold a book, scroll, small sword, or magic quill. Side-view, facing right.
+The player is the locked canonical WordQuest Word Mage. Keep the character friendly, readable, magical, and vocabulary-themed. The character should use a magical staff with a blue crystal and a blue-and-gold spellbook/tome. Side-view, facing right. Do not turn the character into a swordsman, knight, rogue, archer, armored warrior, or generic adventurer.
 
-### player_word_hero_idle_sheet.png
+### player_word_mage_idle_sheet.png
 
 Purpose:
 Player idle animation for battle.
 
 Filename:
-`player_word_hero_idle_sheet.png`
+`player_word_mage_idle_sheet.png`
 
 Spec:
 64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
 
 Prompt:
 ```text
-Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero player character idle animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The character is a friendly learner adventurer with a small book, short cape, simple boots, and a magic quill or tiny practice sword. Side-view facing right. Warm camp colors, readable silhouette, simple 1 to 2 pixel outline, upper-left lighting, subtle breathing idle pose. Friendly vocabulary dungeon game style. No text, no watermark.
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage idle animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy adventurer mage outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right. Warm camp colors, readable silhouette, simple 1 to 2 pixel outline, upper-left lighting, subtle breathing idle pose, friendly beginner-hero vibe, vocabulary-learning elemental mage theme. No swords, no knight armor, no rogue outfit, no text, no watermark.
 ```
 
 Negative prompt:
@@ -184,27 +212,27 @@ QA:
 - No text or watermark.
 
 Integration notes:
-- Future path: `src/assets/characters/player/player_word_hero_idle_sheet.png`.
+- Future path: `src/assets/characters/player/player_word_mage_idle_sheet.png`.
 - Keep emoji player fallback if the asset is missing.
 
-### player_word_hero_attack_sheet.png
+### player_word_mage_cast_attack_sheet.png
 
 Purpose:
 Player attack animation after a correct Dungeon answer triggers a card.
 
 Filename:
-`player_word_hero_attack_sheet.png`
+`player_word_mage_cast_attack_sheet.png`
 
 Spec:
 64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
 
 Prompt:
 ```text
-Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero attack animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The friendly learner adventurer faces right and swings a small glowing quill, book spark, or tiny practice sword. The motion should feel magical and vocabulary-themed, not violent. Warm colors, readable silhouette, simple outline, upper-left lighting, mobile-readable. No text, no watermark.
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage cast/attack animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy adventurer mage outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right. The mage raises the staff and spellbook to cast a small blue-gold vocabulary spell or elemental spark. Magical, friendly, vocabulary-themed, not violent. Warm colors, readable silhouette, simple outline, upper-left lighting, mobile-readable. No swords, no weapon swing, no text, no watermark.
 ```
 
 Negative prompt:
-Use the shared negative prompt. Add: `no blood, no realistic weapon, no aggressive gore`.
+Use the shared negative prompt. Add: `no blood, no realistic weapon, no sword, no dagger, no bow, no knight armor, no rogue hood, no aggressive gore`.
 
 QA:
 - 4 frames.
@@ -216,20 +244,20 @@ Integration notes:
 - Future trigger: correct answer card activation.
 - Must not reveal whether an answer is correct before result resolution.
 
-### player_word_hero_hit_sheet.png
+### player_word_mage_hurt_sheet.png
 
 Purpose:
 Player hit feedback when wrong answer, timeout, or enemy attack damages HP/shield.
 
 Filename:
-`player_word_hero_hit_sheet.png`
+`player_word_mage_hurt_sheet.png`
 
 Spec:
 64x64 per frame, 2 frames, horizontal spritesheet, transparent background.
 
 Prompt:
 ```text
-Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero hit reaction. 64x64 pixels per frame, 2 evenly spaced frames, transparent background. The friendly learner adventurer faces right, flinching slightly with a small dust puff or soft impact star. Not scary, no injury detail, no blood. Warm palette, readable silhouette, simple outline, upper-left lighting. No text, no watermark.
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage hurt reaction. 64x64 pixels per frame, 2 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy mage adventurer outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right, flinching slightly with a small dust puff or soft impact star. Not scary, no injury detail, no blood. Warm palette, readable silhouette, simple outline, upper-left lighting. No swords, no text, no watermark.
 ```
 
 Negative prompt:
@@ -243,20 +271,20 @@ QA:
 Integration notes:
 - Can pair with existing damage/shield UI feedback later.
 
-### player_word_hero_shield_sheet.png
+### player_word_mage_defend_sheet.png
 
 Purpose:
 Player guard or shield animation when shield is gained or absorbs damage.
 
 Filename:
-`player_word_hero_shield_sheet.png`
+`player_word_mage_defend_sheet.png`
 
 Spec:
 64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
 
 Prompt:
 ```text
-Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero shield animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The friendly learner adventurer faces right and raises a small book-shaped shield or glowing vocabulary barrier. Soft teal and warm gold shield glow, readable at mobile size, simple outline, upper-left lighting. No text, no watermark.
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage defend animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy mage adventurer outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right. The mage raises the spellbook and staff to create a soft teal and warm gold vocabulary barrier. Readable at mobile size, simple outline, upper-left lighting. No shield-warrior pose, no sword, no text, no watermark.
 ```
 
 Negative prompt:
@@ -270,20 +298,78 @@ QA:
 Integration notes:
 - Future trigger: shield gained or shield block.
 
-### player_word_hero_defeat_sheet.png
+### player_word_mage_victory_sheet.png
 
 Purpose:
-Player defeat animation for Run Failed.
+Player victory animation after a boss or encounter win.
 
 Filename:
-`player_word_hero_defeat_sheet.png`
+`player_word_mage_victory_sheet.png`
 
 Spec:
 64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
 
 Prompt:
 ```text
-Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero defeat animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The friendly learner adventurer faces right, kneels or sits down tired with book lowered, gentle and non-scary. Warm muted colors, readable silhouette, no injury detail, no blood, simple outline, upper-left lighting. No text, no watermark.
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage victory animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy mage adventurer outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right. The mage smiles, lifts the blue crystal staff, and the spellbook glows with a small friendly blue-gold sparkle. Vocabulary-learning elemental mage theme, cheerful beginner-hero vibe. No sword, no knight armor, no text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no weapon victory pose, no sword, no readable letters, no text`.
+
+QA:
+- 4 frames.
+- Player faces right.
+- Victory reads clearly without text.
+- Character identity matches the canonical Word Mage.
+
+Integration notes:
+- Future trigger: encounter victory or run completion.
+- Should remain celebratory but not visually noisy.
+
+### player_word_mage_walk_sheet.png
+
+Purpose:
+Player walk animation for future map, transition, or camp movement.
+
+Filename:
+`player_word_mage_walk_sheet.png`
+
+Spec:
+64x64 per frame, 4 to 6 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage walk animation. 64x64 pixels per frame, 4 to 6 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy mage adventurer outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right. Gentle walking loop, cape bounce, staff held safely, spellbook tucked close or floating lightly. Friendly beginner-hero vibe, readable silhouette, upper-left lighting. No sword, no knight armor, no rogue outfit, no text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no sword, no heavy armor, no rogue hood, no aggressive run`.
+
+QA:
+- 4 to 6 frames.
+- Player faces right.
+- Walk loop keeps cape, staff, and spellbook consistent.
+- Character identity matches the canonical Word Mage.
+
+Integration notes:
+- Future trigger: map movement or transition animation.
+- Not required for current runtime until movement presentation exists.
+
+### player_word_mage_defeat_sheet.png
+
+Purpose:
+Player defeat animation for Run Failed.
+
+Filename:
+`player_word_mage_defeat_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage defeat animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy mage adventurer outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right, kneels or sits down tired with staff lowered and spellbook dim, gentle and non-scary. Warm muted colors, readable silhouette, no injury detail, no blood, simple outline, upper-left lighting. No sword, no knight armor, no text, no watermark.
 ```
 
 Negative prompt:
@@ -293,6 +379,7 @@ QA:
 - 4 frames.
 - Defeat reads as tired/failure, not violent.
 - Transparent background.
+- Character identity matches the canonical Word Mage.
 
 Integration notes:
 - Future trigger: Run Failed presentation.

@@ -72,6 +72,34 @@ Current presentation rules:
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
 - Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual or sound passes.
 
+## Player Character Fantasy
+
+The canonical WordQuest player character is the `Word Mage`.
+
+Locked identity:
+
+- Young male mage adventurer
+- Fluffy short brown hair
+- Bright blue eyes
+- Blue cape with gold trim
+- Cream-and-brown fantasy adventurer mage outfit
+- Magical staff with blue crystal
+- Blue-and-gold spellbook / tome
+- Cozy fantasy pixel art
+- Chibi proportions
+- Friendly beginner-hero vibe
+- Vocabulary-learning elemental mage theme
+- Not a swordsman, knight, rogue, archer, armored warrior, or generic adventurer
+
+Gameplay fantasy:
+
+- The player wins battles by understanding vocabulary and triggering word cards.
+- Correct answers should feel like spellcasting through the staff and spellbook.
+- Element effects represent vocabulary-powered elemental magic: Fire, Water, Wind, and Earth.
+- Shield effects can be presented as protective word barriers or spellbook wards.
+- Mastery bonuses can be presented as stronger, cleaner spellcasting from learned words.
+- Future battle-scene assets should preserve the Word Mage identity consistently across idle, walk, cast/attack, defend, hurt, and victory animations.
+
 ## UI Hierarchy And Declutter Direction
 
 Phase 64A adds `UI_HIERARCHY_GUIDE.md` as the practical guide for future UI declutter work.

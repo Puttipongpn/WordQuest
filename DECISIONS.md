@@ -1132,6 +1132,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: A shared style bible, negative prompt rules, filenames, batch plan, and QA checklist should come before generating assets so future art stays consistent and safe to integrate.
 - Status: Accepted
 
+### 2026-06-23: Main Hero Identity Is Locked As Word Mage
+
+- Decision: The canonical WordQuest main hero is a young male staff-and-spellbook `Word Mage` with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown mage adventurer outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome.
+- Reason: Player-character concept exploration is complete, and future sprite, animation, portrait, and battle-scene assets need a stable identity for consistent production.
+- Status: Accepted
+
+### 2026-06-23: Future Player Assets Preserve The Word Mage Identity
+
+- Decision: Future player assets should consistently preserve the locked Word Mage identity and should not reinterpret the protagonist as a swordsman, knight, rogue, archer, armored warrior, or generic adventurer.
+- Reason: The player fantasy is vocabulary-powered spellcasting through staff, spellbook, elemental triggers, and word mastery.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

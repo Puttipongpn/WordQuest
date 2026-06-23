@@ -19,6 +19,38 @@ Target feel:
 
 The art should support learning first. Visual detail should never reduce quiz readability, hide controls, or distract from vocabulary choices.
 
+## Locked Canonical Player Character
+
+The main playable protagonist identity is now locked for asset production. This is no longer exploratory concept art.
+
+Canonical player-character fantasy:
+
+- Young male `Word Mage` / mage adventurer
+- Fluffy short brown hair
+- Bright blue eyes
+- Blue cape with gold trim
+- Cream-and-brown fantasy adventurer mage outfit
+- Magical staff with blue crystal
+- Blue-and-gold spellbook / tome
+- Cozy fantasy pixel art
+- Chibi proportions
+- Friendly beginner-hero vibe
+- Vocabulary-learning elemental mage theme
+- Not a swordsman, knight, rogue, archer, armored warrior, or generic adventurer
+
+Future player sprites, animation sheets, battle-scene assets, card art, UI portraits, and prompt variants should preserve this identity consistently. The hero's combat identity is spellcasting through vocabulary knowledge, elemental card triggers, staff magic, and the blue-and-gold spellbook.
+
+Canonical player naming for future production should use `player_word_mage_*` where practical. Older `player_word_hero_*` references are legacy planning aliases and should be treated as referring to this same locked Word Mage identity unless a future migration renames them.
+
+Next player asset priority is character animation sheets, in this order:
+
+1. `player_word_mage_idle_sheet.png`
+2. `player_word_mage_walk_sheet.png`
+3. `player_word_mage_cast_attack_sheet.png`
+4. `player_word_mage_defend_sheet.png`
+5. `player_word_mage_hurt_sheet.png`
+6. `player_word_mage_victory_sheet.png`
+
 ## Sprite Specs
 
 Recommended first-pass specs:
@@ -36,10 +68,16 @@ Animation prep:
 
 - Prefer spritesheets over many separate frame files.
 - Keep frame size consistent within a spritesheet.
-- Idle: 4 frames
-- Attack: 4 frames
-- Hit: 2 frames
-- Defeat: 3 to 4 frames
+- Player idle: 4 frames
+- Player walk: 4 to 6 frames
+- Player cast / attack: 4 to 6 frames
+- Player defend: 4 frames
+- Player hurt: 2 frames
+- Player victory: 4 frames
+- Monster idle: 4 frames
+- Monster attack: 4 frames
+- Monster hit: 2 frames
+- Monster defeat: 3 to 4 frames
 - Effects: 4 to 6 frames
 
 Phase 61 does not implement animation playback. These specs are for later asset generation and integration.
@@ -56,10 +94,12 @@ General pattern:
 
 Examples:
 
-- `player_word_hero_idle.png`
-- `player_word_hero_attack.png`
-- `player_word_hero_hit.png`
-- `player_word_hero_defeat.png`
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+- `player_word_mage_cast_attack_sheet.png`
+- `player_word_mage_defend_sheet.png`
+- `player_word_mage_hurt_sheet.png`
+- `player_word_mage_victory_sheet.png`
 - `monster_slime_idle.png`
 - `monster_slime_attack.png`
 - `monster_slime_hit.png`
@@ -96,14 +136,14 @@ This manifest lists assets needed by current game systems. It is document-only f
 
 ### Player
 
-Word Hero:
+Word Mage:
 
-- `player_word_hero_idle.png`
-- `player_word_hero_attack.png`
-- `player_word_hero_hit.png`
-- `player_word_hero_shield.png`
-- `player_word_hero_defeat.png`
-- Optional later: `player_word_hero_victory.png`
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+- `player_word_mage_cast_attack_sheet.png`
+- `player_word_mage_defend_sheet.png`
+- `player_word_mage_hurt_sheet.png`
+- `player_word_mage_victory_sheet.png`
 
 ### Monsters
 
@@ -274,7 +314,7 @@ Current data should map to future assets by stable, readable asset ids. Do not r
 
 Player:
 
-- Word Hero: `player_word_hero_idle.png`
+- Word Mage: `player_word_mage_idle_sheet.png`
 
 Monsters:
 
@@ -338,7 +378,7 @@ Create a cozy fantasy pixel art sprite sheet for [asset name]. Style: simple rea
 Player prompt:
 
 ```text
-Create a cozy fantasy pixel art sprite sheet for the Word Hero player character. The character is a friendly vocabulary adventurer with book-and-shield energy, side-view facing right, simple readable 64x64 frames, transparent background, warm camp palette. Include 4 idle frames, 4 attack frames, 2 hit frames, 4 shield frames, and 4 defeat frames. No text, no watermark.
+Create a cozy fantasy pixel art sprite sheet for the canonical WordQuest Word Mage player character. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy adventurer mage outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right, simple readable 64x64 frames, transparent background, warm camp palette. Vocabulary-learning elemental mage theme, friendly beginner-hero vibe. Include the requested animation frames. No swords, no knight armor, no rogue outfit, no text, no watermark.
 ```
 
 Normal monster prompt:
@@ -386,7 +426,7 @@ Areas to replace later:
 - Home hub: current CSS/emoji camp-style presentation
 - Deck Review: card emoji placeholders and spellbook styling
 - Training: training-room CSS/placeholder presentation
-- Dungeon battle: Word Hero placeholder, monster/elite/boss emoji placeholders, event discovery cards, battle lane
+- Dungeon battle: canonical Word Mage placeholder, monster/elite/boss emoji placeholders, event discovery cards, battle lane
 - Shop: merchant-style CSS/placeholder presentation
 - Run Complete / Run Failed: summary presentation and boss placeholder
 - Effects: CSS motion, text badges, emoji, and generated Web Audio sounds
@@ -402,6 +442,8 @@ Replacement should happen in small passes. Keep fallback placeholders visible un
 - No sprite loading/error fallback component exists yet.
 - Exact sprite sizes may need adjustment after mobile visual tests.
 - Asset generation prompts may need iteration for consistent style.
+- Player character concept exploration is complete; the Word Mage identity is locked.
+- Main hero animation-sheet production is the next asset priority.
 
 ## Phase 61 Verification
 

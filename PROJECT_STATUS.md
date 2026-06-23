@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 70A Pixel Art Asset Prompt Pack + Style Bible is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+The canonical WordQuest main hero identity is locked as the staff-and-spellbook Word Mage for future asset production. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -858,6 +858,14 @@ Phase 70A Pixel Art Asset Prompt Pack + Style Bible is complete. The production 
 - Updated `ASSET_PLAN.md` to reference `ASSET_PROMPTS.md` as the primary future prompt pack.
 - Preserved current CSS, Tailwind, emoji, and placeholder visuals; no image files, generated art, runtime imports, asset folders, dependencies, gameplay rules, save schema, combat math, timers, mastery rules, deck unlocks, Word Energy rules, deployment setup, backend, database, auth, API, or Oxford 3000 import were added or changed.
 - Verified the documentation-only phase with `git diff --check`.
+- Locked the main player-character concept for asset production as the canonical WordQuest `Word Mage`.
+- Defined the hero as a young male mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown mage adventurer outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome.
+- Documented that future player sprites, animation sheets, battle-scene assets, portraits, and prompt variants should preserve this identity consistently.
+- Documented that the hero is a vocabulary-learning elemental mage, not a swordsman, knight, rogue, archer, armored warrior, or generic adventurer.
+- Updated `ASSET_PLAN.md`, `ASSET_PROMPTS.md`, `GAME_DESIGN.md`, `DECISIONS.md`, `HANDOFF.md`, and `PROJECT_STATUS.md` for the locked protagonist identity.
+- Recorded that the player character concept phase is complete and the next asset production priority is main-hero animation sheets.
+- Recommended main-hero animation-sheet order: idle, walk, cast/attack, defend, hurt, victory.
+- Kept this update documentation-only: no gameplay logic, UI code, save rules, combat systems, runtime asset imports, image assets, dependencies, or deployment setup changed.
 
 ## In Progress
 
@@ -865,7 +873,7 @@ Phase 70A Pixel Art Asset Prompt Pack + Style Bible is complete. The production 
 
 ## Next Task
 
-Phase 70A is complete. Continue with the next explicitly requested phase or feature. The recommended next asset phase is Phase 70B asset generation or asset integration planning, but do not start it unless explicitly requested.
+The main hero identity is locked for asset production. Phase 70A remains complete, and the project is ready to enter main-hero animation-sheet production when explicitly requested.
 
 ## Required Project Documents
 
