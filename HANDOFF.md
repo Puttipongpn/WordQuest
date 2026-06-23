@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 66 Deck Review Compact Scan Mode complete.
+Current phase: Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1884,8 +1884,57 @@ Verification:
 
 - `npm run build` passed after Phase 66.
 
+## Phase 67 Shop Compact + Purchase Feedback Visibility Hotfix Summary
+
+Phase 67 applies the UI hierarchy guide to Shop only.
+
+Completed:
+
+- Reworked `src/screens/Shop.tsx` so the Shop top area is compact and focused on current gold, limited offers, deck size, run progress, reroll, and Back To Dungeon.
+- Moved Shop feedback/receipt above the offer grid so purchase success, blocked purchase, and reroll results are visible immediately.
+- Reworked offer cards into compact scan-first cards with icon, item name, one-line effect, cost, affordability, not-eligible state, and a single Inspect action.
+- Unaffordable offers now show `Need +X gold` directly on the offer card before the player opens the modal.
+- Kept the target selection modal compact and changed its gold summary so it shows Gold After only when affordable and Missing `+X gold` when unaffordable.
+- Purchase receipts now clearly show affected card/action, before/after values, gold spent, remaining gold, and current-run-only reminder.
+- Reroll success now shows a visible receipt with gold spent and remaining gold.
+- Added CSS/emoji-only placeholder upgrade feedback in `src/styles.css` through receipt glow and upgrade pop animation.
+- Reduced-motion users still receive the static receipt without required animation.
+
+Preserved:
+
+- No Home, Deck Review, Training, Dungeon, or Run Result redesign was performed.
+- Shop item effects, shop item costs, offer generation, gold spending rules, target guards, current-run-only mutation behavior, LocalStorage schema, deck unlock rules, combat math, timer values, mastery rules, event effects, boss effects, Word Energy rules, deployment setup, backend, database, auth, API, React Router, cloud save, external state library, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, and Oxford 3000 import were not changed.
+
+Verification:
+
+- `npm run build` passed after Phase 67.
+
+## Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter Summary
+
+Phase 67.1 refines Shop purchase feedback and target selection without changing Shop rules.
+
+Completed:
+
+- Reworked the Shop target modal so target cards feel more like a small hand of vocabulary cards.
+- Target cards now show compact word, Thai meaning, target-specific before/after preview, current card effect summary, and selected state.
+- Simplified the target modal header to compact gold/cost/after-or-missing chips instead of larger stat boxes.
+- Replaced large purchase receipt presentation with a compact recent-trade strip plus a centered card upgrade ceremony overlay after successful purchases.
+- The ceremony overlay shows the affected card, upgrade badge, before/after stat line, floating upgrade text, floating `-X G` gold text, and a Continue action.
+- Reduced insufficient-gold feedback to compact chips and inline text; large not-enough-gold panels are not used.
+- Added CSS-only ceremony animation hooks in `src/styles.css` for card pop, floating stat, floating gold, and icon pop.
+- Reduced-motion users still receive readable static ceremony feedback without required animation.
+
+Preserved:
+
+- No Home, Deck Review, Training, Dungeon, or Run Result redesign was performed.
+- Shop item effects, shop item costs, reroll cost, gold reward economy, offer generation, gold spending rules, target guards, current-run-only mutation behavior, LocalStorage schema, deck unlock rules, combat math, timer values, mastery rules, event effects, boss effects, Word Energy rules, deployment setup, backend, database, auth, API, React Router, cloud save, external state library, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, and Oxford 3000 import were not changed.
+
+Verification:
+
+- `npm run build` passed after Phase 67.1.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 67 Shop Compact Offers + Purchase Feedback Visibility Hotfix. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 68 Dungeon Side Panel Declutter. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
-import { Badge, Button, CardPanel, StatCard } from "../components/ui";
+import { Badge, Button, CardPanel } from "../components/ui";
 import { sampleShopItems } from "../data";
 import {
   ADD_SHIELD_AMOUNT,
@@ -42,6 +42,18 @@ type PurchaseFeedback = {
   details?: string[];
   badge?: string;
   affectedCardId?: string;
+};
+
+type PurchaseCeremony = {
+  title: string;
+  cardWord: string;
+  cardMeaning: string;
+  cardIcon: string;
+  icon: string;
+  badge: string;
+  statLine: string;
+  goldLine: string;
+  summary: string;
 };
 
 const offerCount = 4;
@@ -149,14 +161,14 @@ function getPurchasePreview(item: ShopItem, card: WordCard, deckSize: number) {
 
 function getPurchasePreviewHelper(item: ShopItem) {
   if (item.type === "remove-card") {
-    return "Removed from this run only.";
+    return "Remove from this run.";
   }
 
   if (item.type === "duplicate-card") {
-    return "Copy keeps current upgrades.";
+    return "Copy keeps upgrades.";
   }
 
-  return "Applies only to this run.";
+  return "Run-only upgrade.";
 }
 
 function getOfferShortEffect(item: ShopItem) {
@@ -219,24 +231,17 @@ function getPurchaseReceipt(
 ): PurchaseFeedback {
   const element = getShopItemElement(item);
   const goldAfter = goldBefore - item.cost;
-  const goldLine = `Gold: ${goldBefore} -> ${goldAfter} (${item.cost} spent)`;
-  const currentRunLine =
-    "Current-run only: lost on run end, abandon, refresh, or deck change.";
+  const goldLine = `Spent ${item.cost} gold. ${goldAfter} gold left.`;
 
   if (item.type === "upgrade-attack") {
     const attackAfter = card.baseAttack + UPGRADE_ATTACK_AMOUNT;
 
     return {
       tone: "success",
-      title: "Card Upgraded!",
+      title: `${card.word} upgraded`,
       badge: `+${UPGRADE_ATTACK_AMOUNT} ATK`,
       affectedCardId: card.id,
-      message: `${card.word} upgraded: ATK ${card.baseAttack} -> ${attackAfter}.`,
-      details: [
-        `${card.word}: ATK ${card.baseAttack} -> ${attackAfter}`,
-        goldLine,
-        currentRunLine,
-      ],
+      message: `ATK ${card.baseAttack} -> ${attackAfter}. ${goldLine}`,
     };
   }
 
@@ -246,15 +251,10 @@ function getPurchaseReceipt(
 
     return {
       tone: "success",
-      title: "Ward Added!",
+      title: `${card.word} fortified`,
       badge: `SHD +${ADD_SHIELD_AMOUNT}`,
       affectedCardId: card.id,
-      message: `${card.word} upgraded: SHD +${shieldBefore} -> +${shieldAfter}.`,
-      details: [
-        `${card.word}: SHD +${shieldBefore} -> +${shieldAfter}`,
-        goldLine,
-        currentRunLine,
-      ],
+      message: `SHD +${shieldBefore} -> +${shieldAfter}. ${goldLine}`,
     };
   }
 
@@ -267,47 +267,30 @@ function getPurchaseReceipt(
 
     return {
       tone: "success",
-      title: "Enchanted!",
+      title: `${card.word} infused`,
       badge: `${afterElement} Element`,
       affectedCardId: card.id,
-      message: `${card.word} element changed: ${beforeElement} -> ${afterElement}.`,
-      details: [
-        `${card.word}: Element ${beforeElement} -> ${afterElement}`,
-        goldLine,
-        currentRunLine,
-      ],
+      message: `Element ${beforeElement} -> ${afterElement}. ${goldLine}`,
     };
   }
 
   if (item.type === "remove-card") {
     return {
       tone: "success",
-      title: "Deck Trimmed!",
+      title: `${card.word} removed`,
       badge: "Removed",
       affectedCardId: card.id,
-      message: `${card.word} removed from the current-run deck.`,
-      details: [
-        `${card.word}: removed from this run only`,
-        `Deck size: ${deckSizeBefore} -> ${deckSizeBefore - 1}`,
-        goldLine,
-        currentRunLine,
-      ],
+      message: `Deck ${deckSizeBefore} -> ${deckSizeBefore - 1}. ${goldLine}`,
     };
   }
 
   if (item.type === "duplicate-card") {
     return {
       tone: "success",
-      title: "Card Copied!",
+      title: `${card.word} copied`,
       badge: "Copied",
       affectedCardId: card.id,
-      message: `${card.word} duplicated with current-run upgrades preserved.`,
-      details: [
-        `${card.word}: copy added`,
-        `Deck size: ${deckSizeBefore} -> ${deckSizeBefore + 1}`,
-        goldLine,
-        currentRunLine,
-      ],
+      message: `Deck ${deckSizeBefore} -> ${deckSizeBefore + 1}. ${goldLine}`,
     };
   }
 
@@ -316,13 +299,141 @@ function getPurchaseReceipt(
     title: "Trade Complete!",
     badge: "Purchased",
     affectedCardId: card.id,
-    message: `${getPurchaseSuccessMessage(item, card)} Temporary run change only.`,
-    details: [goldLine, currentRunLine],
+    message: `${getPurchaseSuccessMessage(item, card)} ${goldLine}`,
   };
 }
 
-function getNotEnoughGoldDetails(cost: number, runGold: number) {
-  return [`Need ${cost} gold. You have ${runGold}.`, `Missing ${cost - runGold} gold.`];
+function getPurchaseCeremony(
+  item: ShopItem,
+  card: WordCard,
+  deckSizeBefore: number,
+): PurchaseCeremony {
+  const element = getShopItemElement(item);
+  const goldLine = `-${item.cost} G`;
+
+  if (item.type === "upgrade-attack") {
+    return {
+      title: `${card.word} upgraded`,
+      cardWord: card.word,
+      cardMeaning: card.meaningTh,
+      cardIcon: card.imagePlaceholder,
+      icon: "🔨",
+      badge: `+${UPGRADE_ATTACK_AMOUNT} ATK`,
+      statLine: `ATK ${card.baseAttack} -> ${
+        card.baseAttack + UPGRADE_ATTACK_AMOUNT
+      }`,
+      goldLine,
+      summary: getCardEffectSummary(card),
+    };
+  }
+
+  if (item.type === "add-shield") {
+    const shieldBefore = getCardShieldAmount(card);
+
+    return {
+      title: `${card.word} fortified`,
+      cardWord: card.word,
+      cardMeaning: card.meaningTh,
+      cardIcon: card.imagePlaceholder,
+      icon: "🛡️",
+      badge: `+${ADD_SHIELD_AMOUNT} SHD`,
+      statLine: `SHD ${shieldBefore} -> ${shieldBefore + ADD_SHIELD_AMOUNT}`,
+      goldLine,
+      summary: getCardEffectSummary(card),
+    };
+  }
+
+  if (element) {
+    const currentElement = getCardElement(card);
+    const beforeElement = currentElement
+      ? formatElementName(currentElement.element)
+      : "None";
+    const afterElement = formatElementName(element);
+
+    return {
+      title: `${card.word} infused`,
+      cardWord: card.word,
+      cardMeaning: card.meaningTh,
+      cardIcon: card.imagePlaceholder,
+      icon: "✨",
+      badge: afterElement.toUpperCase(),
+      statLine: `${beforeElement} -> ${afterElement}`,
+      goldLine,
+      summary: getCardEffectSummary(card),
+    };
+  }
+
+  if (item.type === "remove-card") {
+    return {
+      title: `${card.word} removed`,
+      cardWord: card.word,
+      cardMeaning: card.meaningTh,
+      cardIcon: card.imagePlaceholder,
+      icon: "🗑️",
+      badge: "Removed",
+      statLine: `Deck ${deckSizeBefore} -> ${deckSizeBefore - 1}`,
+      goldLine,
+      summary: getCardEffectSummary(card),
+    };
+  }
+
+  if (item.type === "duplicate-card") {
+    return {
+      title: `${card.word} copied`,
+      cardWord: card.word,
+      cardMeaning: card.meaningTh,
+      cardIcon: card.imagePlaceholder,
+      icon: "🃏",
+      badge: "Copied",
+      statLine: `Deck ${deckSizeBefore} -> ${deckSizeBefore + 1}`,
+      goldLine,
+      summary: getCardEffectSummary(card),
+    };
+  }
+
+  return {
+    title: `${card.word} changed`,
+    cardWord: card.word,
+    cardMeaning: card.meaningTh,
+    cardIcon: card.imagePlaceholder,
+    icon: "✨",
+    badge: "Purchased",
+    statLine: item.name,
+    goldLine,
+    summary: getCardEffectSummary(card),
+  };
+}
+
+function getFeedbackIcon(feedback: PurchaseFeedback) {
+  if (feedback.tone === "danger") {
+    return "⚠️";
+  }
+
+  if (feedback.tone === "success") {
+    if (feedback.badge?.includes("ATK")) {
+      return "🔨";
+    }
+
+    if (feedback.badge?.includes("SHD")) {
+      return "🛡️";
+    }
+
+    if (feedback.badge?.includes("Element")) {
+      return "✨";
+    }
+
+    if (feedback.badge === "Removed") {
+      return "🗑️";
+    }
+
+    if (feedback.badge === "Copied") {
+      return "🃏";
+    }
+
+    return "✨";
+  }
+
+  return "🧾";
 }
 
 export function Shop({
@@ -343,6 +454,8 @@ export function Shop({
   const [activeOffer, setActiveOffer] = useState<ShopItem | null>(null);
   const [targetCards, setTargetCards] = useState<WordCard[]>([]);
   const [selectedTargetId, setSelectedTargetId] = useState("");
+  const [purchaseCeremony, setPurchaseCeremony] =
+    useState<PurchaseCeremony | null>(null);
   const [purchaseFeedback, setPurchaseFeedback] = useState<PurchaseFeedback>({
     tone: "neutral",
     title: "Merchant Note",
@@ -385,6 +498,7 @@ export function Shop({
 
   function openOfferModal(item: ShopItem) {
     const eligibleTargets = getEligibleTargets(item, currentRunDeck);
+    setPurchaseCeremony(null);
 
     if (eligibleTargets.length === 0) {
       playSound("shop-error");
@@ -405,15 +519,10 @@ export function Shop({
     setPurchaseFeedback({
       tone: "neutral",
       title: runGold >= item.cost ? "Inspect Ware" : "Not Enough Gold",
-      message: `Choose one current-run card for ${item.name}. Gold is spent only after confirmation.`,
-      details:
+      message:
         runGold >= item.cost
-          ? [
-              `Current gold: ${runGold}`,
-              `Cost: ${item.cost}`,
-              `Gold after purchase: ${runGold - item.cost}`,
-            ]
-          : getNotEnoughGoldDetails(item.cost, runGold),
+          ? `Choose one card for ${item.name}.`
+          : `Need +${item.cost - runGold} gold to buy ${item.name}. You can inspect, but Confirm is disabled.`,
     });
   }
 
@@ -427,6 +536,7 @@ export function Shop({
   function confirmPurchase() {
     if (!activeOffer || !activeTarget) {
       playSound("shop-error");
+      setPurchaseCeremony(null);
       setPurchaseFeedback({
         tone: "danger",
         title: "Choose A Target",
@@ -457,23 +567,22 @@ export function Shop({
 
     if (!isPurchased) {
       playSound("shop-error");
+      setPurchaseCeremony(null);
       setPurchaseFeedback({
         tone: "danger",
         title: runGold < activeOffer.cost ? "Not Enough Gold" : "Trade Blocked",
-        message: `Unable to buy ${activeOffer.name}. Check gold, target validity, and current-run deck safety rules.`,
-        details:
+        message:
           runGold < activeOffer.cost
-            ? getNotEnoughGoldDetails(activeOffer.cost, runGold)
-            : [
-                "No gold was spent.",
-                "No card was changed.",
-                "Remove Card must preserve deck-size and distinct-word safety rules.",
-              ],
+            ? `Need +${activeOffer.cost - runGold} gold. No card changed.`
+            : `Unable to buy ${activeOffer.name}. No gold was spent and no card changed.`,
       });
       return;
     }
 
     playSound("shop-buy");
+    setPurchaseCeremony(
+      getPurchaseCeremony(activeOffer, activeTarget, deckSizeBefore),
+    );
     setPurchaseFeedback(
       getPurchaseReceipt(activeOffer, activeTarget, deckSizeBefore, goldBefore),
     );
@@ -484,14 +593,14 @@ export function Shop({
 
   function rerollOffers() {
     const goldBefore = runGold;
+    setPurchaseCeremony(null);
 
     if (!onSpendRunGold(SHOP_REROLL_COST)) {
       playSound("shop-error");
       setPurchaseFeedback({
         tone: "danger",
         title: "Not Enough Gold",
-        message: "The merchant keeps the current wares on the table.",
-        details: getNotEnoughGoldDetails(SHOP_REROLL_COST, runGold),
+        message: `Need +${SHOP_REROLL_COST - runGold} gold to refresh wares.`,
       });
       return;
     }
@@ -505,11 +614,9 @@ export function Shop({
       tone: "success",
       title: "Wares Refreshed!",
       badge: "Rerolled",
-      message: `Shop offers refreshed for ${SHOP_REROLL_COST} current-run gold.`,
-      details: [
-        `Gold: ${goldBefore} -> ${goldBefore - SHOP_REROLL_COST}`,
-        "New limited offers are ready.",
-      ],
+      message: `Spent ${SHOP_REROLL_COST} gold. ${
+        goldBefore - SHOP_REROLL_COST
+      } gold left.`,
     });
   }
 
@@ -520,65 +627,88 @@ export function Shop({
       description="Trade temporary gold for a small set of run-only wares."
       framed={false}
     >
-      <CardPanel className="mb-5 border-amber-700/30 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <Badge tone="emerald">Current-run only</Badge>
-            <p className="mt-3 text-xl font-black text-amber-950">
-              The merchant reveals a few wares at a time.
-            </p>
-            <p className="mt-2 max-w-3xl text-sm font-bold leading-6 text-amber-950/75">
-              Upgrades, removals, duplicates, and elements affect only this
-              current-run deck. Permanent mastery is not changed by shop
-              purchases.
-            </p>
-            <details className="mt-3 rounded-xl border border-amber-900/10 bg-white/65 px-3 py-2">
-              <summary className="cursor-pointer text-sm font-black text-amber-950">
-                How the shop works
-              </summary>
-              <p className="mt-2 text-sm font-bold leading-6 text-amber-900/75">
-                Each visit shows limited offers. Refresh Wares spends run gold
-                to reroll them. Inspect an offer, choose a target card, then
-                confirm the trade. All shop changes are lost after run end,
-                abandon, refresh, or deck change.
+      <CardPanel className="mb-4 border-amber-700/25 bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100 p-4">
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="grid size-12 shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-white/75 text-3xl shadow-inner">
+              🛒
+            </span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-xl font-black text-amber-950">
+                  Merchant Wares
+                </h3>
+                <Badge tone="emerald">Current-run only</Badge>
+              </div>
+              <p className="mt-1 max-w-2xl text-sm font-bold text-amber-950/75">
+                Choose one upgrade. Upgrades affect this run only.
               </p>
-            </details>
+            </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-4 lg:min-w-[34rem]">
-            <StatCard label="Gold" value={runGold} helper="Temporary" tone="amber" />
-            <StatCard label="Offers" value={shopOffers.length} helper="This visit" tone="emerald" />
-            <StatCard
-              label="Deck Size"
-              value={currentRunDeck.length}
-              helper={`Min ${MIN_RUN_DECK_SIZE} cards`}
-              tone={currentRunDeck.length > MIN_RUN_DECK_SIZE ? "sky" : "red"}
-            />
-            <StatCard
-              label="Progress"
-              value={runProgress.monstersDefeated}
-              helper={`Next shop ${runProgress.nextShopAt}`}
-              tone="amber"
-            />
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-black text-amber-950">
+              Gold {runGold}
+            </span>
+            <span className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-black text-emerald-900">
+              {shopOffers.length} Offers
+            </span>
+            <span className="rounded-lg border border-sky-300 bg-sky-50 px-3 py-2 text-sm font-black text-sky-900">
+              Deck {currentRunDeck.length}
+            </span>
+            <span className="rounded-lg border border-stone-300 bg-stone-100 px-3 py-2 text-sm font-black text-stone-700">
+              {runProgress.monstersDefeated}/{runProgress.nextShopAt}
+            </span>
+            <Button
+              type="button"
+              onClick={rerollOffers}
+              variant="secondary"
+              disabled={runGold < SHOP_REROLL_COST}
+            >
+              Refresh ({SHOP_REROLL_COST}g)
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => onNavigate("dungeon")}
+            >
+              Back To Dungeon
+            </Button>
           </div>
         </div>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Button
-            type="button"
-            onClick={rerollOffers}
-            variant="secondary"
-            disabled={runGold < SHOP_REROLL_COST}
-          >
-            Refresh Wares ({SHOP_REROLL_COST} gold)
-          </Button>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => onNavigate("dungeon")}
-          >
-            Back To Dungeon
-          </Button>
-        </div>
+
+        <details className="mt-3 rounded-lg border border-amber-900/10 bg-white/55 px-3 py-2">
+          <summary className="cursor-pointer text-sm font-black text-amber-950">
+            Shop rules
+          </summary>
+          <p className="mt-2 text-sm font-bold leading-6 text-amber-900/75">
+            Inspect an offer, choose a current-run card, then confirm the
+            trade. All shop changes disappear when the run ends, is abandoned,
+            refreshed, or the deck changes.
+          </p>
+        </details>
       </CardPanel>
+
+      <div
+        className={`mb-3 flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm font-bold ${
+          purchaseFeedback.tone === "success"
+            ? "border-emerald-300 bg-emerald-50 text-emerald-950"
+            : purchaseFeedback.tone === "danger"
+              ? "border-red-300 bg-red-50 text-red-800"
+              : "border-amber-300 bg-amber-50 text-amber-950"
+        }`}
+      >
+        <span className="text-lg" aria-hidden="true">
+          {getFeedbackIcon(purchaseFeedback)}
+        </span>
+        <span className="font-black">{purchaseFeedback.title}</span>
+        {purchaseFeedback.badge && (
+          <Badge tone={purchaseFeedback.tone === "danger" ? "red" : "emerald"}>
+            {purchaseFeedback.badge}
+          </Badge>
+        )}
+        <span className="min-w-0 flex-1">{purchaseFeedback.message}</span>
+      </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {shopOffers.map((item) => {
@@ -586,46 +716,38 @@ export function Shop({
           const hasEnoughGold = runGold >= item.cost;
           const canSelectOffer = eligibleTargetCount > 0;
           const missingGold = Math.max(item.cost - runGold, 0);
+          const affordabilityCopy = hasEnoughGold
+            ? "Affordable"
+            : `Need +${missingGold} gold`;
 
           return (
             <CardPanel
               key={item.id}
-              className="flex min-h-64 flex-col border-amber-700/30 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 transition hover:-translate-y-0.5 hover:shadow-[0_10px_0_rgba(120,53,15,0.16),0_20px_38px_rgba(35,22,14,0.18),inset_0_1px_0_rgba(255,255,255,0.75)]"
+              className="flex min-h-48 flex-col border-amber-700/25 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 p-3 transition hover:-translate-y-0.5 hover:shadow-[0_8px_0_rgba(120,53,15,0.12),0_16px_30px_rgba(35,22,14,0.14),inset_0_1px_0_rgba(255,255,255,0.75)]"
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="grid size-14 place-items-center rounded-xl border border-amber-900/15 bg-amber-100 text-sm font-black text-amber-950 shadow-inner">
+              <div className="flex items-start gap-3">
+                <div className="grid size-11 shrink-0 place-items-center rounded-lg border border-amber-900/15 bg-amber-100 text-sm font-black text-amber-950 shadow-inner">
                   {item.icon}
                 </div>
-                <div className="flex flex-col items-end gap-2">
-                  <Badge tone={canSelectOffer ? "emerald" : "red"}>
-                    {item.type.replaceAll("-", " ")}
-                  </Badge>
-                  <Badge tone={hasEnoughGold ? "emerald" : "red"}>
-                    {hasEnoughGold ? "Affordable" : `Need +${missingGold}`}
-                  </Badge>
-                </div>
-              </div>
-              <div className="mt-4 flex flex-1 flex-col">
-                <h3 className="text-xl font-black text-amber-950">
-                  {item.name}
-                </h3>
-                <p className="mt-2 text-sm font-black text-amber-900">
-                  {getOfferShortEffect(item)}
-                </p>
-                <p className="mt-2 flex-1 text-sm font-medium leading-6 text-amber-950/70">
-                  {item.description}
-                </p>
-              </div>
-              <div className="mt-4 border-t border-amber-900/10 pt-3">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <Badge tone="amber">{item.cost} gold</Badge>
-                  <Badge tone="sky">Current-run</Badge>
-                  <p className="text-xs font-black uppercase text-amber-800/70">
-                    {eligibleTargetCount > 0
-                      ? `${eligibleTargetCount} eligible`
-                      : "No eligible targets"}
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-lg font-black text-amber-950">
+                    {item.name}
+                  </h3>
+                  <p className="mt-1 text-sm font-black text-amber-900">
+                    {getOfferShortEffect(item)}
                   </p>
                 </div>
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                <Badge tone="amber">{item.cost} gold</Badge>
+                <Badge tone={hasEnoughGold ? "emerald" : "red"}>
+                  {affordabilityCopy}
+                </Badge>
+                {!canSelectOffer && <Badge tone="red">Not eligible</Badge>}
+              </div>
+
+              <div className="mt-auto border-t border-amber-900/10 pt-3">
                 <Button
                   type="button"
                   className="w-full"
@@ -633,11 +755,11 @@ export function Shop({
                   onClick={() => openOfferModal(item)}
                   variant={hasEnoughGold ? "primary" : "secondary"}
                 >
-                  {canSelectOffer ? "Inspect Ware" : "No Eligible Targets"}
+                  {canSelectOffer ? "Inspect" : "No Eligible Targets"}
                 </Button>
                 {!hasEnoughGold && canSelectOffer && (
-                  <p className="mt-2 text-xs font-bold text-red-700">
-                    Need {item.cost} gold. You have {runGold}.
+                  <p className="mt-2 text-center text-xs font-black text-red-700">
+                    Need +{missingGold} gold. You have {runGold}.
                   </p>
                 )}
               </div>
@@ -646,91 +768,31 @@ export function Shop({
         })}
       </div>
 
-      <div
-        className={`mt-5 rounded-xl border-2 p-4 ${
-          purchaseFeedback.tone === "success"
-            ? "reward-pulse border-emerald-300 bg-emerald-100"
-            : purchaseFeedback.tone === "danger"
-              ? "damage-shake border-red-300 bg-red-100"
-              : "border-amber-700/20 bg-amber-50"
-        }`}
-      >
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="font-black text-amber-950">
-            {purchaseFeedback.title}
-          </p>
-          {purchaseFeedback.badge && (
-            <Badge tone={purchaseFeedback.tone === "danger" ? "red" : "emerald"}>
-              {purchaseFeedback.badge}
-            </Badge>
-          )}
-        </div>
-        <p className="mt-1 text-sm font-medium text-amber-950/75">
-          {purchaseFeedback.message}
-        </p>
-        {purchaseFeedback.details && purchaseFeedback.details.length > 0 && (
-          <div className="mt-3 grid gap-2 sm:grid-cols-2">
-            {purchaseFeedback.details.map((detail) => (
-              <p
-                key={detail}
-                className="rounded-lg border border-amber-900/10 bg-white/70 px-3 py-2 text-sm font-black text-amber-950"
-              >
-                {detail}
-              </p>
-            ))}
-          </div>
-        )}
-      </div>
-
       {activeOffer && (
         <div className="fixed inset-0 z-40 grid place-items-center bg-stone-950/70 p-2 backdrop-blur-sm sm:p-4">
-          <div className="max-h-[min(88dvh,48rem)] w-full max-w-3xl overflow-y-auto rounded-3xl border-2 border-amber-300 bg-amber-50 p-3 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:max-h-[min(92vh,48rem)] sm:p-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="max-h-[min(88dvh,44rem)] w-full max-w-5xl overflow-y-auto rounded-2xl border-2 border-amber-300 bg-amber-50 p-3 text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.24)] sm:max-h-[min(92vh,44rem)] sm:p-5">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <Badge tone="emerald">Enchant a card</Badge>
-                <h3 className="mt-2 text-3xl font-black">
+                <Badge tone="emerald">Choose a target card</Badge>
+                <h3 className="mt-2 text-2xl font-black">
                   {activeOffer.name}
                 </h3>
                 <p className="mt-1 text-sm font-bold text-amber-900/75">
-                  Pick one eligible current-run card. Gold is spent only when
-                  you confirm the enchantment.
+                  Pick one card from this small hand.
                 </p>
               </div>
-              <Badge tone={runGold >= activeOffer.cost ? "amber" : "red"}>
-                {activeOffer.cost} gold
-              </Badge>
-            </div>
-
-            <div className="mt-3 grid gap-2 rounded-2xl border border-amber-900/10 bg-white/70 p-3 sm:grid-cols-3">
-              <div>
-                <p className="text-xs font-black uppercase text-amber-800/70">
-                  Current Gold
-                </p>
-                <p className="mt-1 text-xl font-black">{runGold}</p>
-              </div>
-              <div>
-                <p className="text-xs font-black uppercase text-amber-800/70">
-                  Cost
-                </p>
-                <p className="mt-1 text-xl font-black">{activeOffer.cost}</p>
-              </div>
-              <div>
-                <p className="text-xs font-black uppercase text-amber-800/70">
-                  After Trade
-                </p>
-                <p
-                  className={`mt-1 text-xl font-black ${
-                    runGold >= activeOffer.cost
-                      ? "text-emerald-800"
-                      : "text-red-700"
-                  }`}
-                >
-                  {runGold - activeOffer.cost}
-                </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge tone="amber">Gold {runGold}</Badge>
+                <Badge tone="amber">Cost {activeOffer.cost}</Badge>
+                <Badge tone={runGold >= activeOffer.cost ? "emerald" : "red"}>
+                  {runGold >= activeOffer.cost
+                    ? `After ${runGold - activeOffer.cost}`
+                    : `+${activeOffer.cost - runGold} gold`}
+                </Badge>
               </div>
             </div>
 
-            <div className="mt-3 grid gap-2 sm:mt-5 sm:grid-cols-2 sm:gap-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {targetCards.map((card) => {
                 const isSelected = selectedTargetId === card.id;
 
@@ -739,36 +801,41 @@ export function Shop({
                     key={card.id}
                     type="button"
                     onClick={() => setSelectedTargetId(card.id)}
-                    className={`rounded-2xl border-2 p-2.5 text-left transition sm:p-3 ${
+                    className={`flex min-h-52 flex-col rounded-2xl border-2 bg-gradient-to-br from-white via-amber-50 to-emerald-50 p-3 text-left shadow-[0_5px_0_rgba(120,53,15,0.12)] transition ${
                       isSelected
-                        ? "selected-glow border-emerald-500 bg-white shadow-md ring-2 ring-emerald-200"
-                        : "border-amber-900/10 bg-white/75 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md active:translate-y-0.5"
+                        ? "selected-glow border-emerald-500 ring-2 ring-emerald-200"
+                        : "border-amber-900/10 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md active:translate-y-0.5"
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="truncate text-lg font-black capitalize sm:text-xl">
-                          {card.word}
-                        </p>
-                        <p className="mt-1 truncate text-sm font-bold text-amber-900/65">
-                          {card.meaningTh}
-                        </p>
-                        <p className="mt-2 text-xs font-black uppercase text-amber-800/70">
-                          {getCardEffectSummary(card)}
-                        </p>
-                      </div>
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="grid size-11 shrink-0 place-items-center rounded-lg border border-amber-900/10 bg-amber-100 text-2xl shadow-inner">
+                        {card.imagePlaceholder}
+                      </span>
                       {isSelected && <Badge tone="emerald">Selected</Badge>}
                     </div>
-                    <p className="mt-2 rounded-lg bg-amber-100 px-2.5 py-2 text-sm font-black text-amber-950 sm:mt-3 sm:px-3">
-                      {getPurchasePreview(
-                        activeOffer,
-                        card,
-                        currentRunDeck.length,
-                      )}
-                    </p>
-                    <p className="mt-2 text-xs font-bold text-amber-900/70">
-                      {getPurchasePreviewHelper(activeOffer)}
-                    </p>
+                    <div className="mt-3 min-w-0">
+                      <p className="truncate text-xl font-black capitalize text-amber-950">
+                        {card.word}
+                      </p>
+                      <p className="mt-1 line-clamp-2 text-sm font-bold text-emerald-900">
+                        {card.meaningTh}
+                      </p>
+                    </div>
+                    <div className="mt-auto space-y-2 pt-4">
+                      <p className="rounded-lg border border-amber-900/10 bg-white/80 px-2.5 py-2 text-sm font-black text-amber-950">
+                        {getPurchasePreview(
+                          activeOffer,
+                          card,
+                          currentRunDeck.length,
+                        )}
+                      </p>
+                      <p className="truncate text-xs font-black uppercase text-amber-800/70">
+                        {getCardEffectSummary(card)}
+                      </p>
+                      <p className="text-xs font-bold text-amber-900/70">
+                        {getPurchasePreviewHelper(activeOffer)}
+                      </p>
+                    </div>
                   </button>
                 );
               })}
@@ -779,6 +846,10 @@ export function Shop({
                 No eligible targets.
               </p>
             )}
+
+            <p className="mt-3 text-xs font-bold text-amber-900/70">
+              Lost when the run ends.
+            </p>
 
             <div className="sticky bottom-0 mt-3 flex flex-col gap-2 border-t border-amber-900/10 bg-amber-50 pt-3 sm:mt-5 sm:flex-row sm:justify-end sm:gap-3">
               <Button type="button" variant="ghost" onClick={closeOfferModal}>
@@ -797,10 +868,63 @@ export function Shop({
               </Button>
             </div>
             {runGold < activeOffer.cost && (
-              <p className="mt-3 text-right text-sm font-black text-red-700">
-                Not enough gold. Need {activeOffer.cost}; you have {runGold}.
+              <p className="mt-2 text-sm font-black text-red-700 sm:text-right">
+                Need +{activeOffer.cost - runGold} gold.
               </p>
             )}
+          </div>
+        </div>
+      )}
+
+      {purchaseCeremony && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-stone-950/65 p-3 backdrop-blur-sm">
+          <div className="result-pop w-full max-w-sm rounded-3xl border-2 border-amber-300 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-4 text-center text-amber-950 shadow-[0_18px_0_rgba(120,53,15,0.28),0_30px_55px_rgba(15,23,42,0.32)]">
+            <div className="relative mx-auto max-w-[15rem]">
+              <div className="shop-card-ceremony rounded-2xl border-2 border-emerald-400 bg-white p-4 shadow-[0_10px_0_rgba(6,95,70,0.18),0_20px_40px_rgba(35,22,14,0.2)]">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="grid size-14 place-items-center rounded-xl border border-amber-900/10 bg-amber-100 text-4xl shadow-inner">
+                    {purchaseCeremony.cardIcon}
+                  </span>
+                  <Badge tone="emerald">{purchaseCeremony.badge}</Badge>
+                </div>
+                <p className="mt-4 truncate text-2xl font-black capitalize">
+                  {purchaseCeremony.cardWord}
+                </p>
+                <p className="mt-1 line-clamp-2 text-sm font-bold text-emerald-900">
+                  {purchaseCeremony.cardMeaning}
+                </p>
+                <p className="mt-4 rounded-xl bg-amber-100 px-3 py-2 text-sm font-black">
+                  {purchaseCeremony.statLine}
+                </p>
+                <p className="mt-2 truncate text-xs font-black uppercase text-amber-800/70">
+                  {purchaseCeremony.summary}
+                </p>
+              </div>
+
+              <span className="shop-ceremony-icon absolute -right-3 -top-4 text-4xl">
+                {purchaseCeremony.icon}
+              </span>
+              <span className="shop-floating-stat absolute -left-4 top-20 rounded-full border border-emerald-300 bg-emerald-50 px-3 py-1 text-sm font-black text-emerald-800 shadow-md">
+                {purchaseCeremony.badge}
+              </span>
+              <span className="shop-floating-gold absolute -right-4 bottom-16 rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-sm font-black text-amber-900 shadow-md">
+                {purchaseCeremony.goldLine}
+              </span>
+            </div>
+
+            <h3 className="mt-5 text-2xl font-black">
+              {purchaseCeremony.title}
+            </h3>
+            <p className="mt-1 text-sm font-bold text-amber-900/75">
+              {purchaseCeremony.statLine} · {purchaseCeremony.goldLine}
+            </p>
+            <Button
+              type="button"
+              className="mt-5 w-full"
+              onClick={() => setPurchaseCeremony(null)}
+            >
+              Continue
+            </Button>
           </div>
         </div>
       )}

@@ -528,6 +528,21 @@ Affordability rules:
 - Avoid "After Trade -X" because it looks like negative gold is allowed.
 - Do not force the player through full target selection just to discover they cannot buy, unless they explicitly inspect.
 
+Phase 67 implementation note:
+
+- Shop offer cards use compact scan mode by default.
+- Offer cards keep icon, name, cost, one-line effect, affordability, not-eligible state, and one primary Inspect action.
+- Target previews, before/after values, and current-run-only details live in the modal or receipt.
+- Purchase and reroll receipts appear near the top of Shop so players can see what changed without hunting below the offer grid.
+- Placeholder upgrade feedback uses CSS/emoji only and remains understandable without motion or sound.
+
+Phase 67.1 implementation note:
+
+- Shop target selection presents up to four vocabulary cards as card-like choices.
+- Successful purchases use a compact card upgrade ceremony instead of a large dashboard-style receipt.
+- Ceremony feedback emphasizes the affected card, before/after change, floating upgrade text, and gold spent.
+- Insufficient-gold feedback should stay compact through chips, disabled actions, and short inline copy.
+
 ## Typography Rules
 
 Suggested hierarchy:

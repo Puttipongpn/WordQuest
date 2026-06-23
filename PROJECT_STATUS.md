@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 66 Deck Review Compact Scan Mode is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -816,6 +816,25 @@ Phase 66 Deck Review Compact Scan Mode is complete. The production demo is live 
 - Added a compact empty-filter state with a Show All Cards action.
 - Preserved Deck Review as display-only; no mastery, run state, save schema, deck unlock, combat, timer, shop, event, boss, Word Energy, asset, dependency, deployment, or backend behavior changed.
 - Verified the project with `npm run build` after Phase 66.
+- Applied Phase 67 Shop Compact + Purchase Feedback Visibility Hotfix.
+- Simplified the Shop top area into compact merchant context, current gold, offer count, deck size, progress, reroll, and Back To Dungeon controls.
+- Moved Shop purchase/reroll feedback receipt above the offer grid so success, blocked purchase, and reroll feedback are visible without scrolling below offers.
+- Reworked Shop offer cards into scan-first cards showing icon, item name, cost, one-line effect, affordability, not-eligible state, and one primary Inspect action.
+- Made unaffordable offers show `Need +X gold` before opening the modal.
+- Kept target selection modal compact and changed its gold summary so it shows Gold After only when affordable and Missing `+X gold` when unaffordable.
+- Improved purchase receipts to show affected card/action, before/after value, gold spent, remaining gold, and current-run-only reminder.
+- Added CSS/emoji-only placeholder upgrade feedback using receipt glow and upgrade pop animation, with reduced-motion safety.
+- Preserved shop item effects, shop item costs, offer generation, purchase guards, current-run-only mutations, save schema, deck unlock rules, combat math, timers, mastery, Word Energy, deployment setup, and all non-Shop screens.
+- Verified the project with `npm run build` after Phase 67.
+- Applied Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter.
+- Refined Shop target selection so the modal presents four eligible vocabulary cards as card-like choices, with compact word, Thai meaning, target-specific before/after preview, current effect summary, and selected state.
+- Replaced the large purchase receipt style with a compact recent-trade strip plus a centered card upgrade ceremony overlay after successful purchases.
+- Added floating stat and gold feedback in the ceremony, such as upgrade badge and `-X G`.
+- Reduced insufficient-gold messaging to compact chips and inline text; large not-enough-gold panels are no longer used.
+- Kept current-run-only copy secondary in Shop rules and compact modal text rather than repeating it in the success moment.
+- Added CSS-only ceremony motion for card pop, floating stat, floating gold, and icon pop, with reduced-motion fallback.
+- Preserved shop item effects, shop item costs, reroll cost, gold rewards, offer generation, purchase guards, current-run-only mutations, save schema, deck unlock rules, combat math, timers, mastery, Word Energy, deployment setup, and all non-Shop screens.
+- Verified the project with `npm run build` after Phase 67.1.
 
 ## In Progress
 
@@ -823,7 +842,7 @@ Phase 66 Deck Review Compact Scan Mode is complete. The production demo is live 
 
 ## Next Task
 
-Phase 66 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 67 Shop Compact Offers + Purchase Feedback Visibility Hotfix, but do not start it unless explicitly requested.
+Phase 67.1 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 68 Dungeon Side Panel Declutter, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 
@@ -983,6 +1002,9 @@ The following documents are required and must be updated after every completed t
 - Word Match uses a compact selected-pair footer with Check Pair to reduce wasted space
 - Mobile battle layout prioritizes playable quiz controls while secondary information collapses or moves below
 - Deck Review repeated cards use compact scan mode by default; full vocabulary, battle, effect, and mastery details live in the selected-card detail panel
+- Shop offer cards use compact scan mode by default; purchase details live in the target modal and visible receipt
+- Shop purchase feedback must be visible without relying on sound or hidden state changes
+- Shop upgrades should feel like card-game actions with card-like target choices and compact upgrade ceremony feedback
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

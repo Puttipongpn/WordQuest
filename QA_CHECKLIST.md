@@ -122,20 +122,35 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 ## Shop Economy And Feedback
 
 - First shop usually allows at least one basic upgrade after five normal monster defeats.
+- Offer cards are compact and readable.
+- Offer cards show item name, cost, one-line effect, and affordability.
+- Unaffordable offers show `Need +X gold`.
+- Player does not need to open a modal to know an offer is unaffordable.
+- Large not-enough-gold panels are not used.
 - Upgrade Attack target preview shows ATK before/after.
 - Add Shield target preview shows SHD before/after.
 - Add Element target preview shows element before/after.
 - Remove Card target preview shows deck size before/after and current-run-only removal copy.
 - Duplicate Card target preview shows deck size before/after and copy-keeps-upgrades copy.
 - Purchase modal shows current gold, cost, and gold after purchase.
-- Purchase success feedback appears clearly after the modal closes.
-- Purchase receipt shows affected card or action.
-- Purchase receipt shows gold spent and remaining gold.
+- Purchase modal shows missing gold instead of negative gold when unaffordable.
+- Purchase modal remains compact and usable.
+- Target modal shows vocabulary cards as card-like choices.
+- Target cards show compact before/after previews.
+- Confirm is disabled when purchase is invalid.
+- Successful Upgrade Attack shows a card upgrade ceremony.
+- Successful Add Shield shows a card upgrade ceremony.
+- Successful Add Element shows a card upgrade ceremony.
+- Remove Card success shows compact card/result feedback.
+- Duplicate Card success shows compact card/result feedback.
+- Floating stat/gold feedback is visible.
+- Success feedback does not rely on sound.
+- Reduced-motion mode still shows readable static feedback.
 - Insufficient gold shows needed/current/missing gold.
 - Insufficient gold does not spend gold.
 - Insufficient gold does not mutate cards or deck size.
 - Reroll success clearly refreshes offers and spends gold.
-- Reroll feedback shows gold before/after.
+- Reroll feedback shows gold spent and remaining gold.
 - Reroll failure does not spend gold or change offers.
 - Shop offer cards show affordability state.
 - Shop upgrades remain current-run-only.

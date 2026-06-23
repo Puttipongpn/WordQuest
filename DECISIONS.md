@@ -1144,6 +1144,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Purchases should feel useful and understandable instead of only silently reducing temporary gold.
 - Status: Accepted
 
+### 2026-06-23: Shop Purchase Feedback Must Be Visible
+
+- Decision: Shop purchase feedback must be visible without relying on sound or hidden state changes. Successful purchases should show a clear receipt and placeholder upgrade feedback until final card art/effects are added.
+- Reason: Buying an upgrade is a key deckbuilder reward moment, so players should immediately understand what changed, how much gold was spent, and how much gold remains.
+- Status: Accepted
+
+### 2026-06-23: Shop Upgrades Feel Like Card Actions
+
+- Decision: Shop upgrades should feel like card-game actions. Target selection should present vocabulary cards as card-like choices, and successful purchases should use compact upgrade ceremony feedback instead of dashboard-style receipts.
+- Reason: Shop purchases are the core deckbuilder reward moment, so the interaction should emphasize the selected card and its change rather than a large information panel.
+- Status: Accepted
+
 ### 2026-06-22: First Shop Should Usually Afford One Meaningful Upgrade
 
 - Decision: Shop economy should let the first shop usually provide at least one meaningful upgrade while keeping Duplicate and Remove strategic.

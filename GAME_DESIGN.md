@@ -124,6 +124,27 @@ Phase 66 applies the guide to Deck Review only:
 - Repeated grid cards should not show long helper copy, per-card mastery progress bars, full effect descriptions, or `No Effect` badges.
 - Deck Review remains display-only and must not mutate mastery, run state, save data, deck unlocks, combat, timers, shop, events, boss behavior, Word Energy, assets, or deployment.
 
+Phase 67 applies the guide to Shop only:
+
+- Shop offer cards should use compact scan mode by default.
+- Offer cards show icon, item name, cost, one-line effect, affordability, not-eligible state, and one primary Inspect action.
+- Detailed target previews, before/after values, and current-run-only explanation belong in the target modal or purchase receipt.
+- Unaffordable offers should show `Need +X gold` before the player opens the modal.
+- Successful purchases and rerolls should show a visible receipt near the top of Shop with affected card/action, before/after values, gold spent, and remaining gold.
+- Placeholder upgrade feedback can use CSS/emoji-only receipt glow, upgrade pop, hammer, shield, spark, card, or trash icons until final art/effects are added.
+- Shop compacting does not change shop item effects, costs, offer generation, current-run-only mutation behavior, saves, deck unlocks, combat, timers, mastery, Word Energy, assets, or deployment.
+
+Phase 67.1 refines Shop purchase feel:
+
+- Shop upgrades should feel like card-game actions rather than dashboard receipts.
+- Target selection presents up to four eligible vocabulary cards as card-like choices.
+- Target cards show compact word, Thai meaning, target-specific before/after preview, current effect summary, and selected state.
+- Successful purchases show a compact centered upgrade ceremony with the affected card, upgrade badge, before/after stat line, floating upgrade text, floating gold spent text, and a Continue action.
+- Large success receipt blocks and large insufficient-gold warning panels are avoided.
+- Insufficient-gold feedback stays compact through offer chips, modal chips, disabled Confirm, and short inline copy.
+- Ceremony motion uses CSS/emoji placeholders only and must remain understandable without sound or animation.
+- Phase 67.1 does not change shop item effects, costs, reroll cost, gold rewards, offer generation, current-run-only mutation behavior, saves, deck unlocks, combat, timers, mastery, Word Energy, assets, or deployment.
+
 ## Future Asset Direction
 
 Phase 61 prepares future real assets through `ASSET_PLAN.md` only.
@@ -801,10 +822,11 @@ Current shop rules:
 - Shop upgrades are explained as temporary current-run upgrades.
 - The Shop uses limited randomized offers instead of exposing every deck-editing control at once.
 - Each shop visit shows 4 randomized item offers from the existing shop item pool.
-- Shop offer cards show icon placeholder, name, description, cost, type, eligible target count, current-run label, and affordability state.
-- Selecting a shop offer opens a focused modal with up to 4 eligible current-run word card targets.
+- Shop offer cards use compact scan mode: icon placeholder, name, cost, one-line effect, affordability state, not-eligible state, and one primary Inspect action.
+- Selecting a shop offer opens a focused modal with up to 4 eligible current-run word card targets shown as card-like vocabulary choices.
 - Purchase confirmation happens in the modal before spending temporary gold or mutating the current-run deck.
-- Target modal previews show current gold, item cost, gold after purchase, and the target-specific before/after change.
+- Target modal previews show current gold, item cost, gold after purchase only if affordable, missing gold if unaffordable, and the target-specific before/after change.
+- Target cards use compact word, Thai meaning, before/after preview, current effect summary, and selected state.
 - Upgrade Attack previews show ATK before/after.
 - Add Shield previews show SHD before/after.
 - Add Element previews show element before/after.
@@ -835,7 +857,11 @@ Current shop rules:
 - If the player has enough temporary gold, the player can choose one current-run card and add a unique-id copy of it to the current-run deck.
 - Duplicates preserve current-run upgrades, including upgraded `baseAttack`, shield effects, and element effects.
 - Successful purchases show a compact receipt with affected card/action, before/after values, gold spent, remaining gold, and current-run-only reminder.
+- Successful purchases show a compact recent-trade strip and a centered card upgrade ceremony overlay.
+- Purchase success feedback uses CSS/emoji-only placeholder card pop, floating upgrade text, floating gold spent text, and icon pop.
+- Large dashboard-style success receipts are avoided in favor of the card upgrade ceremony.
 - If the player does not have enough temporary gold, the Shop shows not-enough-gold feedback with needed/current/missing gold and does not mutate state.
+- Large not-enough-gold panels are avoided; insufficient-gold feedback uses compact chips, disabled Confirm, and short inline copy.
 - If a selected current-run card becomes stale after deck mutation, purchase logic refuses the purchase and the Shop falls back to a valid selection.
 - Dungeon can route to Shop when a checkpoint is available.
 - Shop can route back to Dungeon.
