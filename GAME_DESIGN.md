@@ -115,6 +115,15 @@ Phase 65 applies the guide to global/shared UI primitives:
 - Dungeon critical state such as HP, enemy HP, timer, and answer controls must remain readable after global density changes.
 - Phase 65 does not change gameplay, saves, deck unlocks, combat, timers, shop, events, boss behavior, Word Energy, assets, or deployment.
 
+Phase 66 applies the guide to Deck Review only:
+
+- Deck Review repeated cards use compact scan mode by default.
+- The Deck Review grid should help the player decide which word to inspect or practice next.
+- Repeated word cards show essential scan information only: word, Thai meaning, part of speech or difficulty, compact mastery, selected state, ATK, and effects only when present.
+- Full vocabulary details, example sentence, full effects, mastery value, mastery bonus, battle role guidance, and learning guidance belong in the selected-card detail panel.
+- Repeated grid cards should not show long helper copy, per-card mastery progress bars, full effect descriptions, or `No Effect` badges.
+- Deck Review remains display-only and must not mutate mastery, run state, save data, deck unlocks, combat, timers, shop, events, boss behavior, Word Energy, assets, or deployment.
+
 ## Future Asset Direction
 
 Phase 61 prepares future real assets through `ASSET_PLAN.md` only.

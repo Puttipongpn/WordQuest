@@ -36,6 +36,37 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Emotion Deck works in Training when unlocked and selected.
 - Each deck can be used in Training.
 
+## Deck Review Compact Scan Mode
+
+- Deck Review loads the currently selected deck.
+- All 6 manual decks can be reviewed when unlocked and selected.
+- Each manual deck still shows 20 cards.
+- Top Deck Review summary is compact and does not dominate the page.
+- Filter controls wrap cleanly.
+- Sort control remains usable.
+- Filters still work.
+- Sorting still works.
+- Card grid is scan-first.
+- Grid cards show English word and Thai meaning.
+- Grid cards show part of speech or difficulty.
+- Grid cards show compact mastery state.
+- Grid cards show ATK compactly.
+- Grid cards show effects only when present.
+- Grid cards do not show long helper text.
+- Grid cards do not show `No Effect` badges.
+- Grid cards do not show full effect descriptions.
+- Grid cards do not show repeated per-card mastery progress bars.
+- Selected card state is visible without making the card much taller.
+- Selecting a card updates the detail panel.
+- Detail panel shows word, Thai meaning, part of speech, and example sentence.
+- Detail panel shows difficulty and base attack.
+- Detail panel shows effects when present.
+- Detail panel shows mastery value, mastery bonus, and learning guidance.
+- Empty filtered states are compact and can return to all cards.
+- Deck Review does not mutate mastery.
+- Deck Review does not mutate run state.
+- Mobile Deck Review has no horizontal overflow.
+
 ## Dungeon Battle
 
 - Dungeon opens from Home.

@@ -96,6 +96,12 @@ Avoid:
 - Full stats on every card.
 - Long helper text inside repeated cards.
 
+Phase 66 implementation note:
+
+- Deck Review uses compact scan cards by default.
+- The grid keeps word, Thai meaning, part of speech or difficulty, compact mastery, selected state, ATK, and effects only when present.
+- The selected-card detail panel carries example sentence, full effects, base attack, mastery value, mastery bonus, battle role guidance, and learning guidance.
+
 ### Training
 
 Primary purpose: answer the current learning question.

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 65 Header + Global Density / Visual Token Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 66 Deck Review Compact Scan Mode is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -807,6 +807,15 @@ Phase 65 Header + Global Density / Visual Token Pass is complete. The production
 - Preserved Home Phase 64B hub behavior, Continue Run behavior, selected deck flow, gameplay rules, save schema, deck unlock rules, combat math, timer values, mastery rules, shop/event/boss effects, Word Energy rules, deployment setup, asset plan, and all six manual decks.
 - Added no backend, database, auth, API, React Router, cloud save, external state libraries, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, or Oxford 3000 import.
 - Verified the project with `npm run build` after Phase 65.
+- Applied Phase 66 Deck Review Compact Scan Mode.
+- Simplified Deck Review's top summary into a compact selected-deck context with status, card count, mastery percentage, mastered count, weak count, and quick actions.
+- Compacted Deck Review filter and sort controls while preserving existing filter and sort logic.
+- Reworked repeated Deck Review word cards into scan-first cards that show word, Thai meaning, part of speech, difficulty, compact mastery dots, ATK, effects only when present, and selected state.
+- Removed repeated per-card progress bars, long mastery guidance, and `No Effect` badges from the grid.
+- Kept full vocabulary, battle, effect, mastery bonus, and learning guidance information in the selected-card detail panel.
+- Added a compact empty-filter state with a Show All Cards action.
+- Preserved Deck Review as display-only; no mastery, run state, save schema, deck unlock, combat, timer, shop, event, boss, Word Energy, asset, dependency, deployment, or backend behavior changed.
+- Verified the project with `npm run build` after Phase 66.
 
 ## In Progress
 
@@ -814,7 +823,7 @@ Phase 65 Header + Global Density / Visual Token Pass is complete. The production
 
 ## Next Task
 
-Phase 65 is complete. The recommended next implementation phase is Phase 66 Deck Review Compact Scan Mode, but do not start it unless explicitly requested.
+Phase 66 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 67 Shop Compact Offers + Purchase Feedback Visibility Hotfix, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 
@@ -973,6 +982,7 @@ The following documents are required and must be updated after every completed t
 - Word Match shows card stats only on the English card side to avoid stat-based answer hints
 - Word Match uses a compact selected-pair footer with Check Pair to reduce wasted space
 - Mobile battle layout prioritizes playable quiz controls while secondary information collapses or moves below
+- Deck Review repeated cards use compact scan mode by default; full vocabulary, battle, effect, and mastery details live in the selected-card detail panel
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

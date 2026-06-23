@@ -1162,6 +1162,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Deck cards, shop offers, and record lists become harder to scan when every repeated item carries full stats, helper text, progress bars, and multiple chips.
 - Status: Accepted
 
+### 2026-06-23: Deck Review Repeated Cards Use Compact Scan Mode
+
+- Decision: Deck Review repeated cards should use compact scan mode by default. Full vocabulary, battle, effect, and mastery details should live in the selected-card detail panel.
+- Reason: Deck Review's primary decision is which word to inspect or practice next, so repeated cards should stay easy to scan without long helper copy, progress bars, or `No Effect` badges.
+- Status: Accepted
+
 ### 2026-06-23: Badges And Chips Are Decision-Focused
 
 - Decision: Badge and chip usage should be limited to information that affects immediate player decisions or important state.

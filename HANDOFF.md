@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 65 Header + Global Density / Visual Token Pass complete.
+Current phase: Phase 66 Deck Review Compact Scan Mode complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1859,8 +1859,33 @@ Verification:
 
 - `npm run build` passed after Phase 65.
 
+## Phase 66 Deck Review Compact Scan Mode Summary
+
+Phase 66 applies the UI hierarchy guide to Deck Review only.
+
+Completed:
+
+- Reworked `src/screens/DeckReview.tsx` so repeated vocabulary cards are scan-first instead of mini dashboards.
+- Compacted the top deck summary to show selected deck name, status, card count, mastery percentage, mastered count, weak count, and quick actions.
+- Compacted the filter/sort area while preserving the existing filter and sort behavior.
+- Grid cards now focus on word, Thai meaning, part of speech, difficulty, compact mastery dots, ATK, effects only when present, and selected state.
+- Removed repeated card-level progress bars, long mastery guidance, and `No Effect` badges from the grid.
+- Kept full vocabulary details, example sentence, difficulty, base attack, effects, mastery value, mastery damage bonus, battle role guidance, and learning guidance in the selected-card detail panel.
+- Added a compact no-results state with a Show All Cards action when a filter has no matches.
+- Adjusted the selected-card detail panel sticky offset for the more compact global header.
+
+Preserved:
+
+- Deck Review remains display-only.
+- No Home, Training, Dungeon, Shop, or Run Result redesign was performed.
+- No mastery values, LocalStorage schema, selected deck behavior, deck unlock rules, combat math, timer values, shop item effects, event effects, boss effects, Word Energy rules, deployment setup, backend, database, auth, API, React Router, cloud save, external state library, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, or Oxford 3000 import were added or changed.
+
+Verification:
+
+- `npm run build` passed after Phase 66.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 66 Deck Review Compact Scan Mode. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 67 Shop Compact Offers + Purchase Feedback Visibility Hotfix. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
