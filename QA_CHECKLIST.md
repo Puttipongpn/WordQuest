@@ -177,6 +177,24 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Shop modal is usable on desktop and narrow/mobile viewport.
 - Run Complete and Run Failed summaries are readable on desktop and narrow/mobile viewport.
 
+## Future UI Hierarchy And Declutter
+
+- Each screen has one clear primary action or primary decision.
+- Secondary information does not visually compete with the primary action.
+- Tertiary explanations, records, logs, and danger actions use progressive disclosure where practical.
+- Home does not require excessive scrolling before play actions.
+- Deck selector remains compact and scalable as deck count grows.
+- Deck Review grid supports fast scanning without turning every word card into a mini-dashboard.
+- Training keeps the current question and answer choices as the strongest visual focus.
+- Dungeon active answering keeps quiz, player HP, enemy HP, and timer as the focus.
+- Battle details remain available but are not always visually dominant during active answering.
+- Shop offers are readable without long repeated text on every offer card.
+- Shop affordability uses clear copy such as `Need +X gold` when the player cannot buy.
+- Run Result makes outcome and next action clearer than detailed stat records.
+- Badges and chips are limited to immediate decisions or important state.
+- Danger actions are not visually dominant unless the player is in a confirmation flow.
+- Mobile screens avoid horizontal overflow and excessive fixed-height panels.
+
 ## Motion And Feedback
 
 - Dungeon correct answers show reward-style feedback without changing combat math.

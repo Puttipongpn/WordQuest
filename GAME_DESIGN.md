@@ -71,6 +71,33 @@ Current presentation rules:
 - Keep text readable and the app responsive on desktop and reasonable mobile widths.
 - Do not add final generated art assets, external UI libraries, backend services, APIs, auth, database, Oxford 3000 import, new timer systems, or advanced element interactions as part of visual or sound passes.
 
+## UI Hierarchy And Declutter Direction
+
+Phase 64A adds `UI_HIERARCHY_GUIDE.md` as the practical guide for future UI declutter work.
+
+Accepted direction:
+
+- Each screen should answer: what does the player need to decide right now?
+- If a screen has more than 3 to 4 competing decisions, the screen should be simplified.
+- Primary actions should be obvious.
+- Secondary information should support the primary action without competing for attention.
+- Tertiary information should usually be collapsed, moved lower, or placed in detail panels, modals, accordions, or result screens.
+- Repeated cards and lists should use scan view by default and move full details into detail views.
+- Badges and chips should be limited to information that affects immediate decisions or clarifies important state.
+- Color should be simplified: gold/orange for primary action, green for safe/positive, red for danger/error, and muted parchment/brown/grey for normal information.
+- Future UI passes should reduce dashboard-like density while preserving the cozy fantasy deckbuilder identity.
+
+Page priority summary:
+
+- Home: choose what to do now.
+- Deck Review: scan vocabulary and inspect one selected word.
+- Training: answer the current learning question.
+- Dungeon: answer the current battle question, with HP, enemy HP, and timer as secondary critical state.
+- Shop: choose an upgrade, then choose a target card.
+- Run Result: understand the result and choose the next action.
+
+Phase 64A is documentation-only. It does not redesign screens, change gameplay, add assets, change save rules, or change deployment setup.
+
 ## Future Asset Direction
 
 Phase 61 prepares future real assets through `ASSET_PLAN.md` only.

@@ -1150,6 +1150,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The first shop should feel rewarding without making every offer free or weakening current-run deckbuilding decisions.
 - Status: Accepted
 
+### 2026-06-23: UI Prioritizes The Player's Immediate Decision
+
+- Decision: WordQuest UI should prioritize the player's immediate decision on each screen. Secondary and tertiary information should use progressive disclosure instead of being visible all the time.
+- Reason: Game designer feedback identified information overload, weak hierarchy, and dashboard-like density as major usability risks.
+- Status: Accepted
+
+### 2026-06-23: Repeated Cards Use Scan View By Default
+
+- Decision: Repeated cards and lists should use scan view by default and move full details into detail panels, modals, accordions, or result screens.
+- Reason: Deck cards, shop offers, and record lists become harder to scan when every repeated item carries full stats, helper text, progress bars, and multiple chips.
+- Status: Accepted
+
+### 2026-06-23: Badges And Chips Are Decision-Focused
+
+- Decision: Badge and chip usage should be limited to information that affects immediate player decisions or important state.
+- Reason: Too many colorful chips make normal information compete with primary actions and weaken screen hierarchy.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

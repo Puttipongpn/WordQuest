@@ -162,3 +162,4 @@ Phase 56 verified the first live Vercel deployment with HTTP/static checks:
 - `HANDOFF.md`: detailed continuation context for another developer or AI agent.
 - `DECISIONS.md`: accepted decisions.
 - `QA_CHECKLIST.md`: manual prototype QA checklist.
+- `UI_HIERARCHY_GUIDE.md`: UI declutter and hierarchy guide for future presentation work.

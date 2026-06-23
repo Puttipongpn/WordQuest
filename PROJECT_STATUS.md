@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 63 Shop Economy + Upgrade Feedback Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 64A UX Declutter Strategy + UI Hierarchy Guide is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -784,6 +784,13 @@ Phase 63 Shop Economy + Upgrade Feedback Pass is complete. The production demo i
 - Preserved current-run-only shop behavior, LocalStorage permanent-progress-only policy, active-run memory-only behavior, combat math, timer values, mastery rules, shop effects, deck unlock rules, Word Energy rules, deployment setup, asset plan, and all six manual decks.
 - Added no backend, database, auth, API, React Router, cloud save, external state library, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, or Oxford 3000 import.
 - Verified the project with `npm run build` after Phase 63.
+- Applied Phase 64A UX Declutter Strategy + UI Hierarchy Guide as a documentation-only planning phase.
+- Created `UI_HIERARCHY_GUIDE.md` to integrate game designer feedback about information overload, weak hierarchy, visual noise, repeated badges/chips, dense cards, and dashboard-like screens.
+- Defined the core UI principle: each screen should answer what the player needs to decide right now.
+- Documented page-by-page primary, secondary, and tertiary information for Home, Deck Review, Training, Dungeon, Shop, and Run Result.
+- Documented future implementation guidance for color usage, badge/chip usage, card density, header density, progressive disclosure, scan view versus detail view, and the next declutter roadmap.
+- Updated `QA_CHECKLIST.md` with future UI hierarchy checks.
+- Preserved all current code behavior: no gameplay rules, save rules, combat math, timer values, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, dependencies, assets, backend, API, React Router, cloud save, Oxford import, or deployment setup changed.
 
 ## In Progress
 
@@ -791,7 +798,7 @@ Phase 63 Shop Economy + Upgrade Feedback Pass is complete. The production demo i
 
 ## Next Task
 
-Phase 63 is complete. Continue with the next explicitly requested phase or feature. Do not start Phase 64 unless explicitly requested.
+Phase 64A is complete. The recommended next implementation phase is Phase 64B Home Hub Simplification + Compact Deck Selector, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 
@@ -802,6 +809,7 @@ The following documents are required and must be updated after every completed t
 - `DECISIONS.md`
 - `GAME_DESIGN.md` when gameplay rules, systems, or scope change
 - `QA_CHECKLIST.md` for manual prototype QA before sharing or deploying
+- `UI_HIERARCHY_GUIDE.md` for future UI declutter and hierarchy work
 
 ## Core Design Decisions
 

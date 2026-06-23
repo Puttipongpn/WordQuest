@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 63 Shop Economy + Upgrade Feedback Pass complete.
+Current phase: Phase 64A UX Declutter Strategy + UI Hierarchy Guide complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1095,8 +1095,9 @@ These documents are required project maintenance files:
 - `DECISIONS.md`: accepted decision log.
 - `GAME_DESIGN.md`: central accepted gameplay design reference.
 - `QA_CHECKLIST.md`: manual prototype QA checklist before sharing or deploying.
+- `UI_HIERARCHY_GUIDE.md`: UI declutter and hierarchy guide for future presentation work.
 
-After every completed task, update these documents as needed. Update `GAME_DESIGN.md` when gameplay rules, systems, or scope change.
+After every completed task, update these documents as needed. Update `GAME_DESIGN.md` when gameplay rules, systems, or scope change. Use `UI_HIERARCHY_GUIDE.md` when planning or implementing UI declutter work.
 
 ## GitHub Backup
 
@@ -1755,8 +1756,51 @@ Verification:
 
 - `npm run build` passed after Phase 63.
 
+## Phase 64A UX Declutter Strategy + UI Hierarchy Guide Summary
+
+Phase 64A integrates new game designer feedback before further Home, Deck Review, Shop, Dungeon, or asset work.
+
+Core accepted feedback:
+
+- WordQuest currently risks showing too much information at once.
+- Some screens can feel like a debug dashboard with a fantasy skin.
+- Headers, badges, chips, stat cards, helper text, and panels can compete for attention.
+- Future UI phases should make the player's immediate decision obvious.
+- Secondary and tertiary information should use progressive disclosure instead of staying visible all the time.
+
+Completed:
+
+- Created `UI_HIERARCHY_GUIDE.md`.
+- Documented the core principle: each screen should answer what the player needs to decide right now.
+- Added a page-by-page decision map for Home, Deck Review, Training, Dungeon, Shop, and Run Result.
+- Documented color rules, badge/chip rules, card density rules, header density rules, progressive disclosure rules, scan/detail split rules, and a future declutter roadmap.
+- Added future QA checklist strategy for UI hierarchy and mobile density.
+- Updated project status, game design notes, QA checklist, and decision log.
+
+Recommended future roadmap:
+
+- Phase 64B: Home Hub Simplification + Compact Deck Selector.
+- Phase 65: Header + Global Density / Visual Token Pass.
+- Phase 66: Deck Review Compact Scan Mode.
+- Phase 67: Shop Compact Offers + Purchase Feedback Visibility Hotfix.
+- Phase 68: Dungeon Side Panel Declutter.
+- Phase 69: Training / Run Result Density Pass.
+- Phase 70: Resume asset generation / pixel art prompt pack.
+
+Preserved:
+
+- No code behavior changed.
+- No broad UI redesign was implemented.
+- No gameplay rules, save rules, combat math, timer values, mastery rules, shop item effects, event effects, boss effects, deck unlock rules, Word Energy rules, deployment setup, backend, database, auth, API, React Router, cloud save, new dependencies, new decks, Oxford 3000 import, final art assets, image assets, audio assets, or animation libraries were added or changed.
+
+Verification:
+
+- Documentation was updated only.
+- Markdown files were reviewed for readability.
+- `git diff --check` passed.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. Do not start Phase 64 unless explicitly requested. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. If the next request is UI work, use `UI_HIERARCHY_GUIDE.md` as the implementation guide. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
