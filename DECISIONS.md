@@ -1174,6 +1174,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Home is the main hub, so the player should quickly see Continue Run or Start Adventure, plus Train, Review Deck, and compact deck selection without reading a dashboard of secondary information first.
 - Status: Accepted
 
+### 2026-06-23: Global UI Primitives Support Hierarchy By Default
+
+- Decision: Global UI primitives should support hierarchy by default: primary actions may be visually strong, repeated cards and secondary badges should be lighter, and detailed information should use progressive disclosure instead of permanent visual weight.
+- Reason: Shared components set the baseline for every screen, so calmer defaults reduce dashboard noise without needing screen-by-screen rewrites.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.

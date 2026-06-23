@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 64B Home Hub Simplification + Compact Deck Selector complete.
+Current phase: Phase 65 Header + Global Density / Visual Token Pass complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1830,8 +1830,37 @@ Verification:
 
 - `npm run build` passed after Phase 64B.
 
+## Phase 65 Header + Global Density / Visual Token Pass Summary
+
+Phase 65 applies the UI hierarchy guide to shared UI surfaces without redesigning individual screens.
+
+Completed:
+
+- Compacted `src/components/AppHeader.tsx`.
+- Normal app header now uses less vertical space, lighter nav buttons, smaller brand treatment, and a tighter sound toggle.
+- Dungeon battle-mode header was also tightened while preserving its compact battle-only behavior.
+- Compacted `src/components/ScreenShell.tsx` page padding, eyebrow treatment, page title scale, description styling, and framed container shadow/border weight.
+- Calmed `src/components/ui.tsx` shared primitives:
+  - `Badge` chips are smaller and less saturated.
+  - `CardPanel` uses lighter border, padding, and shadow defaults.
+  - `ProgressBar` is slightly thinner.
+  - `StatCard` uses lighter color and smaller value text.
+  - `Button` variants keep primary action strength while making secondary, ghost, and danger states less noisy outside confirmation flows.
+
+Preserved:
+
+- No Home, Deck Review, Training, Dungeon, Shop, or Run Result logic was redesigned.
+- No navigation behavior, React Router, gameplay rules, save schema, deck unlock rules, combat math, timer values, mastery rules, shop item effects, event effects, boss effects, Word Energy rules, deployment setup, backend, database, auth, API, cloud save, external state library, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, or Oxford 3000 import were added or changed.
+- Header navigation remains React state based.
+- Sound toggle remains reachable and behavior is unchanged.
+- Dungeon quiz-first and battle-mode header behavior remain intact.
+
+Verification:
+
+- `npm run build` passed after Phase 65.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 65 Header + Global Density / Visual Token Pass. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 66 Deck Review Compact Scan Mode. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

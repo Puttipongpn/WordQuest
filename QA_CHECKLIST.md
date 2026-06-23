@@ -221,6 +221,28 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Danger actions are not visually dominant unless the player is in a confirmation flow.
 - Mobile screens avoid horizontal overflow and excessive fixed-height panels.
 
+## Global Density And Header
+
+- Header is compact on desktop.
+- Header is compact on mobile.
+- Navigation remains readable and tappable.
+- Active nav state is clear.
+- Sound toggle remains reachable and usable.
+- Primary buttons remain visually strongest.
+- Secondary buttons are calmer than primary buttons.
+- Danger buttons remain clear but are not visually dominant outside confirmation flows.
+- Repeated cards are lighter than primary panels.
+- Badge/chip clusters do not dominate the screen.
+- Color hierarchy follows primary/safe/danger/neutral rules.
+- Home compact hub still works.
+- Deck Review still works and remains readable.
+- Training still works and answer choices remain prominent.
+- Dungeon battle remains playable with HP, enemy HP, timer, and answer controls readable.
+- Shop remains usable and affordability/cost text remains clear.
+- Run Result remains readable.
+- No horizontal overflow on mobile.
+- QA Helper remains dev-only.
+
 ## Motion And Feedback
 
 - Dungeon correct answers show reward-style feedback without changing combat math.

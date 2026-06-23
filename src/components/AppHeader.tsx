@@ -24,17 +24,17 @@ export function AppHeader({
 }: AppHeaderProps) {
   if (currentScreen === "dungeon") {
     return (
-      <header className="h-14 border-b-2 border-amber-300/20 bg-stone-950/95 text-amber-50 shadow-lg sm:h-16">
+      <header className="h-12 border-b border-amber-300/15 bg-stone-950/95 text-amber-50 shadow-md sm:h-14">
         <div className="mx-auto flex h-full max-w-[1800px] items-center justify-between px-3 sm:px-5">
           <div className="flex items-center gap-2">
-            <span className="grid size-9 place-items-center rounded-lg border border-amber-400/40 bg-amber-300/15 text-xl shadow-inner sm:size-10 sm:text-2xl">
+            <span className="grid size-8 place-items-center rounded-md border border-amber-400/30 bg-amber-300/10 text-lg shadow-inner sm:size-9 sm:text-xl">
               📖
             </span>
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-amber-300">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-amber-300">
                 WordQuest
               </p>
-              <h1 className="text-base font-black leading-tight text-amber-50 sm:text-lg">
+              <h1 className="text-sm font-black leading-tight text-amber-50 sm:text-base">
                 Dungeon
               </h1>
             </div>
@@ -54,27 +54,23 @@ export function AppHeader({
   }
 
   return (
-    <header className="sticky top-0 z-10 border-b-2 border-amber-300/20 bg-gradient-to-r from-stone-950/95 via-emerald-950/95 to-stone-900/95 text-amber-50 shadow-[0_8px_28px_rgba(12,20,16,0.38)] backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
-          <span className="grid size-12 place-items-center rounded-lg border border-amber-300/55 bg-amber-300/15 text-3xl shadow-[inset_0_0_18px_rgba(251,191,36,0.18),0_3px_0_rgba(120,53,15,0.35)]">
+    <header className="sticky top-0 z-10 border-b border-amber-300/15 bg-gradient-to-r from-stone-950/95 via-emerald-950/95 to-stone-900/95 text-amber-50 shadow-[0_5px_18px_rgba(12,20,16,0.3)] backdrop-blur">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-3 py-2 sm:px-5 lg:px-6">
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="grid size-9 place-items-center rounded-md border border-amber-300/35 bg-amber-300/10 text-xl shadow-inner">
             📖
           </span>
           <div>
-            <p className="text-sm font-extrabold uppercase text-amber-300">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-amber-300">
               WordQuest
             </p>
-            <h1 className="text-2xl font-black text-amber-50">
+            <h1 className="text-base font-black leading-tight text-amber-50 sm:text-lg">
               Vocabulary Dungeon
             </h1>
           </div>
         </div>
-        <SoundToggle
-          isSoundEnabled={isSoundEnabled}
-          onToggleSound={onToggleSound}
-        />
         <nav
-          className="flex gap-2 overflow-x-auto pb-1"
+          className="order-3 flex min-w-0 flex-1 gap-1.5 overflow-x-auto pb-0.5 sm:order-none sm:ml-2"
           aria-label="Main screens"
         >
           {navItems.map((item) => {
@@ -85,13 +81,13 @@ export function AppHeader({
                 key={item.screen}
                 type="button"
                 onClick={() => onNavigate(item.screen)}
-                className={`shrink-0 rounded-lg border px-3 py-2 text-sm font-extrabold transition ${
+                className={`shrink-0 rounded-md border px-2.5 py-1.5 text-xs font-extrabold transition sm:px-3 ${
                   isActive
-                    ? "border-amber-200 bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow-[0_4px_0_rgba(120,53,15,0.58)]"
-                    : "border-amber-100/20 bg-amber-50/10 text-amber-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:border-amber-300 hover:bg-amber-100/20"
+                    ? "border-amber-200 bg-amber-300 text-amber-950 shadow-[0_2px_0_rgba(120,53,15,0.45)]"
+                    : "border-amber-100/15 bg-amber-50/5 text-amber-100/85 hover:border-amber-300/70 hover:bg-amber-100/15"
                 }`}
               >
-                <span className="mr-2" aria-hidden="true">
+                <span className="mr-1.5" aria-hidden="true">
                   {item.icon}
                 </span>
                 {item.label}
@@ -99,6 +95,10 @@ export function AppHeader({
             );
           })}
         </nav>
+        <SoundToggle
+          isSoundEnabled={isSoundEnabled}
+          onToggleSound={onToggleSound}
+        />
       </div>
     </header>
   );
@@ -115,10 +115,10 @@ function SoundToggle({ isSoundEnabled, onToggleSound }: SoundToggleProps) {
       type="button"
       onClick={onToggleSound}
       aria-pressed={isSoundEnabled}
-      className={`w-fit shrink-0 rounded-lg border px-3 py-2 text-xs font-black uppercase tracking-[0.08em] transition hover:-translate-y-0.5 active:translate-y-0.5 ${
+      className={`w-fit shrink-0 rounded-md border px-2.5 py-1.5 text-[11px] font-black uppercase tracking-[0.06em] transition hover:-translate-y-0.5 active:translate-y-0.5 ${
         isSoundEnabled
-          ? "border-emerald-200 bg-emerald-200 text-emerald-950 shadow-[0_3px_0_rgba(6,78,59,0.45)]"
-          : "border-amber-100/20 bg-amber-50/10 text-amber-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] hover:border-amber-300 hover:bg-amber-100/20"
+          ? "border-emerald-200 bg-emerald-100 text-emerald-950 shadow-[0_2px_0_rgba(6,78,59,0.32)]"
+          : "border-amber-100/15 bg-amber-50/5 text-amber-100/85 hover:border-amber-300/70 hover:bg-amber-100/15"
       }`}
     >
       {isSoundEnabled ? "Sound On" : "Sound Off"}

@@ -107,6 +107,14 @@ Phase 64B applies the guide to Home only:
 - Records, How to Play, local save explanation, and Reset Progress use lower-priority collapsible sections.
 - Phase 64B does not change selected deck rules, active-run memory rules, reset rules, gameplay, saves, deck unlocks, combat, timers, shop, events, boss behavior, Word Energy, assets, or deployment.
 
+Phase 65 applies the guide to global/shared UI primitives:
+
+- The app header and navigation should stay compact, readable, and tappable without acting like a large marketing header.
+- Shared badges, cards, stat cards, progress bars, and secondary buttons should default to calmer colors, lighter shadows, and tighter spacing.
+- Primary actions may remain visually strong, but repeated cards and secondary badges should be lighter by default.
+- Dungeon critical state such as HP, enemy HP, timer, and answer controls must remain readable after global density changes.
+- Phase 65 does not change gameplay, saves, deck unlocks, combat, timers, shop, events, boss behavior, Word Energy, assets, or deployment.
+
 ## Future Asset Direction
 
 Phase 61 prepares future real assets through `ASSET_PLAN.md` only.

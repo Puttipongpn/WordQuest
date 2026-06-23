@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 64B Home Hub Simplification + Compact Deck Selector is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 65 Header + Global Density / Visual Token Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -799,6 +799,14 @@ Phase 64B Home Hub Simplification + Compact Deck Selector is complete. The produ
 - Moved records, How to Play, local save explanation, and Reset Progress into lower-priority collapsible sections.
 - Preserved selected deck behavior, active-run memory-only behavior, reset confirmation, LocalStorage permanent-progress-only rules, deck unlock rules, combat math, timer values, mastery rules, shop/event/boss effects, Word Energy rules, deployment setup, asset plan, and all six manual decks.
 - Verified the project with `npm run build` after Phase 64B.
+- Applied Phase 65 Header + Global Density / Visual Token Pass.
+- Made the global app header more compact on normal screens and Dungeon battle mode.
+- Reduced navigation visual weight while keeping active tab state clear, labels readable, and sound toggle reachable.
+- Tightened `ScreenShell` page spacing, page titles, eyebrow badges, framed container padding, borders, and shadows.
+- Calmed shared UI primitives in `src/components/ui.tsx`: badges, cards, stat cards, progress bars, and button variants now use lighter colors, smaller chips, reduced shadows, and tighter spacing.
+- Preserved Home Phase 64B hub behavior, Continue Run behavior, selected deck flow, gameplay rules, save schema, deck unlock rules, combat math, timer values, mastery rules, shop/event/boss effects, Word Energy rules, deployment setup, asset plan, and all six manual decks.
+- Added no backend, database, auth, API, React Router, cloud save, external state libraries, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, or Oxford 3000 import.
+- Verified the project with `npm run build` after Phase 65.
 
 ## In Progress
 
@@ -806,7 +814,7 @@ Phase 64B Home Hub Simplification + Compact Deck Selector is complete. The produ
 
 ## Next Task
 
-Phase 64B is complete. The recommended next implementation phase is Phase 65 Header + Global Density / Visual Token Pass, but do not start it unless explicitly requested.
+Phase 65 is complete. The recommended next implementation phase is Phase 66 Deck Review Compact Scan Mode, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 

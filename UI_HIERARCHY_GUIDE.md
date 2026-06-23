@@ -435,6 +435,13 @@ Phase 64B implemented the first Home declutter pass:
 - Deck selection uses compact scan cards.
 - Records, How to Play, local save explanation, and Reset Progress are lower-priority collapsible sections.
 
+Phase 65 implemented the first global density pass:
+
+- Header and navigation are more compact.
+- Shared badges, cards, stat cards, progress bars, and buttons use calmer default visual tokens.
+- Repeated cards and secondary states should inherit lighter shared primitives unless a screen has a specific primary decision that needs stronger treatment.
+- Future screen-specific declutter phases should avoid reintroducing heavy badge clusters, oversized repeated cards, or dense stat-card grids.
+
 ## Future Deck Review Declutter Plan
 
 Grid cards should show only:
