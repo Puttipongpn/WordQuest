@@ -2,6 +2,8 @@
 
 This document defines the future asset direction for WordQuest. Phase 61 is planning and structure only: no final art assets, generated image files, runtime asset imports, new dependencies, or gameplay changes are added.
 
+Phase 70A adds `ASSET_PROMPTS.md` as the practical pixel-art style bible and prompt pack for future image-generation work. It is still documentation-only: no final art assets, generated image files, runtime asset imports, new dependencies, or gameplay changes are added.
+
 ## Asset Direction
 
 WordQuest should use cozy fantasy pixel art when real assets are added later.
@@ -325,7 +327,7 @@ Rules:
 
 ## Future Prompt Guidelines
 
-Use these prompt templates when generating assets later. Do not generate images during Phase 61.
+Use `ASSET_PROMPTS.md` as the primary prompt pack when generating assets later. The templates below are the older Phase 61 starter prompts and remain useful as a compact reference. Do not generate images during Phase 61 or Phase 70A.
 
 Base sprite prompt:
 

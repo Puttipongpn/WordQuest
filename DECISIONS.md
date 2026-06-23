@@ -1126,6 +1126,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: WordQuest should be ready for real cozy fantasy pixel art later without making the current static demo depend on missing image files or altering the tested learning/combat loop.
 - Status: Accepted
 
+### 2026-06-23: Pixel Art Generation Uses A Prompt Pack First
+
+- Decision: Future real pixel-art generation should follow `ASSET_PROMPTS.md` and `ASSET_PLAN.md`. Phase 70A creates prompt documentation only and does not add image files or runtime asset imports.
+- Reason: A shared style bible, negative prompt rules, filenames, batch plan, and QA checklist should come before generating assets so future art stays consistent and safe to integrate.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

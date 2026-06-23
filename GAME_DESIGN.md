@@ -169,9 +169,12 @@ Phase 69 applies the guide to Training and Run Result only:
 
 Phase 61 prepares future real assets through `ASSET_PLAN.md` only.
 
+Phase 70A adds `ASSET_PROMPTS.md` as the practical pixel-art style bible and prompt pack for later image-generation workflows. It does not add image files or runtime asset integration.
+
 Asset direction rules:
 
 - Future real assets should use cozy fantasy pixel art.
+- Future generated assets should follow `ASSET_PROMPTS.md` for prompt wording, style consistency, negative prompt rules, asset batch planning, and QA checks.
 - The style should stay friendly, readable, warm, beginner-friendly, and suitable for vocabulary learning.
 - Side-view battle art should support the current Phase 60 layout: player on the left, encounter on the right, quiz as the main playable area.
 - Future assets should be integrated gradually and must always have safe emoji/text/CSS placeholder fallbacks.
@@ -180,7 +183,7 @@ Asset direction rules:
 - Assets must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, deck unlocks, save behavior, shop/event/boss effects, or encounter progression.
 - Mobile readability is more important than visual detail.
 - No final art assets or image files are added in Phase 61.
-- Future generated assets should follow `ASSET_PLAN.md` for style, specs, naming, prompts, and integration rules.
+- Future generated assets should follow `ASSET_PLAN.md` for style, specs, naming, folder planning, and integration rules.
 
 ## Development QA Helpers
 

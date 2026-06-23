@@ -1,0 +1,785 @@
+# ASSET_PROMPTS.md
+
+This document is the Phase 70A prompt pack and style bible for future WordQuest pixel art generation.
+
+Phase 70A is documentation-only. Do not add image files, runtime asset imports, new dependencies, animation libraries, gameplay changes, save schema changes, deployment changes, or Oxford 3000 import as part of this phase.
+
+Use this document with `ASSET_PLAN.md` when generating real assets in a later workflow.
+
+## Pixel Art Style Bible
+
+WordQuest art direction:
+
+- Cozy fantasy pixel art.
+- Friendly dungeon learning adventure.
+- Beginner-friendly, playful, readable, and never too scary.
+- Warm camp and dungeon palette with amber, moss green, soft teal, muted violet, warm stone, and parchment accents.
+- Clean medium-resolution pixel art with readable silhouettes.
+- Side-view battle framing.
+- Player sprites face right.
+- Enemy and boss sprites face left.
+- Transparent background for sprites, effects, and UI icons.
+- Background art should be low-detail behind UI and should not compete with text or quiz choices.
+- No text inside generated images.
+- No watermark.
+- No realistic rendering.
+- No painterly gradients or anti-aliasing when requesting strict pixel art.
+- Consistent lighting direction from upper-left.
+- Consistent outline thickness, usually 1 to 2 pixel dark outline with selective inner highlights.
+- Readable on mobile.
+- Visuals must not reduce quiz readability, hide controls, obscure Thai text, or make answer choices harder to scan.
+
+## Shared Prompt Rules
+
+Use these rules in every prompt unless a specific asset says otherwise:
+
+- Request clean pixel art, not illustration, not vector, not 3D, not realism.
+- Specify the exact canvas or frame size.
+- Specify sprite direction: player faces right, enemies face left.
+- Specify transparent background for sprites, effects, and icons.
+- Specify no text and no watermark.
+- Keep detail simple enough for mobile readability.
+- Preserve a friendly vocabulary-learning tone.
+- Keep effects readable but not visually noisy.
+- Use consistent outline thickness and upper-left lighting.
+- Ask for a horizontal spritesheet when animation is needed.
+- Ask for evenly spaced frames with consistent frame dimensions.
+
+## Negative Prompt Rules
+
+Use this negative prompt baseline:
+
+```text
+no text, no letters, no numbers, no watermark, no logo, no signature, no realistic rendering, no 3D render, no painterly brushwork, no smooth vector art, no heavy anti-aliasing, no blurry pixels, no horror, no gore, no blood, no scary realism, no excessive detail, no busy background, no cropped character, no inconsistent frame sizes
+```
+
+For strict pixel art, add:
+
+```text
+no gradients, no soft airbrush shading, no high-resolution painting, no semi-realistic lighting
+```
+
+## First Asset Batch Plan
+
+Do not generate these files in Phase 70A. This is the first planned generation batch.
+
+### Batch 1A - Player Test
+
+- `player_word_hero_idle_sheet.png`
+- `player_word_hero_attack_sheet.png`
+- `player_word_hero_hit_sheet.png`
+- `player_word_hero_shield_sheet.png`
+- `player_word_hero_defeat_sheet.png`
+
+### Batch 1B - Monster Test
+
+- `monster_slime_idle_sheet.png`
+- `monster_slime_attack_sheet.png`
+- `monster_slime_hit_sheet.png`
+- `monster_slime_defeat_sheet.png`
+- `monster_bat_idle_sheet.png`
+- `monster_bat_attack_sheet.png`
+- `monster_bat_hit_sheet.png`
+- `monster_bat_defeat_sheet.png`
+- `monster_goblin_idle_sheet.png`
+- `monster_goblin_attack_sheet.png`
+- `monster_goblin_hit_sheet.png`
+- `monster_goblin_defeat_sheet.png`
+
+### Batch 1C - Effects
+
+- `effect_slash_sheet.png`
+- `effect_shield_block_sheet.png`
+- `effect_fire_sheet.png`
+- `effect_water_sheet.png`
+- `effect_wind_sheet.png`
+- `effect_earth_sheet.png`
+- `effect_upgrade_spark_sheet.png`
+
+### Batch 1D - Background/Card
+
+- `background_dungeon_battle_01.png`
+- `ui_vocabulary_card_frame.png`
+- `ui_gold_coin.png`
+- `ui_heart_hp.png`
+- `ui_shield.png`
+
+## Intended Future Paths
+
+Do not create empty folders until real assets are added.
+
+```text
+src/assets/characters/player/
+src/assets/characters/monsters/
+src/assets/characters/bosses/
+src/assets/effects/
+src/assets/ui/
+src/assets/backgrounds/
+```
+
+Use lowercase snake_case filenames.
+
+## Prompt Template Format
+
+Use this structure for each generated asset:
+
+```text
+Purpose:
+[What this asset is for.]
+
+Filename:
+[lowercase_snake_case.png]
+
+Spec:
+[Canvas size, frame size, number of frames, spritesheet direction, background.]
+
+Prompt:
+[Full image-generation prompt.]
+
+Negative prompt:
+[What to avoid.]
+
+QA:
+- [Check 1]
+- [Check 2]
+- [Check 3]
+
+Integration notes:
+- [Where the asset should later live.]
+- [Fallback behavior.]
+- [Any UI/gameplay safety notes.]
+```
+
+## Player Character Prompt Templates
+
+The player is a small Word Hero / learner adventurer. Keep the character friendly, readable, and not too violent. The character can hold a book, scroll, small sword, or magic quill. Side-view, facing right.
+
+### player_word_hero_idle_sheet.png
+
+Purpose:
+Player idle animation for battle.
+
+Filename:
+`player_word_hero_idle_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero player character idle animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The character is a friendly learner adventurer with a small book, short cape, simple boots, and a magic quill or tiny practice sword. Side-view facing right. Warm camp colors, readable silhouette, simple 1 to 2 pixel outline, upper-left lighting, subtle breathing idle pose. Friendly vocabulary dungeon game style. No text, no watermark.
+```
+
+Negative prompt:
+```text
+no text, no letters, no numbers, no watermark, no logo, no signature, no realistic rendering, no 3D render, no painterly brushwork, no smooth vector art, no heavy anti-aliasing, no gore, no horror, no oversized weapon, no busy background, no cropped character, no inconsistent frame sizes
+```
+
+QA:
+- 4 frames.
+- Each frame is 64x64.
+- Transparent background.
+- Player faces right.
+- Readable at small size.
+- No text or watermark.
+
+Integration notes:
+- Future path: `src/assets/characters/player/player_word_hero_idle_sheet.png`.
+- Keep emoji player fallback if the asset is missing.
+
+### player_word_hero_attack_sheet.png
+
+Purpose:
+Player attack animation after a correct Dungeon answer triggers a card.
+
+Filename:
+`player_word_hero_attack_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero attack animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The friendly learner adventurer faces right and swings a small glowing quill, book spark, or tiny practice sword. The motion should feel magical and vocabulary-themed, not violent. Warm colors, readable silhouette, simple outline, upper-left lighting, mobile-readable. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no blood, no realistic weapon, no aggressive gore`.
+
+QA:
+- 4 frames.
+- Player faces right.
+- Attack motion reads clearly.
+- No text or answer-like symbols.
+
+Integration notes:
+- Future trigger: correct answer card activation.
+- Must not reveal whether an answer is correct before result resolution.
+
+### player_word_hero_hit_sheet.png
+
+Purpose:
+Player hit feedback when wrong answer, timeout, or enemy attack damages HP/shield.
+
+Filename:
+`player_word_hero_hit_sheet.png`
+
+Spec:
+64x64 per frame, 2 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero hit reaction. 64x64 pixels per frame, 2 evenly spaced frames, transparent background. The friendly learner adventurer faces right, flinching slightly with a small dust puff or soft impact star. Not scary, no injury detail, no blood. Warm palette, readable silhouette, simple outline, upper-left lighting. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no blood, no wounds, no horror`.
+
+QA:
+- 2 frames.
+- Player faces right.
+- Hit reaction is readable but not scary.
+
+Integration notes:
+- Can pair with existing damage/shield UI feedback later.
+
+### player_word_hero_shield_sheet.png
+
+Purpose:
+Player guard or shield animation when shield is gained or absorbs damage.
+
+Filename:
+`player_word_hero_shield_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero shield animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The friendly learner adventurer faces right and raises a small book-shaped shield or glowing vocabulary barrier. Soft teal and warm gold shield glow, readable at mobile size, simple outline, upper-left lighting. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no readable letters on the book, no words, no noisy glow`.
+
+QA:
+- 4 frames.
+- Shield reads clearly.
+- No letters or words appear on book/shield.
+
+Integration notes:
+- Future trigger: shield gained or shield block.
+
+### player_word_hero_defeat_sheet.png
+
+Purpose:
+Player defeat animation for Run Failed.
+
+Filename:
+`player_word_hero_defeat_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for the Word Hero defeat animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. The friendly learner adventurer faces right, kneels or sits down tired with book lowered, gentle and non-scary. Warm muted colors, readable silhouette, no injury detail, no blood, simple outline, upper-left lighting. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no death realism, no blood, no gore, no horror`.
+
+QA:
+- 4 frames.
+- Defeat reads as tired/failure, not violent.
+- Transparent background.
+
+Integration notes:
+- Future trigger: Run Failed presentation.
+
+## Monster Prompt Templates
+
+All normal monsters are friendly fantasy enemies. They should be readable, simple, and not scary. Enemy sprites face left.
+
+### Slime Templates
+
+#### monster_slime_idle_sheet.png
+
+Purpose:
+Slime idle animation.
+
+Filename:
+`monster_slime_idle_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a friendly green dungeon slime idle animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Side-view facing left. Rounded bouncy silhouette, small shine, soft green body, playful not scary, warm dungeon palette, simple outline, upper-left lighting, readable on mobile. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no horror slime, no teeth, no gore`.
+
+QA:
+- Faces left.
+- 4 frames.
+- Silhouette is readable and friendly.
+
+Integration notes:
+- Future path: `src/assets/characters/monsters/monster_slime_idle_sheet.png`.
+
+#### monster_slime_attack_sheet.png
+
+Purpose:
+Slime attack animation.
+
+Filename:
+`monster_slime_attack_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a friendly green dungeon slime attack animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Side-view facing left. The slime squashes and stretches forward with a soft bounce attack, playful not scary. Warm dungeon palette, simple outline, upper-left lighting, mobile-readable. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt.
+
+QA:
+- Attack direction faces left.
+- Motion reads as bounce/ram.
+- No scary details.
+
+Integration notes:
+- Future trigger: enemy attack after wrong answer or timeout.
+
+#### monster_slime_hit_sheet.png
+
+Purpose:
+Slime hit reaction.
+
+Filename:
+`monster_slime_hit_sheet.png`
+
+Spec:
+64x64 per frame, 2 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a friendly green dungeon slime hit reaction. 64x64 pixels per frame, 2 evenly spaced frames, transparent background. Side-view facing left. The slime squishes back with a small sparkle impact, playful and non-scary. Simple outline, warm palette, upper-left lighting. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt.
+
+QA:
+- 2 frames.
+- Hit reaction is clear without gore.
+
+Integration notes:
+- Future trigger: card damage dealt.
+
+#### monster_slime_defeat_sheet.png
+
+Purpose:
+Slime defeat animation.
+
+Filename:
+`monster_slime_defeat_sheet.png`
+
+Spec:
+64x64 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a friendly green dungeon slime defeat animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Side-view facing left. The slime gently flattens into a small puddle or sparkle puff, playful not scary. Warm dungeon palette, simple outline, upper-left lighting. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no gore, no horror, no realistic slime`.
+
+QA:
+- 4 frames.
+- Defeat is readable and friendly.
+
+Integration notes:
+- Future trigger: Monster Defeated result.
+
+### Bat Templates
+
+Use the Slime structure for all Bat states with this base description:
+
+```text
+friendly small purple dungeon bat, side-view facing left, rounded wings, cute eyes, not scary, warm dungeon palette, readable silhouette, simple outline, upper-left lighting
+```
+
+Filenames and state prompts:
+
+- `monster_bat_idle_sheet.png`: 64x64 per frame, 4 frames, gentle wing flap idle.
+- `monster_bat_attack_sheet.png`: 64x64 per frame, 4 frames, small swoop toward the left.
+- `monster_bat_hit_sheet.png`: 64x64 per frame, 2 frames, soft flinch with tiny star impact.
+- `monster_bat_defeat_sheet.png`: 64x64 per frame, 4 frames, tired flutter down or soft puff.
+
+Negative prompt:
+Use the shared negative prompt. Add: `no horror bat, no fangs focus, no blood`.
+
+QA:
+- Enemy faces left.
+- Wings stay inside 64x64 frame.
+- Reads as bat at small size.
+
+Integration notes:
+- Future path: `src/assets/characters/monsters/`.
+
+### Goblin Templates
+
+Use the Slime structure for all Goblin states with this base description:
+
+```text
+friendly small green goblin vocabulary dungeon enemy, side-view facing left, simple tunic, tiny wooden spoon club or practice stick, mischievous but not scary, warm dungeon palette, readable silhouette, simple outline, upper-left lighting
+```
+
+Filenames and state prompts:
+
+- `monster_goblin_idle_sheet.png`: 64x64 per frame, 4 frames, small idle bounce.
+- `monster_goblin_attack_sheet.png`: 64x64 per frame, 4 frames, light practice-stick swing facing left.
+- `monster_goblin_hit_sheet.png`: 64x64 per frame, 2 frames, surprised flinch.
+- `monster_goblin_defeat_sheet.png`: 64x64 per frame, 4 frames, drops practice stick and sits down tired.
+
+Negative prompt:
+Use the shared negative prompt. Add: `no scary goblin, no sharp gore, no realistic weapon`.
+
+QA:
+- Enemy faces left.
+- Weapon is toy-like or practice-like.
+- Goblin remains beginner-friendly.
+
+Integration notes:
+- Future path: `src/assets/characters/monsters/`.
+
+## Boss Prompt Templates
+
+Bosses should feel important but not frightening. Use 128x128 per frame only if 64x64 is not readable. Bosses face left.
+
+### boss_gatekeeper_idle_sheet.png
+
+Purpose:
+Gatekeeper boss idle animation.
+
+Filename:
+`boss_gatekeeper_idle_sheet.png`
+
+Spec:
+128x128 per frame, 4 frames, horizontal spritesheet, transparent background.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for Gatekeeper, a friendly but imposing dungeon word guardian boss. 128x128 pixels per frame, 4 evenly spaced frames, transparent background. Side-view facing left. The boss is a stone-and-wood guardian with a key motif, warm mossy dungeon colors, readable silhouette, not scary or realistic, simple strong outline, upper-left lighting, mobile-readable. No text, no watermark.
+```
+
+Negative prompt:
+Use the shared negative prompt. Add: `no horror, no skull focus, no unreadable runes, no letters`.
+
+QA:
+- Boss faces left.
+- 4 frames.
+- Key/guardian theme reads without text.
+
+Integration notes:
+- Future path: `src/assets/characters/bosses/boss_gatekeeper_idle_sheet.png`.
+- Boss art must not change boss logic or stats.
+
+### Boss State Template
+
+Use this for Gatekeeper and later bosses:
+
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for [boss name] [state] animation. [64x64 or 128x128] pixels per frame, [frame count] evenly spaced frames, transparent background. Side-view facing left. [Boss identity description]. Friendly but climactic, readable silhouette, warm dungeon palette, simple outline, upper-left lighting, mobile-readable. No text, no watermark.
+```
+
+Recommended boss filenames:
+
+- `boss_gatekeeper_idle_sheet.png`
+- `boss_gatekeeper_attack_sheet.png`
+- `boss_gatekeeper_special_sheet.png`
+- `boss_gatekeeper_hit_sheet.png`
+- `boss_gatekeeper_defeat_sheet.png`
+- `boss_word_warden_idle_sheet.png`
+- `boss_grammar_golem_idle_sheet.png`
+- `boss_shadow_reader_idle_sheet.png`
+- `boss_memory_dragon_idle_sheet.png`
+
+QA:
+- Boss is readable at intended display size.
+- No text, letters, runes that look like answer hints, or watermark.
+- Transparent background.
+
+Integration notes:
+- Add boss assets gradually after player/monster test batch validates style.
+
+## Effect Prompt Templates
+
+Effects should support feedback without hiding the quiz.
+
+Shared effect spec:
+64x64 per frame, 4 to 6 frames, horizontal spritesheet, transparent background.
+
+### effect_slash_sheet.png
+
+Purpose:
+Physical/card attack slash effect.
+
+Filename:
+`effect_slash_sheet.png`
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a small magical slash effect. 64x64 pixels per frame, 4 frames, transparent background. Warm gold and soft white arc, readable at small size, simple pixels, no text, no watermark, not violent, no blood.
+```
+
+Negative prompt:
+Use shared negative prompt. Add: `no blood, no gore, no realistic weapon`.
+
+QA:
+- Effect does not cover too much screen.
+- Transparent background.
+
+Integration notes:
+- Future trigger: card attack damage.
+
+### effect_shield_block_sheet.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a shield block effect. 64x64 pixels per frame, 4 frames, transparent background. Soft teal and gold book-shaped barrier, small spark impact, readable at mobile size, no text, no watermark.
+```
+
+QA:
+- Shield effect is distinct from Water.
+- No letters on book/barrier.
+
+### effect_fire_sheet.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a small friendly fire element burst. 64x64 pixels per frame, 4 to 6 frames, transparent background. Warm orange and gold flame, readable, not realistic, not too bright, no text, no watermark.
+```
+
+QA:
+- Fire reads clearly.
+- Does not overpower card/answer text.
+
+### effect_water_sheet.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a water shield sparkle effect. 64x64 pixels per frame, 4 to 6 frames, transparent background. Soft blue and teal droplets forming a protective curl, readable at small size, no text, no watermark.
+```
+
+QA:
+- Water reads as shield/support, not attack-only.
+
+### effect_wind_sheet.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a wind reward swirl effect. 64x64 pixels per frame, 4 to 6 frames, transparent background. Soft mint and pale gold swirl, light motion, readable at small size, no text, no watermark.
+```
+
+QA:
+- Wind is distinct from Water.
+- Keep lines simple.
+
+### effect_earth_sheet.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for an earth guard effect. 64x64 pixels per frame, 4 to 6 frames, transparent background. Small warm stone tiles and mossy spark, protective feel, readable at small size, no text, no watermark.
+```
+
+QA:
+- Earth reads as defensive/grounded.
+- Not too dark.
+
+### effect_upgrade_spark_sheet.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art horizontal spritesheet for a card upgrade sparkle effect. 64x64 pixels per frame, 4 frames, transparent background. Warm gold sparkles and small magical pop, friendly reward feel, readable on mobile, no text, no watermark.
+```
+
+QA:
+- Reward feel is clear.
+- Does not imply a specific stat with text.
+
+## Background Prompt Templates
+
+Backgrounds should not compete with UI or quiz text. Avoid high detail behind where cards, quiz prompts, Thai text, and buttons appear.
+
+### background_dungeon_battle_01.png
+
+Purpose:
+First real Dungeon battle backdrop.
+
+Filename:
+`background_dungeon_battle_01.png`
+
+Spec:
+1920x1080 PNG or 1536x864 PNG, static background, no characters, no text.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art dungeon battle background for a vocabulary learning game. Wide 16:9 composition, no characters, no text, no watermark. Side-view battle stage with open space on the left for the player and on the right for the monster. Warm mossy stone dungeon, soft torchlight, friendly and readable, low detail in the center and lower UI areas so quiz panels and Thai text remain readable. Not scary, not dark, not cluttered.
+```
+
+Negative prompt:
+Use shared negative prompt. Add: `no characters, no signs, no readable symbols, no busy center, no high contrast behind UI`.
+
+QA:
+- No characters.
+- No text or runes that look like text.
+- Center and lower areas support UI overlays.
+- Works with mobile cropping.
+
+Integration notes:
+- Future path: `src/assets/backgrounds/background_dungeon_battle_01.png`.
+- Keep CSS gradient fallback.
+
+### Other Background Templates
+
+Use the same structure for:
+
+- `background_home_camp.png`: cozy camp hub, warm firelight, no characters, no text, space for menu panels.
+- `background_shop.png`: friendly fantasy merchant stall, no shopkeeper required yet, no text, low-detail UI-safe center.
+- `background_training_room.png`: cozy practice room with books, soft light, no text, no readable letters, space for question panels.
+
+## Vocabulary Card Prompt Templates
+
+Generated card art should never contain embedded text. React renders all text.
+
+### ui_vocabulary_card_frame.png
+
+Purpose:
+Reusable vocabulary card frame.
+
+Filename:
+`ui_vocabulary_card_frame.png`
+
+Spec:
+Transparent or parchment-safe PNG, 256x360 or 512x720, no text.
+
+Prompt:
+```text
+Create a cozy fantasy pixel art reusable vocabulary card frame. Parchment center, warm gold and moss trim, subtle magical corners, no text, no icons that look like letters, no watermark. The frame must leave a large clean center area for React-rendered English word, Thai meaning, ATK, SHD, mastery, and element badges. Pixel art, simple outline, readable on mobile.
+```
+
+Negative prompt:
+Use shared negative prompt. Add: `no text, no letters, no numbers, no filled content in center`.
+
+QA:
+- No embedded text.
+- Clean center area.
+- Works behind English and Thai text.
+
+Integration notes:
+- Future path: `src/assets/ui/ui_vocabulary_card_frame.png`.
+- Keep CSS card fallback.
+
+### Card Effect Templates
+
+- `ui_card_upgrade_glow.png`: transparent overlay, warm gold border sparkle, no text.
+- `ui_element_badge_fire.png`: small icon badge, no text.
+- `ui_element_badge_water.png`: small icon badge, no text.
+- `ui_element_badge_wind.png`: small icon badge, no text.
+- `ui_element_badge_earth.png`: small icon badge, no text.
+
+QA:
+- Icons read without labels.
+- No text in image.
+- Badges do not replace accessible React text.
+
+## UI Icon Prompt Templates
+
+### ui_gold_coin.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art UI icon of a gold coin. 32x32 or 64x64, transparent background, warm gold, simple outline, readable on mobile, no text, no watermark.
+```
+
+### ui_heart_hp.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art UI icon of a red heart for HP. 32x32 or 64x64, transparent background, simple silhouette, readable on mobile, no text, no watermark.
+```
+
+### ui_shield.png
+
+Prompt:
+```text
+Create a cozy fantasy pixel art UI icon of a small teal shield. 32x32 or 64x64, transparent background, simple silhouette, readable on mobile, no text, no watermark.
+```
+
+Additional useful icons:
+
+- `ui_timer.png`: small hourglass or clock, no text.
+- `ui_mastery_star.png`: warm star, no text.
+- `ui_word_energy.png`: small lightning leaf or spark, no text.
+- `ui_shop_reroll.png`: circular arrows as icon shape only, no text.
+
+QA:
+- Transparent background.
+- Readable at 16px to 24px UI size.
+- No text/watermark.
+
+## Asset QA Checklist
+
+Use this before accepting generated assets:
+
+- Filename matches lowercase snake_case naming.
+- Asset matches intended folder/category.
+- Sprite frame size is consistent.
+- Spritesheet frames are evenly spaced.
+- Transparent background for sprites/effects/icons.
+- Backgrounds contain no characters unless explicitly requested.
+- No text, letters, numbers, signatures, or watermark.
+- Player faces right.
+- Enemies and bosses face left.
+- Silhouette is readable at mobile size.
+- Style matches cozy fantasy pixel art.
+- Image is beginner-friendly and not scary.
+- Visual detail does not reduce quiz readability.
+- Asset does not reveal hidden answers, target cards, correct answers, or result data.
+- Missing asset fallback remains possible.
+- File size is reasonable for a static Vite/Vercel demo.
+
+## Future Codex Integration Notes
+
+Do not implement these in Phase 70A. Use them later when real image files exist.
+
+Recommended future integration steps:
+
+1. Add verified image files under `src/assets`.
+2. Create `src/data/assetManifest.ts`.
+3. Map player, monster, boss, effect, background, and UI asset ids to imported files.
+4. Add optional asset ids to data objects only when useful.
+5. Map monster ids to asset ids.
+6. Map boss ids to asset ids.
+7. Keep emoji/text/CSS fallback placeholders.
+8. Add a small safe asset component that falls back when an asset is missing.
+9. Add simple CSS spritesheet animation using `background-position` or image transforms.
+10. Preserve mobile readability and quiz-first hierarchy.
+11. Confirm production build still works without backend services.
+
+Integration safety rules:
+
+- Missing assets must never crash the app.
+- Assets must never be required to play Version 1.
+- Assets must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression.
+- Assets must not reveal hidden answer information.
+- Use generated art as presentation only.

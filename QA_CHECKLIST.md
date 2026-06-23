@@ -386,7 +386,20 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 ## Asset Prep
 
 - `ASSET_PLAN.md` exists.
+- `ASSET_PROMPTS.md` exists.
 - Future cozy fantasy pixel-art direction is documented.
+- Pixel Art Style Bible is documented.
+- Shared prompt rules are documented.
+- Negative prompt rules are documented.
+- First asset batch plan is documented.
+- Player prompts exist.
+- Monster prompts exist.
+- Boss prompts exist.
+- Effect prompts exist.
+- Background prompts exist.
+- Vocabulary card prompts exist.
+- UI icon prompts exist.
+- Future Codex integration notes are documented.
 - Future asset naming convention is documented.
 - Future sprite specs are documented.
 - Future animation frame recommendations are documented.
@@ -397,6 +410,9 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Future UI and background asset lists are documented.
 - Current monster and boss names are mapped to future asset filenames.
 - Future image-generation prompt templates are documented.
+- No real image assets were added during documentation-only asset prep.
+- No runtime asset imports were added during documentation-only asset prep.
+- No gameplay behavior changed during documentation-only asset prep.
 - No real image assets are required for build.
 - Missing assets cannot crash the current runtime.
 - Current placeholder UI still works.

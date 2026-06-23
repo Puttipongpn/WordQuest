@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 69 Training + Run Result Density Pass complete.
+Current phase: Phase 70A Pixel Art Asset Prompt Pack + Style Bible complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1980,8 +1980,40 @@ Verification:
 
 - `npm run build` passed after Phase 69.
 
+## Phase 70A Pixel Art Asset Prompt Pack + Style Bible Summary
+
+Phase 70A prepares WordQuest for future real pixel-art generation without adding final art.
+
+Completed:
+
+- Created `ASSET_PROMPTS.md`.
+- Documented the Pixel Art Style Bible for cozy fantasy, friendly dungeon learning adventure art.
+- Added shared prompt rules and negative prompt rules.
+- Documented the first planned generation batch:
+  - Batch 1A Player Test
+  - Batch 1B Monster Test
+  - Batch 1C Effects
+  - Batch 1D Background/Card
+- Added player prompt templates for idle, attack, hit, shield, and defeat spritesheets.
+- Added monster prompt templates for Slime, Bat, and Goblin idle, attack, hit, and defeat spritesheets.
+- Added boss prompt templates starting with Gatekeeper and reusable boss state guidance.
+- Added effect prompt templates for slash, shield block, fire, water, wind, earth, and upgrade spark.
+- Added background prompt templates for dungeon battle, home camp, shop, and training room.
+- Added vocabulary card frame, card effect, element badge, and UI icon prompt templates.
+- Added an asset QA checklist and future Codex integration notes.
+- Updated `ASSET_PLAN.md` to reference `ASSET_PROMPTS.md` as the primary future prompt pack.
+
+Preserved:
+
+- No final image assets, generated image files, image folders, runtime asset imports, asset manifest code, TypeScript data changes, new dependencies, animation libraries, backend, database, auth, API, React Router, deployment changes, gameplay changes, save schema changes, combat math changes, timer changes, mastery rule changes, deck unlock changes, Word Energy changes, or Oxford 3000 import were added.
+- Current CSS, Tailwind, emoji, and placeholder visuals remain active.
+
+Verification:
+
+- `git diff --check` passed after Phase 70A documentation updates.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 70 Asset Prompt Pack / future asset planning. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next asset phase is Phase 70B asset generation or asset integration planning. Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for any future asset work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

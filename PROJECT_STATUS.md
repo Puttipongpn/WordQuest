@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 69 Training + Run Result Density Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 70A Pixel Art Asset Prompt Pack + Style Bible is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -852,6 +852,12 @@ Phase 69 Training + Run Result Density Pass is complete. The production demo is 
 - Moved detailed run stats and permanent-kept/temporary-lost lists into lower-priority disclosure sections.
 - Preserved Training modes, question generation, mastery gain and persistence, Run Complete/Failed logic, deck unlocks, best-run stats, active run reset rules, LocalStorage schema, combat math, timers, shop/event/boss effects, Word Energy rules, deployment setup, and all non-Training/Run Result screens.
 - Verified the project with `npm run build` after Phase 69.
+- Applied Phase 70A Pixel Art Asset Prompt Pack + Style Bible.
+- Created `ASSET_PROMPTS.md` as the practical prompt pack for future pixel-art generation.
+- Documented the cozy fantasy pixel-art style bible, shared prompt rules, negative prompt rules, first asset batch plan, player prompts, monster prompts, boss prompts, effect prompts, background prompts, vocabulary card prompts, UI icon prompts, asset QA checklist, and future Codex integration notes.
+- Updated `ASSET_PLAN.md` to reference `ASSET_PROMPTS.md` as the primary future prompt pack.
+- Preserved current CSS, Tailwind, emoji, and placeholder visuals; no image files, generated art, runtime imports, asset folders, dependencies, gameplay rules, save schema, combat math, timers, mastery rules, deck unlocks, Word Energy rules, deployment setup, backend, database, auth, API, or Oxford 3000 import were added or changed.
+- Verified the documentation-only phase with `git diff --check`.
 
 ## In Progress
 
@@ -859,7 +865,7 @@ Phase 69 Training + Run Result Density Pass is complete. The production demo is 
 
 ## Next Task
 
-Phase 69 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 70 Asset Prompt Pack / future asset planning, but do not start it unless explicitly requested.
+Phase 70A is complete. Continue with the next explicitly requested phase or feature. The recommended next asset phase is Phase 70B asset generation or asset integration planning, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 
@@ -1025,6 +1031,7 @@ The following documents are required and must be updated after every completed t
 - Dungeon active battle prioritizes the current quiz, timer, player HP/shield, enemy HP/attack, and answer controls; logs, learning copy, trigger details, Word Energy, and QA tools use progressive disclosure during active answering
 - Training prioritizes the active question and answer choices; session stats, mode notes, and long guidance are compact or secondary
 - Run Result prioritizes outcome, reward/loss clarity, and next action before detailed statistics
+- Real pixel-art generation should follow `ASSET_PROMPTS.md` and remain separate from documentation-only asset planning phases
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
