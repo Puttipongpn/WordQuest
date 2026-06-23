@@ -1154,6 +1154,11 @@ export function Dungeon({
     !isPaused &&
     !isAnswered &&
     !isAbandonConfirmOpen;
+  const isActiveAnswering =
+    battleStatus === "fighting" &&
+    !isAnswered &&
+    !isPaused &&
+    !isAbandonConfirmOpen;
   const canPauseBattle =
     battleStatus === "fighting" &&
     !isPaused &&
@@ -2742,7 +2747,13 @@ export function Dungeon({
           </section>
         </CardPanel>
       ) : (
-      <div className="grid gap-2 sm:gap-3 xl:h-full xl:min-h-0 xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]">
+      <div
+        className={`grid gap-2 sm:gap-3 xl:h-full xl:min-h-0 ${
+          isActiveAnswering
+            ? "xl:grid-cols-[minmax(0,1fr)_220px] 2xl:grid-cols-[minmax(0,1fr)_240px]"
+            : "xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]"
+        }`}
+      >
         <CardPanel className="relative min-h-0 border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-1 text-amber-50 sm:p-3 xl:h-full xl:overflow-hidden">
           <div className="flex min-h-0 flex-col gap-2 sm:gap-3 xl:h-full">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -3308,13 +3319,16 @@ export function Dungeon({
             </section>
           )}
 
-          <section className="rounded-2xl border-2 border-emerald-800/20 bg-emerald-50/95 p-3 shadow-[0_8px_0_rgba(6,95,70,0.1)]">
-            <div className="flex flex-wrap items-center gap-2">
+          <details
+            className="rounded-xl border-2 border-emerald-800/20 bg-emerald-50/95 p-2 shadow-[0_5px_0_rgba(6,95,70,0.08)]"
+            open={!isActiveAnswering && !isEventEncounter}
+          >
+            <summary className="flex cursor-pointer flex-wrap items-center gap-2">
               <Badge tone="emerald">Word Energy</Badge>
-              <p className="text-xs font-black uppercase text-emerald-900/70">
-                Current run
-              </p>
-            </div>
+              <span className="text-xs font-black text-emerald-950">
+                {wordEnergySummary.fresh} fresh · {wordEnergySummary.used} used
+              </span>
+            </summary>
             <p className="mt-2 text-sm font-black leading-5 text-emerald-950">
               {wordEnergySummary.fresh} Fresh / {wordEnergySummary.used} Used /{" "}
               {wordEnergySummary.tired} Tired / {wordEnergySummary.resting} Low
@@ -3322,10 +3336,11 @@ export function Dungeon({
             <p className="mt-1 text-xs font-bold text-emerald-900/65">
               Shop visits restore 1 energy step.
             </p>
-          </section>
+          </details>
 
           <details
             className={`rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${battleFeedbackClass}`}
+            open={!isActiveAnswering && battleLog.tone !== "neutral"}
           >
             <summary className="flex cursor-pointer flex-wrap items-center gap-2">
               <span className="text-3xl" aria-hidden="true">
@@ -3373,7 +3388,10 @@ export function Dungeon({
           ) : null}
 
           {canShowTriggeredCardDetails && (
-          <details className="result-pop rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-3 shadow-[0_10px_0_rgba(120,53,15,0.16)]" open>
+          <details
+            className="result-pop rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-3 shadow-[0_10px_0_rgba(120,53,15,0.16)]"
+            open={!isActiveAnswering}
+          >
             <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2">
               <span className="flex flex-wrap gap-2">
                 <Badge tone="purple">Card Trigger</Badge>

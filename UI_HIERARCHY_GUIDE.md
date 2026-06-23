@@ -543,6 +543,14 @@ Phase 67.1 implementation note:
 - Ceremony feedback emphasizes the affected card, before/after change, floating upgrade text, and gold spent.
 - Insufficient-gold feedback should stay compact through chips, disabled actions, and short inline copy.
 
+Phase 68 implementation note:
+
+- Dungeon active answering keeps the quiz, timer, player HP/shield, enemy HP/attack, and answer controls as the focus.
+- Word Energy, Battle Log, Learning Info, Card Trigger details, and development-only QA Helper use compact disclosures during active unanswered combat.
+- Development-only QA Helper should use only one disclosure layer so QA controls are reachable without double expansion.
+- Card Trigger details stay hidden until after answer, timeout, or resolution so they do not leak the selected trigger card or correct answer.
+- The side panel may become more informative after the player answers or leaves active combat, but it should not dominate the timed decision moment.
+
 ## Typography Rules
 
 Suggested hierarchy:

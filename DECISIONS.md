@@ -1156,6 +1156,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Shop purchases are the core deckbuilder reward moment, so the interaction should emphasize the selected card and its change rather than a large information panel.
 - Status: Accepted
 
+### 2026-06-23: Dungeon Active Battle Prioritizes Quiz And Critical Battle State
+
+- Decision: During active unanswered Dungeon battle, the current quiz, timer, player HP/shield, enemy HP/attack, and answer controls take priority. Battle Log, Learning Info, Card Trigger details, Word Energy diagnostics, and QA tools should use progressive disclosure.
+- Reason: Timed combat is the player's immediate decision point, so secondary information should stay available without competing with the quiz or leaking answer/result information.
+- Status: Accepted
+
 ### 2026-06-22: First Shop Should Usually Afford One Meaningful Upgrade
 
 - Decision: Shop economy should let the first shop usually provide at least one meaningful upgrade while keeping Duplicate and Remove strategic.

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 68 Dungeon Battle Focus + Side Panel Declutter is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -835,6 +835,14 @@ Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter is complete. The prod
 - Added CSS-only ceremony motion for card pop, floating stat, floating gold, and icon pop, with reduced-motion fallback.
 - Preserved shop item effects, shop item costs, reroll cost, gold rewards, offer generation, purchase guards, current-run-only mutations, save schema, deck unlock rules, combat math, timers, mastery, Word Energy, deployment setup, and all non-Shop screens.
 - Verified the project with `npm run build` after Phase 67.1.
+- Applied Phase 68 Dungeon Battle Focus + Side Panel Declutter.
+- Compacted Dungeon's side column during active unanswered battle so the quiz, timer, player HP/shield, enemy HP/attack, and answer controls remain the strongest focus.
+- Moved Word Energy summary, Battle Log, Card Trigger details, Learning Info, and development-only QA Helper into compact disclosure sections instead of always-large panels.
+- Hotfixed development-only QA Helper in Dungeon side panel so it uses a single disclosure layer instead of nested expand controls.
+- Kept Card Trigger details hidden until a real answer, timeout, or result is available, preserving anti-hint behavior before answering.
+- Adjusted the desktop Dungeon grid so active battle gives more width to the quiz arena and less width to side information.
+- Preserved combat math, timers, saves, mastery, Word Energy rules, shop effects, event effects, boss effects, deck unlocks, deployment setup, and all non-Dungeon screens.
+- Verified the project with `npm run build` after Phase 68.
 
 ## In Progress
 
@@ -842,7 +850,7 @@ Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter is complete. The prod
 
 ## Next Task
 
-Phase 67.1 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 68 Dungeon Side Panel Declutter, but do not start it unless explicitly requested.
+Phase 68 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 69 Training / Run Result Density Pass, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 
@@ -1005,6 +1013,7 @@ The following documents are required and must be updated after every completed t
 - Shop offer cards use compact scan mode by default; purchase details live in the target modal and visible receipt
 - Shop purchase feedback must be visible without relying on sound or hidden state changes
 - Shop upgrades should feel like card-game actions with card-like target choices and compact upgrade ceremony feedback
+- Dungeon active battle prioritizes the current quiz, timer, player HP/shield, enemy HP/attack, and answer controls; logs, learning copy, trigger details, Word Energy, and QA tools use progressive disclosure during active answering
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

@@ -71,8 +71,12 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 
 - Dungeon opens from Home.
 - QA Helper appears in Dungeon only during development.
+- QA Helper expands with a single disclosure control, not nested expand controls.
 - Encounter Intro appears before Monster, Elite, and Boss combat.
 - Start Battle generates a timed question.
+- Active battle keeps the quiz, timer, player HP/shield, enemy HP/attack, and answer controls visually dominant.
+- Word Energy, Battle Log, Learning Info, Card Trigger details, and QA Helper do not dominate the screen while an unanswered battle question is active.
+- Card Trigger details do not reveal the selected trigger card before the player answers.
 - Word Choice is playable.
 - Word Match follows the anti-hint rule: stats appear only on English card options.
 - Word Scramble is playable with tile-based letter input.
@@ -246,6 +250,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Dungeon active battle keeps player HP, enemy HP, timer, quiz, and answer controls reachable.
 - Dungeon active battle uses reduced mobile side padding so the play area is wider.
 - Starting a new Dungeon question on mobile scrolls near the timer and quiz area.
+- Dungeon side information remains available through compact disclosures without causing horizontal overflow.
 - Shop modal is usable on desktop and narrow/mobile viewport.
 - Run Complete and Run Failed summaries are readable on desktop and narrow/mobile viewport.
 
@@ -260,6 +265,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Training keeps the current question and answer choices as the strongest visual focus.
 - Dungeon active answering keeps quiz, player HP, enemy HP, and timer as the focus.
 - Battle details remain available but are not always visually dominant during active answering.
+- Dungeon result details become easier to inspect after an answer, timeout, or encounter result.
 - Shop offers are readable without long repeated text on every offer card.
 - Shop affordability uses clear copy such as `Need +X gold` when the player cannot buy.
 - Run Result makes outcome and next action clearer than detailed stat records.

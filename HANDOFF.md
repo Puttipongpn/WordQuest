@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 67.1 Shop Card Upgrade Ceremony + Feedback Declutter complete.
+Current phase: Phase 68 Dungeon Battle Focus + Side Panel Declutter complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -588,7 +588,7 @@ Current Dungeon implementation:
 - Incorrect answers do not trigger card effects.
 - Incorrect answers cause the current monster to attack, with shield absorbing damage before HP.
 - Battle feedback shows triggered card, base damage, element bonus damage, final total damage, damage taken, shield absorbed, HP damage, card shield gained, Water shield gained, Earth reduction, Wind gold, triggered effects, and correct/wrong result.
-- Current Dungeon presentation uses a game-style battle stage: encounter stage at the top, mini-game action arena in the center, player-side status band below, and battle log / card trigger feedback in the side panel.
+- Current Dungeon presentation uses a game-style battle stage: encounter stage at the top, mini-game action arena in the center, player-side status band below, and compact secondary side-panel disclosures for battle log, card trigger feedback, learning info, Word Energy, and development-only QA tools.
 - Monster, Elite, Boss, and Event encounters have distinct placeholder visual treatment. This is presentation only and does not alter encounter logic.
 - Timer feedback uses normal, hurry, paused, and timeout labels with larger countdown display.
 - When monster HP reaches 0, the screen shows `Monster Defeated` and allows spawning the next sample monster.
@@ -1933,8 +1933,31 @@ Verification:
 
 - `npm run build` passed after Phase 67.1.
 
+## Phase 68 Dungeon Battle Focus + Side Panel Declutter Summary
+
+Phase 68 applies the UI hierarchy guide to Dungeon active battle presentation only.
+
+Completed:
+
+- Added an active-answering presentation state in `src/screens/Dungeon.tsx`.
+- During active unanswered combat, the Dungeon layout gives more desktop width to the quiz arena and compresses the side column.
+- Word Energy, Battle Log, Learning Info, Card Trigger details, and development-only QA Helper now use compact disclosure sections rather than large always-open panels.
+- Development-only QA Helper in the Dungeon side panel uses a single disclosure layer; it should not be wrapped in another `details` element.
+- Battle Log and Card Trigger details stay quiet during active answering and open more naturally after a real answer, timeout, or result state.
+- Card Trigger details remain unavailable before the player answers, preserving the anti-hint rule.
+- The quiz, timer, player HP/shield, enemy HP/attack, and answer controls remain the primary visible battle information.
+
+Preserved:
+
+- No Home, Deck Review, Training, Shop, or Run Result redesign was performed.
+- Combat math, answer checking, timer values, timeout behavior, mastery bonuses, Word Energy rules, shop effects, event effects, boss effects, deck unlocks, save schema, deployment setup, backend scope, assets, dependencies, and Oxford 3000 deferral were not changed.
+
+Verification:
+
+- `npm run build` passed after Phase 68.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 68 Dungeon Side Panel Declutter. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 69 Training / Run Result Density Pass. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

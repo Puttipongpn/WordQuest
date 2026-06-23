@@ -24,6 +24,7 @@ Current presentation rules:
 - Encounter Intro and Active Battle use separate layouts: intro is compact inspection-only with Start Battle visible, while active battle hides intro and gives most space to the current quiz.
 - Dungeon uses true fullscreen battle mode: normal app navigation chrome is hidden, the header stays compact, and the battle screen occupies the remaining viewport with the quiz as the primary content.
 - Active Dungeon battle should fit inside a 1366x768 desktop viewport: player HP, monster HP, timer, current quiz, and answer controls stay visible, while battle log, card trigger details, and learning info live in compact accordions.
+- During active unanswered Dungeon battle, the quiz, timer, player HP/shield, enemy HP/attack, and answer controls have priority; Word Energy, battle log, learning info, card trigger details, and QA tools should stay compact or collapsed.
 - Active battle should not reveal the triggered card, target card, correct answer, or final result before the player answers.
 - Battle answer options should carry compact card stats, including attack, shield, element, and mastery bonus where relevant, so players can make deckbuilder decisions without a persistent answer-leaking trigger preview.
 - Result feedback should appear only after answer, timeout, or resolution, preferably as a compact overlay or popup inside the quiz area.
@@ -144,6 +145,15 @@ Phase 67.1 refines Shop purchase feel:
 - Insufficient-gold feedback stays compact through offer chips, modal chips, disabled Confirm, and short inline copy.
 - Ceremony motion uses CSS/emoji placeholders only and must remain understandable without sound or animation.
 - Phase 67.1 does not change shop item effects, costs, reroll cost, gold rewards, offer generation, current-run-only mutation behavior, saves, deck unlocks, combat, timers, mastery, Word Energy, assets, or deployment.
+
+Phase 68 applies the guide to Dungeon active battle only:
+
+- Dungeon active answering prioritizes the current quiz and critical battle state.
+- Critical visible state is timer, player HP/shield, enemy HP/attack, and answer controls.
+- Side information such as Battle Log, Learning Info, Card Trigger details, full Word Energy summary, and development-only QA tools should use progressive disclosure during active answering.
+- Card Trigger details must remain hidden before the player answers so they do not leak the selected trigger card or correct answer.
+- The side panel can expand again after answer, timeout, encounter resolution, or non-active states.
+- Phase 68 does not change combat math, answer checking, timer values, timeout behavior, mastery bonuses, Word Energy rules, shop effects, event effects, boss effects, deck unlocks, saves, assets, or deployment.
 
 ## Future Asset Direction
 
