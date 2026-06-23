@@ -155,6 +155,16 @@ Phase 68 applies the guide to Dungeon active battle only:
 - The side panel can expand again after answer, timeout, encounter resolution, or non-active states.
 - Phase 68 does not change combat math, answer checking, timer values, timeout behavior, mastery bonuses, Word Energy rules, shop effects, event effects, boss effects, deck unlocks, saves, assets, or deployment.
 
+Phase 69 applies the guide to Training and Run Result only:
+
+- Training active sessions prioritize the current question and answer choices.
+- Training setup uses compact scan-first mode choices and a compact question count selector.
+- Training stats, deck mastery, mode notes, and longer guidance are secondary or placed in disclosure sections.
+- Training Complete shows result, correct count, mastery gains, and next actions before detailed stats.
+- Run Complete and Run Failed summaries prioritize outcome, reward/loss clarity, compact stats, and next actions.
+- Full run details and permanent-kept / temporary-lost lists belong in lower-priority disclosure sections.
+- Phase 69 does not change Training modes, Training question generation, mastery gain rules, selected deck behavior, run completion/failure logic, deck unlocks, best-run statistics, active run reset rules, LocalStorage schema, combat math, timers, shop effects, event effects, boss effects, Word Energy rules, assets, or deployment.
+
 ## Future Asset Direction
 
 Phase 61 prepares future real assets through `ASSET_PLAN.md` only.
@@ -600,7 +610,8 @@ Current Training implementation:
 - Shows correct/wrong feedback
 - Reveals the correct answer after selection
 - Advances with Next and shows a Training Complete summary after the final question
-- Training Complete shows deck, mode, answered count, correct count, wrong count, accuracy, mastery increases, newly mastered words, and actions for Train Again, Change Training Mode, Review Deck, Enter Dungeon, and Back Home
+- Training Complete prioritizes deck, mode, correct count, accuracy, mastery increases, and actions for Train Again, Change Training Mode, Review Deck, Enter Dungeon, and Back Home
+- Training Complete keeps answered count, wrong count, newly mastered words, and fuller session details in a lower-priority details section
 - Updates saved word mastery on correct answers
 - Training is intentionally untimed so players can practice safely.
 
@@ -699,8 +710,8 @@ Current battle rules:
 - Wrong boss battle answers cause boss attacks, and shield absorbs boss damage before HP.
 - When boss HP reaches 0, the screen shows `Run Complete`.
 - Run Complete appears as a main battle-arena victory result screen, not a narrow side-panel report.
-- Run Complete shows selected deck name, boss defeated, deck completion / unlock reward feedback, final gold, current-run deck size, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
-- Run Complete also shows elites defeated and events visited.
+- Run Complete prioritizes selected deck name, boss defeated, deck completion / unlock reward feedback, compact monsters / accuracy / damage / gold stats, and next actions.
+- Run Complete keeps current-run deck size, correct answers, wrong answers, timeouts, total shield gained, elites defeated, events visited, and fuller run details in a lower-priority details section.
 - Run Complete shows boss icon, boss name, boss title, and defeat text when available.
 - Boss defeat marks the selected deck completed in `completedDeckIds`.
 - Completed deck ids are saved in LocalStorage permanent progress.
@@ -714,9 +725,9 @@ Current battle rules:
 - Boss defeat does not unlock decks beyond Emotion Deck yet.
 - When player HP reaches 0, the screen shows `Run Failed`.
 - Run Failed appears as a main battle-arena result screen with encouraging copy.
-- Run Failed shows selected deck name, failure reason, monsters defeated, current floor, final gold, correct answers, wrong answers, timeouts, accuracy, total damage dealt, and total shield gained.
-- Run Failed also shows elites defeated and events visited.
-- Both ending screens show compact Permanent Progress Kept and Temporary Run Lost sections.
+- Run Failed prioritizes selected deck name, encouragement, permanent-progress-safe copy, compact monsters / accuracy / damage / gold stats, and next actions.
+- Run Failed keeps failure reason, current floor, correct answers, wrong answers, timeouts, total shield gained, elites defeated, events visited, and fuller run details in a lower-priority details section.
+- Both ending screens keep Permanent Progress Kept and Temporary Run Lost sections available through disclosure.
 - Ending actions are centralized in the main result screen: Start Fresh Run / Restart Run, Review Deck, Training, and Back Home.
 - Completed and failed run summaries update permanent best run stats in LocalStorage.
 - After run failure, the player can restart the local run.

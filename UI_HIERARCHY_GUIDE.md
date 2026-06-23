@@ -551,6 +551,15 @@ Phase 68 implementation note:
 - Card Trigger details stay hidden until after answer, timeout, or resolution so they do not leak the selected trigger card or correct answer.
 - The side panel may become more informative after the player answers or leaves active combat, but it should not dominate the timed decision moment.
 
+Phase 69 implementation note:
+
+- Training setup uses scan-first mode cards and compact session length controls.
+- Training active sessions keep the current question and answer choices as the visual focus.
+- Training progress, correct count, and mastery context stay compact; longer mode notes and deck mastery details use secondary panels or disclosures.
+- Training Complete shows result, correct count, mastery gains, and next actions before full session details.
+- Run Complete and Run Failed show outcome, reward/loss clarity, compact stats, and next actions before detailed run records.
+- Full run details and permanent-kept / temporary-lost explanations stay available through disclosure instead of dominating the result screen.
+
 ## Typography Rules
 
 Suggested hierarchy:

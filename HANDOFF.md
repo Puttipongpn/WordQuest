@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 68 Dungeon Battle Focus + Side Panel Declutter complete.
+Current phase: Phase 69 Training + Run Result Density Pass complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -282,7 +282,7 @@ The following screens are implemented or stubbed:
 - Training: polished untimed recall-focused practice using the selected deck with English-to-Thai, Thai-to-English, and Example Sentence Cloze question types.
 - Dungeon: polished timed local-state vocabulary card battle foundation with Monster, Elite, and Event encounters; Word Choice, Word Match, Word Scramble; temporary run progression; selected-deck current-run copy; run statistics; gold; shield absorption; first-pass element effects; shop checkpoint routing; boss encounter; Run Complete state; Run Failed summary; and permanent selected-deck completion reward.
 - Shop: current-run shop with active Upgrade Attack, Add Shield, Add Element, Remove Card, and Duplicate Card purchases, temporary run gold costs, plus back-to-dungeon routing.
-- Run Result: polished placeholder summary screen with a button back to Home.
+- Run Result: compact action-first ledger placeholder with Enter Dungeon, Training, Review Deck, Back Home, and collapsible save-rule copy; real run-end summaries still appear inside Dungeon.
 
 Navigation is controlled by `currentScreen` state in `src/App.tsx`.
 
@@ -483,7 +483,7 @@ Current Training implementation:
 - Correct-answer feedback shows mastery before/after, Mastery increased, and Mastered at 5/5.
 - A Next button advances to the next question.
 - The final question opens a Training Complete summary.
-- Training Complete shows selected deck, training mode, answered count, correct count, wrong count, accuracy, mastery increases, and newly mastered words.
+- Training Complete prioritizes selected deck, training mode, correct count, accuracy, mastery increases, and next actions; answered count, wrong count, and newly mastered words remain available in session details.
 - Training Complete actions are Train Again, Change Training Mode, Review Deck, Enter Dungeon, and Back Home.
 - Training progress shows current question, total questions, correct count, incorrect count, selected deck, selected mode, and current word mastery.
 - Training is untimed; this is intentional so players can practice safely before timed Dungeon battles.
@@ -1956,8 +1956,32 @@ Verification:
 
 - `npm run build` passed after Phase 68.
 
+## Phase 69 Training + Run Result Density Pass Summary
+
+Phase 69 applies the UI hierarchy guide to Training and Run Result / run-end presentation only.
+
+Completed:
+
+- Reworked `src/screens/Training.tsx` setup so mode selection is scan-first and the top area is shorter.
+- Kept Training mode choices, question count choices, mode filtering, question generation, mastery gain, and mastery persistence unchanged.
+- Updated active Training layout so the current question, answer choices, compact progress, and mastery feedback are the strongest visual focus.
+- Moved Training session stats, mode notes, and longer mastery/run-state explanations into compact side panels or disclosure sections.
+- Simplified Training Complete so the result, correct count, mastery gains, and next actions appear before detailed stats.
+- Reworked `src/screens/RunResult.tsx` into a compact action-first ledger that points players to Dungeon run summaries and keeps save-rule copy in disclosure.
+- Reworked Dungeon Run Complete / Run Failed summaries in `src/screens/Dungeon.tsx` so outcome, reward/loss clarity, compact summary stats, and next actions appear before full run details.
+- Moved full run details and permanent-kept / temporary-lost lists into disclosure sections.
+
+Preserved:
+
+- No Home, Deck Review, Shop, or active Dungeon battle redesign was performed.
+- Training modes, Training question generation, Training mastery gain rules, selected deck behavior, Run Complete logic, Run Failed logic, deck completion/unlock rules, best-run statistics saving, active run reset rules, LocalStorage schema, combat math, timer values, shop effects, event effects, boss effects, Word Energy rules, deployment setup, backend scope, assets, dependencies, and Oxford 3000 deferral were not changed.
+
+Verification:
+
+- `npm run build` passed after Phase 69.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 69 Training / Run Result Density Pass. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 70 Asset Prompt Pack / future asset planning. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

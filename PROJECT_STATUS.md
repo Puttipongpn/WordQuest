@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 68 Dungeon Battle Focus + Side Panel Declutter is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 69 Training + Run Result Density Pass is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -843,6 +843,15 @@ Phase 68 Dungeon Battle Focus + Side Panel Declutter is complete. The production
 - Adjusted the desktop Dungeon grid so active battle gives more width to the quiz arena and less width to side information.
 - Preserved combat math, timers, saves, mastery, Word Energy rules, shop effects, event effects, boss effects, deck unlocks, deployment setup, and all non-Dungeon screens.
 - Verified the project with `npm run build` after Phase 68.
+- Applied Phase 69 Training + Run Result Density Pass.
+- Simplified Training setup so mode selection is scan-first, top copy is shorter, and deck mastery details are secondary.
+- Updated active Training sessions so the current question, answer choices, compact progress, and mastery feedback dominate over session stats and notes.
+- Simplified Training Complete so outcome, correct count, mastery gains, and next actions appear before detailed stats.
+- Updated the standalone Run Result placeholder into an action-first ledger with compact save-rule details.
+- Reworked Dungeon Run Complete and Run Failed summaries so outcome, reward/loss clarity, compact stats, and next action appear before full run details.
+- Moved detailed run stats and permanent-kept/temporary-lost lists into lower-priority disclosure sections.
+- Preserved Training modes, question generation, mastery gain and persistence, Run Complete/Failed logic, deck unlocks, best-run stats, active run reset rules, LocalStorage schema, combat math, timers, shop/event/boss effects, Word Energy rules, deployment setup, and all non-Training/Run Result screens.
+- Verified the project with `npm run build` after Phase 69.
 
 ## In Progress
 
@@ -850,7 +859,7 @@ Phase 68 Dungeon Battle Focus + Side Panel Declutter is complete. The production
 
 ## Next Task
 
-Phase 68 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 69 Training / Run Result Density Pass, but do not start it unless explicitly requested.
+Phase 69 is complete. Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 70 Asset Prompt Pack / future asset planning, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 
@@ -1014,6 +1023,8 @@ The following documents are required and must be updated after every completed t
 - Shop purchase feedback must be visible without relying on sound or hidden state changes
 - Shop upgrades should feel like card-game actions with card-like target choices and compact upgrade ceremony feedback
 - Dungeon active battle prioritizes the current quiz, timer, player HP/shield, enemy HP/attack, and answer controls; logs, learning copy, trigger details, Word Energy, and QA tools use progressive disclosure during active answering
+- Training prioritizes the active question and answer choices; session stats, mode notes, and long guidance are compact or secondary
+- Run Result prioritizes outcome, reward/loss clarity, and next action before detailed statistics
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred

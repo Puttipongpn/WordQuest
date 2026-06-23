@@ -36,6 +36,25 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Emotion Deck works in Training when unlocked and selected.
 - Each deck can be used in Training.
 
+## Training Density
+
+- Training mode selection is compact and readable.
+- Training mode cards show mode name, one-line purpose, and selected state.
+- Training question count choices remain usable.
+- Training active question appears quickly.
+- Training answer controls are visually dominant.
+- Training progress is visible but compact.
+- Correct feedback is clear.
+- Wrong feedback is clear.
+- Mastery gain feedback is clear but not oversized.
+- Training Complete summary is clear.
+- Training Complete actions remain available.
+- Training Complete detailed stats remain available in lower-priority details.
+- All Training modes still work.
+- Correct answers still increase mastery.
+- Wrong answers do not decrease mastery.
+- Mobile Training has no horizontal overflow.
+
 ## Deck Review Compact Scan Mode
 
 - Deck Review loads the currently selected deck.
@@ -185,6 +204,21 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Permanent best-run statistics update only after Run Complete or Run Failed.
 - Run restart resets HP, shield, gold, encounter state, boss state, run progress, current-run deck, shop upgrades, and Word Energy.
 - Run restart does not reset word mastery, unlocked decks, completed decks, or permanent statistics.
+
+## Run Result Density
+
+- Run Complete outcome is immediately clear.
+- Run Failed outcome is immediately clear.
+- Run Result primary action is obvious.
+- Reward or unlock message is clear.
+- Failure encouragement and permanent-progress-safe copy are clear.
+- Permanent kept vs temporary lost information remains available.
+- Detailed stats do not dominate the result screen.
+- Full run details remain available through disclosure.
+- Run Complete still marks completed deck and unlocks the next deck as before.
+- Run Failed still preserves permanent progress.
+- Temporary run state still resets after run end.
+- Mobile Run Result has no horizontal overflow.
 
 ## Exit And Reset Safety
 

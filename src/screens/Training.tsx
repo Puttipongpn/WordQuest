@@ -489,24 +489,27 @@ function TrainingSetup({
   trainingMode: TrainingMode;
 }) {
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-100 via-amber-50 to-emerald-100">
-        <div className="flex flex-wrap gap-2">
-          <Badge tone="emerald">Practice Room</Badge>
-          <Badge tone="sky">Untimed</Badge>
-          <Badge tone="purple">{deck.name}</Badge>
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_280px]">
+      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-100 via-amber-50 to-emerald-100 p-3 sm:p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex flex-wrap gap-2">
+              <Badge tone="emerald">Training</Badge>
+              <Badge tone="purple">{deck.name}</Badge>
+            </div>
+            <h3 className="mt-2 text-2xl font-black text-amber-950">
+              Choose practice
+            </h3>
+            <p className="mt-1 text-sm font-bold leading-5 text-amber-950/70">
+              Pick a focus, then answer untimed vocabulary questions.
+            </p>
+          </div>
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-black text-emerald-950">
+            {deckMasterySummary.masteredWords} / {deck.cards.length} mastered
+          </div>
         </div>
-        <h3 className="mt-3 text-3xl font-black text-amber-950">
-          Choose a training station
-        </h3>
-        <p className="mt-2 max-w-2xl text-sm font-bold leading-6 text-amber-950/75">
-          Training improves permanent word mastery only. It does not affect HP,
-          shield, gold, Word Energy, shop upgrades, or dungeon run state.
-          Mastery can add small Dungeon damage bonuses when that word card
-          triggers later.
-        </p>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <div className="mt-4 grid gap-2 md:grid-cols-2">
           {trainingModes.map((mode) => {
             const isSelected = trainingMode === mode.id;
 
@@ -515,23 +518,23 @@ function TrainingSetup({
                 key={mode.id}
                 type="button"
                 onClick={() => onSelectMode(mode.id)}
-                className={`rounded-2xl border-2 p-4 text-left shadow-sm transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 ${
+                className={`rounded-xl border-2 p-3 text-left shadow-sm transition hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                   isSelected
                     ? "border-amber-600 bg-white ring-2 ring-amber-300"
                     : "border-amber-900/15 bg-white/70 hover:border-amber-500"
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-xl font-black text-amber-950">
+                  <div className="min-w-0">
+                    <p className="text-lg font-black text-amber-950">
                       {mode.title}
                     </p>
-                    <p className="mt-2 text-sm font-bold leading-6 text-amber-900/75">
+                    <p className="mt-1 text-sm font-bold leading-5 text-amber-900/70">
                       {mode.description}
                     </p>
                   </div>
                   <Badge tone={isSelected ? "amber" : "sky"}>
-                  {isSelected ? "Ready" : mode.badge}
+                    {isSelected ? "Ready" : mode.badge}
                   </Badge>
                 </div>
               </button>
@@ -539,8 +542,17 @@ function TrainingSetup({
           })}
         </div>
 
-        <div className="mt-6 rounded-2xl border-2 border-amber-900/10 bg-white/70 p-4">
-          <p className="font-black text-amber-950">Session Length</p>
+        <div className="mt-4 rounded-xl border-2 border-amber-900/10 bg-white/70 p-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-black text-amber-950">Session length</p>
+            <Button
+              type="button"
+              onClick={onStart}
+              disabled={availabilityMessage !== ""}
+            >
+              Begin Practice
+            </Button>
+          </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {sessionLengths.map((length) => (
               <Button
@@ -554,44 +566,56 @@ function TrainingSetup({
             ))}
           </div>
           {availabilityMessage && (
-            <p className="mt-4 rounded-xl border border-amber-300 bg-amber-100 px-3 py-2 text-sm font-black text-amber-950">
+            <p className="mt-3 rounded-lg border border-amber-300 bg-amber-100 px-3 py-2 text-sm font-black text-amber-950">
               {availabilityMessage}
             </p>
           )}
-          <Button
-            type="button"
-            onClick={onStart}
-            disabled={availabilityMessage !== ""}
-            className="mt-5 w-full"
-          >
-            Begin Practice
-          </Button>
         </div>
       </CardPanel>
 
-      <aside className="rounded-xl border-2 border-amber-800/25 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.14)] lg:self-start">
-        <p className="text-sm font-extrabold uppercase text-amber-700">
-          Selected Deck
-        </p>
-        <h3 className="mt-2 text-2xl font-black text-amber-950">
-          {deck.name}
-        </h3>
-        <p className="mt-2 text-sm font-bold leading-6 text-amber-950/70">
-          {deck.description}
-        </p>
-        <div className="mt-4 grid gap-3">
-          <StatCard label="Cards" value={deck.cards.length} tone="amber" />
-          <StatCard
-            label="Mastered"
-            value={`${deckMasterySummary.masteredWords} / ${deck.cards.length}`}
-            tone="emerald"
-          />
-          <StatCard
-            label="Average"
-            value={`${deckMasterySummary.averageMastery} / 5`}
-            tone="purple"
-          />
-          <div className="rounded-lg border border-amber-900/15 bg-white/70 p-4">
+      <aside className="rounded-xl border-2 border-amber-800/20 bg-amber-50/95 p-3 shadow-[0_6px_0_rgba(120,53,15,0.1)] lg:self-start">
+        <div>
+          <p className="text-xs font-extrabold uppercase text-amber-700">
+            Selected deck
+          </p>
+          <h3 className="mt-1 text-xl font-black text-amber-950">
+            {deck.name}
+          </h3>
+          <p className="mt-1 line-clamp-3 text-sm font-bold leading-5 text-amber-950/65">
+            {deck.description}
+          </p>
+        </div>
+        <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+          <div className="rounded-lg border border-amber-900/10 bg-white/70 p-2">
+            <p className="text-[10px] font-black uppercase text-amber-800/65">
+              Cards
+            </p>
+            <p className="text-lg font-black text-amber-950">
+              {deck.cards.length}
+            </p>
+          </div>
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-2">
+            <p className="text-[10px] font-black uppercase text-emerald-800/65">
+              Mastered
+            </p>
+            <p className="text-lg font-black text-emerald-950">
+              {deckMasterySummary.masteredWords}
+            </p>
+          </div>
+          <div className="rounded-lg border border-violet-200 bg-violet-50 p-2">
+            <p className="text-[10px] font-black uppercase text-violet-800/65">
+              Average
+            </p>
+            <p className="text-lg font-black text-violet-950">
+              {deckMasterySummary.averageMastery}
+            </p>
+          </div>
+        </div>
+        <details className="mt-3 rounded-lg border border-amber-900/15 bg-white/70 p-3">
+          <summary className="cursor-pointer font-black text-amber-950">
+            Deck mastery
+          </summary>
+          <div className="mt-3">
             <p className="font-black text-amber-950">Mastery Progress</p>
             <div className="mt-3">
               <ProgressBar
@@ -604,7 +628,7 @@ function TrainingSetup({
               {deckMasterySummary.progressPercent}% complete
             </p>
           </div>
-        </div>
+        </details>
       </aside>
     </div>
   );
@@ -646,28 +670,26 @@ function TrainingSession({
   trainingMode: TrainingMode;
 }) {
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-100 via-amber-50 to-emerald-100">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <Badge tone="emerald">Recall Training</Badge>
-            <Badge tone="sky" className="ml-2">Untimed</Badge>
-            <h3 className="mt-1 text-2xl font-black text-amber-950">
-              Practice recall before battle
-            </h3>
-            <p className="mt-2 max-w-2xl text-sm font-medium text-amber-950/75">
-              {deck.name} · {formatTrainingMode(trainingMode)}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
+      <CardPanel className="border-sky-800/25 bg-gradient-to-br from-sky-100 via-amber-50 to-emerald-100 p-3 sm:p-4">
+        <div className="flex flex-col gap-3 rounded-xl border border-sky-900/10 bg-white/65 p-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-2">
             <Badge tone="purple">
               {formatQuestionType(currentQuestion.questionType)}
             </Badge>
-            <Badge>Question {questionIndex + 1} / {questionsLength}</Badge>
+            <span className="text-sm font-black text-amber-950">
+              {deck.name} · {formatTrainingMode(trainingMode)}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 text-sm font-black text-amber-950">
+            <Badge>Q {questionIndex + 1} / {questionsLength}</Badge>
+            <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-emerald-900">
+              {stats.correct} correct
+            </span>
           </div>
         </div>
 
-        <div className="mt-6 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white via-amber-50 to-sky-100 p-5 shadow-inner">
+        <div className="mt-4 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white via-amber-50 to-sky-100 p-4 shadow-inner sm:p-5">
           <p className="text-sm font-extrabold uppercase text-sky-800">
             {formatQuestionType(currentQuestion.questionType)}
           </p>
@@ -704,7 +726,7 @@ function TrainingSession({
           )}
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {currentQuestion.choices.map((choice) => {
             const isSelected = selectedCardId === choice.id;
             const isCorrectChoice = choice.id === currentQuestion.card.id;
@@ -720,7 +742,7 @@ function TrainingSession({
                 type="button"
                 disabled={isAnswered}
                 onClick={() => onAnswer(choice)}
-                className={`min-h-24 rounded-xl border-2 p-4 text-left shadow-sm transition focus:outline-none focus:ring-2 focus:ring-amber-400 ${
+                className={`min-h-20 rounded-xl border-2 p-3 text-left shadow-sm transition focus:outline-none focus:ring-2 focus:ring-amber-400 ${
                   showCorrect
                     ? "reward-pulse border-emerald-500 bg-emerald-100 ring-1 ring-emerald-200"
                     : showWrong
@@ -745,12 +767,12 @@ function TrainingSession({
           })}
         </div>
 
-        <div className="mt-5 min-h-28 rounded-xl border-2 border-amber-900/15 bg-amber-50/90 p-4 shadow-inner">
+        <div className="mt-4 rounded-xl border-2 border-amber-900/15 bg-amber-50/90 p-3 shadow-inner">
           {result ? (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+              <div className="min-w-0">
                 <p
-                  className={`text-lg font-bold ${
+                  className={`text-lg font-black ${
                     result === "correct" ? "text-emerald-700" : "text-red-600"
                   }`}
                 >
@@ -764,92 +786,115 @@ function TrainingSession({
                       : currentQuestion.card.word}
                   </span>
                 </p>
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 line-clamp-2 text-sm text-slate-500">
                   {currentQuestion.card.exampleSentence}
                 </p>
                 {result === "correct" && masteryBeforeAnswer !== null && (
-                  <div className="mastery-pulse mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
+                  <div className="mastery-pulse mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
                     <p className="text-sm font-black text-emerald-900">
                       {masteryAfterCorrectAnswer > masteryBeforeAnswer
                         ? "Mastery increased"
                         : "Already mastered"}
                     </p>
-                    <p className="mt-1 text-sm font-semibold text-emerald-800">
+                    <p className="text-sm font-semibold text-emerald-800">
                       {masteryBeforeAnswer} / {MAX_WORD_MASTERY} →{" "}
                       {masteryAfterCorrectAnswer} / {MAX_WORD_MASTERY}
                     </p>
                     {masteryAfterCorrectAnswer === MAX_WORD_MASTERY && (
-                      <Badge tone="emerald" className="mt-2">
-                        Mastered!
-                      </Badge>
+                      <Badge tone="emerald">Mastered!</Badge>
                     )}
                   </div>
                 )}
               </div>
-              <Button type="button" onClick={onNext}>
+              <Button type="button" onClick={onNext} className="shrink-0">
                 {isLastQuestion ? "Finish Training" : "Next"}
               </Button>
             </div>
           ) : (
-            <div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-semibold text-slate-950">
-                Select one answer to check it.
+                Choose the best answer. Training is untimed.
               </p>
-              <p className="mt-1 text-sm text-slate-600">
-                Feedback and the correct answer appear after your selection.
-              </p>
+              <Button type="button" onClick={onChangeMode} variant="ghost">
+                Change Mode
+              </Button>
             </div>
           )}
         </div>
       </CardPanel>
 
-      <aside className="rounded-xl border-2 border-amber-800/25 bg-amber-50/95 p-5 shadow-[0_10px_0_rgba(120,53,15,0.14)] lg:self-start">
-        <p className="text-sm font-extrabold uppercase text-amber-700">
-          Practice Notes
-        </p>
-        <div className="mt-4 grid gap-3">
-          <StatCard
-            label="Current question"
-            value={`${questionIndex + 1} / ${questionsLength}`}
-            helper={formatTrainingMode(trainingMode)}
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <StatCard label="Correct" value={stats.correct} tone="emerald" />
-            <StatCard label="Incorrect" value={stats.incorrect} tone="red" />
+      <aside className="rounded-xl border-2 border-amber-800/20 bg-amber-50/95 p-3 shadow-[0_6px_0_rgba(120,53,15,0.1)] lg:self-start">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-xs font-extrabold uppercase text-amber-700">
+            Session
+          </p>
+          <Badge tone="sky">Untimed</Badge>
+        </div>
+        <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+          <div className="rounded-lg border border-amber-900/10 bg-white/70 p-2">
+            <p className="text-[10px] font-black uppercase text-amber-800/65">
+              Q
+            </p>
+            <p className="text-lg font-black text-amber-950">
+              {questionIndex + 1}/{questionsLength}
+            </p>
           </div>
-          <div className="rounded-lg border border-amber-900/15 bg-white/70 p-4">
-            <p className="font-black text-amber-950">
-              Deck: {deck.name}
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-2">
+            <p className="text-[10px] font-black uppercase text-emerald-800/65">
+              Right
             </p>
-            <p className="mt-1 text-sm font-medium text-amber-950/70">
-              Training is untimed. Correct answers save mastery, wrong answers
-              do not reduce mastery, and active dungeon runs are untouched.
+            <p className="text-lg font-black text-emerald-950">
+              {stats.correct}
             </p>
-            <Button
-              type="button"
-              onClick={onChangeMode}
-              variant="secondary"
-              className="mt-3 w-full"
-            >
-              Change Mode
-            </Button>
           </div>
-          <div className="rounded-lg border border-amber-900/15 bg-white/70 p-4">
-            <p className="font-black capitalize text-amber-950">
-              {currentQuestion.card.word} mastery
+          <div className="rounded-lg border border-red-200 bg-red-50 p-2">
+            <p className="text-[10px] font-black uppercase text-red-800/65">
+              Wrong
             </p>
-            <div className="mt-3">
-              <ProgressBar
-                value={currentMastery}
-                max={MAX_WORD_MASTERY}
-                label={`${currentQuestion.card.word} mastery`}
-              />
-            </div>
-            <p className="mt-2 text-sm font-semibold text-slate-700">
-              {currentMastery} / {MAX_WORD_MASTERY}
+            <p className="text-lg font-black text-red-950">
+              {stats.incorrect}
             </p>
           </div>
         </div>
+
+        <div className="mt-3 rounded-lg border border-amber-900/15 bg-white/70 p-3">
+          <p className="font-black capitalize text-amber-950">
+            {currentQuestion.card.word} mastery
+          </p>
+          <div className="mt-2">
+            <ProgressBar
+              value={currentMastery}
+              max={MAX_WORD_MASTERY}
+              label={`${currentQuestion.card.word} mastery`}
+            />
+          </div>
+          <p className="mt-1 text-sm font-semibold text-slate-700">
+            {currentMastery} / {MAX_WORD_MASTERY}
+          </p>
+        </div>
+
+        <details className="mt-3 rounded-lg border border-amber-900/15 bg-white/70 p-3">
+          <summary className="cursor-pointer font-black text-amber-950">
+            Practice notes
+          </summary>
+          <div className="mt-2 grid gap-2 text-sm font-medium leading-5 text-amber-950/70">
+            <p>Deck: {deck.name}</p>
+            <p>
+              Correct answers save mastery. Wrong answers do not reduce
+              mastery, and active dungeon runs are untouched.
+            </p>
+            <div>
+              <Button
+                type="button"
+                onClick={onChangeMode}
+                variant="secondary"
+                className="mt-1 w-full"
+              >
+                Change Mode
+              </Button>
+            </div>
+          </div>
+        </details>
       </aside>
     </div>
   );
@@ -879,57 +924,54 @@ function TrainingComplete({
   trainingMode: TrainingMode;
 }) {
   return (
-    <CardPanel className="border-emerald-800/25 bg-gradient-to-br from-emerald-100 via-amber-50 to-sky-50">
-      <div className="flex flex-wrap gap-2">
-        <Badge tone="emerald">Training Complete</Badge>
-        <Badge tone="purple">{deck.name}</Badge>
-        <Badge tone="sky">{formatTrainingMode(trainingMode)}</Badge>
-      </div>
-      <h3 className="mt-4 text-4xl font-black text-amber-950">
-        Practice session complete
-      </h3>
-      <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-900/75">
-        Training updated permanent word mastery for correct answers only.
-        Dungeon HP, shield, gold, Word Energy, and run state were untouched.
-      </p>
-
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <StatCard
-          label="Answered"
-          value={`${stats.correct + stats.incorrect} / ${sessionLength}`}
-          tone="sky"
-        />
-        <StatCard label="Correct" value={stats.correct} tone="emerald" />
-        <StatCard label="Wrong" value={stats.incorrect} tone="red" />
-        <StatCard label="Accuracy" value={`${accuracy}%`} tone="amber" />
-        <StatCard
-          label="Improved"
-          value={stats.masteryIncreases}
-          helper="Mastery increases"
-          tone="purple"
-        />
-      </div>
-
-      <div className="mt-5 rounded-2xl border-2 border-emerald-200 bg-white/70 p-4">
-        <p className="font-black text-emerald-950">
-          Newly mastered words
-        </p>
-        {stats.newlyMasteredWords.length > 0 ? (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {stats.newlyMasteredWords.map((word) => (
-              <Badge key={word} tone="emerald">
-                {word}
-              </Badge>
-            ))}
+    <CardPanel className="border-emerald-800/25 bg-gradient-to-br from-emerald-100 via-amber-50 to-sky-50 p-3 sm:p-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="flex flex-wrap gap-2">
+            <Badge tone="emerald">Training Complete</Badge>
+            <Badge tone="purple">{deck.name}</Badge>
           </div>
-        ) : (
-          <p className="mt-2 text-sm font-bold text-emerald-900/75">
-            No new 5 / 5 words this session. Keep practicing.
+          <h3 className="mt-3 text-3xl font-black text-amber-950">
+            Practice complete
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm font-bold leading-5 text-amber-900/75">
+            {stats.correct} correct out of {sessionLength}. Permanent mastery
+            stayed safe and Dungeon run state was untouched.
           </p>
-        )}
+        </div>
+        <div className="rounded-xl border border-emerald-200 bg-white/75 px-3 py-2 text-sm font-black text-emerald-950">
+          Accuracy {accuracy}%
+        </div>
       </div>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mt-4 grid gap-2 sm:grid-cols-3">
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
+          <p className="text-xs font-black uppercase text-emerald-800/70">
+            Correct
+          </p>
+          <p className="mt-1 text-2xl font-black text-emerald-950">
+            {stats.correct} / {sessionLength}
+          </p>
+        </div>
+        <div className="rounded-xl border border-violet-200 bg-violet-50 p-3">
+          <p className="text-xs font-black uppercase text-violet-800/70">
+            Mastery gains
+          </p>
+          <p className="mt-1 text-2xl font-black text-violet-950">
+            {stats.masteryIncreases}
+          </p>
+        </div>
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
+          <p className="text-xs font-black uppercase text-amber-800/70">
+            Mode
+          </p>
+          <p className="mt-1 text-lg font-black text-amber-950">
+            {formatTrainingMode(trainingMode)}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
         <Button type="button" onClick={onTrainAgain}>
           Train Again
         </Button>
@@ -946,6 +988,44 @@ function TrainingComplete({
           Back Home
         </Button>
       </div>
+
+      <details className="mt-4 rounded-xl border-2 border-emerald-200 bg-white/70 p-3">
+        <summary className="cursor-pointer font-black text-emerald-950">
+          Session details
+        </summary>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <StatCard
+            label="Answered"
+            value={`${stats.correct + stats.incorrect} / ${sessionLength}`}
+            tone="sky"
+          />
+          <StatCard label="Correct" value={stats.correct} tone="emerald" />
+          <StatCard label="Wrong" value={stats.incorrect} tone="red" />
+          <StatCard label="Accuracy" value={`${accuracy}%`} tone="amber" />
+          <StatCard
+            label="Improved"
+            value={stats.masteryIncreases}
+            helper="Mastery increases"
+            tone="purple"
+          />
+        </div>
+        <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3">
+          <p className="font-black text-emerald-950">Newly mastered words</p>
+          {stats.newlyMasteredWords.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {stats.newlyMasteredWords.map((word) => (
+                <Badge key={word} tone="emerald">
+                  {word}
+                </Badge>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-2 text-sm font-bold text-emerald-900/75">
+              No new 5 / 5 words this session. Keep practicing.
+            </p>
+          )}
+        </div>
+      </details>
     </CardPanel>
   );
 }

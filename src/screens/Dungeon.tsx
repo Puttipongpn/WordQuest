@@ -3568,6 +3568,17 @@ function RunEndingSummary({
     "Card Enchantments",
     "Word Energy",
   ];
+  const outcomeTitle = isComplete ? "Dungeon Cleared!" : "Run Failed";
+  const outcomeCopy = isComplete
+    ? "Boss defeated. Deck progress and permanent learning progress were saved."
+    : "The run ended, but permanent learning progress remains safe.";
+  const rewardTitle = isComplete ? "Reward" : "What stays safe";
+  const rewardMessage = isComplete
+    ? battleLog.rewardSummary ?? `${selectedDeck.name} completed.`
+    : "Word mastery, deck unlocks, completed decks, and best-run stats are kept.";
+  const temporaryMessage = isComplete
+    ? "Temporary run upgrades reset when you start again."
+    : "HP, shield, gold, shop upgrades, card changes, encounter state, and Word Energy are lost.";
 
   return (
     <section
@@ -3577,9 +3588,9 @@ function RunEndingSummary({
           : "border-red-300 bg-gradient-to-br from-red-100 via-amber-50 to-white"
       }`}
     >
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
-        <div className="space-y-4">
-          <div className="rounded-3xl border-2 border-amber-900/10 bg-white/75 p-5 shadow-[0_10px_0_rgba(120,53,15,0.12)]">
+      <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="space-y-3">
+          <div className="rounded-2xl border-2 border-amber-900/10 bg-white/75 p-4 shadow-[0_8px_0_rgba(120,53,15,0.1)]">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone={isComplete ? "emerald" : "red"}>
                 {isComplete ? "Victory" : "Run Failed"}
@@ -3587,126 +3598,182 @@ function RunEndingSummary({
               <Badge tone="purple">{selectedDeck.name}</Badge>
             </div>
             <h3
-              className={`mt-3 text-3xl font-black leading-none sm:text-4xl ${
+              className={`mt-3 text-3xl font-black leading-none ${
                 isComplete ? "text-emerald-950" : "text-red-950"
               }`}
             >
-              {isComplete ? "Dungeon Cleared!" : "Your Run Ended"}
+              {outcomeTitle}
             </h3>
-            <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-amber-950/75">
-              {isComplete
-                ? "Boss defeated, deck progress saved, and your permanent learning progress is safe."
-                : "The run is over, but your learning progress remains. Review, train, and try again when ready."}
+            <p className="mt-2 max-w-2xl text-sm font-bold leading-5 text-amber-950/75">
+              {outcomeCopy}
             </p>
           </div>
 
-          {isComplete ? (
-            <div className="rounded-3xl border-2 border-violet-200 bg-violet-50 p-4">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-                <span className="grid size-16 shrink-0 place-items-center rounded-2xl border-2 border-violet-200 bg-white text-4xl shadow-inner">
-                  {selectedBoss.imagePlaceholder}
-                </span>
-                <div className="min-w-0">
-                  <Badge tone="purple">Boss Defeated</Badge>
-                  <h4 className="mt-2 truncate text-2xl font-black text-violet-950">
-                    {selectedBoss.name}
-                  </h4>
-                  {bossTitle && (
-                    <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-violet-800/70">
-                      {bossTitle}
-                    </p>
-                  )}
-                  <p className="mt-2 text-sm font-bold leading-6 text-violet-950/75">
-                    {bossDefeatText ??
-                      "The final guardian falls. Your words light the way forward."}
+          <div
+            className={`rounded-2xl border-2 p-3 ${
+              isComplete
+                ? "border-violet-200 bg-violet-50"
+                : "border-red-200 bg-red-50"
+            }`}
+          >
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <span className="grid size-14 shrink-0 place-items-center rounded-xl border-2 border-white/70 bg-white text-3xl shadow-inner">
+                {isComplete ? selectedBoss.imagePlaceholder : "🕯️"}
+              </span>
+              <div className="min-w-0">
+                <Badge tone={isComplete ? "purple" : "red"}>
+                  {isComplete ? "Boss Defeated" : "Defeated"}
+                </Badge>
+                <h4
+                  className={`mt-1 truncate text-xl font-black ${
+                    isComplete ? "text-violet-950" : "text-red-950"
+                  }`}
+                >
+                  {isComplete ? selectedBoss.name : "The dungeon pushes back"}
+                </h4>
+                {isComplete && bossTitle && (
+                  <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-violet-800/70">
+                    {bossTitle}
                   </p>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="rounded-3xl border-2 border-red-200 bg-red-50 p-4">
-              <Badge tone="red">Failure Reason</Badge>
-              <p className="mt-2 text-sm font-bold leading-6 text-red-950/75">
-                {battleLog.message}
-              </p>
-              <p className="mt-2 text-sm font-black text-red-950">
-                Permanent mastery is safe. Temporary run upgrades are lost.
-              </p>
-            </div>
-          )}
-
-          <div className="grid gap-2 sm:grid-cols-2">
-            <div className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-3">
-              <p className="text-xs font-black uppercase text-emerald-800/70">
-                Permanent Progress Kept
-              </p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {keptItems.map((item) => (
-                  <Badge key={item} tone="emerald">
-                    {item}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl border-2 border-stone-200 bg-stone-50 p-3">
-              <p className="text-xs font-black uppercase text-stone-700/70">
-                Temporary Run Lost
-              </p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {lostItems.map((item) => (
-                  <Badge key={item} tone="slate">
-                    {item}
-                  </Badge>
-                ))}
+                )}
+                <p
+                  className={`mt-1 text-sm font-bold leading-5 ${
+                    isComplete ? "text-violet-950/75" : "text-red-950/75"
+                  }`}
+                >
+                  {isComplete
+                    ? bossDefeatText ??
+                      "The final guardian falls. Your words light the way forward."
+                    : "Review the words, train safely, and try another run."}
+                </p>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="space-y-4">
-          <div className="rounded-3xl border-2 border-amber-200 bg-amber-50 p-4">
+          <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-3">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone={isComplete ? "emerald" : "amber"}>
-                {isComplete ? "Reward" : "Encouragement"}
+                {rewardTitle}
               </Badge>
-              <p className="font-black text-amber-950">
-                {isComplete
-                  ? battleLog.rewardSummary ?? `${selectedDeck.name} completed.`
-                  : "Best run stats saved. Training progress is safe."}
-              </p>
+              <p className="font-black text-amber-950">{rewardMessage}</p>
             </div>
-            <p className="mt-2 text-sm font-bold leading-6 text-amber-900/75">
-              {isComplete
-                ? "Permanent progress saved. Any next-deck unlock uses the existing deck progression rules."
-                : "Try reviewing the deck or training before the next run. Shop upgrades reset because they are current-run-only."}
+            <p className="mt-2 text-sm font-bold leading-5 text-amber-900/75">
+              {temporaryMessage}
             </p>
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2">
-            <StatCard label="Deck" value={selectedDeck.name} tone={isComplete ? "emerald" : "red"} />
-            <StatCard label="Boss" value={statistics.bossDefeated ? selectedBoss.name : "No"} tone="purple" />
-            <StatCard label="Monsters" value={statistics.monstersDefeated} tone="emerald" />
-            <StatCard label="Elites" value={statistics.eliteDefeated} tone="red" />
-            <StatCard label="Events" value={statistics.eventsVisited} tone="purple" />
-            <StatCard label="Floor" value={runProgress.currentFloor} tone="slate" />
-            <StatCard label="Final Gold" value={finalGold} tone="amber" />
-            <StatCard label="Run Deck" value={currentRunDeckSize} tone="slate" />
-            <StatCard label="Correct" value={statistics.correctAnswers} tone="emerald" />
-            <StatCard label="Wrong" value={statistics.wrongAnswers + statistics.timeouts} tone="red" />
-            <StatCard label="Accuracy" value={`${summaryAccuracy}%`} tone="sky" />
-            <StatCard label="Damage" value={statistics.totalDamageDealt} tone="red" />
-            <StatCard label="Shield Gained" value={statistics.totalShieldGained} tone="sky" />
+          <div className="grid gap-2 sm:grid-cols-4">
+            <StatCard
+              label="Monsters"
+              value={statistics.monstersDefeated}
+              tone="emerald"
+            />
+            <StatCard
+              label="Accuracy"
+              value={`${summaryAccuracy}%`}
+              tone="sky"
+            />
+            <StatCard
+              label="Damage"
+              value={statistics.totalDamageDealt}
+              tone="red"
+            />
+            <StatCard label="Gold" value={finalGold} tone="amber" />
           </div>
 
-          <div className="grid gap-2 sm:grid-cols-2">
+          <details className="rounded-xl border-2 border-amber-900/10 bg-white/75 p-3">
+            <summary className="cursor-pointer font-black text-amber-950">
+              Run Details
+            </summary>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              <StatCard
+                label="Deck"
+                value={selectedDeck.name}
+                tone={isComplete ? "emerald" : "red"}
+              />
+              <StatCard
+                label="Boss"
+                value={statistics.bossDefeated ? selectedBoss.name : "No"}
+                tone="purple"
+              />
+              <StatCard
+                label="Elites"
+                value={statistics.eliteDefeated}
+                tone="red"
+              />
+              <StatCard
+                label="Events"
+                value={statistics.eventsVisited}
+                tone="purple"
+              />
+              <StatCard
+                label="Floor"
+                value={runProgress.currentFloor}
+                tone="slate"
+              />
+              <StatCard
+                label="Run Deck"
+                value={currentRunDeckSize}
+                tone="slate"
+              />
+              <StatCard
+                label="Correct"
+                value={statistics.correctAnswers}
+                tone="emerald"
+              />
+              <StatCard
+                label="Wrong"
+                value={statistics.wrongAnswers + statistics.timeouts}
+                tone="red"
+              />
+              <StatCard
+                label="Shield Gained"
+                value={statistics.totalShieldGained}
+                tone="sky"
+              />
+              <StatCard
+                label="Cards Upgraded"
+                value={statistics.cardsUpgradedCount}
+                tone="amber"
+              />
+              <StatCard
+                label="Cards Removed"
+                value={statistics.cardsRemovedCount}
+                tone="slate"
+              />
+              <StatCard
+                label="Cards Duplicated"
+                value={statistics.cardsDuplicatedCount}
+                tone="purple"
+              />
+            </div>
+            {!isComplete && (
+              <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-bold leading-5 text-red-950/75">
+                {battleLog.message}
+              </p>
+            )}
+          </details>
+        </div>
+
+        <aside className="space-y-3 rounded-2xl border-2 border-amber-900/10 bg-white/75 p-3 shadow-[0_6px_0_rgba(120,53,15,0.1)] xl:self-start">
+          <div>
+            <p className="text-xs font-black uppercase text-amber-800/70">
+              Next move
+            </p>
+            <h4 className="mt-1 text-xl font-black text-amber-950">
+              {isComplete ? "Choose what to do next" : "Recover and try again"}
+            </h4>
+          </div>
+
+          <div className="grid gap-2">
             <Button
               type="button"
               onClick={onRestartRun}
-              variant={isComplete ? "secondary" : "danger"}
+              variant={isComplete ? "primary" : "danger"}
             >
               {isComplete ? "Start Fresh Run" : "Restart Run"}
             </Button>
-            <Button type="button" onClick={onReviewDeck}>
+            <Button type="button" onClick={onReviewDeck} variant="secondary">
               Review Deck
             </Button>
             <Button type="button" onClick={onTraining} variant="secondary">
@@ -3716,7 +3783,39 @@ function RunEndingSummary({
               Back Home
             </Button>
           </div>
-        </div>
+
+          <details className="rounded-xl border border-amber-900/15 bg-amber-50/80 p-3">
+            <summary className="cursor-pointer font-black text-amber-950">
+              Kept / lost
+            </summary>
+            <div className="mt-3 grid gap-2">
+              <div>
+                <p className="text-xs font-black uppercase text-emerald-800/70">
+                  Permanent kept
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {keptItems.map((item) => (
+                    <Badge key={item} tone="emerald">
+                      {item}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-xs font-black uppercase text-stone-700/70">
+                  Temporary lost
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {lostItems.map((item) => (
+                    <Badge key={item} tone="slate">
+                      {item}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </details>
+        </aside>
       </div>
     </section>
   );

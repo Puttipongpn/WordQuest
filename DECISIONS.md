@@ -1162,6 +1162,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Timed combat is the player's immediate decision point, so secondary information should stay available without competing with the quiz or leaking answer/result information.
 - Status: Accepted
 
+### 2026-06-23: Training Prioritizes The Active Question
+
+- Decision: Training should prioritize the active question and answer choices. Session stats, mode notes, deck mastery details, and long guidance should not compete with answering.
+- Reason: Training is a safe learning space, but the immediate task is still choosing the correct answer; extra learning context should support the question without making the screen feel like a dashboard.
+- Status: Accepted
+
+### 2026-06-23: Run Result Prioritizes Outcome And Next Action
+
+- Decision: Run Result and run-end summaries should prioritize outcome, reward/loss clarity, and next action before detailed statistics.
+- Reason: At the end of a run, players need to know what happened, what permanent progress was kept or earned, what temporary progress was lost, and what to do next.
+- Status: Accepted
+
 ### 2026-06-22: First Shop Should Usually Afford One Meaningful Upgrade
 
 - Decision: Shop economy should let the first shop usually provide at least one meaningful upgrade while keeping Duplicate and Remove strategic.
