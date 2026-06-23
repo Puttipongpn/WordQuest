@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-Phase 64A UX Declutter Strategy + UI Hierarchy Guide is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+Phase 64B Home Hub Simplification + Compact Deck Selector is complete. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -791,6 +791,14 @@ Phase 64A UX Declutter Strategy + UI Hierarchy Guide is complete. The production
 - Documented future implementation guidance for color usage, badge/chip usage, card density, header density, progressive disclosure, scan view versus detail view, and the next declutter roadmap.
 - Updated `QA_CHECKLIST.md` with future UI hierarchy checks.
 - Preserved all current code behavior: no gameplay rules, save rules, combat math, timer values, mastery rules, shop/event/boss effects, deck unlock rules, Word Energy rules, dependencies, assets, backend, API, React Router, cloud save, Oxford import, or deployment setup changed.
+- Applied Phase 64B Home Hub Simplification + Compact Deck Selector.
+- Simplified Home into a compact action-focused hub centered on the selected deck, mastery progress, and the next immediate action.
+- Made Continue Run / Start Adventure the primary Home action, with Train and Review Deck as secondary actions.
+- Preserved the existing Start New Run confirmation when an active in-memory run exists.
+- Replaced the large deck progression card grid with a compact deck selector that shows deck name, status, word count, mastery percent, short lock requirement, and Select action only where useful.
+- Moved records, How to Play, local save explanation, and Reset Progress into lower-priority collapsible sections.
+- Preserved selected deck behavior, active-run memory-only behavior, reset confirmation, LocalStorage permanent-progress-only rules, deck unlock rules, combat math, timer values, mastery rules, shop/event/boss effects, Word Energy rules, deployment setup, asset plan, and all six manual decks.
+- Verified the project with `npm run build` after Phase 64B.
 
 ## In Progress
 
@@ -798,7 +806,7 @@ Phase 64A UX Declutter Strategy + UI Hierarchy Guide is complete. The production
 
 ## Next Task
 
-Phase 64A is complete. The recommended next implementation phase is Phase 64B Home Hub Simplification + Compact Deck Selector, but do not start it unless explicitly requested.
+Phase 64B is complete. The recommended next implementation phase is Phase 65 Header + Global Density / Visual Token Pass, but do not start it unless explicitly requested.
 
 ## Required Project Documents
 

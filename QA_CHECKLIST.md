@@ -166,6 +166,32 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Page refresh can still lose active run state for Version 1.
 - Reset Progress clears permanent progress and active run state.
 
+## Home Hub Simplification
+
+- Home loads.
+- Primary action is visible quickly.
+- Continue Run appears prominently when an active run exists.
+- Start Adventure appears when no active run exists.
+- Train remains available from Home.
+- Review Deck remains available from Home.
+- Selected deck summary is compact and readable.
+- Selected deck summary shows mastery progress without large repeated stat cards.
+- Deck selector is compact and scalable.
+- Locked decks show short requirement copy.
+- Unlocked decks can be selected.
+- Locked decks cannot be selected.
+- Selected deck affects Deck Review.
+- Selected deck affects Training.
+- Selected deck affects Dungeon.
+- Deck progression path is compact.
+- How to Play remains available but does not dominate Home.
+- Records remain available but do not dominate Home.
+- Reset Progress remains available and requires confirmation.
+- Mobile Home has no horizontal overflow.
+- Mobile Home does not require excessive scrolling before primary actions.
+- Active run is still not persisted to LocalStorage.
+- Page refresh can still lose active run state for Version 1.
+
 ## Responsive Smoke Test
 
 - Home is usable on desktop and narrow/mobile viewport.

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 64A UX Declutter Strategy + UI Hierarchy Guide complete.
+Current phase: Phase 64B Home Hub Simplification + Compact Deck Selector complete.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -1799,8 +1799,39 @@ Verification:
 - Markdown files were reviewed for readability.
 - `git diff --check` passed.
 
+## Phase 64B Home Hub Simplification + Compact Deck Selector Summary
+
+Phase 64B applies `UI_HIERARCHY_GUIDE.md` to Home only.
+
+Completed:
+
+- Reworked `src/screens/Home.tsx` into a compact action-focused hub.
+- Home now answers: what should I do next with my selected deck?
+- The top area now centers on the selected deck, compact mastery progress, compact deck status, and one primary action.
+- If an active in-memory run exists, `Continue Run` is the primary Home action.
+- If no active run exists, `Start Adventure` is the primary Home action.
+- `Train` and `Review Deck` remain visible as secondary actions.
+- `Start New Run` remains available when an active run exists and still uses the existing confirmation flow before discarding the active run.
+- The selected deck summary now shows compact mastery percent, mastered count, word count, average mastery, and next recommendation instead of large repeated stat cards.
+- The deck selector now uses compact scan cards with deck name, status, word count, mastery percent, short lock requirement, and Select action only for unlocked non-selected decks.
+- Deck progression path is now a concise line with one next-unlock target.
+- Adventurer records, How to Play, local save explanation, and Reset Progress moved into lower-priority collapsible sections.
+- Reset Progress remains available and still requires confirmation.
+
+Preserved:
+
+- No Deck Review, Training, Dungeon, Shop, or Run Result redesign was performed.
+- No gameplay rules, save schema, deck unlock rules, combat math, timer values, mastery rules, shop item effects, event effects, boss effects, Word Energy rules, deployment setup, backend, database, auth, API, React Router, cloud save, external state library, final art assets, image assets, audio assets, animation libraries, new dependencies, new decks, or Oxford 3000 import were added or changed.
+- Selected deck still controls Deck Review, Training, Dungeon, and completion reward flow.
+- Locked decks still cannot be selected.
+- Active runs still remain React-memory-only and are not saved to LocalStorage.
+
+Verification:
+
+- `npm run build` passed after Phase 64B.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. If the next request is UI work, use `UI_HIERARCHY_GUIDE.md` as the implementation guide. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next UI phase is Phase 65 Header + Global Density / Visual Token Pass. Use `UI_HIERARCHY_GUIDE.md` for any future UI declutter work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or final art assets unless explicitly requested.

@@ -44,7 +44,7 @@ npm run preview
 
 ## Current Gameplay Loop
 
-- Home: select an unlocked deck and review permanent progress.
+- Home: compact hub for Continue Run / Start Adventure, Training, Deck Review, and deck selection.
 - Deck Review: inspect vocabulary cards, mastery, effects, and learning guidance.
 - Training: practice untimed vocabulary recall and increase permanent word mastery.
 - Dungeon: fight timed vocabulary battles with Word Choice, Word Match, and Word Scramble.

@@ -427,6 +427,14 @@ Collapse or move:
 
 This should become a future implementation phase, not Phase 64A.
 
+Phase 64B implemented the first Home declutter pass:
+
+- Home now uses a compact selected-deck hub.
+- Continue Run / Start Adventure is the primary action.
+- Train and Review Deck are secondary actions.
+- Deck selection uses compact scan cards.
+- Records, How to Play, local save explanation, and Reset Progress are lower-priority collapsible sections.
+
 ## Future Deck Review Declutter Plan
 
 Grid cards should show only:

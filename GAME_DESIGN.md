@@ -98,6 +98,15 @@ Page priority summary:
 
 Phase 64A is documentation-only. It does not redesign screens, change gameplay, add assets, change save rules, or change deployment setup.
 
+Phase 64B applies the guide to Home only:
+
+- Home is a compact Campfire Hub centered on the selected deck and next action.
+- Continue Run / Start Adventure is the primary Home action depending on active-run state.
+- Train and Review Deck are secondary actions.
+- Deck selection uses compact scan cards instead of large dashboard-like deck cards.
+- Records, How to Play, local save explanation, and Reset Progress use lower-priority collapsible sections.
+- Phase 64B does not change selected deck rules, active-run memory rules, reset rules, gameplay, saves, deck unlocks, combat, timers, shop, events, boss behavior, Word Energy, assets, or deployment.
+
 ## Future Asset Direction
 
 Phase 61 prepares future real assets through `ASSET_PLAN.md` only.

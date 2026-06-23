@@ -1168,6 +1168,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Too many colorful chips make normal information compete with primary actions and weaken screen hierarchy.
 - Status: Accepted
 
+### 2026-06-23: Home Prioritizes Immediate Play Decisions
+
+- Decision: Home should prioritize immediate play decisions and compact selected-deck state. Records, guide text, save explanations, and danger actions should use progressive disclosure or lower-priority placement.
+- Reason: Home is the main hub, so the player should quickly see Continue Run or Start Adventure, plus Train, Review Deck, and compact deck selection without reading a dashboard of secondary information first.
+- Status: Accepted
+
 ### 2026-06-16: Vercel Is Preferred For Static Demo Deployment
 
 - Decision: Prepare the prototype for Vercel static deployment using the Vite preset, `npm run build`, and `dist` output.
