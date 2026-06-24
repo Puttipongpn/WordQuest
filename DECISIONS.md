@@ -1144,6 +1144,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The player fantasy is vocabulary-powered spellcasting through staff, spellbook, elemental triggers, and word mastery.
 - Status: Accepted
 
+### 2026-06-24: Idle And Walk Are Approved Word Mage References
+
+- Decision: `player_word_mage_idle_sheet.png` and `player_word_mage_walk_sheet.png` are approved visual reference assets for the canonical WordQuest Word Mage.
+- Reason: These sheets establish the stable player-character face, body design, fluffy brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown outfit, staff, spellbook, cozy fantasy pixel-art style, and upper-left lighting for future player asset production.
+- Status: Accepted
+
+### 2026-06-24: Cast Attack Candidate Is Provisionally Approved
+
+- Decision: `player_word_mage_cast_attack_sheet.png` is a provisional approved candidate / polish pass recommended.
+- Reason: The current cast candidate succeeds in identity consistency and readable action flow, but the next refinement should make the action read more clearly as staff-and-spellbook casting with spellbook-to-staff magic flow and a compact blue-gold magic bolt, avoiding weapon swing, slash, spear thrust, weapon-forward, gun-like, oversized, or readable-rune effects.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

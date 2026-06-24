@@ -56,6 +56,53 @@ canonical WordQuest Word Mage: young male chibi mage adventurer, fluffy short br
 
 Use staff-and-spellbook spellcasting as the default action language. Avoid sword, dagger, bow, shield-warrior, knight armor, rogue hood, or generic adventurer language in player prompts.
 
+## Current Player Asset Production Status
+
+Status date: 2026-06-24
+
+Approved visual reference assets:
+
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+
+These idle and walk sheets are approved references for the canonical WordQuest Word Mage. Treat them as the visual anchor for face, body design, hair, eyes, outfit, cape, staff, spellbook, proportions, palette, lighting, and cozy fantasy pixel art treatment.
+
+Current cast/attack candidate:
+
+- `player_word_mage_cast_attack_sheet.png`
+
+Status:
+
+- Provisional approved candidate / polish pass recommended.
+- The candidate succeeds in identity consistency.
+- The candidate has readable action flow.
+- The candidate is not fully final yet.
+
+Next cast/attack refinement should keep:
+
+- Same approved face and body design.
+- Fluffy brown hair.
+- Bright blue eyes.
+- Blue cape with gold trim.
+- Cream-and-brown outfit.
+- Magical staff with blue crystal.
+- Blue-and-gold spellbook.
+- Cozy fantasy pixel art.
+- Upper-left lighting.
+
+Next cast/attack refinement should emphasize:
+
+- Spellbook-to-staff magic flow.
+- Compact blue-gold magic bolt.
+- No readable letters or runes.
+- No oversized effect.
+- No weapon swing, slash, spear thrust, weapon-forward pose, or gun-like attack read.
+
+Integration status:
+
+- Do not integrate image files into runtime yet.
+- Keep all fallback, safety, and gameplay-neutral asset integration rules unchanged.
+
 ## Shared Prompt Rules
 
 Use these rules in every prompt unless a specific asset says otherwise:
@@ -228,21 +275,25 @@ Spec:
 
 Prompt:
 ```text
-Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage cast/attack animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy adventurer mage outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right. The mage raises the staff and spellbook to cast a small blue-gold vocabulary spell or elemental spark. Magical, friendly, vocabulary-themed, not violent. Warm colors, readable silhouette, simple outline, upper-left lighting, mobile-readable. No swords, no weapon swing, no text, no watermark.
+Create a cozy fantasy pixel art horizontal spritesheet for the canonical WordQuest Word Mage cast/attack animation. 64x64 pixels per frame, 4 evenly spaced frames, transparent background. Young male chibi mage adventurer with fluffy short brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown fantasy adventurer mage outfit, magical staff with blue crystal, and blue-and-gold spellbook/tome. Side-view facing right. Preserve the approved idle and walk reference identity exactly. The mage opens the blue-and-gold spellbook, magic flows from the spellbook into the staff crystal, then a compact blue-gold magic bolt releases forward. The action should read as staff-and-spellbook spellcasting, not a weapon thrust. Magical, friendly, vocabulary-themed, not violent. Warm colors, readable silhouette, simple outline, upper-left lighting, mobile-readable. No swords, no weapon swing, no spear thrust, no gun-like pose, no readable letters or runes, no oversized effect, no text, no watermark.
 ```
 
 Negative prompt:
-Use the shared negative prompt. Add: `no blood, no realistic weapon, no sword, no dagger, no bow, no knight armor, no rogue hood, no aggressive gore`.
+Use the shared negative prompt. Add: `no blood, no realistic weapon, no sword, no dagger, no bow, no knight armor, no rogue hood, no aggressive gore, no spear thrust, no weapon-forward pose, no gun pose, no slash arc, no readable runes, no readable letters, no oversized spell effect`.
 
 QA:
 - 4 frames.
 - Player faces right.
 - Attack motion reads clearly.
+- Action reads as spellbook-to-staff casting.
+- Blue-gold magic bolt is compact.
+- Character identity matches approved idle/walk references.
 - No text or answer-like symbols.
 
 Integration notes:
 - Future trigger: correct answer card activation.
 - Must not reveal whether an answer is correct before result resolution.
+- Status as of 2026-06-24: provisional approved candidate / polish pass recommended.
 
 ### player_word_mage_hurt_sheet.png
 

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-The canonical WordQuest main hero identity is locked as the staff-and-spellbook Word Mage for future asset production. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest now has approved idle and walk visual references for the canonical staff-and-spellbook Word Mage, plus a provisional cast attack candidate that needs a polish pass. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -866,6 +866,12 @@ The canonical WordQuest main hero identity is locked as the staff-and-spellbook 
 - Recorded that the player character concept phase is complete and the next asset production priority is main-hero animation sheets.
 - Recommended main-hero animation-sheet order: idle, walk, cast/attack, defend, hurt, victory.
 - Kept this update documentation-only: no gameplay logic, UI code, save rules, combat systems, runtime asset imports, image assets, dependencies, or deployment setup changed.
+- Recorded current player asset production status.
+- Marked `player_word_mage_idle_sheet.png` and `player_word_mage_walk_sheet.png` as approved visual reference assets for the canonical WordQuest Word Mage.
+- Marked `player_word_mage_cast_attack_sheet.png` as a provisional approved candidate with a polish pass recommended.
+- Documented that the current cast candidate succeeds in identity consistency and readable action flow but is not fully final.
+- Documented the next cast refinement direction: stronger spellbook-to-staff magic flow, compact blue-gold magic bolt, no readable letters/runes, no oversized effect, and no weapon swing, slash, spear thrust, weapon-forward, or gun-like attack read.
+- Preserved all integration safety rules and kept this update documentation-only with no runtime image integration, source-code changes, gameplay changes, save behavior changes, combat math changes, timer changes, mastery changes, Word Energy changes, unlock-rule changes, dependency changes, or deployment changes.
 
 ## In Progress
 
@@ -873,7 +879,7 @@ The canonical WordQuest main hero identity is locked as the staff-and-spellbook 
 
 ## Next Task
 
-The main hero identity is locked for asset production. Phase 70A remains complete, and the project is ready to enter main-hero animation-sheet production when explicitly requested.
+The main hero identity is locked for asset production. Idle and walk visual references are approved. The next recommended asset task is a cast attack polish pass for `player_word_mage_cast_attack_sheet.png`, keeping the approved Word Mage identity and improving the staff-and-spellbook casting read.
 
 ## Required Project Documents
 

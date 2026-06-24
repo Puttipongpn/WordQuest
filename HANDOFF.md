@@ -2052,8 +2052,46 @@ Preserved:
 - Documentation-only update.
 - No gameplay logic, UI code, save rules, combat systems, runtime asset imports, image assets, new dependencies, deployment setup, backend, database, auth, API, deck unlock rules, mastery rules, timer values, shop/event/boss effects, or Word Energy rules changed.
 
+## Current Player Asset Production Status
+
+Status date: 2026-06-24
+
+Approved visual reference assets:
+
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+
+These idle and walk sheets are approved visual references for the canonical WordQuest Word Mage. Future player animation sheets should use them as the visual anchor for the approved face and body design, fluffy brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown outfit, magical staff with blue crystal, blue-and-gold spellbook, cozy fantasy pixel-art style, and upper-left lighting.
+
+Current cast/attack candidate:
+
+- `player_word_mage_cast_attack_sheet.png`
+
+Cast/attack status:
+
+- Provisional approved candidate / polish pass recommended.
+- The current candidate succeeds in identity consistency.
+- The current candidate has a readable action flow.
+- It is not fully final yet.
+
+Recommended cast/attack polish direction:
+
+- Make the action read more clearly as staff-and-spellbook casting.
+- Emphasize magic flowing from the blue-and-gold spellbook into the blue crystal staff.
+- Use a compact blue-gold magic bolt or spark.
+- Keep the magic effect small enough that it does not overpower the character.
+- Avoid readable letters, readable runes, or answer-like symbols.
+- Avoid oversized effects.
+- Avoid weapon swing, slash, spear thrust, weapon-forward pose, or gun-like attack read.
+
+Integration safety:
+
+- Do not integrate these image files into runtime yet.
+- Do not add runtime asset imports, manifests, image folders, animation code, dependencies, or final-art replacement code until a future explicit integration phase.
+- Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, deck unlock rules, and dependencies unchanged.
+
 ## Next Recommended Task
 
 Recommended next task:
 
-Continue with the next explicitly requested phase or feature. The recommended next asset task is main-hero animation-sheet production for the locked Word Mage, starting with idle, walk, cast/attack, defend, hurt, and victory sheets. Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for any future asset work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or runtime art integration unless explicitly requested.
+Continue with the next explicitly requested phase or feature. The recommended next asset task is a cast/attack polish pass for `player_word_mage_cast_attack_sheet.png`, keeping the approved Word Mage idle/walk identity and improving the staff-and-spellbook casting read. Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for any future asset work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or runtime art integration unless explicitly requested.

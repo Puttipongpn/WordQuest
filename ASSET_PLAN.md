@@ -51,6 +51,44 @@ Next player asset priority is character animation sheets, in this order:
 5. `player_word_mage_hurt_sheet.png`
 6. `player_word_mage_victory_sheet.png`
 
+## Current Player Asset Production Status
+
+Status date: 2026-06-24
+
+Approved visual reference assets:
+
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+
+These idle and walk sheets are approved visual references for the canonical WordQuest Word Mage. Future player sprites should preserve their face, body design, fluffy brown hair, bright blue eyes, blue cape with gold trim, cream-and-brown outfit, magical staff with blue crystal, blue-and-gold spellbook, cozy fantasy pixel art style, and upper-left lighting.
+
+Current cast/attack candidate:
+
+- `player_word_mage_cast_attack_sheet.png`
+
+Cast/attack status:
+
+- Provisional approved candidate / polish pass recommended.
+- The current candidate succeeds in identity consistency.
+- The current candidate has a readable action flow.
+- It is not fully final yet.
+
+Recommended cast/attack polish direction:
+
+- Make the action read more clearly as staff-and-spellbook casting.
+- Emphasize spellbook-to-staff magic flow.
+- Use a compact blue-gold magic bolt or spark.
+- Keep the effect small enough that it does not overpower the character.
+- Avoid readable letters, readable runes, or answer-like symbols.
+- Avoid oversized effects.
+- Avoid weapon swing, slash, spear thrust, weapon-forward pose, or gun-like attack read.
+
+Integration status:
+
+- These production references are not integrated into runtime yet.
+- No runtime asset imports or asset manifest code should be added until a future explicit integration phase.
+- All existing asset safety rules remain unchanged.
+
 ## Sprite Specs
 
 Recommended first-pass specs:
