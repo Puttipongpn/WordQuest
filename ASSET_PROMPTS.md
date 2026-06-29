@@ -1,8 +1,8 @@
 # ASSET_PROMPTS.md
 
-This document is the Phase 70A prompt pack and style bible for future WordQuest pixel art generation.
+This document is the Phase 70A prompt pack and style bible for WordQuest pixel art generation.
 
-Phase 70A is documentation-only. Do not add image files, runtime asset imports, new dependencies, animation libraries, gameplay changes, save schema changes, deployment changes, or Oxford 3000 import as part of this phase.
+Player Batch 1A and Monster Batch 1B have been generated as production source/reference candidates. They are not normalized runtime assets and must not be imported into the app yet.
 
 Use this document with `ASSET_PLAN.md` when generating real assets in a later workflow.
 
@@ -58,7 +58,16 @@ Use staff-and-spellbook spellcasting as the default action language. Avoid sword
 
 ## Current Player Asset Production Status
 
-Status date: 2026-06-24
+Status date: 2026-06-29
+
+Player Batch 1A generated:
+
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+- `player_word_mage_cast_attack_sheet.png`
+- `player_word_mage_defend_sheet.png`
+- `player_word_mage_hurt_sheet.png`
+- `player_word_mage_victory_sheet.png`
 
 Approved visual reference assets:
 
@@ -98,10 +107,47 @@ Next cast/attack refinement should emphasize:
 - No oversized effect.
 - No weapon swing, slash, spear thrust, weapon-forward pose, or gun-like attack read.
 
+Remaining review decisions:
+
+- `player_word_mage_defend_sheet.png`: generated candidate / pending final batch review unless explicitly approved later.
+- `player_word_mage_hurt_sheet.png`: approved candidate / usable v1.
+- `player_word_mage_victory_sheet.png`: approved candidate / usable v1.
+
+Future player prompts should preserve the approved idle/walk face, body design, outfit, equipment, palette, proportions, and right-facing orientation.
+
 Integration status:
 
 - Do not integrate image files into runtime yet.
 - Keep all fallback, safety, and gameplay-neutral asset integration rules unchanged.
+
+## Current Monster Asset Production Status
+
+Status date: 2026-06-29
+
+All idle, attack, hit, and defeat sheets for Slime, Bat, and Goblin in Monster Batch 1B have been generated.
+
+Slime:
+
+- `monster_slime_idle_sheet.png`: approved candidate / usable v1.
+- `monster_slime_attack_sheet.png`: approved candidate / usable v1.
+- `monster_slime_hit_sheet.png`: usable candidate; normalize scale and spacing later.
+- `monster_slime_defeat_sheet.png`: approved candidate / usable v1.
+
+Bat:
+
+- `monster_bat_idle_sheet.png`: approved candidate / usable v1.
+- `monster_bat_attack_sheet.png`: approved candidate / usable v1.
+- `monster_bat_hit_sheet.png`: usable candidate; normalize scale and spacing later.
+- `monster_bat_defeat_sheet.png`: usable candidate; check transparency and background cleanup later.
+
+Goblin:
+
+- `monster_goblin_idle_sheet.png`: approved candidate / usable v1.
+- `monster_goblin_attack_sheet.png`: approved candidate / usable v1.
+- `monster_goblin_hit_sheet.png`: usable candidate; normalize scale and spacing later.
+- `monster_goblin_defeat_sheet.png`: usable candidate; three visible stages are acceptable within the planned three-to-four-frame defeat range.
+
+The first goblin idle candidate was rejected because it faced the wrong direction. The regenerated goblin set correctly faces left and is usable.
 
 ## Shared Prompt Rules
 
@@ -118,6 +164,12 @@ Use these rules in every prompt unless a specific asset says otherwise:
 - Use consistent outline thickness and upper-left lighting.
 - Ask for a horizontal spritesheet when animation is needed.
 - Ask for evenly spaced frames with consistent frame dimensions.
+- Explicitly request a final runtime-targeted spritesheet.
+- Specify total canvas size, such as 256x64 for four frames or 128x64 for two frames.
+- Require every frame cell to be exactly 64x64.
+- Specify no large preview canvas and no upscale.
+- Specify the intended sprite body size within each 64x64 frame.
+- Plan a normalization safety pass even when exact dimensions are requested.
 
 ## Negative Prompt Rules
 
@@ -135,9 +187,9 @@ no gradients, no soft airbrush shading, no high-resolution painting, no semi-rea
 
 ## First Asset Batch Plan
 
-Do not generate these files in Phase 70A. This is the first planned generation batch.
+Batch 1A and Batch 1B are generated source/reference candidates. Batch 1C and Batch 1D remain future production.
 
-### Batch 1A - Player Test
+### Batch 1A - Player Test - Generated
 
 - `player_word_mage_idle_sheet.png`
 - `player_word_mage_walk_sheet.png`
@@ -146,7 +198,7 @@ Do not generate these files in Phase 70A. This is the first planned generation b
 - `player_word_mage_hurt_sheet.png`
 - `player_word_mage_victory_sheet.png`
 
-### Batch 1B - Monster Test
+### Batch 1B - Monster Test - Generated
 
 - `monster_slime_idle_sheet.png`
 - `monster_slime_attack_sheet.png`
@@ -181,9 +233,13 @@ Do not generate these files in Phase 70A. This is the first planned generation b
 
 ## Intended Future Paths
 
-Do not create empty folders until real assets are added.
+Keep generated source/reference files separate from normalized runtime-ready assets.
 
 ```text
+asset_sources/
+  characters/player/
+  characters/monsters/
+
 src/assets/characters/player/
 src/assets/characters/monsters/
 src/assets/characters/bosses/
@@ -192,7 +248,7 @@ src/assets/ui/
 src/assets/backgrounds/
 ```
 
-Use lowercase snake_case filenames.
+Use `asset_sources/` or a documentation/reference location for original generated high-resolution files. Reserve `src/assets/` for normalized runtime-ready assets during a future explicit integration phase. Use lowercase snake_case filenames.
 
 ## Prompt Template Format
 
@@ -895,24 +951,41 @@ Use this before accepting generated assets:
 - Asset does not reveal hidden answers, target cards, correct answers, or result data.
 - Missing asset fallback remains possible.
 - File size is reasonable for a static Vite/Vercel demo.
+- Source file and normalized runtime export are kept separately.
+- Every accepted source has been checked for extra transparent space and preview scaling.
+- Runtime export uses consistent 64x64 frame cells where appropriate.
+- Ground or hover baselines are aligned across frames.
+
+Before runtime integration, normalize every accepted source:
+
+1. Verify transparent background and alpha.
+2. Split and inspect frames.
+3. Crop sprite bounds.
+4. Resize into consistent 64x64 frame cells where appropriate.
+5. Center the sprite and align its ground or hover baseline.
+6. Export the final runtime-ready spritesheet.
+7. Preserve the original source separately.
 
 ## Future Codex Integration Notes
 
-Do not implement these in Phase 70A. Use them later when real image files exist.
+Do not implement these until an explicit runtime integration phase. Generated source/reference files are not sufficient on their own.
 
 Recommended future integration steps:
 
-1. Add verified image files under `src/assets`.
-2. Create `src/data/assetManifest.ts`.
-3. Map player, monster, boss, effect, background, and UI asset ids to imported files.
-4. Add optional asset ids to data objects only when useful.
-5. Map monster ids to asset ids.
-6. Map boss ids to asset ids.
-7. Keep emoji/text/CSS fallback placeholders.
-8. Add a small safe asset component that falls back when an asset is missing.
-9. Add simple CSS spritesheet animation using `background-position` or image transforms.
-10. Preserve mobile readability and quiz-first hierarchy.
-11. Confirm production build still works without backend services.
+1. Complete visual batch QA for Player Batch 1A and Monster Batch 1B.
+2. Decide whether the accepted sources should enter normalization.
+3. Normalize selected assets and export runtime-ready spritesheets.
+4. Add only normalized image files under `src/assets`.
+5. Create `src/data/assetManifest.ts`.
+6. Map player, monster, boss, effect, background, and UI asset ids to imported files.
+7. Add optional asset ids to data objects only when useful.
+8. Map monster ids to asset ids.
+9. Map boss ids to asset ids.
+10. Keep emoji/text/CSS fallback placeholders.
+11. Add a small safe asset component that falls back when an asset is missing.
+12. Add simple CSS spritesheet animation using `background-position` or image transforms.
+13. Preserve mobile readability and quiz-first hierarchy.
+14. Confirm production build still works without backend services.
 
 Integration safety rules:
 

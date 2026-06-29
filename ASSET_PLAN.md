@@ -4,6 +4,8 @@ This document defines the future asset direction for WordQuest. Phase 61 is plan
 
 Phase 70A adds `ASSET_PROMPTS.md` as the practical pixel-art style bible and prompt pack for future image-generation work. It is still documentation-only: no final art assets, generated image files, runtime asset imports, new dependencies, or gameplay changes are added.
 
+The Phase 70 Player Batch 1A and Monster Batch 1B source/reference candidates have now been generated and reviewed. They are production sources, not normalized runtime assets, and remain outside runtime integration.
+
 ## Asset Direction
 
 WordQuest should use cozy fantasy pixel art when real assets are added later.
@@ -42,7 +44,7 @@ Future player sprites, animation sheets, battle-scene assets, card art, UI portr
 
 Canonical player naming for future production should use `player_word_mage_*` where practical. Older `player_word_hero_*` references are legacy planning aliases and should be treated as referring to this same locked Word Mage identity unless a future migration renames them.
 
-Next player asset priority is character animation sheets, in this order:
+Player Batch 1A was produced in this order:
 
 1. `player_word_mage_idle_sheet.png`
 2. `player_word_mage_walk_sheet.png`
@@ -53,7 +55,16 @@ Next player asset priority is character animation sheets, in this order:
 
 ## Current Player Asset Production Status
 
-Status date: 2026-06-24
+Status date: 2026-06-29
+
+Player Batch 1A generated:
+
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+- `player_word_mage_cast_attack_sheet.png`
+- `player_word_mage_defend_sheet.png`
+- `player_word_mage_hurt_sheet.png`
+- `player_word_mage_victory_sheet.png`
 
 Approved visual reference assets:
 
@@ -83,11 +94,58 @@ Recommended cast/attack polish direction:
 - Avoid oversized effects.
 - Avoid weapon swing, slash, spear thrust, weapon-forward pose, or gun-like attack read.
 
+Remaining player review decisions:
+
+- `player_word_mage_defend_sheet.png`: generated candidate / pending final batch review unless explicitly approved later.
+- `player_word_mage_hurt_sheet.png`: approved candidate / usable v1.
+- `player_word_mage_victory_sheet.png`: approved candidate / usable v1.
+
+The approved idle and walk sheets remain the visual identity anchor for all future player prompts and refinements.
+
 Integration status:
 
-- These production references are not integrated into runtime yet.
+- All six Player Batch 1A files are generated production source/reference candidates.
+- These production sources are not normalized or integrated into runtime yet.
 - No runtime asset imports or asset manifest code should be added until a future explicit integration phase.
 - All existing asset safety rules remain unchanged.
+
+## Current Monster Asset Production Status
+
+Status date: 2026-06-29
+
+Monster Batch 1B generated:
+
+- Slime: idle, attack, hit, and defeat sheets.
+- Bat: idle, attack, hit, and defeat sheets.
+- Goblin: idle, attack, hit, and defeat sheets.
+
+Slime review:
+
+- `monster_slime_idle_sheet.png`: approved candidate / usable v1.
+- `monster_slime_attack_sheet.png`: approved candidate / usable v1.
+- `monster_slime_hit_sheet.png`: usable candidate; normalize scale and spacing later.
+- `monster_slime_defeat_sheet.png`: approved candidate / usable v1.
+
+Bat review:
+
+- `monster_bat_idle_sheet.png`: approved candidate / usable v1.
+- `monster_bat_attack_sheet.png`: approved candidate / usable v1.
+- `monster_bat_hit_sheet.png`: usable candidate; normalize scale and spacing later.
+- `monster_bat_defeat_sheet.png`: usable candidate; check transparency and background cleanup later.
+
+Goblin review:
+
+- `monster_goblin_idle_sheet.png`: approved candidate / usable v1.
+- `monster_goblin_attack_sheet.png`: approved candidate / usable v1.
+- `monster_goblin_hit_sheet.png`: usable candidate; normalize scale and spacing later.
+- `monster_goblin_defeat_sheet.png`: usable candidate; three visible defeat stages are acceptable within the planned three-to-four-frame defeat range.
+
+Direction review:
+
+- Player sprites face right.
+- Enemy sprites face left.
+- The first goblin idle candidate was rejected because it faced the wrong direction.
+- The regenerated goblin set faces left and is usable.
 
 ## Sprite Specs
 
@@ -120,6 +178,17 @@ Animation prep:
 
 Phase 61 does not implement animation playback. These specs are for later asset generation and integration.
 
+Generated images may be high resolution, contain extra transparent space, use preview scaling, or miss exact runtime frame dimensions. Accepted source images must pass a normalization step before runtime integration:
+
+- Verify transparent background and alpha.
+- Split and inspect every frame.
+- Crop sprite bounds.
+- Resize into consistent 64x64 frame cells where appropriate.
+- Center each sprite.
+- Align character ground baselines or flying enemy hover baselines.
+- Export final runtime-ready spritesheets.
+- Preserve original generated source files separately from normalized runtime assets.
+
 ## Naming Convention
 
 Use lowercase snake_case for future asset ids and filenames.
@@ -138,10 +207,10 @@ Examples:
 - `player_word_mage_defend_sheet.png`
 - `player_word_mage_hurt_sheet.png`
 - `player_word_mage_victory_sheet.png`
-- `monster_slime_idle.png`
-- `monster_slime_attack.png`
-- `monster_slime_hit.png`
-- `monster_slime_defeat.png`
+- `monster_slime_idle_sheet.png`
+- `monster_slime_attack_sheet.png`
+- `monster_slime_hit_sheet.png`
+- `monster_slime_defeat_sheet.png`
 - `elite_slime_idle.png`
 - `boss_gatekeeper_idle.png`
 - `boss_gatekeeper_special.png`
@@ -152,9 +221,14 @@ Asset ids should match filenames without the extension when possible, such as `m
 
 ## Future Folder Structure
 
-Do not create empty folders until real assets are added. The intended future structure is:
+Keep generated source/reference images separate from normalized runtime-ready assets. Recommended future distinction:
 
 ```text
+asset_sources/
+  characters/
+    player/
+    monsters/
+
 src/assets/
   characters/
     player/
@@ -166,7 +240,7 @@ src/assets/
   backgrounds/
 ```
 
-If folders are added before they contain real files, use `.gitkeep` only if there is a concrete need. The project already uses `.gitkeep` in a few source folders, but Phase 61 stays document-only.
+`asset_sources/` or a documentation/reference location is for original generated high-resolution source images. `src/assets/` is reserved for normalized runtime-ready files during a future explicit integration phase. Do not create or move folders as part of this documentation update.
 
 ## Future Asset Manifest
 
@@ -189,24 +263,24 @@ Each current monster should eventually have idle, attack, hit, and defeat states
 
 Slime:
 
-- `monster_slime_idle.png`
-- `monster_slime_attack.png`
-- `monster_slime_hit.png`
-- `monster_slime_defeat.png`
+- `monster_slime_idle_sheet.png`
+- `monster_slime_attack_sheet.png`
+- `monster_slime_hit_sheet.png`
+- `monster_slime_defeat_sheet.png`
 
 Goblin:
 
-- `monster_goblin_idle.png`
-- `monster_goblin_attack.png`
-- `monster_goblin_hit.png`
-- `monster_goblin_defeat.png`
+- `monster_goblin_idle_sheet.png`
+- `monster_goblin_attack_sheet.png`
+- `monster_goblin_hit_sheet.png`
+- `monster_goblin_defeat_sheet.png`
 
 Bat:
 
-- `monster_bat_idle.png`
-- `monster_bat_attack.png`
-- `monster_bat_hit.png`
-- `monster_bat_defeat.png`
+- `monster_bat_idle_sheet.png`
+- `monster_bat_attack_sheet.png`
+- `monster_bat_hit_sheet.png`
+- `monster_bat_defeat_sheet.png`
 
 Wolf:
 
@@ -405,7 +479,17 @@ Rules:
 
 ## Future Prompt Guidelines
 
-Use `ASSET_PROMPTS.md` as the primary prompt pack when generating assets later. The templates below are the older Phase 61 starter prompts and remain useful as a compact reference. Do not generate images during Phase 61 or Phase 70A.
+Use `ASSET_PROMPTS.md` as the primary prompt pack when generating assets later. The templates below are the older Phase 61 starter prompts and remain useful as a compact reference.
+
+Future generation prompts should be runtime-targeted:
+
+- Explicitly request a final runtime-targeted spritesheet.
+- Specify total canvas size, such as 256x64 for four frames or 128x64 for two frames.
+- Require every frame cell to be exactly 64x64.
+- Request no large preview canvas and no upscale.
+- Require transparent background only.
+- Specify the intended sprite body size within each 64x64 cell.
+- Still require a normalization safety pass because image generators may not follow exact dimensions reliably.
 
 Base sprite prompt:
 
@@ -473,15 +557,15 @@ Replacement should happen in small passes. Keep fallback placeholders visible un
 
 ## Known Limitations
 
-- No final art assets exist yet.
-- No image files are added in Phase 61.
+- Player Batch 1A and Monster Batch 1B generated source/reference candidates exist.
+- No normalized runtime-ready art assets exist yet.
 - No runtime asset manifest exists yet.
 - No animation playback system exists yet.
 - No sprite loading/error fallback component exists yet.
 - Exact sprite sizes may need adjustment after mobile visual tests.
-- Asset generation prompts may need iteration for consistent style.
+- Accepted generated sources still need visual batch QA and normalization before any future runtime integration.
 - Player character concept exploration is complete; the Word Mage identity is locked.
-- Main hero animation-sheet production is the next asset priority.
+- Effects Batch 1C and additional monsters remain optional future production after documentation and batch QA are current.
 
 ## Phase 61 Verification
 
