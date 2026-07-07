@@ -430,9 +430,9 @@ Player:
 
 Monsters:
 
-- Slime: `monster_slime_idle.png`
-- Goblin: `monster_goblin_idle.png`
-- Bat: `monster_bat_idle.png`
+- Slime: `monster_slime_idle_sheet.png`
+- Goblin: `monster_goblin_idle_sheet.png`
+- Bat: `monster_bat_idle_sheet.png`
 - Wolf: `monster_wolf_idle.png`
 - Mushroom: `monster_mushroom_idle.png`
 - Wisp: `monster_wisp_idle.png`

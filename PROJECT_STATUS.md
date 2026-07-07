@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest now has approved idle and walk visual references for the canonical staff-and-spellbook Word Mage, plus a provisional cast attack candidate that needs a polish pass. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed generation and first review of Phase 70 Player Batch 1A and Monster Batch 1B. The files are production source/reference candidates only; visual batch QA and normalization are required before any future runtime integration. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -872,6 +872,18 @@ WordQuest now has approved idle and walk visual references for the canonical sta
 - Documented that the current cast candidate succeeds in identity consistency and readable action flow but is not fully final.
 - Documented the next cast refinement direction: stronger spellbook-to-staff magic flow, compact blue-gold magic bolt, no readable letters/runes, no oversized effect, and no weapon swing, slash, spear thrust, weapon-forward, or gun-like attack read.
 - Preserved all integration safety rules and kept this update documentation-only with no runtime image integration, source-code changes, gameplay changes, save behavior changes, combat math changes, timer changes, mastery changes, Word Energy changes, unlock-rule changes, dependency changes, or deployment changes.
+- Documented completion of Phase 70 Player Batch 1A source generation: idle, walk, cast/attack, defend, hurt, and victory.
+- Kept idle and walk as approved canonical visual references and cast/attack as a provisional approved candidate with a polish pass recommended.
+- Recorded defend as pending final batch review, with hurt and victory approved as usable v1 candidates.
+- Documented completion of Monster Batch 1B source generation for Slime, Bat, and Goblin idle, attack, hit, and defeat sheets.
+- Recorded Slime idle/attack/defeat, Bat idle/attack, and Goblin idle/attack as approved usable v1 candidates.
+- Recorded later normalization needs for Slime/Bat/Goblin hit scale and spacing, Bat defeat transparency/background cleanup, and Goblin defeat's acceptable three-stage sequence.
+- Reaffirmed player-right and enemy-left orientation; the first wrong-facing Goblin idle candidate was rejected and the regenerated left-facing set is usable.
+- Defined generated images as high-resolution production source/reference candidates rather than final runtime-normalized assets.
+- Documented the required pre-integration normalization pass: alpha check, frame splitting, bounds crop, consistent 64x64 cells where appropriate, centering, baseline alignment, and runtime-ready export while preserving original sources.
+- Updated future prompt guidance to request exact runtime-targeted canvas and frame sizes, transparent background, no preview upscale, and explicit sprite body sizing while retaining a normalization safety pass.
+- Preserved runtime safety rules: placeholder fallbacks remain required, loading failures must not crash the app, and assets must not alter or reveal gameplay state.
+- Kept this update documentation-only with no source code, image file movement/creation, asset imports, manifest, animation playback, dependencies, gameplay rules, saves, combat math, timers, mastery, Word Energy, unlock rules, encounter progression, or deployment changes.
 
 ## In Progress
 
@@ -879,7 +891,11 @@ WordQuest now has approved idle and walk visual references for the canonical sta
 
 ## Next Task
 
-The main hero identity is locked for asset production. Idle and walk visual references are approved. The next recommended asset task is a cast attack polish pass for `player_word_mage_cast_attack_sheet.png`, keeping the approved Word Mage identity and improving the staff-and-spellbook casting read.
+Recommended next steps:
+
+1. Perform a visual batch QA pass for Player Batch 1A and Monster Batch 1B.
+2. Decide whether accepted source/reference candidates should be normalized for later runtime integration.
+3. Optionally continue with Effects Batch 1C or additional monsters only after documentation and batch QA are current.
 
 ## Required Project Documents
 

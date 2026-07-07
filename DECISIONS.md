@@ -1156,6 +1156,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: The current cast candidate succeeds in identity consistency and readable action flow, but the next refinement should make the action read more clearly as staff-and-spellbook casting with spellbook-to-staff magic flow and a compact blue-gold magic bolt, avoiding weapon swing, slash, spear thrust, weapon-forward, gun-like, oversized, or readable-rune effects.
 - Status: Accepted
 
+### 2026-06-29: Generated Assets Are Source Candidates Before Normalization
+
+- Decision: Player Batch 1A and Monster Batch 1B generated images are production source/reference candidates, not final runtime-ready assets. Accepted sources must pass alpha verification, frame inspection, bounds cropping, consistent 64x64 cell sizing where appropriate, centering, baseline alignment, and runtime-ready export while preserving the originals separately.
+- Reason: Image-generation output may include high-resolution canvases, extra transparent space, preview scaling, inconsistent sprite bounds, or dimensions that do not match runtime requirements.
+- Status: Accepted
+
+### 2026-06-29: Player Faces Right And Enemies Face Left
+
+- Decision: Player sprites face right and enemy sprites face left. Wrong-facing candidates should be rejected or regenerated before acceptance; the first Goblin idle candidate was rejected and replaced by a usable left-facing set.
+- Reason: Consistent opposing directions preserve the established side-view battle composition and prevent orientation drift across animation batches.
+- Status: Accepted
+
+### 2026-06-29: Runtime Assets Stay Separate From Generated Sources
+
+- Decision: Original generated source/reference files should live in `asset_sources/` or a documentation/reference location, while `src/assets/` is reserved for normalized runtime-ready assets during a future explicit integration phase.
+- Reason: Separating sources from runtime exports protects original generation work and prevents unnormalized preview files from being imported accidentally.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

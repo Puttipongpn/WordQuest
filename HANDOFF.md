@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: canonical main hero identity locked for future asset production.
+Current phase: Phase 70 Player Batch 1A and Monster Batch 1B source/reference production complete; runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2054,7 +2054,16 @@ Preserved:
 
 ## Current Player Asset Production Status
 
-Status date: 2026-06-24
+Status date: 2026-06-29
+
+Player Batch 1A generated:
+
+- `player_word_mage_idle_sheet.png`
+- `player_word_mage_walk_sheet.png`
+- `player_word_mage_cast_attack_sheet.png`
+- `player_word_mage_defend_sheet.png`
+- `player_word_mage_hurt_sheet.png`
+- `player_word_mage_victory_sheet.png`
 
 Approved visual reference assets:
 
@@ -2084,14 +2093,75 @@ Recommended cast/attack polish direction:
 - Avoid oversized effects.
 - Avoid weapon swing, slash, spear thrust, weapon-forward pose, or gun-like attack read.
 
+Remaining review decisions:
+
+- `player_word_mage_defend_sheet.png`: generated candidate / pending final batch review unless explicitly approved later.
+- `player_word_mage_hurt_sheet.png`: approved candidate / usable v1.
+- `player_word_mage_victory_sheet.png`: approved candidate / usable v1.
+
+The approved idle and walk sheets remain the identity anchor for future player prompts.
+
+## Current Monster Asset Production Status
+
+Status date: 2026-06-29
+
+Monster Batch 1B generated:
+
+- Slime idle, attack, hit, and defeat.
+- Bat idle, attack, hit, and defeat.
+- Goblin idle, attack, hit, and defeat.
+
+Review decisions:
+
+- Slime idle, attack, and defeat: approved candidates / usable v1.
+- Slime hit: usable candidate; normalize scale and spacing later.
+- Bat idle and attack: approved candidates / usable v1.
+- Bat hit: usable candidate; normalize scale and spacing later.
+- Bat defeat: usable candidate; check transparency and background cleanup later.
+- Goblin idle and attack: approved candidates / usable v1.
+- Goblin hit: usable candidate; normalize scale and spacing later.
+- Goblin defeat: usable candidate; three visible stages are acceptable within the planned three-to-four-frame defeat range.
+
+Orientation:
+
+- Player sprites face right.
+- Enemy sprites face left.
+- The first Goblin idle candidate was rejected for facing the wrong direction.
+- The regenerated Goblin set faces left and is usable.
+
+## Source And Runtime Separation
+
+All generated Player Batch 1A and Monster Batch 1B files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact 64x64 runtime cells.
+
+Before runtime integration, accepted assets need a normalization pass:
+
+1. Verify transparent background and alpha.
+2. Split and inspect frames.
+3. Crop sprite bounds.
+4. Resize into consistent 64x64 cells where appropriate.
+5. Center sprites and align ground or hover baselines.
+6. Export runtime-ready spritesheets.
+7. Preserve original source files separately.
+
+Recommended future storage distinction:
+
+- `asset_sources/` or a documentation/reference location for original generated sources.
+- `src/assets/` only for normalized runtime-ready files during a future explicit integration phase.
+
 Integration safety:
 
 - Do not integrate these image files into runtime yet.
-- Do not add runtime asset imports, manifests, image folders, animation code, dependencies, or final-art replacement code until a future explicit integration phase.
+- Do not add runtime asset imports, manifests, animation code, dependencies, or final-art replacement code until a future explicit integration phase.
+- Missing assets must retain emoji/text/CSS fallbacks, and asset loading failure must not crash the app.
+- Assets must not reveal hidden answers, target cards, correct answers, or result information.
 - Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, deck unlock rules, and dependencies unchanged.
 
 ## Next Recommended Task
 
-Recommended next task:
+Recommended next steps:
 
-Continue with the next explicitly requested phase or feature. The recommended next asset task is a cast/attack polish pass for `player_word_mage_cast_attack_sheet.png`, keeping the approved Word Mage idle/walk identity and improving the staff-and-spellbook casting read. Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for any future asset work. Do not add backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, Oxford 3000 import, or runtime art integration unless explicitly requested.
+1. Perform a visual batch QA pass for Player Batch 1A and Monster Batch 1B.
+2. Decide whether accepted source/reference candidates should be normalized for later runtime integration.
+3. Optionally continue with Effects Batch 1C or additional monsters only after documentation and batch QA are current.
+
+Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.
