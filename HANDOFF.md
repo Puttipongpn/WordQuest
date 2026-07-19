@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 70 Player Batch 1A, Monster Batch 1B, and Effects Batch 1C source/reference production complete; runtime integration remains prohibited.
+Current phase: Phase 70 Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E source/reference production complete; runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2169,9 +2169,83 @@ Effect safety:
 - Effects must remain compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
 - Effects should remain readable on mobile and not visually noisy.
 
+## Current UI/Card/Background Asset Production Status
+
+Status date: 2026-07-19
+
+UI/Card/Background Batch 1D has been generated and reviewed as production source/reference candidates. These files are not normalized runtime-ready assets and must not be imported into the app yet.
+
+Generated Batch 1D files:
+
+- `background_dungeon_battle_01.png`
+- `ui_vocabulary_card_frame.png`
+- `ui_gold_coin.png`
+- `ui_heart_hp.png`
+- `ui_shield.png`
+
+Known polish note:
+
+- `background_dungeon_battle_01.png` may need a polish pass if it becomes a runtime background candidate.
+
+## Current Boss Asset Production Status
+
+Status date: 2026-07-19
+
+Boss Batch 1E generated:
+
+- `boss_gatekeeper_idle_sheet.png`
+- `boss_gatekeeper_attack_sheet.png`
+- `boss_gatekeeper_hit_sheet.png`
+- `boss_gatekeeper_defeat_sheet.png`
+
+Boss Batch 1E is complete as a source/reference candidate set. The batch is sufficient to proceed to the next asset-planning step, but the files are not normalized runtime-ready assets and must not be imported into the app yet.
+
+Gatekeeper identity:
+
+- Friendly but imposing dungeon word guardian boss
+- Stone-and-wood magical guardian
+- Key motif
+- Warm stone body
+- Wooden door/gate body
+- Moss accents
+- Gold trim
+- Soft teal crystal glow
+- Cozy fantasy pixel art
+- Beginner-friendly
+- Not horror, not violent, not dark demon-like
+
+Review decisions:
+
+- `boss_gatekeeper_idle_sheet.png`: approved candidate / usable v1; source filename may need rename from `boss_gatekeeper_idle_sheet(4).png` if the generated duplicate filename is present.
+- `boss_gatekeeper_attack_sheet.png`: approved candidate / usable v1.
+- `boss_gatekeeper_hit_sheet.png`: usable candidate; scale should be normalized later.
+- `boss_gatekeeper_defeat_sheet.png`: approved candidate / usable v1.
+
+Boss orientation:
+
+- Boss sprites face left.
+- Gatekeeper attack action moves or acts toward the left.
+- This matches enemy/boss battle framing.
+
+Boss action notes:
+
+- Idle reads as a stable guardian stance.
+- Attack reads as a compact teal-gold guardian pulse / stone-hand strike without implying a new mechanic.
+- Hit reads as a simple flinch reaction, but requires scale normalization.
+- Defeat reads as peaceful guardian deactivation / stone-gate settling, not violent death.
+
+Boss safety:
+
+- Boss assets are presentation-only.
+- Boss art must not imply new boss mechanics or new gameplay rules.
+- Boss art must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression.
+- Boss art must not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Boss art must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Boss art must remain readable on mobile and should not hide quiz UI or controls.
+
 ## Source And Runtime Separation
 
-All generated Player Batch 1A, Monster Batch 1B, and Effects Batch 1C files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact 64x64 runtime cells.
+All generated Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact runtime frame dimensions.
 
 Before runtime integration, accepted assets need a normalization pass:
 
@@ -2185,6 +2259,8 @@ Before runtime integration, accepted assets need a normalization pass:
 
 For effects, preserve appropriate vertical placement during normalization, such as earth effects staying lower/grounded.
 
+For boss sheets, resize into consistent 128x128 boss frame cells where appropriate, center the sprite, align the ground baseline, normalize scale across idle, attack, hit, and defeat, and rename generated duplicate filenames where necessary while preserving original source files separately.
+
 Recommended future storage distinction:
 
 - `asset_sources/` or a documentation/reference location for original generated sources.
@@ -2196,14 +2272,15 @@ Integration safety:
 - Do not add runtime asset imports, manifests, animation code, dependencies, or final-art replacement code until a future explicit integration phase.
 - Missing assets must retain emoji/text/CSS fallbacks, and asset loading failure must not crash the app.
 - Assets must not reveal hidden answers, target cards, correct answers, triggered cards, or result information.
+- Boss and effect art must not imply new mechanics, changed stats, altered result logic, or hidden answer/result information.
 - Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, encounter progression, deck unlock rules, and dependencies unchanged.
 
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Choose the next asset phase: UI icons/card frame assets, background assets, boss assets, or normalization planning.
-2. If normalizing later, include Player Batch 1A, Monster Batch 1B, and Effects Batch 1C in the normalization plan.
+1. Choose the next asset phase: elite enemy assets, event illustration assets, normalization planning, or polish for weaker candidates.
+2. If normalizing later, include Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E in the normalization plan.
 3. Do not integrate assets into runtime until an explicit future integration phase.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

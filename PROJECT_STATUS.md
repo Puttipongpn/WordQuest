@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed generation and review of Phase 70 Player Batch 1A, Monster Batch 1B, and Effects Batch 1C. The files are production source/reference candidates only; visual batch QA and normalization are required before any future runtime integration. Runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed generation and review of Phase 70 Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E. The files are production source/reference candidates only; visual batch QA and normalization are required before any future runtime integration. Runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -893,6 +893,15 @@ WordQuest has completed generation and review of Phase 70 Player Batch 1A, Monst
 - Updated effect prompt guidance to request runtime-targeted spritesheets with exact total canvas and 64x64 frame cells, transparent background only, no preview canvas, no checkerboard background, no borders/labels/UI/text/watermarks/readable runes, compact effect bounds, and a normalization safety pass.
 - Extended the pre-integration normalization guidance for effects: alpha check, frame splitting, bounds crop, consistent 64x64 cells where appropriate, centering, vertical placement preservation such as grounded earth effects, runtime-ready export, and preserved source originals.
 - Kept the Effects Batch 1C update documentation-only with no source code, image file movement/creation, asset imports, manifest, animation playback, dependencies, gameplay rules, saves, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, encounter progression, or deployment changes.
+- Documented that UI/Card/Background Batch 1D has been generated and reviewed as production source/reference candidates, including `background_dungeon_battle_01.png`, `ui_vocabulary_card_frame.png`, `ui_gold_coin.png`, `ui_heart_hp.png`, and `ui_shield.png`.
+- Documented completion of Boss Batch 1E source/reference generation for Gatekeeper idle, attack, hit, and defeat sheets.
+- Recorded Gatekeeper as the first boss visual identity: friendly but imposing dungeon word guardian, stone-and-wood magical guardian, key motif, warm stone body, wooden door/gate body, moss accents, gold trim, soft teal crystal glow, cozy fantasy pixel art, beginner-friendly, not horror, not violent, and not dark demon-like.
+- Recorded Boss Batch 1E review decisions: idle, attack, and defeat are approved usable v1 candidates; hit is usable but needs scale normalization later; the idle source filename may need rename from a generated duplicate filename such as `boss_gatekeeper_idle_sheet(4).png`.
+- Reaffirmed boss orientation: boss sprites face left, and Gatekeeper attack action moves or acts toward the left to match enemy/boss battle framing.
+- Documented boss action notes: idle stable guardian stance, attack compact teal-gold guardian pulse / stone-hand strike without implying a new mechanic, hit simple flinch needing scale normalization, and defeat peaceful guardian deactivation / stone-gate settling rather than violent death.
+- Extended source/runtime separation for boss sheets: verify alpha, split frames, crop sprite bounds, resize into consistent 128x128 boss cells where appropriate, center sprite, align ground baseline, normalize scale across idle/attack/hit/defeat, preserve source originals separately, and rename duplicate generated filenames where necessary.
+- Reaffirmed boss art safety rules: boss assets are presentation-only, must not imply new boss mechanics or gameplay rules, must not reveal hidden answer/result information, must not contain readable text/letters/numbers/stat labels/answer-like symbols/readable runes, and must remain readable on mobile without hiding quiz UI or controls.
+- Kept the Boss Batch 1E update documentation-only with no source code, image file movement/creation, asset imports, manifest, animation playback, dependencies, gameplay rules, saves, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, encounter progression, or deployment changes.
 
 ## In Progress
 
@@ -902,8 +911,8 @@ WordQuest has completed generation and review of Phase 70 Player Batch 1A, Monst
 
 Recommended next steps:
 
-1. Choose the next asset phase: UI icons/card frame assets, background assets, boss assets, or normalization planning.
-2. If normalizing later, include Player Batch 1A, Monster Batch 1B, and Effects Batch 1C in the normalization plan.
+1. Choose the next asset phase: elite enemy assets, event illustration assets, normalization planning, or polish for weaker candidates.
+2. If normalizing later, include Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E in the normalization plan.
 3. Do not integrate assets into runtime until an explicit future integration phase.
 
 ## Required Project Documents

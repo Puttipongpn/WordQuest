@@ -411,21 +411,45 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Monster Batch 1B generated source/reference candidates are documented.
 - Effects Batch 1C generated source/reference candidates are documented.
 - Effects Batch 1C review decisions are documented.
+- UI/Card/Background Batch 1D generated source/reference candidates are documented.
+- Boss Batch 1E generated source/reference candidates are documented.
+- Boss Batch 1E review decisions are documented.
+- Gatekeeper boss visual identity is documented.
+- Gatekeeper boss orientation is documented as facing left.
+- Gatekeeper attack action reads toward the left.
+- Gatekeeper idle reads as a stable guardian stance.
+- Gatekeeper attack reads as a compact teal-gold guardian pulse or stone-hand strike without implying a new mechanic.
+- Gatekeeper hit reads as a simple flinch reaction and is marked for scale normalization.
+- Gatekeeper defeat reads as peaceful guardian deactivation or stone-gate settling, not violent death.
 - Effects Batch 1C remains source/reference only, not runtime-normalized.
+- Boss Batch 1E remains source/reference only, not runtime-normalized.
 - Effects Batch 1C is not imported into runtime.
+- Boss Batch 1E is not imported into runtime.
 - Effects Batch 1C does not require an asset manifest.
+- Boss Batch 1E does not require an asset manifest.
 - Effects Batch 1C does not require animation playback.
+- Boss Batch 1E does not require animation playback.
 - Effect assets are presentation-only and do not imply rule changes.
+- Boss assets are presentation-only and do not imply rule changes or new boss mechanics.
 - Effect assets do not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Boss assets do not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
 - Effect assets do not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Boss assets do not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
 - Effect assets stay compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Boss assets remain readable on mobile and do not hide quiz UI or controls.
 - Effect assets remain readable on mobile and are not visually noisy.
 - Accepted effect sources still need alpha verification before runtime integration.
+- Accepted boss sources still need alpha verification before runtime integration.
 - Accepted effect sources still need frame splitting and bounds cropping before runtime integration.
+- Accepted boss sources still need frame splitting and sprite bounds cropping before runtime integration.
 - Accepted effect sources still need consistent 64x64 frame cells where appropriate before runtime integration.
+- Accepted boss sources still need consistent 128x128 boss frame cells where appropriate before runtime integration.
 - Accepted effect sources still need centering and vertical placement checks before runtime integration.
+- Accepted boss sources still need centering, ground baseline alignment, and scale normalization across idle, attack, hit, and defeat before runtime integration.
 - Earth effects preserve lower/grounded placement during normalization.
+- Generated duplicate boss filenames are renamed during normalization if necessary.
 - Original generated effect sources are preserved separately from normalized runtime-ready exports.
+- Original generated boss sources are preserved separately from normalized runtime-ready exports.
 - Future UI and background asset lists are documented.
 - Current monster and boss names are mapped to future asset filenames.
 - Future image-generation prompt templates are documented.

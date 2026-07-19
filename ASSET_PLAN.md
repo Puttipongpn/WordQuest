@@ -4,7 +4,7 @@ This document defines the future asset direction for WordQuest. Phase 61 is plan
 
 Phase 70A adds `ASSET_PROMPTS.md` as the practical pixel-art style bible and prompt pack for future image-generation work. It is still documentation-only: no final art assets, generated image files, runtime asset imports, new dependencies, or gameplay changes are added.
 
-The Phase 70 Player Batch 1A, Monster Batch 1B, and Effects Batch 1C source/reference candidates have now been generated and reviewed. They are production sources, not normalized runtime assets, and remain outside runtime integration.
+The Phase 70 Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E source/reference candidates have now been generated and reviewed. They are production sources, not normalized runtime assets, and remain outside runtime integration.
 
 ## Asset Direction
 
@@ -187,6 +187,80 @@ Effect design rules:
 - Effects must remain compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
 - Effects should remain readable on mobile and not visually noisy.
 
+## Current UI/Card/Background Asset Production Status
+
+Status date: 2026-07-19
+
+UI/Card/Background Batch 1D has been generated and reviewed as production source/reference candidates. These files are not normalized runtime-ready assets and must not be imported into the app until a future explicit integration phase.
+
+Generated Batch 1D files:
+
+- `background_dungeon_battle_01.png`
+- `ui_vocabulary_card_frame.png`
+- `ui_gold_coin.png`
+- `ui_heart_hp.png`
+- `ui_shield.png`
+
+Known polish note:
+
+- `background_dungeon_battle_01.png` is a weaker candidate than the approved core sprite batches and may need a polish pass if it becomes a runtime background candidate.
+
+## Current Boss Asset Production Status
+
+Status date: 2026-07-19
+
+Boss Batch 1E generated:
+
+- `boss_gatekeeper_idle_sheet.png`
+- `boss_gatekeeper_attack_sheet.png`
+- `boss_gatekeeper_hit_sheet.png`
+- `boss_gatekeeper_defeat_sheet.png`
+
+Boss Batch 1E is complete as a source/reference candidate set. These files are not normalized runtime-ready assets and must not be imported into the app until a future explicit integration phase.
+
+Gatekeeper identity:
+
+- Friendly but imposing dungeon word guardian boss
+- Stone-and-wood magical guardian
+- Key motif
+- Warm stone body
+- Wooden door/gate body
+- Moss accents
+- Gold trim
+- Soft teal crystal glow
+- Cozy fantasy pixel art
+- Beginner-friendly
+- Not horror, not violent, not dark demon-like
+
+Review decisions:
+
+- `boss_gatekeeper_idle_sheet.png`: approved candidate / usable v1; source filename may need rename from `boss_gatekeeper_idle_sheet(4).png` if the generated duplicate filename is present.
+- `boss_gatekeeper_attack_sheet.png`: approved candidate / usable v1.
+- `boss_gatekeeper_hit_sheet.png`: usable candidate; scale should be normalized later.
+- `boss_gatekeeper_defeat_sheet.png`: approved candidate / usable v1.
+
+Boss orientation:
+
+- Boss sprites face left.
+- Gatekeeper attack action moves or acts toward the left.
+- This matches enemy/boss battle framing.
+
+Boss action notes:
+
+- Idle reads as a stable guardian stance.
+- Attack reads as a compact teal-gold guardian pulse / stone-hand strike without implying a new mechanic.
+- Hit reads as a simple flinch reaction, but requires scale normalization.
+- Defeat reads as peaceful guardian deactivation / stone-gate settling, not violent death.
+
+Boss safety rules:
+
+- Boss assets are presentation-only.
+- Boss art must not imply new boss mechanics or new gameplay rules.
+- Boss art must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression.
+- Boss art must not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Boss art must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Boss art must remain readable on mobile and should not hide quiz UI or controls.
+
 ## Sprite Specs
 
 Recommended first-pass specs:
@@ -215,6 +289,10 @@ Animation prep:
 - Monster hit: 2 frames
 - Monster defeat: 3 to 4 frames
 - Effects: 4 to 6 frames
+- Boss idle: 4 frames
+- Boss attack: 4 frames
+- Boss hit: 2 frames
+- Boss defeat: 4 frames
 
 Phase 61 does not implement animation playback. These specs are for later asset generation and integration.
 
@@ -228,6 +306,8 @@ Generated images may be high resolution, contain extra transparent space, use pr
 - Align character ground baselines or flying enemy hover baselines.
 - Export final runtime-ready spritesheets.
 - Preserve original generated source files separately from normalized runtime assets.
+
+Boss source sheets require the same normalization workflow, but should resize into consistent 128x128 boss frame cells where appropriate, center the sprite, align the ground baseline, normalize scale across idle, attack, hit, and defeat, and rename generated duplicate filenames where necessary while preserving the original source files separately.
 
 ## Naming Convention
 
@@ -268,7 +348,10 @@ asset_sources/
   characters/
     player/
     monsters/
+    bosses/
   effects/
+  ui/
+  backgrounds/
 
 src/assets/
   characters/
@@ -391,11 +474,14 @@ Each current boss should eventually have idle, attack, special, hit, and defeat 
 
 Gatekeeper:
 
-- `boss_gatekeeper_idle.png`
-- `boss_gatekeeper_attack.png`
-- `boss_gatekeeper_special.png`
-- `boss_gatekeeper_hit.png`
-- `boss_gatekeeper_defeat.png`
+- `boss_gatekeeper_idle_sheet.png`
+- `boss_gatekeeper_attack_sheet.png`
+- `boss_gatekeeper_hit_sheet.png`
+- `boss_gatekeeper_defeat_sheet.png`
+
+Gatekeeper special:
+
+- `boss_gatekeeper_special_sheet.png` is optional future production if a later phase explicitly needs a distinct special presentation.
 
 Word Warden:
 
@@ -450,9 +536,14 @@ Additional future effects:
 
 ### UI
 
+Generated Batch 1D source/reference candidates:
+
 - `ui_gold_coin.png`
-- `ui_hp_heart.png`
+- `ui_heart_hp.png`
 - `ui_shield.png`
+
+Additional future UI:
+
 - `ui_timer.png`
 - `ui_mastery_star.png`
 - `ui_word_energy.png`
@@ -460,10 +551,15 @@ Additional future effects:
 
 ### Backgrounds
 
+Generated Batch 1D source/reference candidates:
+
+- `background_dungeon_battle_01.png`
+
+Additional future backgrounds:
+
 - `background_home_camp.png`
 - `background_deck_spellbook.png`
 - `background_training_room.png`
-- `background_dungeon_battle.png`
 - `background_shop.png`
 - `background_run_result.png`
 
@@ -490,7 +586,7 @@ Monsters:
 
 Bosses:
 
-- Gatekeeper: `boss_gatekeeper_idle.png`
+- Gatekeeper: `boss_gatekeeper_idle_sheet.png`
 - Word Warden: `boss_word_warden_idle.png`
 - Grammar Golem: `boss_grammar_golem_idle.png`
 - Shadow Reader: `boss_shadow_reader_idle.png`
@@ -521,6 +617,8 @@ Rules:
 - Assets must not reveal hidden answers, target cards, correct answers, or post-answer result information before the player answers.
 - Effects are presentation-only and must not imply changed rules, altered stats, or hidden result information.
 - Effects must stay compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Boss art is presentation-only and must not imply new boss mechanics, new attacks, changed stats, or hidden result information.
+- Boss art must stay readable on mobile and must not hide quiz UI or controls.
 - Asset ids should be optional if added to TypeScript data later.
 - Do not make real art required for Version 1 gameplay.
 - Mobile readability is more important than visual detail.
@@ -536,6 +634,7 @@ Future generation prompts should be runtime-targeted:
 - Explicitly request a final runtime-targeted spritesheet.
 - Specify total canvas size, such as 256x64 for four frames or 128x64 for two frames.
 - Require every frame cell to be exactly 64x64.
+- For boss spritesheets, specify 128x128 per frame where boss readability needs the larger size.
 - Request no large preview canvas and no upscale.
 - Require transparent background only.
 - Specify no checkerboard background.
@@ -611,6 +710,8 @@ Replacement should happen in small passes. Keep fallback placeholders visible un
 ## Known Limitations
 
 - Player Batch 1A, Monster Batch 1B, and Effects Batch 1C generated source/reference candidates exist.
+- UI/Card/Background Batch 1D generated source/reference candidates exist.
+- Boss Batch 1E generated source/reference candidates exist.
 - No normalized runtime-ready art assets exist yet.
 - No runtime asset manifest exists yet.
 - No animation playback system exists yet.
@@ -619,7 +720,8 @@ Replacement should happen in small passes. Keep fallback placeholders visible un
 - Accepted generated sources still need visual batch QA and normalization before any future runtime integration.
 - Player character concept exploration is complete; the Word Mage identity is locked.
 - Effects Batch 1C source/reference production and review are complete.
-- The next asset-planning step should choose between UI icons/card frame assets, background assets, boss assets, or normalization planning for Player Batch 1A, Monster Batch 1B, and Effects Batch 1C.
+- Boss Batch 1E source/reference production and review are complete.
+- The next asset-planning step should choose between elite enemy assets, event illustration assets, normalization planning for all accepted source/reference assets, or polish for weaker candidates such as `effect_wind_sheet.png`, `background_dungeon_battle_01.png`, and scale-normalization-sensitive hit sheets.
 
 ## Phase 61 Verification
 

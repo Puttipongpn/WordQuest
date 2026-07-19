@@ -1186,6 +1186,30 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Effects should improve game feel while preserving the tested learning/combat rules and the anti-hint quiz contract.
 - Status: Accepted
 
+### 2026-07-19: Gatekeeper Is The First Boss Visual Identity
+
+- Decision: The first boss visual identity is Gatekeeper: a friendly but imposing dungeon word guardian boss, stone-and-wood magical guardian with key motif, warm stone body, wooden door/gate body, moss accents, gold trim, soft teal crystal glow, cozy fantasy pixel art, beginner-friendly, not horror, not violent, and not dark demon-like.
+- Reason: Boss Batch 1E establishes a stable visual direction for the first boss while preserving WordQuest's beginner-friendly cozy fantasy tone.
+- Status: Accepted
+
+### 2026-07-19: Boss Sprites Face Left
+
+- Decision: Boss sprites face left, and Gatekeeper attack actions should move or act toward the left.
+- Reason: Boss orientation should match the established enemy/boss battle framing opposite the right-facing player.
+- Status: Accepted
+
+### 2026-07-19: Boss Batch 1E Is Source/Reference Only
+
+- Decision: Boss Batch 1E is complete as a source/reference candidate set, but the generated boss sheets are not normalized runtime-ready assets and must not be imported until a future explicit integration phase.
+- Reason: Boss sheets need alpha verification, frame splitting, sprite bounds cropping, consistent 128x128 boss frame cells where appropriate, centering, ground baseline alignment, scale normalization across idle/attack/hit/defeat, duplicate filename cleanup where necessary, and runtime-ready export while preserving originals separately.
+- Status: Accepted
+
+### 2026-07-19: Boss Art Is Presentation-Only And Anti-Hint
+
+- Decision: Boss assets are presentation-only. Boss art must not imply new boss mechanics or gameplay rules, change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression, reveal hidden answer/result information, or contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Reason: Boss art should make encounters feel more polished while keeping the tested boss rules and quiz anti-hint behavior intact.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.
