@@ -2,7 +2,7 @@
 
 This document is the Phase 70A prompt pack and style bible for WordQuest pixel art generation.
 
-Player Batch 1A and Monster Batch 1B have been generated as production source/reference candidates. They are not normalized runtime assets and must not be imported into the app yet.
+Player Batch 1A, Monster Batch 1B, and Effects Batch 1C have been generated as production source/reference candidates. They are not normalized runtime assets and must not be imported into the app yet.
 
 Use this document with `ASSET_PLAN.md` when generating real assets in a later workflow.
 
@@ -149,6 +149,45 @@ Goblin:
 
 The first goblin idle candidate was rejected because it faced the wrong direction. The regenerated goblin set correctly faces left and is usable.
 
+## Current Effects Asset Production Status
+
+Status date: 2026-07-19
+
+Effects Batch 1C generated:
+
+- `effect_shield_block_sheet.png`
+- `effect_fire_sheet.png`
+- `effect_water_sheet.png`
+- `effect_wind_sheet.png`
+- `effect_earth_sheet.png`
+- `effect_upgrade_spark_sheet.png`
+
+Effects Batch 1C is complete as a source/reference candidate set. These effect sheets are sufficient to proceed to the next asset-planning step, but they are not normalized runtime-ready assets and must not be imported into runtime yet.
+
+Review decisions:
+
+- `effect_water_sheet.png`: approved candidate / usable v1.
+- `effect_fire_sheet.png`: approved candidate / usable v1.
+- `effect_shield_block_sheet.png`: usable candidate; readable magical protection effect with a strong book-like barrier identity; optional polish later.
+- `effect_upgrade_spark_sheet.png`: approved candidate / usable v1.
+- `effect_earth_sheet.png`: usable candidate; strong earth read, slightly heavy scale, normalize later.
+- `effect_wind_sheet.png`: usable candidate; readable but lighter/weaker than other effects, polish later if needed.
+
+Future effect polish priority:
+
+1. `effect_wind_sheet.png`: improve contrast and visual presence if needed.
+2. `effect_earth_sheet.png`: check scale and heaviness during normalization.
+3. `effect_shield_block_sheet.png`: optional polish if the book-like barrier needs to read more like a shield block.
+
+Effect safety rules:
+
+- Effects are presentation-only visual feedback.
+- Effects must never imply gameplay rule changes.
+- Effects must not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Effects must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Effects must remain compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Effects should remain readable on mobile and not visually noisy.
+
 ## Shared Prompt Rules
 
 Use these rules in every prompt unless a specific asset says otherwise:
@@ -168,6 +207,9 @@ Use these rules in every prompt unless a specific asset says otherwise:
 - Specify total canvas size, such as 256x64 for four frames or 128x64 for two frames.
 - Require every frame cell to be exactly 64x64.
 - Specify no large preview canvas and no upscale.
+- Specify no checkerboard background.
+- Specify no frame borders, labels, UI, text, watermark, letters, numbers, or readable runes.
+- Keep effect bounds compact inside each 64x64 frame.
 - Specify the intended sprite body size within each 64x64 frame.
 - Plan a normalization safety pass even when exact dimensions are requested.
 
@@ -187,7 +229,7 @@ no gradients, no soft airbrush shading, no high-resolution painting, no semi-rea
 
 ## First Asset Batch Plan
 
-Batch 1A and Batch 1B are generated source/reference candidates. Batch 1C and Batch 1D remain future production.
+Batch 1A, Batch 1B, and Batch 1C are generated source/reference candidates. Batch 1D remains future production.
 
 ### Batch 1A - Player Test - Generated
 
@@ -213,9 +255,8 @@ Batch 1A and Batch 1B are generated source/reference candidates. Batch 1C and Ba
 - `monster_goblin_hit_sheet.png`
 - `monster_goblin_defeat_sheet.png`
 
-### Batch 1C - Effects
+### Batch 1C - Effects - Generated
 
-- `effect_slash_sheet.png`
 - `effect_shield_block_sheet.png`
 - `effect_fire_sheet.png`
 - `effect_water_sheet.png`
@@ -239,6 +280,7 @@ Keep generated source/reference files separate from normalized runtime-ready ass
 asset_sources/
   characters/player/
   characters/monsters/
+  effects/
 
 src/assets/characters/player/
 src/assets/characters/monsters/
@@ -722,6 +764,20 @@ Effects should support feedback without hiding the quiz.
 Shared effect spec:
 64x64 per frame, 4 to 6 frames, horizontal spritesheet, transparent background.
 
+Runtime-targeted effect prompt rules:
+
+- Explicitly request a final runtime-targeted spritesheet.
+- Specify total canvas size, such as 256x64 for 4 frames.
+- Specify each frame must be exactly 64x64.
+- Specify transparent background only.
+- Specify no large preview canvas.
+- Specify no checkerboard background.
+- Specify no frame borders, labels, UI, text, watermark, letters, numbers, or readable runes.
+- Specify compact effect bounds inside each 64x64 frame.
+- Still expect a normalization safety pass because image generators may not obey exact pixel dimensions reliably.
+
+Before any runtime integration, every accepted effect should be normalized by verifying alpha, splitting frames, cropping effect bounds, resizing into consistent 64x64 cells where appropriate, centering the effect, preserving appropriate vertical placement such as earth effects staying lower/grounded, exporting runtime-ready spritesheets, and preserving original source files separately.
+
 ### effect_slash_sheet.png
 
 Purpose:
@@ -949,6 +1005,10 @@ Use this before accepting generated assets:
 - Image is beginner-friendly and not scary.
 - Visual detail does not reduce quiz readability.
 - Asset does not reveal hidden answers, target cards, correct answers, or result data.
+- Effects do not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Effects do not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Effects remain compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Effects remain readable on mobile and do not become visually noisy.
 - Missing asset fallback remains possible.
 - File size is reasonable for a static Vite/Vercel demo.
 - Source file and normalized runtime export are kept separately.
@@ -972,7 +1032,7 @@ Do not implement these until an explicit runtime integration phase. Generated so
 
 Recommended future integration steps:
 
-1. Complete visual batch QA for Player Batch 1A and Monster Batch 1B.
+1. Complete visual batch QA for Player Batch 1A, Monster Batch 1B, and Effects Batch 1C.
 2. Decide whether the accepted sources should enter normalization.
 3. Normalize selected assets and export runtime-ready spritesheets.
 4. Add only normalized image files under `src/assets`.

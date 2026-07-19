@@ -407,6 +407,25 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Future monster asset list is documented.
 - Future boss asset list is documented.
 - Future effects asset list is documented.
+- Player Batch 1A generated source/reference candidates are documented.
+- Monster Batch 1B generated source/reference candidates are documented.
+- Effects Batch 1C generated source/reference candidates are documented.
+- Effects Batch 1C review decisions are documented.
+- Effects Batch 1C remains source/reference only, not runtime-normalized.
+- Effects Batch 1C is not imported into runtime.
+- Effects Batch 1C does not require an asset manifest.
+- Effects Batch 1C does not require animation playback.
+- Effect assets are presentation-only and do not imply rule changes.
+- Effect assets do not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Effect assets do not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Effect assets stay compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Effect assets remain readable on mobile and are not visually noisy.
+- Accepted effect sources still need alpha verification before runtime integration.
+- Accepted effect sources still need frame splitting and bounds cropping before runtime integration.
+- Accepted effect sources still need consistent 64x64 frame cells where appropriate before runtime integration.
+- Accepted effect sources still need centering and vertical placement checks before runtime integration.
+- Earth effects preserve lower/grounded placement during normalization.
+- Original generated effect sources are preserved separately from normalized runtime-ready exports.
 - Future UI and background asset lists are documented.
 - Current monster and boss names are mapped to future asset filenames.
 - Future image-generation prompt templates are documented.

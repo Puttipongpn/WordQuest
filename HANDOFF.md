@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 70 Player Batch 1A and Monster Batch 1B source/reference production complete; runtime integration remains prohibited.
+Current phase: Phase 70 Player Batch 1A, Monster Batch 1B, and Effects Batch 1C source/reference production complete; runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2129,19 +2129,61 @@ Orientation:
 - The first Goblin idle candidate was rejected for facing the wrong direction.
 - The regenerated Goblin set faces left and is usable.
 
+## Current Effects Asset Production Status
+
+Status date: 2026-07-19
+
+Effects Batch 1C generated:
+
+- `effect_shield_block_sheet.png`
+- `effect_fire_sheet.png`
+- `effect_water_sheet.png`
+- `effect_wind_sheet.png`
+- `effect_earth_sheet.png`
+- `effect_upgrade_spark_sheet.png`
+
+Effects Batch 1C is complete as a source/reference candidate set. The batch is sufficient to proceed to the next asset-planning step, but the files are not normalized runtime-ready assets and must not be imported into the app yet.
+
+Review decisions:
+
+- `effect_water_sheet.png`: approved candidate / usable v1.
+- `effect_fire_sheet.png`: approved candidate / usable v1.
+- `effect_shield_block_sheet.png`: usable candidate; readable magical protection effect with a strong book-like barrier identity; optional polish later.
+- `effect_upgrade_spark_sheet.png`: approved candidate / usable v1.
+- `effect_earth_sheet.png`: usable candidate; strong earth read, slightly heavy scale, normalize later.
+- `effect_wind_sheet.png`: usable candidate; readable but lighter/weaker than other effects, polish later if needed.
+
+Future effect polish priority:
+
+1. `effect_wind_sheet.png`: improve contrast and visual presence if needed.
+2. `effect_earth_sheet.png`: check scale and heaviness during normalization.
+3. `effect_shield_block_sheet.png`: optional polish if the book-like barrier needs to read more like a shield block.
+
+Effect safety:
+
+- Effects are presentation-only visual feedback.
+- Effects must never imply gameplay rule changes.
+- Effects must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression.
+- Effects must not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Effects must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Effects must remain compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Effects should remain readable on mobile and not visually noisy.
+
 ## Source And Runtime Separation
 
-All generated Player Batch 1A and Monster Batch 1B files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact 64x64 runtime cells.
+All generated Player Batch 1A, Monster Batch 1B, and Effects Batch 1C files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact 64x64 runtime cells.
 
 Before runtime integration, accepted assets need a normalization pass:
 
 1. Verify transparent background and alpha.
 2. Split and inspect frames.
-3. Crop sprite bounds.
+3. Crop sprite or effect bounds.
 4. Resize into consistent 64x64 cells where appropriate.
-5. Center sprites and align ground or hover baselines.
+5. Center sprites/effects and align ground, hover, or effect placement baselines.
 6. Export runtime-ready spritesheets.
 7. Preserve original source files separately.
+
+For effects, preserve appropriate vertical placement during normalization, such as earth effects staying lower/grounded.
 
 Recommended future storage distinction:
 
@@ -2153,15 +2195,15 @@ Integration safety:
 - Do not integrate these image files into runtime yet.
 - Do not add runtime asset imports, manifests, animation code, dependencies, or final-art replacement code until a future explicit integration phase.
 - Missing assets must retain emoji/text/CSS fallbacks, and asset loading failure must not crash the app.
-- Assets must not reveal hidden answers, target cards, correct answers, or result information.
-- Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, deck unlock rules, and dependencies unchanged.
+- Assets must not reveal hidden answers, target cards, correct answers, triggered cards, or result information.
+- Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, encounter progression, deck unlock rules, and dependencies unchanged.
 
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Perform a visual batch QA pass for Player Batch 1A and Monster Batch 1B.
-2. Decide whether accepted source/reference candidates should be normalized for later runtime integration.
-3. Optionally continue with Effects Batch 1C or additional monsters only after documentation and batch QA are current.
+1. Choose the next asset phase: UI icons/card frame assets, background assets, boss assets, or normalization planning.
+2. If normalizing later, include Player Batch 1A, Monster Batch 1B, and Effects Batch 1C in the normalization plan.
+3. Do not integrate assets into runtime until an explicit future integration phase.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

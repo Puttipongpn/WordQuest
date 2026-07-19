@@ -4,7 +4,7 @@ This document defines the future asset direction for WordQuest. Phase 61 is plan
 
 Phase 70A adds `ASSET_PROMPTS.md` as the practical pixel-art style bible and prompt pack for future image-generation work. It is still documentation-only: no final art assets, generated image files, runtime asset imports, new dependencies, or gameplay changes are added.
 
-The Phase 70 Player Batch 1A and Monster Batch 1B source/reference candidates have now been generated and reviewed. They are production sources, not normalized runtime assets, and remain outside runtime integration.
+The Phase 70 Player Batch 1A, Monster Batch 1B, and Effects Batch 1C source/reference candidates have now been generated and reviewed. They are production sources, not normalized runtime assets, and remain outside runtime integration.
 
 ## Asset Direction
 
@@ -147,6 +147,46 @@ Direction review:
 - The first goblin idle candidate was rejected because it faced the wrong direction.
 - The regenerated goblin set faces left and is usable.
 
+## Current Effects Asset Production Status
+
+Status date: 2026-07-19
+
+Effects Batch 1C generated:
+
+- `effect_shield_block_sheet.png`
+- `effect_fire_sheet.png`
+- `effect_water_sheet.png`
+- `effect_wind_sheet.png`
+- `effect_earth_sheet.png`
+- `effect_upgrade_spark_sheet.png`
+
+Effects Batch 1C is complete as a source/reference candidate set and is sufficient to proceed to the next asset-planning step. These files are not normalized runtime-ready assets and must not be imported into the app until a future explicit integration phase.
+
+Review decisions:
+
+- `effect_water_sheet.png`: approved candidate / usable v1.
+- `effect_fire_sheet.png`: approved candidate / usable v1.
+- `effect_shield_block_sheet.png`: usable candidate; readable magical protection effect with a strong book-like barrier identity; optional polish later.
+- `effect_upgrade_spark_sheet.png`: approved candidate / usable v1.
+- `effect_earth_sheet.png`: usable candidate; strong earth read, slightly heavy scale, normalize later.
+- `effect_wind_sheet.png`: usable candidate; readable but lighter/weaker than other effects, polish later if needed.
+
+Future effect polish priority:
+
+1. `effect_wind_sheet.png`: improve contrast and visual presence if needed.
+2. `effect_earth_sheet.png`: check scale and heaviness during normalization.
+3. `effect_shield_block_sheet.png`: optional polish if the book-like barrier needs to read more like a shield block.
+
+Effect design rules:
+
+- Effects are presentation-only visual feedback.
+- Effects must never imply gameplay rule changes.
+- Effects must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression.
+- Effects must not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Effects must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Effects must remain compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Effects should remain readable on mobile and not visually noisy.
+
 ## Sprite Specs
 
 Recommended first-pass specs:
@@ -228,6 +268,7 @@ asset_sources/
   characters/
     player/
     monsters/
+  effects/
 
 src/assets/
   characters/
@@ -390,16 +431,22 @@ Memory Dragon:
 
 ### Effects
 
-- `effect_physical_slash.png`
-- `effect_shield_block.png`
-- `effect_fire.png`
-- `effect_water.png`
-- `effect_wind.png`
-- `effect_earth.png`
-- `effect_mastery_glow.png`
-- `effect_victory.png`
-- `effect_defeat.png`
-- `effect_timeout.png`
+Generated Batch 1C source/reference candidates:
+
+- `effect_shield_block_sheet.png`
+- `effect_fire_sheet.png`
+- `effect_water_sheet.png`
+- `effect_wind_sheet.png`
+- `effect_earth_sheet.png`
+- `effect_upgrade_spark_sheet.png`
+
+Additional future effects:
+
+- `effect_physical_slash_sheet.png`
+- `effect_mastery_glow_sheet.png`
+- `effect_victory_sheet.png`
+- `effect_defeat_sheet.png`
+- `effect_timeout_sheet.png`
 
 ### UI
 
@@ -451,15 +498,16 @@ Bosses:
 
 Effects:
 
-- Physical attack: `effect_physical_slash.png`
-- Shield: `effect_shield_block.png`
-- Fire element: `effect_fire.png`
-- Water element: `effect_water.png`
-- Wind element: `effect_wind.png`
-- Earth element: `effect_earth.png`
-- Mastery bonus: `effect_mastery_glow.png`
-- Victory: `effect_victory.png`
-- Defeat: `effect_defeat.png`
+- Physical attack: `effect_physical_slash_sheet.png`
+- Shield: `effect_shield_block_sheet.png`
+- Fire element: `effect_fire_sheet.png`
+- Water element: `effect_water_sheet.png`
+- Wind element: `effect_wind_sheet.png`
+- Earth element: `effect_earth_sheet.png`
+- Upgrade feedback: `effect_upgrade_spark_sheet.png`
+- Mastery bonus: `effect_mastery_glow_sheet.png`
+- Victory: `effect_victory_sheet.png`
+- Defeat: `effect_defeat_sheet.png`
 
 ## Integration Rules
 
@@ -471,6 +519,8 @@ Rules:
 - Asset loading failure must not crash the app.
 - Assets must not change combat behavior, answer checking, timers, HP, shield, gold, mastery, Word Energy, deck unlocks, save behavior, or encounter progression.
 - Assets must not reveal hidden answers, target cards, correct answers, or post-answer result information before the player answers.
+- Effects are presentation-only and must not imply changed rules, altered stats, or hidden result information.
+- Effects must stay compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
 - Asset ids should be optional if added to TypeScript data later.
 - Do not make real art required for Version 1 gameplay.
 - Mobile readability is more important than visual detail.
@@ -488,6 +538,9 @@ Future generation prompts should be runtime-targeted:
 - Require every frame cell to be exactly 64x64.
 - Request no large preview canvas and no upscale.
 - Require transparent background only.
+- Specify no checkerboard background.
+- Specify no frame borders, labels, UI, text, watermark, letters, numbers, or readable runes.
+- Keep effect bounds compact inside each 64x64 frame.
 - Specify the intended sprite body size within each 64x64 cell.
 - Still require a normalization safety pass because image generators may not follow exact dimensions reliably.
 
@@ -557,7 +610,7 @@ Replacement should happen in small passes. Keep fallback placeholders visible un
 
 ## Known Limitations
 
-- Player Batch 1A and Monster Batch 1B generated source/reference candidates exist.
+- Player Batch 1A, Monster Batch 1B, and Effects Batch 1C generated source/reference candidates exist.
 - No normalized runtime-ready art assets exist yet.
 - No runtime asset manifest exists yet.
 - No animation playback system exists yet.
@@ -565,7 +618,8 @@ Replacement should happen in small passes. Keep fallback placeholders visible un
 - Exact sprite sizes may need adjustment after mobile visual tests.
 - Accepted generated sources still need visual batch QA and normalization before any future runtime integration.
 - Player character concept exploration is complete; the Word Mage identity is locked.
-- Effects Batch 1C and additional monsters remain optional future production after documentation and batch QA are current.
+- Effects Batch 1C source/reference production and review are complete.
+- The next asset-planning step should choose between UI icons/card frame assets, background assets, boss assets, or normalization planning for Player Batch 1A, Monster Batch 1B, and Effects Batch 1C.
 
 ## Phase 61 Verification
 

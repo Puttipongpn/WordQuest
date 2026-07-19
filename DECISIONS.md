@@ -1174,6 +1174,18 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Separating sources from runtime exports protects original generation work and prevents unnormalized preview files from being imported accidentally.
 - Status: Accepted
 
+### 2026-07-19: Effects Batch 1C Is Source/Reference Only
+
+- Decision: Effects Batch 1C is complete as a source/reference candidate set, but the generated effect sheets are not normalized runtime-ready assets and must not be imported until a future explicit integration phase.
+- Reason: Effect generator output may still need alpha verification, frame splitting, bounds cropping, consistent 64x64 cell sizing where appropriate, centering, vertical placement checks, and runtime-ready export while preserving the originals separately.
+- Status: Accepted
+
+### 2026-07-19: Effects Are Presentation-Only And Anti-Hint
+
+- Decision: Generated effects are presentation-only visual feedback. They must not change or imply changes to combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression, and they must not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Reason: Effects should improve game feel while preserving the tested learning/combat rules and the anti-hint quiz contract.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed generation and first review of Phase 70 Player Batch 1A and Monster Batch 1B. The files are production source/reference candidates only; visual batch QA and normalization are required before any future runtime integration. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed generation and review of Phase 70 Player Batch 1A, Monster Batch 1B, and Effects Batch 1C. The files are production source/reference candidates only; visual batch QA and normalization are required before any future runtime integration. Runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -884,6 +884,15 @@ WordQuest has completed generation and first review of Phase 70 Player Batch 1A 
 - Updated future prompt guidance to request exact runtime-targeted canvas and frame sizes, transparent background, no preview upscale, and explicit sprite body sizing while retaining a normalization safety pass.
 - Preserved runtime safety rules: placeholder fallbacks remain required, loading failures must not crash the app, and assets must not alter or reveal gameplay state.
 - Kept this update documentation-only with no source code, image file movement/creation, asset imports, manifest, animation playback, dependencies, gameplay rules, saves, combat math, timers, mastery, Word Energy, unlock rules, encounter progression, or deployment changes.
+- Documented completion of Effects Batch 1C source/reference generation: shield block, fire, water, wind, earth, and upgrade spark sheets.
+- Recorded Effects Batch 1C review decisions: water, fire, and upgrade spark are approved usable v1 candidates; shield block is a usable book-like barrier candidate with optional polish; earth is usable with scale/heaviness normalization later; wind is usable but may need contrast/presence polish.
+- Recorded that Effects Batch 1C is complete as a source/reference candidate set and sufficient to proceed to the next asset-planning step.
+- Reaffirmed that effects are presentation-only and must not imply gameplay rule changes or alter combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression.
+- Documented effect anti-hint rules: effects must not reveal hidden answers, target cards, correct answers, triggered cards, or result information before the player answers.
+- Documented effect visual safety rules: no readable text, letters, numbers, stat labels, answer-like symbols, or readable runes; effects must stay compact enough to avoid hiding quiz text, Thai text, answer choices, controls, HP/shield UI, or battle feedback.
+- Updated effect prompt guidance to request runtime-targeted spritesheets with exact total canvas and 64x64 frame cells, transparent background only, no preview canvas, no checkerboard background, no borders/labels/UI/text/watermarks/readable runes, compact effect bounds, and a normalization safety pass.
+- Extended the pre-integration normalization guidance for effects: alpha check, frame splitting, bounds crop, consistent 64x64 cells where appropriate, centering, vertical placement preservation such as grounded earth effects, runtime-ready export, and preserved source originals.
+- Kept the Effects Batch 1C update documentation-only with no source code, image file movement/creation, asset imports, manifest, animation playback, dependencies, gameplay rules, saves, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, encounter progression, or deployment changes.
 
 ## In Progress
 
@@ -893,9 +902,9 @@ WordQuest has completed generation and first review of Phase 70 Player Batch 1A 
 
 Recommended next steps:
 
-1. Perform a visual batch QA pass for Player Batch 1A and Monster Batch 1B.
-2. Decide whether accepted source/reference candidates should be normalized for later runtime integration.
-3. Optionally continue with Effects Batch 1C or additional monsters only after documentation and batch QA are current.
+1. Choose the next asset phase: UI icons/card frame assets, background assets, boss assets, or normalization planning.
+2. If normalizing later, include Player Batch 1A, Monster Batch 1B, and Effects Batch 1C in the normalization plan.
+3. Do not integrate assets into runtime until an explicit future integration phase.
 
 ## Required Project Documents
 
