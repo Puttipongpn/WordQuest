@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed generation and review of Phase 70 Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E. The files are production source/reference candidates only; visual batch QA and normalization are required before any future runtime integration. Runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71A Asset Normalization Planning and production/review of Phase 70 Batches 1A through 1G, now including Event Illustration Batch 1F and Elite Enemy Batch 1G. All generated images remain production source/reference candidates; no normalization or runtime integration has occurred. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -1083,6 +1083,38 @@ The following documents are required and must be updated after every completed t
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
+
+## Event Illustration Batch 1F + Elite Enemy Batch 1G Summary
+
+Completed on 2026-07-21 as documentation and source/reference review only:
+
+- Recorded Treasure Chest and Strange Altar as approved event candidates / usable v1.
+- Recorded Healing Shrine as usable with a later restorative-identity polish recommended.
+- Locked Elite Crystal Slime as the first elite visual identity and documented its left-facing idle, attack, hit, and defeat reads.
+- Recorded Crystal Slime idle, attack, and defeat as approved / usable v1; hit remains usable with scale/spacing normalization required.
+- Established the encounter visual hierarchy: Slime/Bat/Goblin normal monsters, Crystal Slime elite, Gatekeeper boss, and Treasure Chest/Healing Shrine/Strange Altar events.
+- Added separate normalization guidance for 64x64 grounded elite sheets and event illustrations that require target dimensions, anti-spoiler checks, overlay composition, and mobile crop/readability review.
+- Preserved source/runtime separation and all gameplay, save, combat, timer, mastery, Word Energy, shop/event/boss/elite, and progression rules.
+
+## Phase 71A Asset Normalization Planning Summary
+
+Phase 71A documents the future source-to-runtime conversion workflow without performing normalization or runtime integration.
+
+Completed:
+
+- Defined generated source/reference assets separately from normalized runtime-ready assets.
+- Documented the future `asset_sources/{player,monsters,elites,effects,ui,backgrounds,bosses,events}` and `src/assets/{player,monsters,elites,effects,ui,backgrounds,bosses,events}` model without creating or moving folders.
+- Locked runtime targets at 64x64 per player, small-monster, and effect frame; 128x128 per boss frame; and 64x64 per UI icon.
+- Documented expected complete sheet dimensions, the full alpha/frame/crop/resize/alignment/export/QA workflow, and grounded, hover, effect, boss, and background placement rules.
+- Recorded known normalization and polish notes for Player 1A, Monster 1B, Effects 1C, UI/Card/Background 1D, and Boss 1E.
+- Defined a later explicit runtime integration gate requiring normalized assets, visual QA, safe fallbacks, non-crashing load failure, reduced-motion consideration, quiz readability, and preserved gameplay safety.
+- Recommended Phase 71B normalization script/manual-checklist planning, targeted polish, optional additional elite variants, or later integration planning after normalized exports exist.
+
+Preserved:
+
+- No source or image files were created, moved, converted, or imported.
+- No scripts, asset manifest, animation playback, dependencies, React Router, backend, database, auth, or API were added.
+- Gameplay, combat math, timers, mastery, save schema, deck unlocks, Word Energy, shop/event/boss rules, and encounter progression were not changed.
 
 ## Important Rules
 

@@ -1210,6 +1210,36 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Boss art should make encounters feel more polished while keeping the tested boss rules and quiz anti-hint behavior intact.
 - Status: Accepted
 
+### 2026-07-19: Phase 71A Defines Normalization Without Performing It
+
+- Decision: Phase 71A is documentation-only normalization planning. It defines source/runtime categories, target dimensions, frame and baseline workflow, candidate notes, safety rules, and the runtime integration gate, but does not convert or move images, create scripts or manifests, import assets, or implement animation playback.
+- Reason: A reviewed normalization contract reduces accidental source-file integration and allows later tooling or manual processing to produce predictable runtime exports.
+- Status: Accepted
+
+### 2026-07-19: Runtime Assets Require A Later Explicit Integration Gate
+
+- Decision: Only normalized, visually approved assets may enter `src/assets/`, and only during a later explicit integration phase with safe fallbacks, non-crashing load failure, reduced-motion consideration, and preserved quiz readability and gameplay rules.
+- Reason: Generated source/reference candidates are not sufficiently consistent or resilient for direct runtime use.
+- Status: Accepted
+
+### 2026-07-21: Event Illustrations Are Discovery Presentation Without Spoilers
+
+- Decision: Treasure Chest, Healing Shrine, and Strange Altar establish the first event illustration set. Event art is presentation-only, contains no characters/monsters or readable text/runes/labels, and cannot reveal choices, outcomes, exact rewards, costs, healing, shield values, or result information.
+- Reason: Discovery art should establish mood while preserving event choice clarity and preventing visual spoilers.
+- Status: Accepted
+
+### 2026-07-21: Elite Crystal Slime Is The First Elite Visual Identity
+
+- Decision: Elite Crystal Slime is the first elite enemy identity: a stronger friendly green slime with teal crystal growths, tiny gold sparkles, a cute simple face, and left-facing actions. It remains beginner-friendly, not scary, gross, or violent.
+- Reason: The crystal treatment distinguishes elite encounters while preserving the established normal Slime family and cozy battle framing.
+- Status: Accepted
+
+### 2026-07-21: Encounter Visual Hierarchy Is Locked For Current Candidates
+
+- Decision: Current visual hierarchy is Slime/Bat/Goblin as normal monsters, Crystal Slime as elite, Gatekeeper as boss, and Treasure Chest/Healing Shrine/Strange Altar as events. This is presentation-only and creates no gameplay or progression change.
+- Reason: A clear visual taxonomy keeps future normalization and integration mapping consistent without changing encounter rules.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

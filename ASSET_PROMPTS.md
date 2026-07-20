@@ -2,7 +2,9 @@
 
 This document is the Phase 70A prompt pack and style bible for WordQuest pixel art generation.
 
-Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E have been generated as production source/reference candidates. They are not normalized runtime assets and must not be imported into the app yet.
+Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, Boss Batch 1E, Event Illustration Batch 1F, and Elite Enemy Batch 1G have been generated as production source/reference candidates. They are not normalized runtime assets and must not be imported into the app yet.
+
+Phase 71A is normalization planning only. It does not create normalized exports, folders, scripts, manifests, imports, or animation playback.
 
 Use this document with `ASSET_PLAN.md` when generating real assets in a later workflow.
 
@@ -264,6 +266,35 @@ Boss safety rules:
 - Boss art must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
 - Boss art must remain readable on mobile and should not hide quiz UI or controls.
 
+## Current Event Illustration Batch 1F Status
+
+Generated and reviewed on 2026-07-21:
+
+- `event_treasure_chest_01.png`: approved candidate / usable v1; keep the reward discovery readable without showing exact rewards or outcomes.
+- `event_strange_altar_01.png`: approved candidate / usable v1; keep it mysterious and friendly, never cursed, demonic, horror-like, or ritualistic.
+- `event_healing_shrine_01.png`: usable candidate / polish later recommended because its teal crystal language overlaps with Strange Altar.
+
+Healing Shrine polish direction: softer recovery mood, gentler halo, water basin or soft pool glow, mist or droplets, less mystery-crystal-centerpiece emphasis, and a calm restorative shrine read.
+
+Event prompts and accepted images must remain presentation-only, contain no characters/monsters or readable text/runes/labels, avoid outcome/reward/cost/value spoilers, and leave quiet composition space for event UI overlays and mobile crops.
+
+## Current Elite Enemy Batch 1G Status
+
+Generated and reviewed on 2026-07-21:
+
+- `elite_crystal_slime_idle_sheet.png`: approved candidate / usable v1; later rename a duplicate `elite_crystal_slime_idle_sheet(4).png` source if present.
+- `elite_crystal_slime_attack_sheet.png`: approved candidate / usable v1.
+- `elite_crystal_slime_hit_sheet.png`: usable candidate; normalize scale/spacing later.
+- `elite_crystal_slime_defeat_sheet.png`: approved candidate / usable v1.
+
+Reusable Elite Crystal Slime identity phrase:
+
+```text
+Elite Crystal Slime, a stronger-looking version of the friendly green dungeon slime, rounded green slime body, teal crystal growths on the back and head, tiny gold sparkles and crystal shine, cute simple face, magical and special but beginner-friendly, facing left, not scary, not gross, not violent, cozy fantasy pixel art
+```
+
+Elite action direction: idle is a magical crystal slime wobble; attack is a leftward crystal-powered bounce/lunge with compact teal-gold sparkle; hit is a simple squish/flinch; defeat is a gentle flattening/puddle/sparkle fade. These visuals do not imply new mechanics.
+
 ## Shared Prompt Rules
 
 Use these rules in every prompt unless a specific asset says otherwise:
@@ -306,7 +337,7 @@ no gradients, no soft airbrush shading, no high-resolution painting, no semi-rea
 
 ## First Asset Batch Plan
 
-Batch 1A, Batch 1B, Batch 1C, Batch 1D, and Batch 1E are generated source/reference candidates.
+Batch 1A through Batch 1G are generated source/reference candidates.
 
 ### Batch 1A - Player Test - Generated
 
@@ -356,28 +387,48 @@ Batch 1A, Batch 1B, Batch 1C, Batch 1D, and Batch 1E are generated source/refere
 - `boss_gatekeeper_hit_sheet.png`
 - `boss_gatekeeper_defeat_sheet.png`
 
+### Batch 1F - Event Illustrations - Generated
+
+- `event_treasure_chest_01.png`
+- `event_healing_shrine_01.png`
+- `event_strange_altar_01.png`
+
+### Batch 1G - Elite Crystal Slime - Generated
+
+- `elite_crystal_slime_idle_sheet.png`
+- `elite_crystal_slime_attack_sheet.png`
+- `elite_crystal_slime_hit_sheet.png`
+- `elite_crystal_slime_defeat_sheet.png`
+
 ## Intended Future Paths
 
 Keep generated source/reference files separate from normalized runtime-ready assets.
 
 ```text
 asset_sources/
-  characters/player/
-  characters/monsters/
-  characters/bosses/
+  player/
+  monsters/
+  elites/
   effects/
   ui/
   backgrounds/
+  bosses/
+  events/
 
-src/assets/characters/player/
-src/assets/characters/monsters/
-src/assets/characters/bosses/
-src/assets/effects/
-src/assets/ui/
-src/assets/backgrounds/
+src/assets/
+  player/
+  monsters/
+  elites/
+  effects/
+  ui/
+  backgrounds/
+  bosses/
+  events/
 ```
 
 Use `asset_sources/` or a documentation/reference location for original generated high-resolution files. Reserve `src/assets/` for normalized runtime-ready assets during a future explicit integration phase. Use lowercase snake_case filenames.
+
+Phase 71A runtime targets are 64x64 cells for player, small-monster, and effect sheets; 128x128 cells for boss sheets; and 64x64 for single UI icons. This produces 256x64 four-frame sheets, 128x64 two-frame sheets, 384x64 six-frame sheets, 512x128 four-frame boss sheets, and 256x128 two-frame boss sheets. Keep the vocabulary card frame provisional until UI testing, and keep the 1536x864 dungeon background provisional until style, crop, and responsive-use planning is complete.
 
 ## Prompt Template Format
 
@@ -444,7 +495,7 @@ QA:
 - No text or watermark.
 
 Integration notes:
-- Future path: `src/assets/characters/player/player_word_mage_idle_sheet.png`.
+- Future path: `src/assets/player/player_word_mage_idle_sheet.png`.
 - Keep emoji player fallback if the asset is missing.
 
 ### player_word_mage_cast_attack_sheet.png
@@ -651,7 +702,7 @@ QA:
 - Silhouette is readable and friendly.
 
 Integration notes:
-- Future path: `src/assets/characters/monsters/monster_slime_idle_sheet.png`.
+- Future path: `src/assets/monsters/monster_slime_idle_sheet.png`.
 
 #### monster_slime_attack_sheet.png
 
@@ -756,7 +807,7 @@ QA:
 - Reads as bat at small size.
 
 Integration notes:
-- Future path: `src/assets/characters/monsters/`.
+- Future path: `src/assets/monsters/`.
 
 ### Goblin Templates
 
@@ -782,7 +833,7 @@ QA:
 - Goblin remains beginner-friendly.
 
 Integration notes:
-- Future path: `src/assets/characters/monsters/`.
+- Future path: `src/assets/monsters/`.
 
 ## Boss Prompt Templates
 
@@ -815,7 +866,7 @@ QA:
 - Key/guardian theme reads without text.
 
 Integration notes:
-- Future path: `src/assets/characters/bosses/boss_gatekeeper_idle_sheet.png`.
+- Future path: `src/assets/bosses/boss_gatekeeper_idle_sheet.png`.
 - Boss art must not change boss logic or stats.
 
 ### Boss State Template
@@ -1115,16 +1166,21 @@ Use this before accepting generated assets:
 - Every accepted source has been checked for extra transparent space and preview scaling.
 - Runtime export uses consistent 64x64 frame cells where appropriate.
 - Ground or hover baselines are aligned across frames.
+- Elite sheets use consistent 64x64 cells where appropriate, face left, and maintain a stable grounded baseline and action scale.
+- Event illustrations have verified target display dimensions, no outcome spoilers, no characters/monsters, and composition that works beneath event-panel overlays and mobile crops.
 
 Before runtime integration, normalize every accepted source:
 
-1. Verify transparent background and alpha.
-2. Split and inspect frames.
-3. Crop sprite bounds.
-4. Resize into consistent 64x64 frame cells, or 128x128 boss frame cells, where appropriate.
-5. Center the sprite and align its ground or hover baseline.
-6. Export the final runtime-ready spritesheet.
-7. Preserve the original source separately.
+1. Collect and preserve the original generated source files.
+2. Verify alpha and transparent backgrounds; remove checkerboard or preview backgrounds if present.
+3. Split sheets and crop bounds per frame.
+4. Determine shared maximum bounds for the sheet.
+5. Resize without distorting aspect ratio into 64x64 cells, or 128x128 boss cells, where appropriate.
+6. Center horizontally and align the correct ground, hover, or effect-specific baseline.
+7. Recombine frames and export with a stable filename.
+8. Visually QA the output while preserving the original source separately.
+
+Baseline rules: keep the Word Mage, Slime, Goblin, and Gatekeeper grounded; keep Bat on a stable hover baseline; center effects except for lower/grounded earth effects; prioritize quiz/UI readability when preparing backgrounds.
 
 ## Future Codex Integration Notes
 
@@ -1132,25 +1188,26 @@ Do not implement these until an explicit runtime integration phase. Generated so
 
 Recommended future integration steps:
 
-1. Complete visual batch QA for Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E.
-2. Decide whether the accepted sources should enter normalization.
-3. Normalize selected assets and export runtime-ready spritesheets.
-4. Add only normalized image files under `src/assets`.
-5. Create `src/data/assetManifest.ts`.
-6. Map player, monster, boss, effect, background, and UI asset ids to imported files.
-7. Add optional asset ids to data objects only when useful.
-8. Map monster ids to asset ids.
-9. Map boss ids to asset ids.
-10. Keep emoji/text/CSS fallback placeholders.
-11. Add a small safe asset component that falls back when an asset is missing.
-12. Add simple CSS spritesheet animation using `background-position` or image transforms.
-13. Preserve mobile readability and quiz-first hierarchy.
-14. Confirm production build still works without backend services.
+1. Approve the Phase 71A normalization plan.
+2. Complete visual batch QA for Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, Boss Batch 1E, Event Illustration Batch 1F, and Elite Enemy Batch 1G.
+3. Run a future Phase 71B normalization script/manual-checklist planning pass without runtime integration.
+4. Normalize selected assets and export runtime-ready spritesheets only in a later authorized phase.
+5. Add only normalized image files under `src/assets`.
+6. Create `src/data/assetManifest.ts` only when that explicit integration phase authorizes it.
+7. Map player, monster, boss, effect, background, and UI asset ids to imported files.
+8. Add optional asset ids to data objects only when useful.
+9. Map monster and boss ids to asset ids.
+10. Keep emoji/text/CSS fallback placeholders and make asset-load failures non-crashing.
+11. Add simple animation only when explicitly authorized, with reduced-motion and readability considered.
+12. Preserve mobile readability and quiz-first hierarchy.
+13. Confirm the production build still works without backend services.
 
 Integration safety rules:
 
 - Missing assets must never crash the app.
 - Assets must never be required to play Version 1.
-- Assets must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss effects, deck unlocks, save behavior, or encounter progression.
-- Assets must not reveal hidden answer information.
+- Assets must not change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss/elite effects, deck unlocks, save behavior, or encounter progression.
+- Assets must not reveal hidden answers, target cards, correct answers, triggered cards, event outcomes, reward amounts, or result information before the player answers or chooses.
+- Assets must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Assets must not hide quiz UI, Thai text, controls, HP/shield UI, event choices, or battle feedback.
 - Use generated art as presentation only.

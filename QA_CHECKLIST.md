@@ -385,6 +385,35 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 
 ## Asset Prep
 
+- Event Illustration Batch 1F generated files and review decisions are documented.
+- Treasure Chest reveals no exact reward, amount, item, or outcome.
+- Strange Altar remains mysterious but friendly, not cursed, demonic, horror-like, or ritualistic.
+- Healing Shrine is marked for a restorative-identity polish to reduce overlap with Strange Altar.
+- Event illustrations contain no characters/monsters, readable text/runes/labels, or outcome/value spoilers.
+- Event illustrations are checked with event-panel overlays and mobile crop/readability before future integration.
+- Elite Enemy Batch 1G generated files and review decisions are documented.
+- Elite Crystal Slime identity, left-facing orientation, and action reads are documented.
+- Elite hit scale/spacing and possible duplicate idle filename are marked for later normalization.
+- Elite sheets require clean alpha, split/cropped frames, 64x64 cells where appropriate, centering, grounded baseline alignment, consistent action scale, stable filenames, and preserved originals.
+- Encounter visual hierarchy is documented as presentation-only and does not alter encounter behavior.
+- Batch 1F and 1G remain source/reference candidates and are not imported into runtime.
+- Batch 1F and 1G assets do not change or imply changes to shop, event, boss, elite, combat, save, or encounter-progression rules.
+- Batch 1F and 1G assets do not hide quiz UI, Thai text, controls, HP/shield UI, event choices, or battle feedback.
+- Phase 71A is documented as planning-only; no normalization or runtime integration was performed.
+- Source/reference and normalized runtime asset categories are defined.
+- Recommended `asset_sources/{player,monsters,elites,effects,ui,backgrounds,bosses,events}` and `src/assets/{player,monsters,elites,effects,ui,backgrounds,bosses,events}` models are documented but not created.
+- `src/assets` is reserved for normalized runtime-ready files in a later explicit phase.
+- Target cells are documented: 64x64 for player, small monsters, and effects; 128x128 for bosses; 64x64 for UI icons.
+- Expected sheet dimensions are documented: 256x64, 128x64, 384x64, 512x128, and 256x128 as applicable.
+- Vocabulary card frame dimensions remain provisional pending UI testing.
+- The 1536x864 dungeon background remains provisional pending style, crop, responsive-use, and readability planning.
+- Normalization workflow includes alpha checks, preview/checkerboard cleanup, frame splitting, per-frame cropping, shared bounds, aspect-safe resizing, alignment, recombination, stable naming, source preservation, and visual QA.
+- Player, grounded monster, Bat hover, effect, boss, and background baseline/placement rules are documented.
+- Known candidate-specific normalization and polish notes are documented for every Phase 70 batch.
+- Runtime integration requires approved planning, normalized files, visual QA, fallbacks, non-crashing load failure, reduced-motion consideration, readability review, and preserved gameplay safety.
+- Assets do not obscure Thai text or make answer choices harder to scan.
+- Missing assets retain safe placeholder fallbacks.
+- No normalization scripts, asset manifest, runtime imports, animation playback, or dependencies were added in Phase 71A.
 - `ASSET_PLAN.md` exists.
 - `ASSET_PROMPTS.md` exists.
 - Future cozy fantasy pixel-art direction is documented.

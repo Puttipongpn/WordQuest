@@ -4,7 +4,13 @@ This document defines the future asset direction for WordQuest. Phase 61 is plan
 
 Phase 70A adds `ASSET_PROMPTS.md` as the practical pixel-art style bible and prompt pack for future image-generation work. It is still documentation-only: no final art assets, generated image files, runtime asset imports, new dependencies, or gameplay changes are added.
 
-The Phase 70 Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E source/reference candidates have now been generated and reviewed. They are production sources, not normalized runtime assets, and remain outside runtime integration.
+The Phase 70 Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, Boss Batch 1E, Event Illustration Batch 1F, and Elite Enemy Batch 1G source/reference candidates have now been generated and reviewed. They are production sources, not normalized runtime assets, and remain outside runtime integration.
+
+## Phase 71A Asset Normalization Planning Summary
+
+Phase 71A is documentation and planning only. It defines a future-safe workflow for converting accepted generated source/reference assets into normalized runtime-ready assets later. Phase 71A does not perform conversion, create or move image files, add scripts, create an asset manifest, import assets, or implement animation playback.
+
+Runtime integration remains prohibited until a later explicit phase.
 
 ## Asset Direction
 
@@ -261,6 +267,73 @@ Boss safety rules:
 - Boss art must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
 - Boss art must remain readable on mobile and should not hide quiz UI or controls.
 
+## Current Event Illustration Asset Production Status
+
+Status date: 2026-07-21
+
+Event Illustration Batch 1F generated:
+
+- `event_treasure_chest_01.png`
+- `event_healing_shrine_01.png`
+- `event_strange_altar_01.png`
+
+Review decisions:
+
+- `event_treasure_chest_01.png`: approved candidate / usable v1.
+- `event_strange_altar_01.png`: approved candidate / usable v1.
+- `event_healing_shrine_01.png`: usable candidate; a later polish pass is recommended.
+
+Event reads and polish notes:
+
+- Treasure Chest clearly reads as reward discovery, but must not reveal exact gold, items, reward amounts, or outcomes.
+- Strange Altar clearly reads as a mysterious but friendly risk-reward event; it must not look cursed, demonic, horror-like, or ritualistic.
+- Healing Shrine overlaps visually with Strange Altar because both use teal crystal shrine/altar language.
+- A later Healing Shrine polish should use a softer recovery mood, gentler light halo, water basin or soft pool glow, mist or droplets, less mystery-crystal emphasis, and a calmer restorative-shrine read.
+
+Event illustration safety:
+
+- Event illustrations are presentation-only and must not reveal outcomes, exact rewards/costs, exact healing/shield values, choices, hidden/correct answers, or result information.
+- Event art must not include readable text, letters, numbers, labels, signs, labeled stat icons, answer-like symbols, or readable runes.
+- Event discovery illustrations should not contain characters or monsters.
+- Event art must remain cozy, beginner-friendly, readable, and quiet enough for event UI overlays.
+
+## Current Elite Enemy Asset Production Status
+
+Status date: 2026-07-21
+
+Elite Enemy Batch 1G generated:
+
+- `elite_crystal_slime_idle_sheet.png`
+- `elite_crystal_slime_attack_sheet.png`
+- `elite_crystal_slime_hit_sheet.png`
+- `elite_crystal_slime_defeat_sheet.png`
+
+Elite Crystal Slime is the first locked elite visual identity: a stronger-looking version of the friendly green dungeon slime, with a rounded green body, teal crystal growths on its back/head, tiny gold sparkles or crystal shine, a cute simple face, and a special but beginner-friendly read. It is not scary, gross, or violent.
+
+Review decisions:
+
+- `elite_crystal_slime_idle_sheet.png`: approved candidate / usable v1; rename from `elite_crystal_slime_idle_sheet(4).png` during later normalization if that duplicate filename is present.
+- `elite_crystal_slime_attack_sheet.png`: approved candidate / usable v1.
+- `elite_crystal_slime_hit_sheet.png`: usable candidate; normalize scale and spacing later.
+- `elite_crystal_slime_defeat_sheet.png`: approved candidate / usable v1.
+
+Elite orientation and action notes:
+
+- Elite enemies face left; Crystal Slime attacks or acts toward the left.
+- Idle reads as a magical elite slime wobble with crystal identity.
+- Attack reads as a crystal-powered bounce/lunge with compact teal-gold sparkle.
+- Hit reads as a simple squish/flinch and needs scale/spacing normalization.
+- Defeat reads as a gentle flattening/puddle/sparkle fade, not violent death.
+
+## Encounter Visual Hierarchy
+
+- Normal monsters: Slime, Bat, Goblin.
+- Elite enemy: Crystal Slime.
+- Boss: Gatekeeper.
+- Events: Treasure Chest, Healing Shrine, Strange Altar.
+
+This hierarchy is visual presentation only and does not change encounter behavior or progression.
+
 ## Sprite Specs
 
 Recommended first-pass specs:
@@ -296,18 +369,55 @@ Animation prep:
 
 Phase 61 does not implement animation playback. These specs are for later asset generation and integration.
 
-Generated images may be high resolution, contain extra transparent space, use preview scaling, or miss exact runtime frame dimensions. Accepted source images must pass a normalization step before runtime integration:
+### Source vs Runtime Asset Model
 
-- Verify transparent background and alpha.
-- Split and inspect every frame.
-- Crop sprite bounds.
-- Resize into consistent 64x64 frame cells where appropriate.
-- Center each sprite.
-- Align character ground baselines or flying enemy hover baselines.
-- Export final runtime-ready spritesheets.
-- Preserve original generated source files separately from normalized runtime assets.
+- Source/reference assets are original generated images. They may be high resolution, have inconsistent dimensions, include extra transparent space or checkerboard/preview backgrounds, use preview scaling, or retain duplicate generated filenames.
+- Runtime assets are normalized exports with exact dimensions, consistent frame cells, clean alpha, stable lowercase snake_case filenames, and completed visual QA. They are suitable for future explicit integration.
 
-Boss source sheets require the same normalization workflow, but should resize into consistent 128x128 boss frame cells where appropriate, center the sprite, align the ground baseline, normalize scale across idle, attack, hit, and defeat, and rename generated duplicate filenames where necessary while preserving the original source files separately.
+### Runtime Size Targets
+
+- Player sprite sheets: 64x64 per frame.
+- Small monster sprite sheets: 64x64 per frame.
+- Effect sprite sheets: 64x64 per frame.
+- Boss sprite sheets: 128x128 per frame.
+- UI icons: 64x64 single icon.
+- Vocabulary card frame: keep as a source candidate; test it in the UI before locking runtime dimensions.
+- Dungeon battle background: keep the 1536x864 image as a source candidate; plan style polish, crop behavior, and responsive use before runtime integration.
+
+Expected complete sheet sizes:
+
+- Four 64px frames: 256x64.
+- Two 64px frames: 128x64.
+- Six 64px frames: 384x64.
+- Four 128px boss frames: 512x128.
+- Two 128px boss frames: 256x128.
+
+### Future Normalization Workflow
+
+1. Collect the original generated source files.
+2. Verify alpha and transparent backgrounds.
+3. Detect and remove checkerboard or preview backgrounds if present.
+4. Split each sheet into individual frames.
+5. Crop sprite or effect bounds per frame.
+6. Determine shared maximum bounds for the complete sheet.
+7. Resize each frame to its target cell without distorting aspect ratio.
+8. Center frames horizontally.
+9. Align grounded characters to a shared ground baseline.
+10. Align flying enemies to a shared hover baseline.
+11. Align effects to the center or their effect-specific placement.
+12. Recombine frames into the final runtime spritesheet.
+13. Export with a stable lowercase snake_case filename.
+14. Preserve the original source separately.
+15. Visually QA the normalized output.
+
+### Baseline Rules
+
+- Player: use one stable grounded baseline across idle, walk, cast/attack, defend, hurt, and victory.
+- Slime and Goblin: use a grounded baseline.
+- Bat: use a hover baseline, not a ground baseline.
+- Effects: center by default; keep earth effects lower and grounded.
+- Boss: use a grounded boss baseline and consistent visual scale across idle, attack, hit, and defeat.
+- Background: has no sprite baseline; quiz and UI readability are the priority.
 
 ## Naming Convention
 
@@ -345,26 +455,27 @@ Keep generated source/reference images separate from normalized runtime-ready as
 
 ```text
 asset_sources/
-  characters/
-    player/
-    monsters/
-    bosses/
+  player/
+  monsters/
+  elites/
   effects/
   ui/
   backgrounds/
+  bosses/
+  events/
 
 src/assets/
-  characters/
-    player/
-    monsters/
-    elites/
-    bosses/
+  player/
+  monsters/
+  elites/
   effects/
   ui/
   backgrounds/
+  bosses/
+  events/
 ```
 
-`asset_sources/` or a documentation/reference location is for original generated high-resolution source images. `src/assets/` is reserved for normalized runtime-ready files during a future explicit integration phase. Do not create or move folders as part of this documentation update.
+`asset_sources/` or a documentation/reference location is for original generated high-resolution source images. `src/assets/` must receive only normalized runtime-ready files during a future explicit integration phase. Do not create or move these folders in Phase 71A.
 
 ## Future Asset Manifest
 
@@ -721,7 +832,70 @@ Replacement should happen in small passes. Keep fallback placeholders visible un
 - Player character concept exploration is complete; the Word Mage identity is locked.
 - Effects Batch 1C source/reference production and review are complete.
 - Boss Batch 1E source/reference production and review are complete.
-- The next asset-planning step should choose between elite enemy assets, event illustration assets, normalization planning for all accepted source/reference assets, or polish for weaker candidates such as `effect_wind_sheet.png`, `background_dungeon_battle_01.png`, and scale-normalization-sensitive hit sheets.
+- Phase 71A defines normalization policy only; no source-to-runtime conversion has been performed.
+
+## Phase 71A Known Candidate Notes
+
+Player:
+
+- Idle and walk are approved visual references.
+- Cast/attack is a provisional approved candidate; a polish pass is recommended.
+- Defend remains pending final batch review unless approved later.
+- Hurt and victory are approved candidates / usable v1.
+
+Monsters:
+
+- Slime hit, Bat hit, and Goblin hit need scale and spacing normalization.
+- Bat defeat needs an alpha, transparency, and background-cleanup check.
+- Goblin defeat has three visible stages and remains acceptable within the planned three-to-four-frame range.
+
+Effects:
+
+- Wind is readable but lighter/weaker; polish contrast and presence if needed.
+- Earth has a strong read but slightly heavy scale; check it during normalization.
+- Shield block is usable with a strong book-like barrier identity; optional polish may follow later.
+
+UI, card, and background:
+
+- Gold coin, heart, shield, and vocabulary card frame are usable candidates.
+- `background_dungeon_battle_01.png` is usable/provisional but may need pixel-art consistency polish before runtime use.
+
+Events:
+
+- Treasure Chest and Strange Altar are approved candidates / usable v1.
+- Healing Shrine is usable but should be differentiated from Strange Altar with a softer restorative visual language.
+- Event normalization must establish target display dimensions, anti-spoiler/text checks, event-panel overlay composition, and mobile crop/readability.
+
+Boss:
+
+- Gatekeeper idle, attack, and defeat are approved candidates / usable v1.
+- The idle source may need a stable rename from a duplicate generated filename such as `boss_gatekeeper_idle_sheet(4).png`.
+- Gatekeeper hit is usable but needs scale normalization.
+
+Elite:
+
+- Crystal Slime idle, attack, and defeat are approved candidates / usable v1.
+- Crystal Slime hit needs scale and spacing normalization.
+- Elite sheets use 64x64 target frame cells, horizontal centering, a grounded baseline, consistent action scale, preserved originals, and stable filename cleanup where necessary.
+
+## Runtime Integration Gate
+
+Runtime integration may begin only in a later explicit phase after the normalization plan is approved, normalized files exist, visual QA passes, fallback behavior is defined, asset-load failure cannot crash the app, reduced-motion and readability concerns are considered, and all gameplay safety rules remain preserved.
+
+Asset safety rules:
+
+- Assets are presentation-only and cannot change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss/elite effects, deck unlocks, save behavior, or encounter progression.
+- Assets cannot reveal hidden answers, target cards, correct answers, triggered cards, event outcomes, reward amounts, or result information before the player answers or chooses.
+- Assets cannot contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Assets cannot reduce quiz readability, hide controls, obscure Thai text, or make answer choices harder to scan.
+- Missing assets must fall back safely to placeholders.
+
+## Recommended Step After Phase 71A
+
+- Phase 71B: plan a normalization script or manual normalization checklist, still without runtime integration.
+- Alternatively, polish `effect_wind_sheet.png`, `background_dungeon_battle_01.png`, `event_healing_shrine_01.png`, and hit sheets that need scale normalization.
+- Generate additional elite variants only if more encounter variety is needed.
+- Plan runtime integration only after normalized runtime-ready exports exist and fallback behavior is defined.
 
 ## Phase 61 Verification
 

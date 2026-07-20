@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 70 Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E source/reference production complete; runtime integration remains prohibited.
+Current phase: Phase 71A normalization planning and Phase 70 Batches 1A through 1G source/reference production/review are complete; runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2243,19 +2243,43 @@ Boss safety:
 - Boss art must not contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
 - Boss art must remain readable on mobile and should not hide quiz UI or controls.
 
+## Current Event Illustration Batch 1F Status
+
+- Generated: `event_treasure_chest_01.png`, `event_healing_shrine_01.png`, and `event_strange_altar_01.png`.
+- Treasure Chest and Strange Altar are approved candidates / usable v1.
+- Healing Shrine is usable; later polish should emphasize soft recovery through a gentler halo, water/pool glow, mist, or droplets and reduce overlap with Strange Altar.
+- Event art remains presentation-only, contains no characters/monsters or readable text/runes, reveals no choices/outcomes/reward/cost/healing/shield values, and must work beneath event UI overlays and mobile crops.
+
+## Current Elite Enemy Batch 1G Status
+
+- Generated: Crystal Slime idle, attack, hit, and defeat sheets.
+- Elite Crystal Slime is the first locked elite identity: friendly rounded green slime, teal crystal growths, tiny gold sparkles, cute simple face, special but not scary/gross/violent.
+- Idle, attack, and defeat are approved candidates / usable v1.
+- Hit is usable but needs later scale/spacing normalization.
+- Elite sprites face left and act leftward; idle is a magical wobble, attack a crystal-powered bounce/lunge, hit a simple squish/flinch, and defeat a gentle puddle/sparkle fade.
+- The idle source may need rename from `elite_crystal_slime_idle_sheet(4).png` if that duplicate filename is present.
+
+Encounter visual hierarchy: Slime/Bat/Goblin are normal monsters, Crystal Slime is the elite, Gatekeeper is the boss, and Treasure Chest/Healing Shrine/Strange Altar are events. This hierarchy is presentation-only.
+
+## Phase 71A Asset Normalization Planning
+
+Phase 71A is complete as a documentation-only planning phase. It prepares the source-to-runtime normalization workflow without converting images, creating folders or scripts, importing assets, creating a manifest, or implementing playback.
+
 ## Source And Runtime Separation
 
-All generated Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact runtime frame dimensions.
+All generated Player Batch 1A through Elite Enemy Batch 1G files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact runtime frame dimensions.
+
+Source/reference assets may be high-resolution, inconsistently sized, padded with transparent space, include preview/checkerboard backgrounds, use preview scaling, or retain duplicate filenames. Runtime assets must have exact dimensions, clean alpha, consistent cells, stable names, and completed visual QA.
 
 Before runtime integration, accepted assets need a normalization pass:
 
-1. Verify transparent background and alpha.
-2. Split and inspect frames.
-3. Crop sprite or effect bounds.
-4. Resize into consistent 64x64 cells where appropriate.
-5. Center sprites/effects and align ground, hover, or effect placement baselines.
-6. Export runtime-ready spritesheets.
-7. Preserve original source files separately.
+1. Collect and preserve original sources.
+2. Verify alpha; detect and remove preview/checkerboard backgrounds.
+3. Split sheets, crop each frame, and determine shared maximum bounds.
+4. Resize without distortion into target cells.
+5. Center horizontally and align ground, hover, or effect-specific baselines.
+6. Recombine and export stable lowercase snake_case runtime sheets.
+7. Visually QA each export.
 
 For effects, preserve appropriate vertical placement during normalization, such as earth effects staying lower/grounded.
 
@@ -2263,24 +2287,45 @@ For boss sheets, resize into consistent 128x128 boss frame cells where appropria
 
 Recommended future storage distinction:
 
-- `asset_sources/` or a documentation/reference location for original generated sources.
-- `src/assets/` only for normalized runtime-ready files during a future explicit integration phase.
+- `asset_sources/{player,monsters,elites,effects,ui,backgrounds,bosses,events}/` for original generated sources.
+- `src/assets/{player,monsters,elites,effects,ui,backgrounds,bosses,events}/` only for normalized runtime-ready files during a future explicit integration phase.
+
+Runtime targets:
+
+- Player, small monster, and effect frames: 64x64.
+- Boss frames: 128x128.
+- UI icons: 64x64.
+- Four/two/six-frame 64px sheets: 256x64, 128x64, and 384x64.
+- Four/two-frame boss sheets: 512x128 and 256x128.
+- Vocabulary card frame dimensions remain provisional pending UI testing.
+- The 1536x864 dungeon background remains provisional pending style, crop, responsive-use, and readability planning.
+
+Baseline rules:
+
+- Word Mage, Slime, Goblin, and Gatekeeper use stable grounded baselines.
+- Bat uses a stable hover baseline.
+- Effects are centered except earth, which stays lower/grounded.
+- Gatekeeper scale remains consistent across all actions.
+- Background preparation prioritizes quiz/UI readability.
+- Crystal Slime uses 64x64 cells, a grounded baseline, and consistent scale across actions.
+- Event illustrations require target display dimensions, anti-spoiler/text checks, overlay composition review, and mobile crop/readability QA rather than sprite baselines.
 
 Integration safety:
 
 - Do not integrate these image files into runtime yet.
 - Do not add runtime asset imports, manifests, animation code, dependencies, or final-art replacement code until a future explicit integration phase.
 - Missing assets must retain emoji/text/CSS fallbacks, and asset loading failure must not crash the app.
-- Assets must not reveal hidden answers, target cards, correct answers, triggered cards, or result information.
+- Assets must not reveal hidden answers, target cards, correct answers, triggered cards, event outcomes, reward amounts, or result information before the player answers or chooses.
 - Boss and effect art must not imply new mechanics, changed stats, altered result logic, or hidden answer/result information.
-- Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, encounter progression, deck unlock rules, and dependencies unchanged.
+- Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, elite behavior, encounter progression, deck unlock rules, and dependencies unchanged.
 
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Choose the next asset phase: elite enemy assets, event illustration assets, normalization planning, or polish for weaker candidates.
-2. If normalizing later, include Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E in the normalization plan.
-3. Do not integrate assets into runtime until an explicit future integration phase.
+1. Plan a normalization script or manual normalization checklist, still without runtime integration.
+2. Polish weaker candidates: wind effect, dungeon background, Healing Shrine, and hit sheets needing scale normalization.
+3. Add elite variants only if more visual variety is needed.
+4. Plan runtime integration only after normalized exports exist, visual QA passes, fallbacks are defined, loading failure is safe, reduced-motion/readability concerns are considered, and a later explicit phase authorizes it.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.
