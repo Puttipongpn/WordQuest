@@ -1075,6 +1075,50 @@ Phase 71B.1 did not edit image content, normalize/resize/crop images, import ass
 - Run a polish pass for weaker candidates before normalization.
 - Plan runtime integration only after normalized assets exist and the integration gate is satisfied.
 
+## Phase 71C Asset Normalization Script
+
+Phase 71C was implemented on 2026-07-29. It creates normalization candidates under `normalized_assets/` without integrating them into the app.
+
+Implementation:
+
+- Script: `scripts/normalize-assets.mjs`.
+- Dependency: `sharp` as a development-only PNG processing dependency.
+- Dry run: `npm run normalize-assets:dry-run`.
+- Normal run: `npm run normalize-assets`.
+- Report: `normalized_assets/NORMALIZATION_REPORT.md`.
+- Source: organized production references under `Asset/`.
+- Output: normalization candidates under `normalized_assets/`.
+- Runtime destination `src/assets/` remains absent and unused.
+
+The script:
+
+- Traverses only configured PNG source groups.
+- Infers hit sheets as two frames and uses source aspect ratio for equal-width 3, 4, or 6-frame sheets.
+- Splits horizontal sheets, detects alpha bounds, computes shared bounds, resizes proportionally, and recombines exact target sheets.
+- Uses grounded alignment for player, Slime, Goblin, Crystal Slime, and Gatekeeper; hover alignment for Bat; centered effects; and lower placement for Earth.
+- Normalizes the three allowed UI icons to 64x64.
+- Preserves the card frame and background dimensions by copying them to the output.
+- Preserves events at source dimensions when event PNG files become available.
+- Skips `Asset/incoming/` and `Asset/rejected/`.
+- Never deletes files or writes to `Asset/` or `src/assets/`.
+- May deterministically overwrite matching files only under `normalized_assets/`.
+
+First completed run:
+
+- 34 files processed.
+- 3 ambiguous files under `Asset/incoming/` skipped.
+- No event files were available.
+- 30 sprite/effect/icon sources were conservatively flagged for no usable transparency and possible baked preview/checkerboard/background.
+- Player cast/attack and walk were inferred as six-frame sheets.
+- Slime idle/attack and Bat idle were inferred as three-frame sheets.
+- Bat and Goblin defeat sheets defaulted to four frames and require manual aspect/layout QA.
+- The card frame was preserved at 1058x1487.
+- The provisional dungeon background was preserved at 1672x941 rather than resized to 1536x864.
+
+All normalized outputs remain candidates. The presence of target dimensions or an alpha channel does not mean baked backgrounds were removed or that visual QA passed.
+
+Phase 71C does not import assets, create an asset manifest, add animation playback, alter gameplay, or authorize runtime integration.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

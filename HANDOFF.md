@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71B.1 source asset folder organization is complete after Phase 71B planning; all images remain unnormalized source/reference candidates and runtime integration remains prohibited.
+Current phase: Phase 71C normalization script implementation is complete after Phase 71B.1 source organization; normalized outputs are candidates only and runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2291,6 +2291,27 @@ The images remain unnormalized. Phase 71B.1 did not modify image content, import
 
 Future script/manual normalization must preserve originals, use declared frame counts and target cells, inspect alpha and bounds, compare approved-reference scale, align grounded/hover/effect placement, recombine exact sheets, verify mobile readability and prohibited text/runes, and preserve gameplay meaning.
 
+## Phase 71C Asset Normalization Script
+
+Phase 71C added `scripts/normalize-assets.mjs`, `sharp` as a dev dependency, npm dry-run/normal commands, and a separate `normalized_assets/` output tree. It did not create or modify `src/assets/`.
+
+Run commands:
+
+- `npm run normalize-assets:dry-run`
+- `npm run normalize-assets`
+
+The first normal run processed 34 files, skipped three ambiguous incoming player-like images, and wrote `normalized_assets/NORMALIZATION_REPORT.md`. There were no event PNGs to process.
+
+Manual QA priorities:
+
+- 30 sprite/effect/icon inputs have no usable transparency and may retain baked preview/checkerboard/background pixels.
+- Bat and Goblin defeat layouts need manual aspect/frame review.
+- Three-frame Slime idle/attack and Bat idle sheets, plus six-frame player cast/walk sheets, were inferred from source aspect ratios.
+- Card frame remains 1058x1487 and requires text-readability testing.
+- Dungeon background remains 1672x941 and requires responsive crop/style review.
+
+The script preserves source files, never deletes inputs, skips incoming/rejected sources, and writes only to `normalized_assets/`. Outputs can be overwritten there on later deterministic runs. Target dimensions and output alpha do not mean visual QA or background cleanup has passed.
+
 ## Source And Runtime Separation
 
 All generated Player Batch 1A through Elite Enemy Batch 1G files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact runtime frame dimensions.
@@ -2349,8 +2370,8 @@ Integration safety:
 
 Recommended next steps:
 
-1. Phase 71C: implement the normalization script, still without runtime integration.
-2. Alternatively, run a polish pass for weaker candidates.
-3. Plan runtime integration only after normalized exports exist, visual QA passes, fallbacks are defined, loading failure is safe, reduced-motion/readability concerns are considered, and a later explicit phase authorizes it.
+1. Run manual visual QA/background cleanup planning for Phase 71C outputs.
+2. Polish or replace weak/opaque candidates before rerunning normalization.
+3. Plan runtime integration only after normalized exports pass visual QA, fallbacks are defined, loading failure is safe, reduced-motion/readability concerns are considered, and a later explicit phase authorizes it.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

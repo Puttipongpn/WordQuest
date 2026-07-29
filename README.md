@@ -105,6 +105,27 @@ The Dungeon QA Helper is development-only and gated by `import.meta.env.DEV`.
 - It mutates temporary run state for testing.
 - It does not directly write permanent mastery, deck unlocks, completed decks, or saved statistics.
 
+## Asset Normalization
+
+Phase 71C provides an offline PNG normalization script. It reads organized source/reference images from `Asset/` and writes normalization candidates to `normalized_assets/`.
+
+Install dependencies, then run:
+
+```powershell
+npm run normalize-assets:dry-run
+npm run normalize-assets
+```
+
+The normal run writes `normalized_assets/NORMALIZATION_REPORT.md`.
+
+Important:
+
+- `Asset/` source files are preserved.
+- `normalized_assets/` is not `src/assets/`.
+- Outputs are not imported by React and still require visual QA.
+- The script does not remove possible baked checkerboard/preview backgrounds automatically.
+- `src/assets/` remains reserved for a later explicit runtime integration phase.
+
 ## Deployment
 
 Recommended target: Vercel static deployment.

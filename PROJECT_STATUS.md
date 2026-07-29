@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71B.1 source asset folder organization after Phase 71B planning. Generated files are now grouped by source/reference category under root `Asset/`; they remain unnormalized and runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71C Asset Normalization Script implementation after Phase 71B.1 source organization. The script generated 34 normalization candidates under `normalized_assets/` and skipped three ambiguous incoming files. Outputs still require visual QA, are not integrated into React, and runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -1083,6 +1083,33 @@ The following documents are required and must be updated after every completed t
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
+
+## Phase 71C Asset Normalization Script Summary
+
+Completed on 2026-07-29:
+
+- Added `scripts/normalize-assets.mjs` with dry-run and normal-run support.
+- Added `sharp` as a development-only PNG processing dependency.
+- Added `npm run normalize-assets` and `npm run normalize-assets:dry-run`.
+- Created `normalized_assets/` and `normalized_assets/NORMALIZATION_REPORT.md`.
+- Processed 34 configured assets and skipped three ambiguous `Asset/incoming/` files.
+- Preserved the card frame and provisional dungeon background at their source dimensions.
+- Inferred two, three, four, and six-frame horizontal sheets from action names and source aspect ratios.
+- Added conservative alpha/background, source-aspect, frame-inference, and manual-QA warnings.
+
+Important first-run findings:
+
+- 30 sprite/effect/icon sources have no usable transparency and may contain baked preview/checkerboard/background pixels.
+- Bat and Goblin defeat outputs need manual frame-layout/aspect QA.
+- The source background is 1672x941, not the provisional 1536x864 target, and was preserved unchanged.
+- No event PNG files were available to process.
+
+Preserved:
+
+- All tracked `Asset/` source files matched their original Git blob hashes after the run.
+- `src/assets/` was not created or modified.
+- No React imports, asset manifest, animation playback, gameplay logic, save behavior, combat rules, timers, mastery, Word Energy, encounter rules, or deployment setup changed.
+- `normalized_assets/` contains candidates only and requires visual QA before any future integration.
 
 ## Phase 71B.1 Source Asset Folder Organization Summary
 

@@ -1258,6 +1258,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Source organization is useful housekeeping but remains separate from both normalization and runtime integration, and ambiguous generated files must not be overwritten or misclassified.
 - Status: Accepted
 
+### 2026-07-29: Phase 71C Uses Sharp For Offline Normalization
+
+- Decision: Use a Node.js ESM script with `sharp` as a development-only dependency to create normalization candidates under `normalized_assets/`.
+- Reason: Sharp provides maintained PNG alpha inspection, extraction, proportional resizing, and compositing without adding image-processing code to the React runtime.
+- Status: Accepted
+
+### 2026-07-29: Normalized Assets Remain Separate From Runtime Assets
+
+- Decision: Phase 71C outputs belong under `normalized_assets/`, not `src/assets/`. They remain candidates until visual QA, cleanup, fallback, readability, and later integration gates pass.
+- Reason: Exact canvas dimensions and exported alpha do not prove that generated preview backgrounds were removed or that the art is safe for runtime use.
+- Status: Accepted
+
+### 2026-07-29: Phase 71C Reports Opaque Backgrounds Instead Of Removing Them
+
+- Decision: The normalization script conservatively flags sources without usable transparency and does not attempt aggressive checkerboard or preview-background removal.
+- Reason: Automatic color removal could destroy outlines, semi-transparent spell effects, glows, particles, or valid light pixels.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

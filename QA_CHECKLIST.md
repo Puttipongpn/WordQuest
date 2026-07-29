@@ -385,6 +385,21 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 
 ## Asset Prep
 
+- Phase 71C script exists at `scripts/normalize-assets.mjs`.
+- `sharp` is development-only and is not imported by the React app.
+- Dry-run mode analyzes inputs without writing outputs.
+- Normal mode writes only under `normalized_assets/`.
+- The normalization report records processed/skipped files, dimensions, inference, warnings, possible baked backgrounds, and manual-QA needs.
+- First run processed 34 files and skipped three ambiguous incoming files.
+- No event PNG files were available during the first run.
+- Output dimensions match configured frame/canvas targets or explicitly preserved source dimensions.
+- `Asset/` source hashes remain unchanged after normalization.
+- `src/assets/` remains absent and unused.
+- Opaque/possible baked backgrounds are flagged rather than removed aggressively.
+- Bat/Goblin defeat aspect warnings and inferred three/six-frame sheets receive manual visual QA.
+- Card frame and background preserved-dimension warnings receive UI/responsive QA.
+- Normalized outputs are not treated as runtime-ready until visual QA passes.
+- No asset imports, manifest, animation playback, gameplay changes, or runtime integration were added.
 - Phase 71B is documented as script/manual-checklist planning only; no script or conversion was performed.
 - Normalization input inventory includes Batches 1A through 1G.
 - Player, monster, elite, boss, effect, UI, event, background, and card-frame output targets are documented.
