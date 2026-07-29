@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71B normalization script/manual-checklist planning and Batches 1A through 1G source/reference production/review are complete; runtime integration remains prohibited.
+Current phase: Phase 71B.1 source asset folder organization is complete after Phase 71B planning; all images remain unnormalized source/reference candidates and runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2271,14 +2271,23 @@ Phase 71B is complete as documentation-only planning. It defines the Batches 1A-
 
 Current Asset Staging Folder Plan:
 
-- Root `Asset/` currently holds generated source/reference candidates together without final organization.
+- Root `Asset/` now holds generated source/reference candidates organized by category/species after Phase 71B.1.
 - `Asset/` may contain high-resolution, preview-scale, duplicated, padded, or otherwise unnormalized files.
 - Nothing in `Asset/` is runtime-ready or may be imported into React.
-- Recommended later categories are `player`, monster species, `elites/crystal-slime`, `bosses/gatekeeper`, `effects`, `ui`, `backgrounds`, `events`, `incoming`, `rejected`, and `notes`.
+- Current categories are `player`, monster species, `elites/crystal-slime`, `bosses/gatekeeper`, `effects`, `ui`, `backgrounds`, `events`, `incoming`, `rejected`, and `notes`.
 - `src/assets/` remains reserved for normalized runtime-ready exports during a later explicit integration phase.
 - No folders/files were created, moved, or renamed in Phase 71B.
 
-Phase 71B.1 is an optional later organization phase. It may create the recommended staging subfolders, move source files, clean up duplicate `(3)`/`(4)` names, and optionally create a Markdown source inventory. It still cannot import assets, create a manifest/playback, alter gameplay, move sources to `src/assets/`, or call source files runtime-ready.
+Phase 71B.1 completed the staging organization on 2026-07-29:
+
+- Created the recommended `Asset/` category/species folders.
+- Moved 34 canonical-pattern files into their source categories.
+- Moved three ambiguously named player-like files to `Asset/incoming/`.
+- Created `Asset/notes/SOURCE_ASSET_INVENTORY.md`.
+- Renamed no files because no duplicate suffix was present in the canonical-pattern filenames.
+- Identified no rejected source with enough confidence; no `event_*` source was present.
+
+The images remain unnormalized. Phase 71B.1 did not modify image content, import assets, create a manifest/playback/script, alter gameplay, or create/use `src/assets/`.
 
 Future script/manual normalization must preserve originals, use declared frame counts and target cells, inspect alpha and bounds, compare approved-reference scale, align grounded/hover/effect placement, recombine exact sheets, verify mobile readability and prohibited text/runes, and preserve gameplay meaning.
 

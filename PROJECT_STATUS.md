@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71B Asset Normalization Script and Manual Checklist Planning after Phase 71A and production/review of Batches 1A through 1G. Generated files remain source/reference candidates in the temporary root `Asset/` staging folder; no organization, normalization, scripting, or runtime integration has occurred. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71B.1 source asset folder organization after Phase 71B planning. Generated files are now grouped by source/reference category under root `Asset/`; they remain unnormalized and runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -1084,6 +1084,26 @@ The following documents are required and must be updated after every completed t
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
 
+## Phase 71B.1 Source Asset Folder Organization Summary
+
+Completed on 2026-07-29:
+
+- Created the planned `Asset/` category/species folder structure.
+- Moved 34 canonical-pattern source files into player, Slime, Bat, Goblin, Crystal Slime, Gatekeeper, effects, UI, and background folders.
+- Moved three ambiguously named player-like files to `Asset/incoming/` without renaming.
+- Created `Asset/notes/SOURCE_ASSET_INVENTORY.md`.
+- No duplicate-suffix filenames were renamed.
+- No rejected file was identifiable with sufficient confidence.
+- No `event_*` file was present in root staging; `Asset/events/` remains empty.
+
+Preserved:
+
+- Source images remain unnormalized production references.
+- No image pixels, dimensions, crop, encoding, or alpha were changed.
+- `src/assets/` was not created or modified.
+- No source code, gameplay, dependencies, imports, manifests, scripts, or animation playback were changed or added.
+- Runtime integration remains blocked until normalization and integration gates are satisfied.
+
 ## Phase 71B Normalization Script And Manual Checklist Planning Summary
 
 Phase 71B is complete as documentation-only planning.
@@ -1097,7 +1117,7 @@ Completed:
 - Documented target output dimensions for player, monsters, elites, bosses, effects, UI, events, backgrounds, and the card frame.
 - Specified future script behavior for alpha bounds, shared bounds, aspect-safe resizing, baseline/hover/effect alignment, sheet recombination, and source preservation.
 - Added a manual normalization checklist and candidate-specific notes.
-- Defined Phase 71B.1 as an optional later source-folder organization phase and Phase 71C as a possible script implementation phase.
+- Defined Phase 71B.1 as a source-folder organization phase, now completed, and Phase 71C as a possible script implementation phase.
 
 Preserved:
 

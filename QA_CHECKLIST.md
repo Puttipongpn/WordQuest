@@ -394,7 +394,15 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Recommended future `Asset/` organization includes player, monster species, Crystal Slime, Gatekeeper, effects, UI, backgrounds, events, incoming, rejected, and notes.
 - `src/assets/` remains empty or unused until a later explicit integration phase and receives only normalized runtime-ready exports.
 - Phase 71B creates no folders, moves no files, renames no images, and creates no inventory or script.
-- Optional Phase 71B.1 organization permissions and prohibitions are documented.
+- Completed Phase 71B.1 organization permissions and prohibitions are documented.
+- Phase 71B.1 category/species folders exist under root `Asset/`.
+- Canonical-pattern source files are moved into their documented source categories.
+- Ambiguously named player-like candidates remain preserved in `Asset/incoming/`.
+- `Asset/notes/SOURCE_ASSET_INVENTORY.md` records moved, renamed, ambiguous, rejected, and missing event-pattern files.
+- No source file was overwritten, deleted, or renamed without clear canonical evidence.
+- No image pixels, dimensions, crops, encoding, or alpha were modified.
+- `src/assets/` was not created or modified.
+- Runtime integration remains prohibited after source organization.
 - Runtime integration remains gated on normalized exports, visual QA, safe fallbacks, non-crashing loading, reduced-motion consideration, mobile readability, and unchanged gameplay rules.
 - Event Illustration Batch 1F generated files and review decisions are documented.
 - Treasure Chest reveals no exact reward, amount, item, or outcome.

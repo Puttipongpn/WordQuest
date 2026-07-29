@@ -949,9 +949,9 @@ src/assets/
 
 ### Current Asset Staging Folder Plan
 
-The existing root-level `Asset/` folder is the current temporary source/reference staging location. Generated images are collected there together without final organization. Files in `Asset/` are not runtime-ready and must not be imported by the app.
+The existing root-level `Asset/` folder is the current temporary source/reference staging location. Phase 71B.1 organized its discovered files into category/species subfolders. Files in `Asset/` remain unnormalized, are not runtime-ready, and must not be imported by the app.
 
-Recommended later organization under the existing staging folder:
+Current organization under the existing staging folder:
 
 ```text
 Asset/
@@ -979,8 +979,8 @@ Staging rules:
 - It may contain high-resolution images, duplicate generated filenames, preview-scale images, extra transparent space, and unnormalized files.
 - Files in `Asset/` are not runtime-ready.
 - Normalized runtime-ready exports eventually belong in `src/assets/`, not `Asset/`.
-- Phase 71B does not move, create, or rename files or folders.
-- No file under `Asset/` may be imported into React during this phase.
+- Phase 71B planning did not move, create, or rename files or folders; Phase 71B.1 later performed source organization only.
+- No file under `Asset/` may be imported into React before a separately authorized normalization and runtime-integration workflow.
 
 ### Target Runtime Dimensions
 
@@ -1055,9 +1055,19 @@ Safety rules remain unchanged:
 
 ### Phase 71B.1 - Organize Source Asset Folder
 
-Phase 71B.1 is an optional later source-organization phase. When explicitly authorized, it may create the recommended `Asset/` subfolders, move existing generated source files into the correct categories, rename duplicate generated filenames such as files ending in `(3)` or `(4)`, and create a simple source asset inventory Markdown file if useful.
+Phase 71B.1 was completed on 2026-07-29 as source-file organization only.
 
-Phase 71B.1 still must not import assets into React, create an asset manifest, create animation playback, modify gameplay, move files into `src/assets/`, or treat source images as normalized runtime files.
+Completed:
+
+- Created the recommended category/species subfolders under the existing root `Asset/` staging folder.
+- Moved 34 canonical-pattern source files into player, monster, elite, boss, effect, UI, and background folders.
+- Moved three ambiguously named player-like candidates into `Asset/incoming/` without renaming or overwriting them.
+- Created `Asset/notes/SOURCE_ASSET_INVENTORY.md`.
+- Found no generated `(3)` or `(4)` suffix in the discovered canonical-pattern filenames, so no files were renamed.
+- Identified no rejected candidate with sufficient filename confidence, so `Asset/rejected/` remains empty.
+- Found no `event_*` source file in the root staging folder, so `Asset/events/` remains empty.
+
+Phase 71B.1 did not edit image content, normalize/resize/crop images, import assets into React, create an asset manifest, create animation playback, modify gameplay, move files into `src/assets/`, or treat source images as normalized runtime files.
 
 ### Recommended Step After Phase 71B
 

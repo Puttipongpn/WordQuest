@@ -1252,10 +1252,10 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Explicit staging status prevents generated previews and duplicate filenames from being mistaken for production runtime files.
 - Status: Accepted
 
-### 2026-07-21: Source Organization Is Deferred To Optional Phase 71B.1
+### 2026-07-29: Phase 71B.1 Organizes Source Assets Without Normalizing Them
 
-- Decision: Phase 71B.1 may later create category/species subfolders under `Asset/`, move source files, clean up duplicate `(3)`/`(4)` filenames, and create a source inventory, but it still cannot integrate assets or treat them as normalized runtime files.
-- Reason: Source organization is useful housekeeping but is separate from both normalization and runtime integration.
+- Decision: Phase 71B.1 organized source/reference candidates into category/species subfolders under `Asset/` and added `Asset/notes/SOURCE_ASSET_INVENTORY.md`. Ambiguous player-like candidates stay in `Asset/incoming/`; no files were renamed or marked rejected without sufficient confidence.
+- Reason: Source organization is useful housekeeping but remains separate from both normalization and runtime integration, and ambiguous generated files must not be overwritten or misclassified.
 - Status: Accepted
 
 ### 2026-06-22: Active Runs Can Continue In Memory Only
