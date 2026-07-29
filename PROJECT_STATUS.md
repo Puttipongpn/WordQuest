@@ -10,7 +10,7 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71A Asset Normalization Planning and production/review of Phase 70 Batches 1A through 1G, now including Event Illustration Batch 1F and Elite Enemy Batch 1G. All generated images remain production source/reference candidates; no normalization or runtime integration has occurred. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71B Asset Normalization Script and Manual Checklist Planning after Phase 71A and production/review of Batches 1A through 1G. Generated files remain source/reference candidates in the temporary root `Asset/` staging folder; no organization, normalization, scripting, or runtime integration has occurred. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
@@ -1084,6 +1084,28 @@ The following documents are required and must be updated after every completed t
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
 
+## Phase 71B Normalization Script And Manual Checklist Planning Summary
+
+Phase 71B is complete as documentation-only planning.
+
+Completed:
+
+- Documented normalization inputs for Batches 1A through 1G.
+- Defined future source/reference and normalized runtime folder models.
+- Documented the existing root `Asset/` folder as temporary, unorganized source/reference staging that must never be imported directly.
+- Added the recommended future `Asset/` category/species structure without creating folders, moving files, or renaming images.
+- Documented target output dimensions for player, monsters, elites, bosses, effects, UI, events, backgrounds, and the card frame.
+- Specified future script behavior for alpha bounds, shared bounds, aspect-safe resizing, baseline/hover/effect alignment, sheet recombination, and source preservation.
+- Added a manual normalization checklist and candidate-specific notes.
+- Defined Phase 71B.1 as an optional later source-folder organization phase and Phase 71C as a possible script implementation phase.
+
+Preserved:
+
+- No source/image files or folders were created, moved, renamed, converted, or imported.
+- No script, asset manifest, animation playback, dependency, React Router, backend, database, auth, or API was added.
+- `src/assets/` remains unused for these source candidates.
+- Gameplay, combat math, timers, mastery, save schema, deck unlocks, Word Energy, shop/event/boss/elite rules, and encounter progression were not changed.
+
 ## Event Illustration Batch 1F + Elite Enemy Batch 1G Summary
 
 Completed on 2026-07-21 as documentation and source/reference review only:
@@ -1108,7 +1130,7 @@ Completed:
 - Documented expected complete sheet dimensions, the full alpha/frame/crop/resize/alignment/export/QA workflow, and grounded, hover, effect, boss, and background placement rules.
 - Recorded known normalization and polish notes for Player 1A, Monster 1B, Effects 1C, UI/Card/Background 1D, and Boss 1E.
 - Defined a later explicit runtime integration gate requiring normalized assets, visual QA, safe fallbacks, non-crashing load failure, reduced-motion consideration, quiz readability, and preserved gameplay safety.
-- Recommended Phase 71B normalization script/manual-checklist planning, targeted polish, optional additional elite variants, or later integration planning after normalized exports exist.
+- Phase 71B script/manual-checklist planning is complete; next options are Phase 71C script implementation, targeted polish, or later integration planning after normalized exports exist.
 
 Preserved:
 

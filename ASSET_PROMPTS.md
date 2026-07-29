@@ -1134,6 +1134,14 @@ QA:
 
 ## Asset QA Checklist
 
+### Phase 71B Normalization Handoff
+
+Phase 71B plans future script/manual normalization only. The input inventory is Player 1A, Monster 1B, Effects 1C, UI/Card/Background 1D, Boss 1E, Event 1F, and Elite 1G. Raw generated files currently staged in root `Asset/` remain source/reference candidates and must not be imported or treated as runtime assets.
+
+Future script/manual processing should confirm source/final names, frame count, target dimensions, alpha, per-frame bounds, approved-reference scale, ground/hover/effect alignment, final sheet dimensions, mobile readability, prohibited text/runes, and unchanged gameplay meaning. Preserve originals and export normalized files only to `src/assets/` during a later explicit integration phase.
+
+The optional later Phase 71B.1 may organize `Asset/` into player, monster species, elites/Crystal Slime, bosses/Gatekeeper, effects, UI, backgrounds, events, incoming, rejected, and notes folders. Phase 71B does not create or move these folders/files.
+
 Use this before accepting generated assets:
 
 - Filename matches lowercase snake_case naming.
@@ -1190,8 +1198,8 @@ Recommended future integration steps:
 
 1. Approve the Phase 71A normalization plan.
 2. Complete visual batch QA for Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, Boss Batch 1E, Event Illustration Batch 1F, and Elite Enemy Batch 1G.
-3. Run a future Phase 71B normalization script/manual-checklist planning pass without runtime integration.
-4. Normalize selected assets and export runtime-ready spritesheets only in a later authorized phase.
+3. Use the completed Phase 71B script/manual-checklist specification.
+4. Run a separately authorized Phase 71C script implementation or manual normalization pass without runtime integration.
 5. Add only normalized image files under `src/assets`.
 6. Create `src/data/assetManifest.ts` only when that explicit integration phase authorizes it.
 7. Map player, monster, boss, effect, background, and UI asset ids to imported files.

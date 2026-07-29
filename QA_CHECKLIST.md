@@ -385,6 +385,17 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 
 ## Asset Prep
 
+- Phase 71B is documented as script/manual-checklist planning only; no script or conversion was performed.
+- Normalization input inventory includes Batches 1A through 1G.
+- Player, monster, elite, boss, effect, UI, event, background, and card-frame output targets are documented.
+- Future script behavior covers source reading, optional frame splitting, alpha bounds, shared bounds, aspect-safe resizing, target placement, ground/hover/effect alignment, sheet recombination, alpha PNG export, and source preservation.
+- Manual normalization checklist confirms source/final names, frame count/size, alpha, frame bounds, approved-reference scale, placement, final canvas, prohibited text/runes, mobile readability, and unchanged gameplay meaning.
+- Root `Asset/` is documented as temporary source/reference staging only and is never imported directly.
+- Recommended future `Asset/` organization includes player, monster species, Crystal Slime, Gatekeeper, effects, UI, backgrounds, events, incoming, rejected, and notes.
+- `src/assets/` remains empty or unused until a later explicit integration phase and receives only normalized runtime-ready exports.
+- Phase 71B creates no folders, moves no files, renames no images, and creates no inventory or script.
+- Optional Phase 71B.1 organization permissions and prohibitions are documented.
+- Runtime integration remains gated on normalized exports, visual QA, safe fallbacks, non-crashing loading, reduced-motion consideration, mobile readability, and unchanged gameplay rules.
 - Event Illustration Batch 1F generated files and review decisions are documented.
 - Treasure Chest reveals no exact reward, amount, item, or outcome.
 - Strange Altar remains mysterious but friendly, not cursed, demonic, horror-like, or ritualistic.

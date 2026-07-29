@@ -892,10 +892,178 @@ Asset safety rules:
 
 ## Recommended Step After Phase 71A
 
-- Phase 71B: plan a normalization script or manual normalization checklist, still without runtime integration.
+- Phase 71B planning is now complete; use the detailed Phase 71B specification below for later implementation.
 - Alternatively, polish `effect_wind_sheet.png`, `background_dungeon_battle_01.png`, `event_healing_shrine_01.png`, and hit sheets that need scale normalization.
 - Generate additional elite variants only if more encounter variety is needed.
 - Plan runtime integration only after normalized runtime-ready exports exist and fallback behavior is defined.
+
+## Phase 71B Normalization Script And Manual Checklist Planning
+
+Phase 71B is documentation-only planning for a future normalization script and a repeatable manual workflow. It defines enough behavior and QA detail for a later implementation phase to process assets without guessing. Phase 71B does not convert assets, create scripts, create or move folders/files, rename images, create an asset manifest, import runtime assets, or implement animation playback.
+
+### Normalization Input Inventory
+
+The future normalization workflow must support all accepted source/reference groups:
+
+- Player Batch 1A.
+- Monster Batch 1B.
+- Effects Batch 1C.
+- UI/Card/Background Batch 1D.
+- Boss Batch 1E.
+- Event Illustration Batch 1F.
+- Elite Enemy Batch 1G.
+
+### Recommended Source Folder Structure
+
+The future conceptual source/reference structure is:
+
+```text
+asset_sources/
+  player/
+  monsters/
+  elites/
+  bosses/
+  effects/
+  ui/
+  backgrounds/
+  events/
+```
+
+These categories contain original generated production source/reference files only. They may include high-resolution, preview-scale, duplicated, padded, or otherwise unnormalized images.
+
+### Recommended Runtime Folder Structure
+
+```text
+src/assets/
+  player/
+  monsters/
+  elites/
+  bosses/
+  effects/
+  ui/
+  backgrounds/
+  events/
+```
+
+`src/assets/` must remain empty or unused until a later explicit runtime integration phase. It must receive only normalized runtime-ready exports, never raw generated sources.
+
+### Current Asset Staging Folder Plan
+
+The existing root-level `Asset/` folder is the current temporary source/reference staging location. Generated images are collected there together without final organization. Files in `Asset/` are not runtime-ready and must not be imported by the app.
+
+Recommended later organization under the existing staging folder:
+
+```text
+Asset/
+  player/
+  monsters/
+    slime/
+    bat/
+    goblin/
+  elites/
+    crystal-slime/
+  bosses/
+    gatekeeper/
+  effects/
+  ui/
+  backgrounds/
+  events/
+  incoming/
+  rejected/
+  notes/
+```
+
+Staging rules:
+
+- `Asset/` is for generated production source/reference candidates only.
+- It may contain high-resolution images, duplicate generated filenames, preview-scale images, extra transparent space, and unnormalized files.
+- Files in `Asset/` are not runtime-ready.
+- Normalized runtime-ready exports eventually belong in `src/assets/`, not `Asset/`.
+- Phase 71B does not move, create, or rename files or folders.
+- No file under `Asset/` may be imported into React during this phase.
+
+### Target Runtime Dimensions
+
+- Player: 64x64 per frame; 256x64 for four frames; 384x64 for six frames; 128x64 for two frames when needed.
+- Small monsters: 64x64 per frame; 256x64 for four frames; 128x64 for two-frame hit sheets.
+- Elite enemies: 64x64 per frame; 256x64 for four frames; 128x64 for two-frame hit sheets.
+- Bosses: 128x128 per frame; 512x128 for four frames; 256x128 for two-frame hit sheets.
+- Effects: 64x64 per frame; 256x64 for four frames.
+- UI icons: 64x64 single icon.
+- Event illustrations: retain the original 768x432 source candidate until later UI testing defines another exact runtime size.
+- Backgrounds: retain the original 1536x864 source candidate until responsive layout testing defines another exact runtime size.
+- Vocabulary card frame: retain the current source candidate until UI text-readability testing defines its final runtime treatment.
+
+### Future Normalization Script Concept
+
+Do not create this script in Phase 71B. A later authorized implementation should be able to:
+
+1. Read a source PNG without altering the original.
+2. Optionally split a horizontal spritesheet into a declared number of frames.
+3. Detect non-transparent bounds per frame.
+4. Crop useful bounds and calculate shared bounds across all frames.
+5. Resize while preserving aspect ratio.
+6. Place each result in a fixed target frame.
+7. Align a grounded baseline for the Word Mage, Slime, Goblin, Crystal Slime, and Gatekeeper.
+8. Align a hover baseline for Bat.
+9. Center effects unless an effect-specific placement rule applies.
+10. Place the earth effect lower in its frame.
+11. Recombine frames into one horizontal spritesheet.
+12. Export a stable PNG with clean alpha.
+13. Preserve every original source file separately.
+
+### Manual Normalization Checklist
+
+- [ ] Confirm the source filename.
+- [ ] Confirm the intended final filename.
+- [ ] Confirm the frame count.
+- [ ] Confirm the target frame size.
+- [ ] Confirm a transparent background and valid alpha.
+- [ ] Split and inspect every frame.
+- [ ] Crop sprite or effect bounds.
+- [ ] Compare scale against the approved visual reference.
+- [ ] Align the grounded baseline, hover line, or effect placement.
+- [ ] Recombine the horizontal sheet.
+- [ ] Check the final canvas dimensions.
+- [ ] Check for prohibited text, letters, numbers, labels, or readable runes.
+- [ ] Check visual readability and crop behavior on mobile.
+- [ ] Confirm presentation has not introduced or implied gameplay meaning.
+- [ ] Preserve the original source separately from the normalized export.
+
+### Phase 71B Candidate-Specific Notes
+
+- Player: idle/walk remain visual anchors; cast/attack is provisional and may need polish before final normalization; defend remains pending final review unless explicitly approved later.
+- Monsters: Slime hit, Bat hit, and Goblin hit need scale/spacing normalization; Bat defeat needs transparency/background cleanup review.
+- Effects: Wind may need stronger contrast/presence; Earth needs a scale/heaviness check; Shield Block is usable but has a strong book-like barrier identity.
+- UI/card/background: `background_dungeon_battle_01.png` is usable/provisional and may need pixel-art consistency polish; the card frame needs text-readability testing; UI icons are usable candidates.
+- Boss: Gatekeeper hit needs scale normalization; generated duplicate filenames may need later cleanup.
+- Events: Healing Shrine may need polish to separate it from Strange Altar; Treasure Chest and Strange Altar are usable v1 candidates.
+- Elite: Crystal Slime idle may need a duplicate generated filename cleaned up later; Crystal Slime hit needs scale/spacing normalization.
+
+### Phase 71B Runtime Integration Gate
+
+Runtime integration remains blocked until normalized runtime-ready files exist, visual QA passes, safe placeholder fallbacks are defined, loading failure cannot crash the app, reduced-motion behavior is considered, mobile readability is checked, and no gameplay rule changes are introduced.
+
+Safety rules remain unchanged:
+
+- Assets are presentation-only.
+- Assets cannot change combat math, timers, answer checking, HP, shield, gold, mastery, Word Energy, shop/event/boss/elite effects, deck unlocks, save behavior, or encounter progression.
+- Assets cannot reveal hidden answers, target cards, correct answers, triggered cards, event outcomes, reward amounts, or result information before the player answers or chooses.
+- Assets cannot contain readable text, letters, numbers, stat labels, answer-like symbols, or readable runes.
+- Assets cannot reduce quiz readability, hide controls, obscure Thai text, or make answer choices harder to scan.
+- Missing assets must fall back safely to placeholders.
+
+### Phase 71B.1 - Organize Source Asset Folder
+
+Phase 71B.1 is an optional later source-organization phase. When explicitly authorized, it may create the recommended `Asset/` subfolders, move existing generated source files into the correct categories, rename duplicate generated filenames such as files ending in `(3)` or `(4)`, and create a simple source asset inventory Markdown file if useful.
+
+Phase 71B.1 still must not import assets into React, create an asset manifest, create animation playback, modify gameplay, move files into `src/assets/`, or treat source images as normalized runtime files.
+
+### Recommended Step After Phase 71B
+
+- Phase 71C: implement a normalization script while still prohibiting runtime integration.
+- Run a polish pass for weaker candidates before normalization.
+- Plan runtime integration only after normalized assets exist and the integration gate is satisfied.
 
 ## Phase 61 Verification
 

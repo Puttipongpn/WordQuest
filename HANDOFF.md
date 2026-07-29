@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71A normalization planning and Phase 70 Batches 1A through 1G source/reference production/review are complete; runtime integration remains prohibited.
+Current phase: Phase 71B normalization script/manual-checklist planning and Batches 1A through 1G source/reference production/review are complete; runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2265,6 +2265,23 @@ Encounter visual hierarchy: Slime/Bat/Goblin are normal monsters, Crystal Slime 
 
 Phase 71A is complete as a documentation-only planning phase. It prepares the source-to-runtime normalization workflow without converting images, creating folders or scripts, importing assets, creating a manifest, or implementing playback.
 
+## Phase 71B Normalization Script And Manual Checklist Plan
+
+Phase 71B is complete as documentation-only planning. It defines the Batches 1A-1G input inventory, target output sizes, future script behavior, manual checklist, candidate notes, safety rules, and runtime integration gate. It did not create a script or process any image.
+
+Current Asset Staging Folder Plan:
+
+- Root `Asset/` currently holds generated source/reference candidates together without final organization.
+- `Asset/` may contain high-resolution, preview-scale, duplicated, padded, or otherwise unnormalized files.
+- Nothing in `Asset/` is runtime-ready or may be imported into React.
+- Recommended later categories are `player`, monster species, `elites/crystal-slime`, `bosses/gatekeeper`, `effects`, `ui`, `backgrounds`, `events`, `incoming`, `rejected`, and `notes`.
+- `src/assets/` remains reserved for normalized runtime-ready exports during a later explicit integration phase.
+- No folders/files were created, moved, or renamed in Phase 71B.
+
+Phase 71B.1 is an optional later organization phase. It may create the recommended staging subfolders, move source files, clean up duplicate `(3)`/`(4)` names, and optionally create a Markdown source inventory. It still cannot import assets, create a manifest/playback, alter gameplay, move sources to `src/assets/`, or call source files runtime-ready.
+
+Future script/manual normalization must preserve originals, use declared frame counts and target cells, inspect alpha and bounds, compare approved-reference scale, align grounded/hover/effect placement, recombine exact sheets, verify mobile readability and prohibited text/runes, and preserve gameplay meaning.
+
 ## Source And Runtime Separation
 
 All generated Player Batch 1A through Elite Enemy Batch 1G files are production source/reference candidates. They may be high resolution, include extra transparent space or preview scaling, and may not use exact runtime frame dimensions.
@@ -2323,9 +2340,8 @@ Integration safety:
 
 Recommended next steps:
 
-1. Plan a normalization script or manual normalization checklist, still without runtime integration.
-2. Polish weaker candidates: wind effect, dungeon background, Healing Shrine, and hit sheets needing scale normalization.
-3. Add elite variants only if more visual variety is needed.
-4. Plan runtime integration only after normalized exports exist, visual QA passes, fallbacks are defined, loading failure is safe, reduced-motion/readability concerns are considered, and a later explicit phase authorizes it.
+1. Phase 71C: implement the normalization script, still without runtime integration.
+2. Alternatively, run a polish pass for weaker candidates.
+3. Plan runtime integration only after normalized exports exist, visual QA passes, fallbacks are defined, loading failure is safe, reduced-motion/readability concerns are considered, and a later explicit phase authorizes it.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

@@ -1240,6 +1240,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: A clear visual taxonomy keeps future normalization and integration mapping consistent without changing encounter rules.
 - Status: Accepted
 
+### 2026-07-21: Phase 71B Specifies Normalization Without Implementing It
+
+- Decision: Phase 71B documents the future normalization script contract and manual checklist for Batches 1A through 1G, but does not create scripts, process files, or integrate assets.
+- Reason: Script and manual workflows need matching dimensions, alignment rules, source preservation, QA, and safety expectations before implementation begins.
+- Status: Accepted
+
+### 2026-07-21: Root Asset Folder Is Temporary Source Staging
+
+- Decision: The existing root `Asset/` folder is temporary source/reference staging only. Its files may remain mixed and unnormalized and cannot be imported into runtime; normalized exports eventually belong in `src/assets/` during a later explicit integration phase.
+- Reason: Explicit staging status prevents generated previews and duplicate filenames from being mistaken for production runtime files.
+- Status: Accepted
+
+### 2026-07-21: Source Organization Is Deferred To Optional Phase 71B.1
+
+- Decision: Phase 71B.1 may later create category/species subfolders under `Asset/`, move source files, clean up duplicate `(3)`/`(4)` filenames, and create a source inventory, but it still cannot integrate assets or treat them as normalized runtime files.
+- Reason: Source organization is useful housekeeping but is separate from both normalization and runtime integration.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.
