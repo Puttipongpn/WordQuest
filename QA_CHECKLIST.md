@@ -729,3 +729,19 @@ Safety verification:
 - [x] `src/assets/` remains absent/unused.
 - [x] No React asset imports, `assetManifest`, animation playback, or runtime asset code were added.
 - [x] No gameplay, save, combat, timer, mastery, deck unlock, Word Energy, shop, event, elite, boss, encounter progression, or deployment behavior changed.
+
+## Phase 71D.3.1 Defeat Frame-Region Correction QA
+
+- [x] Confirm Bat and Goblin defeat sources are `1536x1024` nonuniform pose canvases rather than equal-width logical sheets.
+- [x] Confirm the old equal cuts at `384/768/1152` cross visible Bat/Goblin pixels.
+- [x] Configure four explicit non-overlapping source regions for each affected file.
+- [x] Validate region count, integer coordinates, positive widths, source bounds, and non-overlap.
+- [x] Preserve original source files and existing source alpha.
+- [x] Regenerate Bat defeat as `256x64` with four complete `64x64` frames.
+- [x] Regenerate Goblin defeat as `256x64` with four complete `64x64` frames.
+- [x] Confirm no corrected frame alpha bound touches a cell edge.
+- [x] Regenerate dark/light nearest-neighbor previews with visible frame gaps.
+- [x] Confirm Bat wings and Goblin ears/body are no longer split across neighboring frames.
+- [ ] Confirm final cadence and particle ownership during the full-set Human Visual QA pass.
+- [ ] Keep both files as normalized candidates until full-set Human Visual QA receives explicit approval.
+- [x] Do not modify gameplay, runtime asset imports, animation playback, save behavior, progression, deployment, or `src/assets/`.

@@ -1,3 +1,18 @@
+const sourceFrameRegionOverrides = {
+  "Asset/monsters/bat/monster_bat_defeat_sheet.png": [
+    { left: 0, width: 460 },
+    { left: 460, width: 390 },
+    { left: 850, width: 455 },
+    { left: 1305, width: 231 },
+  ],
+  "Asset/monsters/goblin/monster_goblin_defeat_sheet.png": [
+    { left: 0, width: 500 },
+    { left: 500, width: 430 },
+    { left: 930, width: 370 },
+    { left: 1300, width: 236 },
+  ],
+};
+
 const sheet = (
   source,
   assetType,
@@ -18,6 +33,7 @@ const sheet = (
   expectedOutputDimensions: `${targetFrameWidth * frameCount}x${targetFrameHeight}`,
   notes,
   cleanupMode: "conservative-checkerboard-remove",
+  sourceFrameRegions: sourceFrameRegionOverrides[source],
 });
 
 const icon = (source, notes) => ({
@@ -47,12 +63,12 @@ export const assetNormalizationConfig = [
   sheet("Asset/monsters/bat/monster_bat_idle_sheet.png", "monster-sheet", 4, 64, 64, "hover", "Four frames despite the source sheet's 3:1 overall aspect ratio."),
   sheet("Asset/monsters/bat/monster_bat_attack_sheet.png", "monster-sheet", 4, 64, 64, "hover", "Standard four-frame monster action."),
   sheet("Asset/monsters/bat/monster_bat_hit_sheet.png", "monster-sheet", 2, 64, 64, "hover", "Explicit two-frame hit override; scale and spacing require visual QA."),
-  sheet("Asset/monsters/bat/monster_bat_defeat_sheet.png", "monster-sheet", 4, 64, 64, "hover", "Known source frame-boundary problems may require regeneration."),
+  sheet("Asset/monsters/bat/monster_bat_defeat_sheet.png", "monster-sheet", 4, 64, 64, "hover", "Use explicit nonuniform source regions so wings and particles remain with their intended defeat frames."),
 
   sheet("Asset/monsters/goblin/monster_goblin_idle_sheet.png", "monster-sheet", 4, 64, 64, "grounded", "Standard four-frame monster action."),
   sheet("Asset/monsters/goblin/monster_goblin_attack_sheet.png", "monster-sheet", 4, 64, 64, "grounded", "Source action pixels require frame-edge visual QA."),
   sheet("Asset/monsters/goblin/monster_goblin_hit_sheet.png", "monster-sheet", 2, 64, 64, "grounded", "Explicit two-frame hit override; scale and spacing require visual QA."),
-  sheet("Asset/monsters/goblin/monster_goblin_defeat_sheet.png", "monster-sheet", 4, 64, 64, "grounded", "Known source frame-boundary problems may require regeneration."),
+  sheet("Asset/monsters/goblin/monster_goblin_defeat_sheet.png", "monster-sheet", 4, 64, 64, "grounded", "Use explicit nonuniform source regions so ears, body, staff, and particles remain with their intended defeat frames."),
 
   sheet("Asset/effects/effect_earth_sheet.png", "effect-sheet", 4, 64, 64, "lower", "Earth remains lower/grounded."),
   sheet("Asset/effects/effect_fire_sheet.png", "effect-sheet", 4, 64, 64, "centered", "Standard centered four-frame effect."),

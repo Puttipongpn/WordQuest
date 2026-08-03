@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71D.3 full refined normalization is complete. Human review accepted the Phase 71D.1.1 subset as good enough to run the full pipeline; 34 normalized candidates and 33 QA previews now exist under `normalized_assets_refined_full/`. A new full-set Human Visual QA pass is required before any runtime integration planning. Runtime integration remains prohibited and `src/assets/` remains absent/unused.
+Current phase: Phase 71D.3.1 defeat frame-region correction is complete. Bat and Goblin defeat sources now use explicit nonuniform crop regions, eliminating the torn frames caused by equal-width slicing. The full set remains 34 normalized candidates and 33 QA previews under `normalized_assets_refined_full/`. A full-set Human Visual QA pass is still required before any runtime integration planning. Runtime integration remains prohibited and `src/assets/` remains absent/unused.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2486,12 +2486,38 @@ Full-set Human Visual QA priorities:
 
 These are normalized candidates only. Do not import them into React, create `assetManifest`, implement animation playback, or create/use `src/assets/`. No gameplay, save, combat, progression, deployment, or runtime asset code changed.
 
+## Phase 71D.3.1 Defeat Frame-Region Correction
+
+Phase 71D.3.1 corrects the torn Bat and Goblin defeat candidates found during preview inspection.
+
+Cause:
+
+- Both source images are `1536x1024` canvases with four poses placed at nonuniform horizontal intervals.
+- The previous equal-width split cut at `384`, `768`, and `1152`, crossing Bat wings and Goblin ears/body instead of crossing empty gaps.
+
+Correction:
+
+- Added validated optional `sourceFrameRegions` support to `scripts/asset-normalization-operations.mjs`.
+- Bat defeat uses boundaries `460`, `850`, and `1305`.
+- Goblin defeat uses boundaries `500`, `930`, and `1300`.
+- Existing source alpha is preserved; original files under `Asset/` remain unchanged.
+- The normalizer still uses shared per-action scaling, nearest-neighbor resize, and the existing hover/grounded baseline rules.
+
+Verification:
+
+- Both outputs remain `256x64` four-frame sheets.
+- All eight output frames retain complete silhouettes and do not touch a `64x64` cell edge.
+- Regenerated dark/light previews show intact Bat wings and intact Goblin ears, body, staff, and particles.
+- Bat and Goblin defeat no longer require source regeneration for this slicing issue.
+
+The corrected files are still normalized candidates. Full-set Human Visual QA and explicit approval remain required before runtime integration planning.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
 1. Run a dedicated Human Visual QA pass across all 34 Phase 71D.3 candidates using `normalized_assets_refined_full/qa_previews/`.
-2. Resolve or regenerate confirmed source/frame-boundary failures, especially Bat and Goblin defeat.
+2. Confirm Bat and Goblin defeat cadence/particle ownership in the full Human Visual QA pass; their frame-slicing defect is corrected.
 3. Repeat focused QA for every changed candidate.
 4. Plan runtime integration only after the full refined set passes Human Visual QA and receives explicit approval.
 

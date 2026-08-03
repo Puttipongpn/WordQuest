@@ -1257,6 +1257,26 @@ Human QA remains mandatory. Priority concerns are Word Mage cast cadence/frame e
 
 Every Phase 71D.3 file is a normalized candidate only. Runtime integration, React imports, manifests, animation playback, and `src/assets/` remain prohibited until a later explicit phase after full Human Visual QA approval.
 
+## Phase 71D.3.1 Defeat Frame-Region Correction
+
+Bat and Goblin defeat source sheets do not use four equal-width logical cells even though both canvases are `1536x1024`. Equal division at `384/768/1152` crosses visible poses and creates torn normalized frames.
+
+Per-file source regions are now part of the normalization configuration:
+
+- Bat defeat: `0-459`, `460-849`, `850-1304`, `1305-1535`.
+- Goblin defeat: `0-499`, `500-929`, `930-1299`, `1300-1535`.
+
+The pipeline validates region count, integer coordinates, positive widths, source bounds, and non-overlap before extraction. Files without an override continue to use equal-width regions.
+
+Corrected result:
+
+- Both normalized sheets remain four `64x64` cells (`256x64`).
+- Bat wings/particles and Goblin ears/body/staff/particles stay with their intended poses.
+- Every corrected alpha bound has internal cell padding and does not touch a cell edge.
+- Original source files remain unchanged and source regeneration is no longer required for this specific slicing defect.
+
+The correction does not grant runtime approval. Both sheets remain normalized candidates and still require cadence, particle ownership, scale, baseline, edge, and dark/light Human Visual QA with the rest of the full set.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

@@ -151,6 +151,7 @@ export async function detectAndCleanBackground(sourcePath, cleanupMode) {
     cleanupApplied,
     edgeCandidateRatio,
     connectedRatio,
+    sourceOpaque,
   };
 }
 
@@ -190,20 +191,50 @@ function placementTop(mode, targetHeight, renderedHeight) {
 
 export async function normalizeConfiguredAsset(sourcePath, entry) {
   const cleanup = await detectAndCleanBackground(sourcePath, entry.cleanupMode);
-  if (cleanup.width % entry.frameCount !== 0) {
+  const sourceRegions = entry.sourceFrameRegions ?? Array.from(
+    { length: entry.frameCount },
+    (_, index) => ({
+      left: index * (cleanup.width / entry.frameCount),
+      width: cleanup.width / entry.frameCount,
+    }),
+  );
+  if (!entry.sourceFrameRegions && cleanup.width % entry.frameCount !== 0) {
     throw new Error(
       `Source width ${cleanup.width} is not divisible by configured frame count ${entry.frameCount}.`,
     );
   }
+  if (sourceRegions.length !== entry.frameCount) {
+    throw new Error(
+      `Configured ${sourceRegions.length} source regions for ${entry.frameCount} frames.`,
+    );
+  }
+  for (let index = 0; index < sourceRegions.length; index += 1) {
+    const region = sourceRegions[index];
+    const previous = sourceRegions[index - 1];
+    if (
+      !Number.isInteger(region.left) ||
+      !Number.isInteger(region.width) ||
+      region.left < 0 ||
+      region.width <= 0 ||
+      region.left + region.width > cleanup.width
+    ) {
+      throw new Error(
+        `Invalid source region ${index + 1}: left ${region.left}, width ${region.width}, source width ${cleanup.width}.`,
+      );
+    }
+    if (previous && region.left < previous.left + previous.width) {
+      throw new Error(`Source regions ${index} and ${index + 1} overlap.`);
+    }
+  }
 
-  const sourceFrameWidth = cleanup.width / entry.frameCount;
   const frames = [];
   for (let index = 0; index < entry.frameCount; index += 1) {
+    const region = sourceRegions[index];
     const buffer = await sharp(cleanup.buffer)
       .extract({
-        left: index * sourceFrameWidth,
+        left: region.left,
         top: 0,
-        width: sourceFrameWidth,
+        width: region.width,
         height: cleanup.height,
       })
       .png()
@@ -266,7 +297,15 @@ export async function normalizeConfiguredAsset(sourcePath, entry) {
     .png()
     .toBuffer();
 
-  return { buffer, width, height, cleanup };
+  return {
+    buffer,
+    width,
+    height,
+    cleanup,
+    sourceRegionStrategy: entry.sourceFrameRegions
+      ? `explicit nonuniform regions (${sourceRegions.map((region) => `${region.left}-${region.left + region.width - 1}`).join(", ")})`
+      : "equal-width regions",
+  };
 }
 
 function removeNeutralComponent(data, info, frameWidth, seed) {

@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-03: Nonuniform Source Sheets Use Explicit Frame Regions
+
+- Decision: When generated source poses are not evenly spaced across a sheet, normalization must use validated per-file source regions instead of dividing the canvas into equal-width cells.
+- Reason: Equal-width slicing crossed visible Bat and Goblin defeat poses, while explicit boundaries placed in transparent gaps preserve complete silhouettes without requiring source regeneration.
+- Status: Accepted
+
 ### 2026-08-03: Full Refined Outputs Require New Human Visual QA
 
 - Decision: Human acceptance of the Phase 71D.1.1 subset authorizes Phase 71D.3 full refined normalization only. Files under `normalized_assets_refined_full/` remain normalized candidates and must complete a new full-set Human Visual QA pass before runtime integration planning.

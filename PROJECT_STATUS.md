@@ -10,10 +10,16 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71D.3 full refined normalization after Human review accepted the Phase 71D.1.1 subset as good enough to proceed. The full organized source set produced 34 normalized candidates and 33 QA previews under `normalized_assets_refined_full/`; no files were skipped and no event PNGs were present. These outputs require a new Human Visual QA pass and are not runtime-ready or integrated. Runtime integration remains prohibited and `src/assets/` remains absent/unused. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71D.3.1 defeat frame-region correction after the full refined run exposed torn Bat and Goblin defeat frames. Both sources now use explicit nonuniform frame regions, and regenerated `256x64` candidates/previews preserve all four complete poses without touching cell edges. The full set remains 34 normalized candidates and 33 QA previews under `normalized_assets_refined_full/`. These outputs still require full Human Visual QA and are not runtime-ready or integrated. Runtime integration remains prohibited and `src/assets/` remains absent/unused. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71D.3.1 targeted frame-region correction for Bat and Goblin defeat sheets.
+- Confirmed the cause was equal-width slicing at `384/768/1152` on `1536x1024` sources whose four poses use nonuniform spacing.
+- Added validated per-file `sourceFrameRegions` support and explicit Bat boundaries at `460/850/1305` plus Goblin boundaries at `500/930/1300`.
+- Regenerated both `256x64` candidates and their dark/light previews; all four frames retain complete silhouettes and no visible alpha bounds touch a `64x64` cell edge.
+- Removed Bat and Goblin defeat from the source-regeneration watchlist; both remain normalized candidates pending full Human Visual QA.
+- Preserved original `Asset/` sources, runtime code, gameplay, saves, combat, progression, deployment, and the absent/unused `src/assets/` destination.
 - Completed Phase 71D.3 full refined normalization after explicit Human acceptance of the 10-file refined subset.
 - Added `npm run normalize-assets:refined-full` with explicit frame configuration, conservative source-background cleanup, accepted per-file refinement rules, and detect-only protection for ambiguous glow/highlight assets.
 - Processed 34 organized source PNGs into `normalized_assets_refined_full/` with 34 successful outputs and 0 skipped files.

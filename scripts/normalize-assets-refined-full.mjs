@@ -47,7 +47,7 @@ const knownWarnings = new Map([
   ],
   [
     "Asset/monsters/bat/monster_bat_defeat_sheet.png",
-    ["Known source frame-boundary problems may require source regeneration."],
+    ["Explicit nonuniform source regions are applied; verify wing and particle ownership in Human Visual QA."],
   ],
   [
     "Asset/monsters/goblin/monster_goblin_attack_sheet.png",
@@ -55,7 +55,7 @@ const knownWarnings = new Map([
   ],
   [
     "Asset/monsters/goblin/monster_goblin_defeat_sheet.png",
-    ["Known source frame-boundary problems may require source regeneration."],
+    ["Explicit nonuniform source regions are applied; verify ear, body, staff, and particle ownership in Human Visual QA."],
   ],
   [
     "Asset/effects/effect_wind_sheet.png",
@@ -122,12 +122,12 @@ async function writeConfiguredAsset(entry) {
 
   try {
     const normalized = await normalizeConfiguredAsset(sourcePath, entry);
-    if (!normalized.cleanup.cleanupApplied) {
+    if (!normalized.cleanup.cleanupApplied && normalized.cleanup.sourceOpaque) {
       warnings.push(
         "Conservative edge-connected source cleanup was not applied because its safety gate did not pass.",
       );
     }
-    if (!normalized.cleanup.probableCheckerboard) {
+    if (!normalized.cleanup.probableCheckerboard && normalized.cleanup.sourceOpaque) {
       warnings.push(
         "A probable edge-connected light preview background was not detected; inspect transparency manually.",
       );
@@ -145,8 +145,8 @@ async function writeConfiguredAsset(entry) {
       actualDimensions: `${refined.width}x${refined.height}`,
       expectedDimensions: entry.expectedOutputDimensions,
       frameCount: entry.frameCount,
-      strategy: `${entry.cleanupMode}; ${entry.refinement.strategy}`,
-      cleanupSummary: `${normalized.cleanup.cleanupApplied ? "source cleanup applied" : "source cleanup not applied"}; ${refined.removed} normalized pixels removed; ${refined.residual.count} residual neutral-edge estimate`,
+      strategy: `${normalized.sourceRegionStrategy}; ${entry.cleanupMode}; ${entry.refinement.strategy}`,
+      cleanupSummary: `${normalized.cleanup.cleanupApplied ? "source cleanup applied" : normalized.cleanup.sourceOpaque ? "source cleanup not applied" : "existing source alpha preserved"}; ${refined.removed} normalized pixels removed; ${refined.residual.count} residual neutral-edge estimate`,
       warnings,
       humanQa: entry.refinement.nextAction,
       manualCleanup:
@@ -155,7 +155,7 @@ async function writeConfiguredAsset(entry) {
           : "No automatic requirement; decide after Human Visual QA.",
       regenerate:
         warnings.some((warning) => warning.includes("source frame-boundary")) ||
-        !normalized.cleanup.cleanupApplied
+        (!normalized.cleanup.cleanupApplied && normalized.cleanup.sourceOpaque)
           ? "Consider true-transparent/source regeneration if manual correction is unsafe."
           : "Not automatically required; decide after Human Visual QA.",
       sourceCleanup: normalized.cleanup.cleanupApplied,
@@ -257,6 +257,9 @@ function buildReport(eventCount) {
   const created = records.filter((record) => record.status === "output created");
   const skipped = records.filter((record) => record.status === "skipped");
   const warned = records.filter((record) => record.warnings.length > 0);
+  const nonuniformRegions = records.filter((record) =>
+    record.strategy.startsWith("explicit nonuniform regions"),
+  );
   const manual = records.filter(
     (record) => !record.manualCleanup.startsWith("No automatic requirement"),
   );
@@ -277,6 +280,7 @@ function buildReport(eventCount) {
     `- Files successfully output: ${created.length}`,
     `- Files skipped: ${skipped.length}`,
     `- Files with warnings: ${warned.length}`,
+    `- Files using explicit nonuniform source regions: ${nonuniformRegions.length}`,
     `- Event illustrations found: ${eventCount}`,
     "- Output root: `normalized_assets_refined_full/`",
     "- Every output requires a new Human Visual QA pass before runtime integration planning.",
