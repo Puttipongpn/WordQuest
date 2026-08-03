@@ -385,6 +385,32 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 
 ## Asset Prep
 
+- Phase 71D.1 report exists at `normalized_assets_fixed/FIX_PASS_REPORT.md`.
+- Phase 71D.1 processes only the required 10-file representative subset.
+- Corrected subset output dimensions match configured 64x64 or 128x128 frame-cell expectations.
+- Slime idle/attack and Bat idle use explicit four-frame overrides and no longer show the previous three-frame slicing.
+- Player walk uses six frames; configured hit sheets use two frames; standard non-hit sheets use four frames.
+- Probable checkerboard detection and cleanup metrics are recorded per attempted file.
+- Conservative cleanup affects only light, low-saturation pixels connected to outer edges and stops when its safety gate is not met.
+- Original `Asset/` files remain unchanged, and failed Phase 71C history remains under `normalized_assets/`.
+- Preliminary subset visual estimate is recorded as 8 pass, 2 needs review, and 0 fail.
+- Player walk receives playback cadence/final-pose review before broader approval.
+- Fire receives glow/particle review on light and dark battle backgrounds before broader approval.
+- Full corrected normalization does not begin until the representative subset is explicitly approved.
+- Unsafe cleanup requires manual transparent cleanup or source regeneration.
+- `normalized_assets_fixed/` is not imported by React and is not treated as runtime-ready.
+- Phase 71D visual QA report exists at `normalized_assets/VISUAL_QA_REPORT.md`.
+- All 34 normalized PNG outputs were inspected.
+- QA totals are recorded: 0 pass, 1 needs review, 33 fail.
+- Every report row includes path, detected/expected dimensions, status, notes, and recommended action.
+- Batch summaries exist for player, monsters, effects, UI/card/background, boss, events, and elite.
+- Visible checkerboard/preview backgrounds are treated as failures even when the PNG has an alpha channel.
+- Incorrect frame inference and cross-frame clipping are treated as failures.
+- The provisional background remains needs review pending responsive/style QA.
+- No event output exists for QA.
+- Phase 71E runtime integration remains blocked.
+- Corrected outputs must repeat visual QA and receive explicit human approval.
+- Phase 71D edits no source/normalized images and changes no app/gameplay behavior.
 - Phase 71C script exists at `scripts/normalize-assets.mjs`.
 - `sharp` is development-only and is not imported by the React app.
 - Dry-run mode analyzes inputs without writing outputs.

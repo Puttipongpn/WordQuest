@@ -1119,6 +1119,57 @@ All normalized outputs remain candidates. The presence of target dimensions or a
 
 Phase 71C does not import assets, create an asset manifest, add animation playback, alter gameplay, or authorize runtime integration.
 
+## Phase 71D Visual QA
+
+Phase 71D inspected all 34 normalized PNG outputs and recorded results in `normalized_assets/VISUAL_QA_REPORT.md`.
+
+Result:
+
+- Pass: 0.
+- Needs review: 1.
+- Fail: 33.
+- Event outputs: 0.
+- Runtime integration remains prohibited.
+
+Blocking findings:
+
+- Baked checkerboard/opaque preview backgrounds remain visible in sprite, effect, UI icon, and card-frame outputs.
+- Aspect-ratio-only frame inference incorrectly split Slime idle/attack and Bat idle as three frames.
+- Bat/Goblin defeat and several attack actions contain cross-frame clipping or fragments.
+- The background is the only needs-review output; it remains provisional at 1672x941 and requires responsive crop/style QA.
+
+Phase 71E cannot proceed as runtime integration. Source cleanup and explicit per-file frame/layout metadata are required before rerunning normalization and repeating visual QA.
+
+## Phase 71D.1 Source Cleanup And Normalization Fix Pass
+
+Phase 71D.1 is complete for the required 10-file representative subset. It is a correction pass after the failed Phase 71D normalized visual QA, not runtime integration.
+
+Implementation:
+
+- Config: `scripts/asset-normalization.config.mjs`.
+- Companion script: `scripts/fix-normalized-assets.mjs`.
+- Dry run: `npm run normalize-assets:fix:dry-run`.
+- Corrected subset run: `npm run normalize-assets:fix`.
+- Candidate output: `normalized_assets_fixed/`.
+- Report: `normalized_assets_fixed/FIX_PASS_REPORT.md`.
+- Failed Phase 71C history remains unchanged under `normalized_assets/`.
+
+The config records explicit source/output paths, asset type, horizontal-strip or single-image layout, frame count, target frame dimensions, baseline mode, expected output dimensions, notes, and cleanup mode. Required overrides now include four frames for Slime idle/attack and Bat idle, two frames for every configured hit sheet, six frames for player walk/cast, four frames for standard non-hit actions, 64x64 cells for player/small enemies/effects, and 128x128 cells for Gatekeeper.
+
+The companion script processes only the 10-file fix subset. It detects probable opaque light checkerboard/preview backgrounds and removes only low-saturation light pixels connected to the outer image edges when an automated safety gate passes. It does not use broad chroma-key removal. If detection or cleanup confidence is insufficient, the file is warned and should use manual cleanup or regenerated transparent source instead.
+
+Fix subset result:
+
+- Attempted/output: 10/10.
+- Automated failures/warnings: 0/0.
+- All output dimensions match configured expectations.
+- Preliminary static visual estimate: 8 pass, 2 needs review, 0 fail.
+- Player walk needs playback review for cadence and the narrower final pose.
+- Fire needs glow and pale-particle review on both light and dark battle backgrounds.
+- Slime idle/attack and Bat idle now use four isolated frames without the Phase 71D cross-frame split.
+
+All files under `normalized_assets_fixed/` remain corrected candidates only. Do not import them into React, create an asset manifest, implement animation playback, or create/use `src/assets/`. Review the small subset before authorizing a full corrected rerun. Phase 71E remains blocked until corrected outputs pass repeat visual QA and receive explicit human approval.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

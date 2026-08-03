@@ -10,10 +10,17 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71C Asset Normalization Script implementation after Phase 71B.1 source organization. The script generated 34 normalization candidates under `normalized_assets/` and skipped three ambiguous incoming files. Outputs still require visual QA, are not integrated into React, and runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71D.1 as a small source-cleanup and normalization fix pass. Ten representative files were exported to `normalized_assets_fixed/` with explicit frame/layout configuration and conservative checkerboard removal; preliminary static QA estimates 8 pass, 2 needs review, and 0 fail. The failed Phase 71C outputs remain under `normalized_assets/` for comparison. Phase 71E runtime integration remains prohibited pending subset approval, broader corrected normalization, and repeat visual QA. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71D.1 source cleanup and normalization correction on the required 10-file representative subset.
+- Added explicit per-file normalization configuration in `scripts/asset-normalization.config.mjs`, including required two-, four-, and six-frame overrides, target cells, source layout, baseline mode, expected dimensions, cleanup mode, and notes.
+- Added `scripts/fix-normalized-assets.mjs` and npm dry-run/normal commands for conservative edge-connected light checkerboard detection and removal.
+- Preserved original sources under `Asset/`, failed Phase 71C outputs under `normalized_assets/`, and the absent/unused `src/assets/` runtime destination.
+- Created 10 corrected candidate PNGs and `normalized_assets_fixed/FIX_PASS_REPORT.md`; processing completed 10/10 with exact expected dimensions and no automated warnings.
+- Recorded preliminary corrected-subset visual QA as 8 pass, 2 needs review, and 0 fail. Player walk needs playback cadence/pose review, and Fire needs glow/particle review on varied backgrounds.
+- Kept runtime asset imports, manifests, animation playback, gameplay, saves, combat, progression, and deployment unchanged.
 - Created Vite + React + TypeScript + Tailwind project scaffold.
 - Added basic source folder structure:
   - `src/components`
@@ -1083,6 +1090,26 @@ The following documents are required and must be updated after every completed t
 - Training remains untimed
 - Timeout is treated as a wrong battle answer
 - Oxford 3000 import is still deferred
+
+## Phase 71D Visual QA Summary
+
+Completed on 2026-07-30:
+
+- Inspected all 34 normalized PNG outputs.
+- Created `normalized_assets/VISUAL_QA_REPORT.md`.
+- Recorded 0 pass, 1 needs review, and 33 fail.
+- Confirmed baked checkerboard/preview backgrounds remain a blocking issue.
+- Identified incorrect three-frame inference and cross-frame clipping in several monster sheets.
+- Kept the provisional dungeon background as needs review pending responsive/style QA.
+- Confirmed no event outputs were available.
+
+Phase 71E runtime integration is blocked. Corrected source/background cleanup and explicit per-file frame/layout metadata must precede another normalization run and repeat visual QA.
+
+Preserved:
+
+- No normalized image or source image was edited during QA.
+- `src/assets/` remains absent.
+- No imports, manifest, animation playback, gameplay logic, save rules, combat behavior, timers, mastery, Word Energy, or encounter progression changed.
 
 ## Phase 71C Asset Normalization Script Summary
 

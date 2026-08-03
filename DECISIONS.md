@@ -1276,6 +1276,36 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Automatic color removal could destroy outlines, semi-transparent spell effects, glows, particles, or valid light pixels.
 - Status: Accepted
 
+### 2026-07-30: Visual QA Blocks Runtime Integration
+
+- Decision: Phase 71D results of 0 pass, 1 needs review, and 33 fail block Phase 71E runtime integration.
+- Reason: Target dimensions and exported alpha are insufficient when checkerboard backgrounds, incorrect frame inference, cross-frame clipping, and unresolved scale/readability issues remain.
+- Status: Accepted
+
+### 2026-07-30: Corrected Normalization Requires Repeat Visual QA
+
+- Decision: Cleaned or corrected outputs must rerun normalization, repeat Phase 71D visual QA, and receive explicit human approval before entering `src/assets/`.
+- Reason: The asset pipeline needs evidence that visual blockers are fixed rather than assuming a technical export is runtime-ready.
+- Status: Accepted
+
+### 2026-08-03: Phase 71D.1 Uses A Separate Corrected Candidate Folder
+
+- Decision: Keep failed Phase 71C outputs under `normalized_assets/` and write the Phase 71D.1 representative fix subset under `normalized_assets_fixed/`.
+- Reason: Preserving failed history enables direct comparison and prevents corrected candidates from being mistaken for previously reviewed or runtime-ready files.
+- Status: Accepted
+
+### 2026-08-03: Checkerboard Cleanup Is Edge-Connected And Conservative
+
+- Decision: Automatic preview-background cleanup may remove only light, low-saturation pixels connected to outer image edges after a safety gate passes; uncertain files require manual transparent cleanup or source regeneration.
+- Reason: A narrow cleanup rule can remove the known baked checkerboard while reducing the risk of damaging colored outlines, spell effects, glows, particles, and valid light details.
+- Status: Accepted
+
+### 2026-08-03: Correct A Representative Subset Before Full Normalization
+
+- Decision: Phase 71D.1 normalizes only the required 10-file representative subset with explicit per-file frame/layout configuration. A full corrected run remains blocked until the subset is reviewed and explicitly approved.
+- Reason: Small-batch validation limits repeated cleanup damage and frame-layout errors before applying the workflow to every accepted source.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

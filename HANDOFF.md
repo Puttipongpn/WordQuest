@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71C normalization script implementation is complete after Phase 71B.1 source organization; normalized outputs are candidates only and runtime integration remains prohibited.
+Current phase: Phase 71D visual QA is complete with 0 pass, 1 needs review, and 33 fail across 34 normalized outputs; runtime integration remains prohibited.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2291,6 +2291,43 @@ The images remain unnormalized. Phase 71B.1 did not modify image content, import
 
 Future script/manual normalization must preserve originals, use declared frame counts and target cells, inspect alpha and bounds, compare approved-reference scale, align grounded/hover/effect placement, recombine exact sheets, verify mobile readability and prohibited text/runes, and preserve gameplay meaning.
 
+## Phase 71D.1 Source Cleanup And Normalization Fix Pass
+
+Phase 71D.1 is complete for a 10-file representative subset. It addresses the Phase 71D checkerboard/background and frame-count failures without changing runtime code.
+
+Added:
+
+- `scripts/asset-normalization.config.mjs` with explicit per-file frame counts, source layout, target cells, baseline modes, expected dimensions, cleanup modes, and notes.
+- `scripts/fix-normalized-assets.mjs` with conservative edge-connected light-background detection/removal.
+- `npm run normalize-assets:fix:dry-run` and `npm run normalize-assets:fix`.
+- Corrected candidates and report under `normalized_assets_fixed/`.
+
+Run result:
+
+- Files attempted/output: 10/10.
+- Processing failures/automated warnings: 0/0.
+- Preliminary static visual estimate: 8 pass, 2 needs review, 0 fail.
+- Needs review: player walk cadence/narrower final pose; Fire glow and pale particles on varied backgrounds.
+- Slime idle/attack and Bat idle now use explicit four-frame layouts and no longer show the Phase 71D slicing failure.
+
+The original `Asset/` sources were read only. `normalized_assets/` remains failed Phase 71C history for comparison. `src/assets/` remains absent and unused. Do not run a full corrected asset pass or begin Phase 71E runtime integration until this subset is reviewed and explicitly approved. Unsafe checkerboard cleanup must fall back to manual transparent cleanup or source regeneration.
+
+Report: `normalized_assets_fixed/FIX_PASS_REPORT.md`.
+
+## Phase 71D Visual QA
+
+Report: `normalized_assets/VISUAL_QA_REPORT.md`.
+
+All 34 normalized PNG outputs were inspected. Results:
+
+- Pass: 0.
+- Needs review: 1 (`background_dungeon_battle_01.png`).
+- Fail: 33.
+
+Primary blockers are baked checkerboard/preview backgrounds, incorrect three-frame inference for Slime/Bat sheets, cross-frame clipping in defeat/attack actions, and unresolved hit-scale QA. No event output exists.
+
+Do not begin Phase 71E runtime integration. Phase 71D.1 has corrected only the representative subset; review it before rerunning the full set, then repeat visual QA and require explicit approval.
+
 ## Phase 71C Asset Normalization Script
 
 Phase 71C added `scripts/normalize-assets.mjs`, `sharp` as a dev dependency, npm dry-run/normal commands, and a separate `normalized_assets/` output tree. It did not create or modify `src/assets/`.
@@ -2370,8 +2407,9 @@ Integration safety:
 
 Recommended next steps:
 
-1. Run manual visual QA/background cleanup planning for Phase 71C outputs.
-2. Polish or replace weak/opaque candidates before rerunning normalization.
-3. Plan runtime integration only after normalized exports pass visual QA, fallbacks are defined, loading failure is safe, reduced-motion/readability concerns are considered, and a later explicit phase authorizes it.
+1. Review the two needs-review subset outputs and explicitly approve or reject the fix-pass cleanup approach.
+2. If approved, run the corrected pipeline on a separately authorized broader asset set.
+3. Repeat full visual QA for every corrected output.
+4. Plan runtime integration only after corrected outputs pass visual QA and receive explicit human approval.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.
