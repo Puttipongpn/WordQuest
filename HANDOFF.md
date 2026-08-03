@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71D.1.1 source-aware cleanup refinement is complete for the 10-file subset with a post-preview estimate of 1 pass, 9 needs review, and 0 fail. Phase 71D.3 and runtime integration remain blocked pending localized cleanup and repeat Human QA.
+Current phase: Phase 71D.3 full refined normalization is complete. Human review accepted the Phase 71D.1.1 subset as good enough to run the full pipeline; 34 normalized candidates and 33 QA previews now exist under `normalized_assets_refined_full/`. A new full-set Human Visual QA pass is required before any runtime integration planning. Runtime integration remains prohibited and `src/assets/` remains absent/unused.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2335,7 +2335,7 @@ Results:
 
 The Word Mage concern is confirmed: idle and walk retain opaque white/light-gray areas behind and around the silhouette. Other failed sprites retain edge flecks, detached fragments, or pale ground residue. Fire reads clearly but uses hard opaque pale pixels, so glow and particles need source-aware review on light backgrounds.
 
-The Phase 71D.1 estimate of 8 pass, 2 needs review, and 0 fail is superseded by this enlarged Human QA. Do not proceed to Phase 71D.3. Begin Phase 71D.1.1 with Word Mage idle/walk, using per-frame/source-aware masks, localized manual cleanup, or regenerated true-alpha sources. Avoid a global brighter threshold because it could remove costume, eye, crystal, spellbook, staff, and glow details.
+The Phase 71D.1 estimate of 8 pass, 2 needs review, and 0 fail was superseded by this enlarged Human QA. At that checkpoint, Phase 71D.3 could not proceed and Phase 71D.1.1 began with Word Mage idle/walk, using per-frame/source-aware masks, localized manual cleanup, or regenerated true-alpha sources. Avoid a global brighter threshold because it could remove costume, eye, crystal, spellbook, staff, and glow details.
 
 No normalized candidate was altered. No runtime imports, manifests, animation playback, gameplay changes, or `src/assets/` files were added.
 
@@ -2451,13 +2451,48 @@ Integration safety:
 - Boss and effect art must not imply new mechanics, changed stats, altered result logic, or hidden answer/result information.
 - Keep gameplay, save behavior, combat math, timers, mastery, Word Energy, shield behavior, element behavior, shop behavior, event behavior, boss behavior, elite behavior, encounter progression, deck unlock rules, and dependencies unchanged.
 
+## Phase 71D.3 Full Refined Normalization
+
+Phase 71D.3 is complete after Human review accepted the 10-file Phase 71D.1.1 subset as good enough to proceed with a full run.
+
+Implementation and outputs:
+
+- Config: `scripts/asset-normalization.config.mjs`.
+- Shared operations: `scripts/asset-normalization-operations.mjs`.
+- Full-run script: `scripts/normalize-assets-refined-full.mjs`.
+- Normalization command: `npm run normalize-assets:refined-full`.
+- Preview command: `npm run asset-qa-previews:refined-full`.
+- Report: `normalized_assets_refined_full/FULL_REFINED_NORMALIZATION_REPORT.md`.
+- Preview evidence: `normalized_assets_refined_full/qa_previews/`.
+
+Run result:
+
+- Files attempted/output/skipped: 34/34/0.
+- QA previews generated: 33, covering all configured spritesheets, effects, elite/boss sheets, and UI icons plus one preserved background preview.
+- Event PNGs found: 0; no event output or preview was generated.
+- All explicit sprite, effect, boss, and UI icon dimensions match configuration.
+- Card frame is preserved at `1058x1487`; dungeon background is preserved at `1672x941`.
+- The 10 previously accepted subset outputs match `normalized_assets_refined/` byte-for-byte.
+
+Full-set Human Visual QA priorities:
+
+- Word Mage cast/attack frame boundaries and six-frame cadence.
+- Bat and Goblin defeat source slicing; these are regeneration/manual-layout watchlist items.
+- Goblin attack frame-edge action pixels.
+- Fire hard-alpha glow and pale particles; Wind contrast on light backgrounds.
+- Hit-sheet scale/spacing, especially Gatekeeper hit against its other actions.
+- UI/card transparency and native-size readability.
+- Dungeon background responsive crop, style consistency, and quiz readability.
+
+These are normalized candidates only. Do not import them into React, create `assetManifest`, implement animation playback, or create/use `src/assets/`. No gameplay, save, combat, progression, deployment, or runtime asset code changed.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Review the two needs-review subset outputs and explicitly approve or reject the fix-pass cleanup approach.
-2. If approved, run the corrected pipeline on a separately authorized broader asset set.
-3. Repeat full visual QA for every corrected output.
-4. Plan runtime integration only after corrected outputs pass visual QA and receive explicit human approval.
+1. Run a dedicated Human Visual QA pass across all 34 Phase 71D.3 candidates using `normalized_assets_refined_full/qa_previews/`.
+2. Resolve or regenerate confirmed source/frame-boundary failures, especially Bat and Goblin defeat.
+3. Repeat focused QA for every changed candidate.
+4. Plan runtime integration only after the full refined set passes Human Visual QA and receives explicit approval.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

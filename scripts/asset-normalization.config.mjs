@@ -89,7 +89,7 @@ export const fixPassSources = new Set([
   "Asset/elites/crystal-slime/elite_crystal_slime_idle_sheet.png",
 ]);
 
-const refinementSettings = {
+export const refinementSettings = {
   "Asset/player/player_word_mage_idle_sheet.png": {
     strategy: "seeded neutral pockets, detached residue, and protected neutral boundary cleanup",
     neutralSeeds: [
@@ -219,3 +219,32 @@ export const assetRefinementConfig = assetNormalizationConfig
     input: `normalized_assets_fixed/${entry.output}`,
     refinement: refinementSettings[entry.source],
   }));
+
+const conservativeBoundaryRefinement = {
+  strategy: "conservative neutral-boundary cleanup after source background removal",
+  boundary: { passes: 2, minBrightness: 150, maxChroma: 28 },
+  notes: "Remove only neutral pixels touching transparency; preserve saturated sprite colors and highlights.",
+  statusEstimate: "needs review",
+  qaNotes: "This action was not part of the accepted 10-file subset and requires full-set Human Visual QA.",
+  nextAction: "Inspect edge cleanliness, frame slicing, scale, baseline, and action cadence on dark and light backgrounds.",
+};
+
+const detectOnlyRefinement = {
+  strategy: "source-aware detect only after source background removal",
+  notes: "Do not remove additional bright or neutral pixels automatically because they may be intentional glow, highlights, particles, clothing, book pages, or crystal detail.",
+  statusEstimate: "needs review",
+  qaNotes: "Ambiguous bright pixels are preserved for Human Visual QA.",
+  nextAction: "Review on dark and light backgrounds; use localized cleanup or a true-alpha regenerated source if contamination is confirmed.",
+};
+
+function defaultFullRefinement(entry) {
+  if (entry.assetType === "monster-sheet") {
+    return { ...conservativeBoundaryRefinement };
+  }
+  return { ...detectOnlyRefinement };
+}
+
+export const fullAssetRefinementConfig = assetNormalizationConfig.map((entry) => ({
+  ...entry,
+  refinement: refinementSettings[entry.source] ?? defaultFullRefinement(entry),
+}));

@@ -1,4 +1,4 @@
-import { mkdir } from "node:fs/promises";
+import { mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -6,14 +6,20 @@ import {
   assetNormalizationConfig,
   assetRefinementConfig,
   fixPassSources,
+  fullAssetRefinementConfig,
 } from "./asset-normalization.config.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDirectory, "..");
 const refinedMode = process.argv.includes("--refined");
+const fullRefinedMode = process.argv.includes("--full-refined");
 const sourceRoot = path.join(
   projectRoot,
-  refinedMode ? "normalized_assets_refined" : "normalized_assets_fixed",
+  fullRefinedMode
+    ? "normalized_assets_refined_full"
+    : refinedMode
+      ? "normalized_assets_refined"
+      : "normalized_assets_fixed",
 );
 const previewRoot = path.join(sourceRoot, "qa_previews");
 const padding = 24;
@@ -107,15 +113,80 @@ async function createPreview(entry) {
   return path.relative(projectRoot, outputPath).split(path.sep).join("/");
 }
 
-const subset = refinedMode
-  ? assetRefinementConfig
-  : assetNormalizationConfig.filter((entry) => fixPassSources.has(entry.source));
-if (subset.length !== fixPassSources.size) {
+async function listPngFilesRecursive(directory) {
+  try {
+    const entries = await readdir(directory, { withFileTypes: true });
+    const nested = await Promise.all(
+      entries.map(async (entry) => {
+        const entryPath = path.join(directory, entry.name);
+        if (entry.isDirectory()) {
+          return listPngFilesRecursive(entryPath);
+        }
+        return entry.isFile() && entry.name.toLowerCase().endsWith(".png")
+          ? [entryPath]
+          : [];
+      }),
+    );
+    return nested.flat().sort((a, b) => a.localeCompare(b));
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+}
+
+async function createPreservedPreview(sourcePath) {
+  const relative = path.relative(sourceRoot, sourcePath);
+  const parsed = path.parse(relative);
+  const outputPath = path.join(
+    previewRoot,
+    parsed.dir,
+    `${parsed.name}_qa_preview.png`,
+  );
+  assertInside(sourceRoot, sourcePath);
+  assertInside(previewRoot, outputPath);
+  const metadata = await sharp(sourcePath).metadata();
+  if (!metadata.width || !metadata.height) {
+    throw new Error(`Could not read dimensions for ${relative}.`);
+  }
+  const maxWidth = 1536;
+  const maxHeight = 864;
+  const scale = Math.min(1, maxWidth / metadata.width, maxHeight / metadata.height);
+  const width = Math.max(1, Math.round(metadata.width * scale));
+  const height = Math.max(1, Math.round(metadata.height * scale));
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await sharp(sourcePath)
+    .resize(width, height, { fit: "fill", kernel: sharp.kernel.nearest })
+    .png()
+    .toFile(outputPath);
+  return path.relative(projectRoot, outputPath).split(path.sep).join("/");
+}
+
+const subset = fullRefinedMode
+  ? fullAssetRefinementConfig
+  : refinedMode
+    ? assetRefinementConfig
+    : assetNormalizationConfig.filter((entry) => fixPassSources.has(entry.source));
+const expectedCount = fullRefinedMode
+  ? assetNormalizationConfig.length
+  : fixPassSources.size;
+if (subset.length !== expectedCount) {
   throw new Error(
-    `Preview config mismatch: expected ${fixPassSources.size}, found ${subset.length}.`,
+    `Preview config mismatch: expected ${expectedCount}, found ${subset.length}.`,
   );
 }
 
 for (const entry of subset) {
   console.log(await createPreview(entry));
+}
+
+if (fullRefinedMode) {
+  const preservedPreviewSources = [
+    ...(await listPngFilesRecursive(path.join(sourceRoot, "backgrounds"))).slice(0, 1),
+    ...(await listPngFilesRecursive(path.join(sourceRoot, "events"))),
+  ];
+  for (const sourcePath of preservedPreviewSources) {
+    console.log(await createPreservedPreview(sourcePath));
+  }
 }

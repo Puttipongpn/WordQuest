@@ -10,10 +10,20 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71D.1.1 source-aware cleanup refinement for the 10-file subset. New candidates and dark/light previews exist under `normalized_assets_refined/`; the post-preview estimate is 1 pass, 9 needs review, and 0 fail. Word Mage idle/walk no longer contain the large opaque white pockets or detached right-edge fragments, but small neutral fringe remains. Phase 71D.3 stays blocked until the refined subset is fully clean and approved. Runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71D.3 full refined normalization after Human review accepted the Phase 71D.1.1 subset as good enough to proceed. The full organized source set produced 34 normalized candidates and 33 QA previews under `normalized_assets_refined_full/`; no files were skipped and no event PNGs were present. These outputs require a new Human Visual QA pass and are not runtime-ready or integrated. Runtime integration remains prohibited and `src/assets/` remains absent/unused. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71D.3 full refined normalization after explicit Human acceptance of the 10-file refined subset.
+- Added `npm run normalize-assets:refined-full` with explicit frame configuration, conservative source-background cleanup, accepted per-file refinement rules, and detect-only protection for ambiguous glow/highlight assets.
+- Processed 34 organized source PNGs into `normalized_assets_refined_full/` with 34 successful outputs and 0 skipped files.
+- Preserved exact target dimensions: player cast/walk `384x64`, player idle and four-frame small sheets `256x64`, two-frame small hit sheets `128x64`, boss four-frame sheets `512x128`, boss hit `256x128`, effects `256x64`, and UI icons `64x64`.
+- Preserved the vocabulary card frame at `1058x1487` and the dungeon background at `1672x941`; no event PNGs were present under `Asset/events/`.
+- Generated 33 enlarged QA previews under `normalized_assets_refined_full/qa_previews/`, including dark/light rows with visible frame gaps for all configured spritesheets and UI icons plus one background preview.
+- Verified that all 10 previously accepted refined subset outputs are byte-for-byte identical in the full refined run.
+- Added `normalized_assets_refined_full/FULL_REFINED_NORMALIZATION_REPORT.md` with dimensions, frame counts, cleanup strategies, warnings, Human QA actions, manual-cleanup review, and source-regeneration watchlists.
+- Recorded full-set QA priorities: Word Mage cast boundary/cadence, Bat and Goblin defeat frame slicing, Goblin attack frame edges, Fire hard-alpha glow, Wind contrast, Gatekeeper hit scale, UI/card transparency, and responsive background readability.
+- Kept every Phase 71D.3 output as a normalized candidate only. No React imports, asset manifest, animation playback, `src/assets/` files, gameplay, saves, combat, progression, deployment, or runtime asset code changed.
 - Completed Phase 71D.1.1 source-aware cleanup refinement after the failed Phase 71D.2 Human Visual QA.
 - Added per-file/per-frame neutral-pocket seeds, detached-component safety limits, protected Word Mage crystal/staff zones, and bounded neutral-edge cleanup settings.
 - Added `npm run normalize-assets:refine` and wrote 10 refined candidates plus `normalized_assets_refined/REFINEMENT_REPORT.md`.
@@ -21,7 +31,7 @@ WordQuest has completed Phase 71D.1.1 source-aware cleanup refinement for the 10
 - Removed 237 visible pixels from Word Mage idle and 442 from Word Mage walk while preserving cream costume, book, staff, eye, and crystal details.
 - Removed confirmed Slime/Bat/Goblin neutral fringe, Bat side fragments, inconsistent Goblin ground residue, and five localized Gold Coin fringe pixels.
 - Kept Fire and Elite Crystal Slime detect-only because intended bright/glow pixels overlap neutral residue colors; copied Gatekeeper unchanged as the clean reference.
-- Recorded a post-preview estimate of 1 pass, 9 needs review, and 0 fail. Phase 71D.3 remains blocked pending localized cleanup and repeat Human QA.
+- Recorded a post-preview estimate of 1 pass, 9 needs review, and 0 fail. At that checkpoint Phase 71D.3 remained blocked; later Human acceptance authorized the completed full run documented above.
 - Preserved `Asset/`, `normalized_assets/`, `normalized_assets_fixed/`, gameplay, saves, combat, progression, deployment, runtime code, and the absent/unused `src/assets/` destination.
 - Completed Phase 71D.2 Human Visual QA for all 10 Phase 71D.1 corrected candidates.
 - Added enlarged nearest-neighbor QA previews on dark and light backgrounds under `normalized_assets_fixed/qa_previews/` without altering normalized PNGs.

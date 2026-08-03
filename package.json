@@ -12,7 +12,9 @@
     "normalize-assets:fix": "node ./scripts/fix-normalized-assets.mjs",
     "normalize-assets:fix:dry-run": "node ./scripts/fix-normalized-assets.mjs --dry-run",
     "normalize-assets:refine": "node ./scripts/refine-normalized-assets.mjs",
-    "asset-qa-previews:refined": "node ./scripts/generate-fixed-asset-qa-previews.mjs --refined"
+    "asset-qa-previews:refined": "node ./scripts/generate-fixed-asset-qa-previews.mjs --refined",
+    "normalize-assets:refined-full": "node ./scripts/normalize-assets-refined-full.mjs",
+    "asset-qa-previews:refined-full": "node ./scripts/generate-fixed-asset-qa-previews.mjs --full-refined"
   },
   "dependencies": {
     "react": "^19.0.0",

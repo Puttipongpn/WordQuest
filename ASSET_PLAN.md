@@ -1186,13 +1186,13 @@ Human QA result:
 - Pass: 1.
 - Needs review: 3.
 - Fail: 6.
-- Phase 71D.3 readiness: blocked.
+- Phase 71D.3 readiness at this Phase 71D.2 checkpoint: blocked.
 
 The single pass is Gatekeeper idle, which provides the clean comparison reference. Fire, Elite Crystal Slime idle, and Gold Coin need review. Word Mage idle/walk, Slime idle/attack, Bat idle, and Goblin idle fail because opaque light/gray edge residue, detached fragments, or pale ground remnants remain visible.
 
 The Word Mage cleanup concern is confirmed. Broad automatic threshold expansion is unsafe because pale costume, book, staff, eye, crystal, and glow pixels overlap the contaminated color range. Phase 71D.1.1 should prefer source-aware per-frame masks, localized manual cleanup, or regenerated true-alpha sources. Fire cleanup must preserve warm colored glow while distinguishing neutral residue; its pale particles also need light-background readability review.
 
-Do not recommend Phase 71D.3 or a full corrected rerun yet. Repeat the same dark/light subset QA after Phase 71D.1.1. Runtime integration, React imports, asset manifests, animation playback, and `src/assets/` remain prohibited.
+At this Phase 71D.2 checkpoint, do not recommend Phase 71D.3 or a full corrected rerun yet. The later Human acceptance of Phase 71D.1.1 superseded this gate for normalization only. Runtime integration, React imports, asset manifests, animation playback, and `src/assets/` remain prohibited.
 
 ## Phase 71D.1.1 Source-Aware Cleanup Refinement
 
@@ -1222,7 +1222,40 @@ Result:
 
 Broad bright-pixel deletion remains unsafe for Word Mage because cream clothing, book pages, staff highlights, eye highlights, and blue crystal glow overlap the contaminated brightness range. Fire and Elite Crystal Slime similarly require source-aware decisions around glow and sparkles.
 
-Phase 71D.3 remains blocked. Continue localized cleanup and repeat Human QA until the refined subset is fully clean. Runtime integration, React imports, manifests, playback, and `src/assets/` remain prohibited.
+Phase 71D.3 was previously blocked by this automated estimate. Human review subsequently accepted the refined subset as good enough to proceed with the full refined run; that acceptance does not make the subset or full-set outputs runtime-ready.
+
+## Phase 71D.3 Full Refined Normalization
+
+Phase 71D.3 runs the refined source-aware normalization pipeline across every organized production source/reference candidate currently present under the authorized `Asset/` categories.
+
+Outputs and tooling:
+
+- Command: `npm run normalize-assets:refined-full`.
+- Output root: `normalized_assets_refined_full/`.
+- Report: `normalized_assets_refined_full/FULL_REFINED_NORMALIZATION_REPORT.md`.
+- Preview command: `npm run asset-qa-previews:refined-full`.
+- Preview root: `normalized_assets_refined_full/qa_previews/`.
+
+Run result:
+
+- 34 files attempted, 34 successfully output, 0 skipped.
+- 32 explicitly configured sprite/effect/icon files were normalized; card frame and dungeon background were preserved at source dimensions.
+- 33 QA previews were generated: every configured spritesheet/effect/icon plus one background preview.
+- No event PNGs were present, so no event output or preview exists for this run.
+- All target dimensions and configured frame counts passed automated verification.
+- All 10 accepted Phase 71D.1.1 subset outputs are byte-for-byte identical in the full output.
+
+Cleanup policy:
+
+- Use exact accepted per-file masks, seeds, protected regions, and detect-only behavior for the refined subset.
+- Use conservative neutral-boundary cleanup for other small-monster sheets.
+- Use detect-only final handling for player, effect, elite, boss, and UI files where neutral-looking pixels may be intentional glow, highlights, cream clothing, book pages, staff/crystal detail, particles, or sparkles.
+- Never apply broad global bright-pixel deletion.
+- Preserve backgrounds, event illustrations, and the vocabulary card frame unless a later safe and explicit action is approved.
+
+Human QA remains mandatory. Priority concerns are Word Mage cast cadence/frame edges, Bat and Goblin defeat cross-frame slicing, Goblin attack frame edges, Fire hard-alpha glow, Wind contrast, Gatekeeper hit scale, hit-sheet spacing, card-frame transparency, and responsive background readability. Bat and Goblin defeat remain source-regeneration/manual-layout watchlist items.
+
+Every Phase 71D.3 file is a normalized candidate only. Runtime integration, React imports, manifests, animation playback, and `src/assets/` remain prohibited until a later explicit phase after full Human Visual QA approval.
 
 ## Phase 61 Verification
 

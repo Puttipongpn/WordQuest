@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-03: Full Refined Outputs Require New Human Visual QA
+
+- Decision: Human acceptance of the Phase 71D.1.1 subset authorizes Phase 71D.3 full refined normalization only. Files under `normalized_assets_refined_full/` remain normalized candidates and must complete a new full-set Human Visual QA pass before runtime integration planning.
+- Reason: The full run preserves the accepted subset exactly but introduces additional actions and source-specific risks, including cross-frame slicing, hit-scale consistency, glow readability, card transparency, and responsive background composition.
+- Status: Accepted
+
 ### 2026-06-04: Web-First Approach
 
 - Decision: Build the project as a web app first.

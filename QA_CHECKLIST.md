@@ -401,7 +401,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Refinement report records source/output paths, dimensions, frames, strategy, removed pixels/percentage, residual estimate, status, notes, and next action.
 - Broad global threshold cleanup is not used because it can damage intended bright details.
 - `Asset/`, `normalized_assets/`, and `normalized_assets_fixed/` remain unchanged.
-- Phase 71D.3 remains blocked pending localized cleanup and repeat Human QA.
+- At the Phase 71D.1.1 automated checkpoint, Phase 71D.3 remained blocked; later Human acceptance authorized the completed full run.
 - Runtime integration remains prohibited and `src/assets/` remains absent/unused.
 - Phase 71D.2 Human QA report exists at `normalized_assets_fixed/HUMAN_VISUAL_QA_REPORT.md`.
 - Ten enlarged nearest-neighbor previews exist under `normalized_assets_fixed/qa_previews/`.
@@ -415,7 +415,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - All candidates contain transparent pixels, but surviving visible pixels use hard alpha with no partial-alpha glow falloff.
 - Frame counts and cell isolation are correct across the subset; current failures are cleanup/source-quality issues rather than three-frame inference errors.
 - Phase 71D.1 preliminary estimates are superseded by enlarged Phase 71D.2 Human QA.
-- Phase 71D.3 remains blocked.
+- Phase 71D.3 was blocked by this Phase 71D.2 result and was later authorized only after the refined subset review.
 - Phase 71D.1.1 source-aware cleanup is recommended before repeating subset QA.
 - No normalized PNG, runtime code, React import, manifest, playback, or `src/assets/` file is changed by Human QA.
 - Phase 71D.1 report exists at `normalized_assets_fixed/FIX_PASS_REPORT.md`.
@@ -683,3 +683,49 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Richer element interactions.
 - Broader balance testing.
 - Public deployment confirmation.
+
+## Phase 71D.3 Full Refined Normalization QA
+
+Automated run verification:
+
+- [x] Human acceptance of the Phase 71D.1.1 refined subset was recorded before the full run.
+- [x] `npm run normalize-assets:refined-full` completed.
+- [x] 34 files were attempted, 34 files were output, and 0 files were skipped.
+- [x] Output files were written only under `normalized_assets_refined_full/`.
+- [x] `Asset/`, `normalized_assets/`, `normalized_assets_fixed/`, and `normalized_assets_refined/` were not overwritten.
+- [x] Explicit frame counts and configured target dimensions were preserved.
+- [x] Player idle is `256x64`; player walk and cast/attack are `384x64`.
+- [x] Four-frame small-monster/elite/effect sheets are `256x64`; hit sheets are `128x64`.
+- [x] Four-frame boss sheets are `512x128`; boss hit is `256x128`.
+- [x] UI Gold Coin, Heart HP, and Shield icons are `64x64`.
+- [x] Vocabulary card frame and dungeon background preserve source dimensions.
+- [x] The accepted 10-file refined subset matches the full-run outputs byte-for-byte.
+- [x] Broad global bright-pixel deletion was not used.
+- [x] Ambiguous glow, highlight, clothing, page, crystal, particle, and sparkle pixels use protected or detect-only handling.
+- [x] No event PNGs were present; the report records that no event output/preview was produced.
+- [x] `FULL_REFINED_NORMALIZATION_REPORT.md` records outputs, dimensions, frames, strategies, warnings, Human QA, manual cleanup, and regeneration watchlists.
+
+Preview verification:
+
+- [x] `npm run asset-qa-previews:refined-full` completed.
+- [x] 33 QA previews were generated under `normalized_assets_refined_full/qa_previews/`.
+- [x] All player, monster, elite, boss, effect, and UI icon candidates have enlarged nearest-neighbor previews.
+- [x] Sprite/icon previews contain dark and light rows with visible frame gaps.
+- [x] One dungeon background preview was generated without modifying the normalized candidate.
+- [ ] Run a dedicated Human Visual QA pass across all 34 normalized candidates.
+- [ ] Review Word Mage cast/attack edge cleanliness, frame slicing, and six-frame cadence.
+- [ ] Review Bat and Goblin defeat cross-frame slicing; regenerate or manually re-layout if confirmed.
+- [ ] Review Goblin attack frame-edge action pixels.
+- [ ] Review every hit sheet for scale, spacing, baseline, and reaction readability.
+- [ ] Review Fire hard-alpha glow/particles and Wind contrast on dark and light backgrounds.
+- [ ] Review Elite Crystal Slime and Gatekeeper highlights/glow without deleting intentional bright pixels.
+- [ ] Review UI icons at native 64px and inspect card-frame transparency/text-safe insets.
+- [ ] Review dungeon background responsive crop, style fit, quiz readability, and mobile composition.
+- [ ] Add event overlay/mobile QA when event PNG sources become available.
+- [ ] Do not begin runtime integration planning until the full refined set passes Human Visual QA and receives explicit approval.
+
+Safety verification:
+
+- [x] `src/assets/` remains absent/unused.
+- [x] No React asset imports, `assetManifest`, animation playback, or runtime asset code were added.
+- [x] No gameplay, save, combat, timer, mastery, deck unlock, Word Energy, shop, event, elite, boss, encounter progression, or deployment behavior changed.
