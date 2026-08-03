@@ -88,3 +88,134 @@ export const fixPassSources = new Set([
   "Asset/bosses/gatekeeper/boss_gatekeeper_idle_sheet.png",
   "Asset/elites/crystal-slime/elite_crystal_slime_idle_sheet.png",
 ]);
+
+const refinementSettings = {
+  "Asset/player/player_word_mage_idle_sheet.png": {
+    strategy: "seeded neutral pockets, detached residue, and protected neutral boundary cleanup",
+    neutralSeeds: [
+      { frame: 1, x: 43, y: 28, minBrightness: 220, maxChroma: 18 },
+      { frame: 3, x: 43, y: 28, minBrightness: 220, maxChroma: 18 },
+    ],
+    alphaComponentSeeds: [
+      { frame: 0, x: 47, y: 29, maxPixels: 8 },
+      { frame: 2, x: 47, y: 30, maxPixels: 8 },
+    ],
+    boundary: { passes: 2, minBrightness: 175, maxChroma: 20 },
+    protectedRects: [
+      { frame: 0, left: 51, top: 7, right: 60, bottom: 27 },
+      { frame: 1, left: 50, top: 7, right: 59, bottom: 27 },
+      { frame: 2, left: 50, top: 7, right: 60, bottom: 27 },
+      { frame: 3, left: 48, top: 7, right: 58, bottom: 27 },
+    ],
+    notes: "Protect staff/crystal highlights while removing enclosed neutral pockets behind the arm and staff.",
+    statusEstimate: "needs review",
+    qaNotes: "Large white pockets are gone and intended bright details remain; a few isolated neutral fringe pixels still need localized review.",
+    nextAction: "Perform localized per-pixel cleanup or regenerate true-alpha source before pass approval.",
+  },
+  "Asset/player/player_word_mage_walk_sheet.png": {
+    strategy: "per-frame seeded neutral pockets, detached fragment removal, and protected neutral boundary cleanup",
+    neutralSeeds: [
+      { frame: 0, x: 44, y: 34, minBrightness: 220, maxChroma: 18 },
+      { frame: 1, x: 42, y: 34, minBrightness: 220, maxChroma: 18 },
+      { frame: 2, x: 42, y: 35, minBrightness: 220, maxChroma: 18 },
+      { frame: 3, x: 36, y: 34, minBrightness: 220, maxChroma: 18 },
+      { frame: 4, x: 35, y: 34, minBrightness: 220, maxChroma: 18 },
+      { frame: 5, x: 39, y: 35, minBrightness: 220, maxChroma: 18 },
+    ],
+    alphaComponentSeeds: [
+      { frame: 3, x: 59, y: 48, maxPixels: 12 },
+      { frame: 4, x: 59, y: 50, maxPixels: 16 },
+    ],
+    boundary: { passes: 2, minBrightness: 175, maxChroma: 20 },
+    protectedRects: [
+      { frame: 0, left: 49, top: 18, right: 57, bottom: 30 },
+      { frame: 1, left: 47, top: 18, right: 55, bottom: 30 },
+      { frame: 2, left: 47, top: 18, right: 55, bottom: 30 },
+      { frame: 3, left: 41, top: 18, right: 50, bottom: 30 },
+      { frame: 4, left: 40, top: 18, right: 47, bottom: 30 },
+      { frame: 5, left: 44, top: 18, right: 52, bottom: 31 },
+    ],
+    notes: "Protect staff/crystal highlights; remove repeated enclosed white pockets and confirmed right-edge fragments.",
+    statusEstimate: "needs review",
+    qaNotes: "Repeated white pockets and right-edge fragments are gone; minor neutral fringe remains and cadence should be rechecked after final cleanup.",
+    nextAction: "Perform localized per-pixel cleanup, then repeat cadence and dark/light QA.",
+  },
+  "Asset/monsters/slime/monster_slime_idle_sheet.png": {
+    strategy: "per-frame neutral boundary cleanup",
+    boundary: { passes: 2, minBrightness: 150, maxChroma: 28 },
+    notes: "Preserve saturated green/yellow highlights while removing neutral fringe pixels.",
+    statusEstimate: "needs review",
+    qaNotes: "Neutral-edge heuristic reaches zero and the silhouette is preserved; a final human edge check is still required.",
+    nextAction: "Repeat focused Human QA before pass approval.",
+  },
+  "Asset/monsters/slime/monster_slime_attack_sheet.png": {
+    strategy: "per-frame neutral boundary cleanup",
+    boundary: { passes: 2, minBrightness: 150, maxChroma: 28 },
+    notes: "Preserve the green attack trail and remove only neutral fringe pixels.",
+    statusEstimate: "needs review",
+    qaNotes: "Attack trail and frame isolation remain intact; the refined hard edge still needs final approval.",
+    nextAction: "Repeat focused Human QA before pass approval.",
+  },
+  "Asset/monsters/bat/monster_bat_idle_sheet.png": {
+    strategy: "detached fragment removal and per-frame neutral boundary cleanup",
+    alphaComponentSeeds: [
+      { frame: 1, x: 5, y: 42, maxPixels: 12 },
+      { frame: 2, x: 59, y: 38, maxPixels: 12 },
+    ],
+    boundary: { passes: 2, minBrightness: 150, maxChroma: 28 },
+    notes: "Remove confirmed detached side fragments while preserving the saturated purple silhouette.",
+    statusEstimate: "needs review",
+    qaNotes: "Detached side fragments are gone and the hover silhouette is preserved; gray-purple edge pixels remain visually ambiguous.",
+    nextAction: "Repeat focused Human QA before pass approval.",
+  },
+  "Asset/monsters/goblin/monster_goblin_idle_sheet.png": {
+    strategy: "inconsistent ground-residue removal and per-frame neutral boundary cleanup",
+    alphaComponentSeeds: [{ frame: 1, x: 30, y: 59, maxPixels: 48 }],
+    boundary: { passes: 2, minBrightness: 150, maxChroma: 28 },
+    notes: "Treat the frame-2 ground strip as residue because it is neutral, detached, and inconsistent across the idle cycle.",
+    statusEstimate: "needs review",
+    qaNotes: "The detached ground strip is removed, but a short under-foot gray edge remains and requires intent confirmation.",
+    nextAction: "Confirm shadow intent or remove the remaining localized under-foot residue.",
+  },
+  "Asset/effects/effect_fire_sheet.png": {
+    strategy: "source-aware detect only",
+    notes: "Do not remove pale pixels automatically; they overlap the intentional hot flame core and particles. Recheck hard-alpha glow on both backgrounds.",
+    statusEstimate: "needs review",
+    qaNotes: "Warm flame and particles are preserved unchanged; pale particles remain weak on light backgrounds and glow still uses hard alpha.",
+    nextAction: "Regenerate or manually author true-alpha glow if softer falloff is required.",
+  },
+  "Asset/elites/crystal-slime/elite_crystal_slime_idle_sheet.png": {
+    strategy: "source-aware detect only",
+    notes: "Do not remove pale pixels automatically because neutral-looking highlights overlap intended sparkles and crystal lighting.",
+    statusEstimate: "needs review",
+    qaNotes: "Intentional sparkles and crystal highlights are preserved unchanged; pale edge pixels remain source-ambiguous.",
+    nextAction: "Use source-aware manual review before removing any pale sparkle or highlight.",
+  },
+  "Asset/ui/ui_gold_coin.png": {
+    strategy: "localized seeded neutral fringe removal",
+    neutralSeeds: [
+      { frame: 0, x: 7, y: 45, minBrightness: 170, maxChroma: 30 },
+      { frame: 0, x: 7, y: 19, minBrightness: 200, maxChroma: 30 },
+    ],
+    notes: "Remove only the localized neutral left-edge fringe; preserve white and yellow highlights elsewhere.",
+    statusEstimate: "needs review",
+    qaNotes: "Five localized fringe pixels are removed and highlights remain; final 64px edge/readability review is still required.",
+    nextAction: "Inspect at native 64px and clean only confirmed remaining fringe pixels.",
+  },
+  "Asset/bosses/gatekeeper/boss_gatekeeper_idle_sheet.png": {
+    strategy: "clean reference copy",
+    copyOnly: true,
+    notes: "Keep unchanged as the Phase 71D.2 clean comparison reference.",
+    statusEstimate: "pass",
+    qaNotes: "Copied unchanged and remains clean on both backgrounds.",
+    nextAction: "Keep as comparison reference; runtime integration remains prohibited.",
+  },
+};
+
+export const assetRefinementConfig = assetNormalizationConfig
+  .filter((entry) => fixPassSources.has(entry.source))
+  .map((entry) => ({
+    ...entry,
+    input: `normalized_assets_fixed/${entry.output}`,
+    refinement: refinementSettings[entry.source],
+  }));

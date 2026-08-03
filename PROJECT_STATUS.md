@@ -10,10 +10,27 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71D.1 as a small source-cleanup and normalization fix pass. Ten representative files were exported to `normalized_assets_fixed/` with explicit frame/layout configuration and conservative checkerboard removal; preliminary static QA estimates 8 pass, 2 needs review, and 0 fail. The failed Phase 71C outputs remain under `normalized_assets/` for comparison. Phase 71E runtime integration remains prohibited pending subset approval, broader corrected normalization, and repeat visual QA. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71D.1.1 source-aware cleanup refinement for the 10-file subset. New candidates and dark/light previews exist under `normalized_assets_refined/`; the post-preview estimate is 1 pass, 9 needs review, and 0 fail. Word Mage idle/walk no longer contain the large opaque white pockets or detached right-edge fragments, but small neutral fringe remains. Phase 71D.3 stays blocked until the refined subset is fully clean and approved. Runtime integration remains prohibited. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71D.1.1 source-aware cleanup refinement after the failed Phase 71D.2 Human Visual QA.
+- Added per-file/per-frame neutral-pocket seeds, detached-component safety limits, protected Word Mage crystal/staff zones, and bounded neutral-edge cleanup settings.
+- Added `npm run normalize-assets:refine` and wrote 10 refined candidates plus `normalized_assets_refined/REFINEMENT_REPORT.md`.
+- Added `npm run asset-qa-previews:refined` and generated 10 enlarged dark/light previews under `normalized_assets_refined/qa_previews/`.
+- Removed 237 visible pixels from Word Mage idle and 442 from Word Mage walk while preserving cream costume, book, staff, eye, and crystal details.
+- Removed confirmed Slime/Bat/Goblin neutral fringe, Bat side fragments, inconsistent Goblin ground residue, and five localized Gold Coin fringe pixels.
+- Kept Fire and Elite Crystal Slime detect-only because intended bright/glow pixels overlap neutral residue colors; copied Gatekeeper unchanged as the clean reference.
+- Recorded a post-preview estimate of 1 pass, 9 needs review, and 0 fail. Phase 71D.3 remains blocked pending localized cleanup and repeat Human QA.
+- Preserved `Asset/`, `normalized_assets/`, `normalized_assets_fixed/`, gameplay, saves, combat, progression, deployment, runtime code, and the absent/unused `src/assets/` destination.
+- Completed Phase 71D.2 Human Visual QA for all 10 Phase 71D.1 corrected candidates.
+- Added enlarged nearest-neighbor QA previews on dark and light backgrounds under `normalized_assets_fixed/qa_previews/` without altering normalized PNGs.
+- Added `normalized_assets_fixed/HUMAN_VISUAL_QA_REPORT.md` with per-file edge, transparency, slicing, cadence, glow-readability, and action findings.
+- Recorded Human QA totals of 1 pass, 3 needs review, and 6 fail; this supersedes the earlier automated/static estimate of 8 pass, 2 needs review, and 0 fail.
+- Confirmed Word Mage idle/walk edge contamination and additional cleanup failures in Slime idle/attack, Bat idle, and Goblin idle.
+- Kept Fire, Elite Crystal Slime idle, and Gold Coin at needs review; Gatekeeper idle is the single clean pass/reference.
+- Blocked Phase 71D.3 and recommended Phase 71D.1.1 source-aware cleanup before another subset review.
+- Preserved normalized candidates, runtime code, gameplay, saves, combat, progression, deployment, and the absent/unused `src/assets/` destination.
 - Completed Phase 71D.1 source cleanup and normalization correction on the required 10-file representative subset.
 - Added explicit per-file normalization configuration in `scripts/asset-normalization.config.mjs`, including required two-, four-, and six-frame overrides, target cells, source layout, baseline mode, expected dimensions, cleanup mode, and notes.
 - Added `scripts/fix-normalized-assets.mjs` and npm dry-run/normal commands for conservative edge-connected light checkerboard detection and removal.

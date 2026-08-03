@@ -1170,6 +1170,60 @@ Fix subset result:
 
 All files under `normalized_assets_fixed/` remain corrected candidates only. Do not import them into React, create an asset manifest, implement animation playback, or create/use `src/assets/`. Review the small subset before authorizing a full corrected rerun. Phase 71E remains blocked until corrected outputs pass repeat visual QA and receive explicit human approval.
 
+## Phase 71D.2 Human Visual QA
+
+Phase 71D.2 inspected all 10 Phase 71D.1 corrected candidates with enlarged nearest-neighbor previews on dark and light backgrounds.
+
+Artifacts:
+
+- Preview generator: `scripts/generate-fixed-asset-qa-previews.mjs`.
+- Preview evidence: `normalized_assets_fixed/qa_previews/`.
+- Report: `normalized_assets_fixed/HUMAN_VISUAL_QA_REPORT.md`.
+- Normalized candidates under `normalized_assets_fixed/` were not altered.
+
+Human QA result:
+
+- Pass: 1.
+- Needs review: 3.
+- Fail: 6.
+- Phase 71D.3 readiness: blocked.
+
+The single pass is Gatekeeper idle, which provides the clean comparison reference. Fire, Elite Crystal Slime idle, and Gold Coin need review. Word Mage idle/walk, Slime idle/attack, Bat idle, and Goblin idle fail because opaque light/gray edge residue, detached fragments, or pale ground remnants remain visible.
+
+The Word Mage cleanup concern is confirmed. Broad automatic threshold expansion is unsafe because pale costume, book, staff, eye, crystal, and glow pixels overlap the contaminated color range. Phase 71D.1.1 should prefer source-aware per-frame masks, localized manual cleanup, or regenerated true-alpha sources. Fire cleanup must preserve warm colored glow while distinguishing neutral residue; its pale particles also need light-background readability review.
+
+Do not recommend Phase 71D.3 or a full corrected rerun yet. Repeat the same dark/light subset QA after Phase 71D.1.1. Runtime integration, React imports, asset manifests, animation playback, and `src/assets/` remain prohibited.
+
+## Phase 71D.1.1 Source-Aware Cleanup Refinement
+
+Phase 71D.1.1 refines cleanup after the failed Phase 71D.2 Human Visual QA. It writes a separate candidate history under `normalized_assets_refined/` and does not overwrite source, Phase 71C, or Phase 71D.1 outputs.
+
+Implementation:
+
+- Config: `scripts/asset-normalization.config.mjs`.
+- Script: `scripts/refine-normalized-assets.mjs`.
+- Command: `npm run normalize-assets:refine`.
+- Preview command: `npm run asset-qa-previews:refined`.
+- Report: `normalized_assets_refined/REFINEMENT_REPORT.md`.
+- Preview evidence: `normalized_assets_refined/qa_previews/`.
+
+Source-aware rules include seeded neutral-pocket removal, per-frame detached-component seeds with maximum-size safety limits, bounded neutral-boundary passes, protected Word Mage crystal/staff zones, and detect-only handling when neutral-looking pixels overlap intentional art.
+
+Result:
+
+- Files processed: 10, including unchanged Gatekeeper reference copy.
+- Post-preview estimate: 1 pass, 9 needs review, 0 fail.
+- Word Mage idle: 237 visible pixels removed; major white pockets are gone.
+- Word Mage walk: 442 visible pixels removed; repeated white pockets and right-edge fragments are gone.
+- Slime/Bat/Goblin silhouettes and frame isolation remain intact after cleanup.
+- Fire and Elite Crystal Slime remain pixel-identical detect-only candidates.
+- Gatekeeper remains pixel-identical and is the clean pass reference.
+- Gold Coin had five localized fringe pixels removed without changing its main highlights.
+
+Broad bright-pixel deletion remains unsafe for Word Mage because cream clothing, book pages, staff highlights, eye highlights, and blue crystal glow overlap the contaminated brightness range. Fire and Elite Crystal Slime similarly require source-aware decisions around glow and sparkles.
+
+Phase 71D.3 remains blocked. Continue localized cleanup and repeat Human QA until the refined subset is fully clean. Runtime integration, React imports, manifests, playback, and `src/assets/` remain prohibited.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

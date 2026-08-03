@@ -1306,6 +1306,24 @@ This file records accepted project decisions. Update it when architecture, scope
 - Reason: Small-batch validation limits repeated cleanup damage and frame-layout errors before applying the workflow to every accepted source.
 - Status: Accepted
 
+### 2026-08-03: Phase 71D.2 Blocks Expansion And Requires Cleanup Refinement
+
+- Decision: The Human QA result of 1 pass, 3 needs review, and 6 fail blocks Phase 71D.3 and any full corrected normalization run. Phase 71D.1.1 source-aware cleanup is required next, beginning with Word Mage idle/walk.
+- Reason: Enlarged dark/light previews confirm opaque edge contamination that the automated Phase 71D.1 checks and preliminary static estimate did not reliably expose.
+- Status: Accepted
+
+### 2026-08-03: Refinement Uses Per-File Seeds And Protected Bright Zones
+
+- Decision: Phase 71D.1.1 uses per-file/per-frame neutral seeds, detached-component size limits, bounded boundary cleanup, and protected bright-detail zones rather than a broader global brightness threshold.
+- Reason: Word Mage contamination overlaps legitimate cream costume, book, staff, eye, and crystal pixels, so source-aware targeting reduces destructive cleanup risk.
+- Status: Accepted
+
+### 2026-08-03: Ambiguous Glow And Sparkle Assets Use Detect-Only Refinement
+
+- Decision: Fire and Elite Crystal Slime remain pixel-identical detect-only candidates during Phase 71D.1.1, while Gatekeeper remains the unchanged clean reference.
+- Reason: Pale pixels in these assets may be intentional flame core, glow, sparkles, or crystal highlights and cannot be removed safely without source-aware human judgment.
+- Status: Accepted
+
 ### 2026-06-22: Active Runs Can Continue In Memory Only
 
 - Decision: Active dungeon runs may be preserved in React memory across screen navigation, but Version 1 still does not persist active run state to LocalStorage.

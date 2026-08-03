@@ -385,6 +385,39 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 
 ## Asset Prep
 
+- Phase 71D.1.1 report exists at `normalized_assets_refined/REFINEMENT_REPORT.md`.
+- Ten refined PNG candidates exist under `normalized_assets_refined/` with exact configured dimensions and alpha channels.
+- Ten enlarged dark/light previews exist under `normalized_assets_refined/qa_previews/` with visible frame gaps.
+- Refined post-preview estimate is recorded as 1 pass, 9 needs review, and 0 fail.
+- Word Mage large white pockets and confirmed walk edge fragments are removed.
+- Word Mage cream costume, book, staff, eye, and blue crystal details remain intact.
+- Word Mage small neutral fringe remains needs review before pass approval.
+- Slime/Bat/Goblin frame counts, silhouettes, attack trail, hover placement, and grounded placement remain intact.
+- Confirmed Bat side fragments and detached Goblin frame-2 ground residue are removed.
+- Goblin remaining short under-foot gray edge receives intent/cleanup review.
+- Fire and Elite Crystal Slime detect-only outputs remain pixel-identical to fixed candidates.
+- Gatekeeper refined reference remains pixel-identical to the fixed clean pass.
+- Gold Coin localized cleanup removes five fringe pixels and preserves main highlights.
+- Refinement report records source/output paths, dimensions, frames, strategy, removed pixels/percentage, residual estimate, status, notes, and next action.
+- Broad global threshold cleanup is not used because it can damage intended bright details.
+- `Asset/`, `normalized_assets/`, and `normalized_assets_fixed/` remain unchanged.
+- Phase 71D.3 remains blocked pending localized cleanup and repeat Human QA.
+- Runtime integration remains prohibited and `src/assets/` remains absent/unused.
+- Phase 71D.2 Human QA report exists at `normalized_assets_fixed/HUMAN_VISUAL_QA_REPORT.md`.
+- Ten enlarged nearest-neighbor previews exist under `normalized_assets_fixed/qa_previews/`.
+- Every preview shows separated frames on dark and light backgrounds without modifying the normalized candidate.
+- All 10 corrected candidates were inspected for edge cleanliness, transparency quality, frame slicing, cadence, baseline, and glow readability.
+- Phase 71D.2 totals are recorded: 1 pass, 3 needs review, and 6 fail.
+- Word Mage idle and walk are failed for visible opaque white/light-gray silhouette contamination.
+- Slime idle/attack, Bat idle, and Goblin idle are failed for edge residue, detached fragments, or pale ground remnants.
+- Fire, Elite Crystal Slime idle, and Gold Coin remain needs review.
+- Gatekeeper idle is the clean pass/reference candidate.
+- All candidates contain transparent pixels, but surviving visible pixels use hard alpha with no partial-alpha glow falloff.
+- Frame counts and cell isolation are correct across the subset; current failures are cleanup/source-quality issues rather than three-frame inference errors.
+- Phase 71D.1 preliminary estimates are superseded by enlarged Phase 71D.2 Human QA.
+- Phase 71D.3 remains blocked.
+- Phase 71D.1.1 source-aware cleanup is recommended before repeating subset QA.
+- No normalized PNG, runtime code, React import, manifest, playback, or `src/assets/` file is changed by Human QA.
 - Phase 71D.1 report exists at `normalized_assets_fixed/FIX_PASS_REPORT.md`.
 - Phase 71D.1 processes only the required 10-file representative subset.
 - Corrected subset output dimensions match configured 64x64 or 128x128 frame-cell expectations.
@@ -393,7 +426,7 @@ Use this checklist before sharing or deploying the WordQuest prototype.
 - Probable checkerboard detection and cleanup metrics are recorded per attempted file.
 - Conservative cleanup affects only light, low-saturation pixels connected to outer edges and stops when its safety gate is not met.
 - Original `Asset/` files remain unchanged, and failed Phase 71C history remains under `normalized_assets/`.
-- Preliminary subset visual estimate is recorded as 8 pass, 2 needs review, and 0 fail.
+- Preliminary subset visual estimate was recorded as 8 pass, 2 needs review, and 0 fail; Phase 71D.2 supersedes it.
 - Player walk receives playback cadence/final-pose review before broader approval.
 - Fire receives glow/particle review on light and dark battle backgrounds before broader approval.
 - Full corrected normalization does not begin until the representative subset is explicitly approved.

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71D visual QA is complete with 0 pass, 1 needs review, and 33 fail across 34 normalized outputs; runtime integration remains prohibited.
+Current phase: Phase 71D.1.1 source-aware cleanup refinement is complete for the 10-file subset with a post-preview estimate of 1 pass, 9 needs review, and 0 fail. Phase 71D.3 and runtime integration remain blocked pending localized cleanup and repeat Human QA.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2291,6 +2291,54 @@ The images remain unnormalized. Phase 71B.1 did not modify image content, import
 
 Future script/manual normalization must preserve originals, use declared frame counts and target cells, inspect alpha and bounds, compare approved-reference scale, align grounded/hover/effect placement, recombine exact sheets, verify mobile readability and prohibited text/runes, and preserve gameplay meaning.
 
+## Phase 71D.1.1 Source-Aware Cleanup Refinement
+
+Phase 71D.1.1 is complete after the failed Phase 71D.2 Human Visual QA.
+
+Artifacts and commands:
+
+- Refined output: `normalized_assets_refined/`.
+- Report: `normalized_assets_refined/REFINEMENT_REPORT.md`.
+- Dark/light previews: `normalized_assets_refined/qa_previews/`.
+- Refinement command: `npm run normalize-assets:refine`.
+- Preview command: `npm run asset-qa-previews:refined`.
+- Cleanup implementation: `scripts/refine-normalized-assets.mjs`.
+- Per-file settings: `scripts/asset-normalization.config.mjs`.
+
+All 10 subset files were processed, including Gatekeeper idle as an unchanged clean reference copy. Post-preview estimate:
+
+- Pass: 1 (Gatekeeper idle).
+- Needs review: 9.
+- Fail: 0.
+
+Word Mage idle/walk improved from fail to needs review. Large enclosed white pockets and confirmed right-edge fragments are gone, while cream costume, book, staff, eye, and crystal details remain. Small neutral fringe pixels still require localized cleanup and repeat cadence/dark-light review.
+
+Slime, Bat, and Goblin retain intact silhouettes after bounded neutral-edge cleanup. Bat side fragments and the detached Goblin frame-2 ground strip are removed, though Goblin still has a short ambiguous under-foot gray edge. Gold Coin had five localized fringe pixels removed. Fire and Elite Crystal Slime were copied pixel-identically with detect-only handling because broad cleanup could destroy intended glow, sparkles, or highlights. Gatekeeper remains pixel-identical to the fixed clean reference.
+
+Do not use a broader global threshold for Word Mage; it could remove intended bright details. Do not begin Phase 71D.3. Continue with localized manual/source-aware cleanup where needed, then repeat Human QA on the refined subset.
+
+`Asset/`, `normalized_assets/`, and `normalized_assets_fixed/` remain unchanged. `src/assets/` remains absent and unused. No runtime imports, manifest, animation playback, gameplay, save, combat, progression, or deployment behavior changed.
+
+## Phase 71D.2 Human Visual QA
+
+Report: `normalized_assets_fixed/HUMAN_VISUAL_QA_REPORT.md`.
+
+Preview evidence: `normalized_assets_fixed/qa_previews/`. Each configured frame is enlarged with nearest-neighbor scaling and shown on a dark upper row and light lower row. The preview script is `scripts/generate-fixed-asset-qa-previews.mjs`.
+
+All 10 corrected candidates were inspected for edge cleanliness, transparency quality, frame isolation/slicing, static cadence, baseline stability, and glow readability.
+
+Results:
+
+- Pass: 1 (`boss_gatekeeper_idle_sheet.png`).
+- Needs review: 3 (`effect_fire_sheet.png`, `elite_crystal_slime_idle_sheet.png`, `ui_gold_coin.png`).
+- Fail: 6 (Word Mage idle/walk, Slime idle/attack, Bat idle, and Goblin idle).
+
+The Word Mage concern is confirmed: idle and walk retain opaque white/light-gray areas behind and around the silhouette. Other failed sprites retain edge flecks, detached fragments, or pale ground residue. Fire reads clearly but uses hard opaque pale pixels, so glow and particles need source-aware review on light backgrounds.
+
+The Phase 71D.1 estimate of 8 pass, 2 needs review, and 0 fail is superseded by this enlarged Human QA. Do not proceed to Phase 71D.3. Begin Phase 71D.1.1 with Word Mage idle/walk, using per-frame/source-aware masks, localized manual cleanup, or regenerated true-alpha sources. Avoid a global brighter threshold because it could remove costume, eye, crystal, spellbook, staff, and glow details.
+
+No normalized candidate was altered. No runtime imports, manifests, animation playback, gameplay changes, or `src/assets/` files were added.
+
 ## Phase 71D.1 Source Cleanup And Normalization Fix Pass
 
 Phase 71D.1 is complete for a 10-file representative subset. It addresses the Phase 71D checkerboard/background and frame-count failures without changing runtime code.
@@ -2306,7 +2354,7 @@ Run result:
 
 - Files attempted/output: 10/10.
 - Processing failures/automated warnings: 0/0.
-- Preliminary static visual estimate: 8 pass, 2 needs review, 0 fail.
+- Preliminary static visual estimate was 8 pass, 2 needs review, 0 fail; Phase 71D.2 enlarged Human QA supersedes it with 1 pass, 3 needs review, and 6 fail.
 - Needs review: player walk cadence/narrower final pose; Fire glow and pale particles on varied backgrounds.
 - Slime idle/attack and Bat idle now use explicit four-frame layouts and no longer show the Phase 71D slicing failure.
 

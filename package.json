@@ -10,7 +10,9 @@
     "normalize-assets": "node ./scripts/normalize-assets.mjs",
     "normalize-assets:dry-run": "node ./scripts/normalize-assets.mjs --dry-run",
     "normalize-assets:fix": "node ./scripts/fix-normalized-assets.mjs",
-    "normalize-assets:fix:dry-run": "node ./scripts/fix-normalized-assets.mjs --dry-run"
+    "normalize-assets:fix:dry-run": "node ./scripts/fix-normalized-assets.mjs --dry-run",
+    "normalize-assets:refine": "node ./scripts/refine-normalized-assets.mjs",
+    "asset-qa-previews:refined": "node ./scripts/generate-fixed-asset-qa-previews.mjs --refined"
   },
   "dependencies": {
     "react": "^19.0.0",
