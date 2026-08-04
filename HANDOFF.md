@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71E Runtime Integration Planning is complete. Three planning documents now define the 34 logical candidates, proposed runtime folder structure, stable identity/state mappings, future animation metadata, fallbacks, reduced-motion behavior, source precedence, coverage gaps, and non-blocking polish backlog. No integration was performed, all PNGs remain candidates, and `src/assets/` remains absent/unused. Phase 71F Controlled Runtime Integration is recommended next only after explicit implementation authorization.
+Current phase: Phase 71F.1 Controlled Runtime Asset Copy and Static Battle Identity Rendering is complete. All 34 planning-ready files were copied into `src/assets/` with source precedence and hashes verified. Runtime code imports only the six approved idle identities and displays their first frame in Dungeon encounter-intro and active-battle stages. Existing emoji/CSS identities remain the fallback for missing mappings and image-load failures. Action/effect playback and all gameplay behavior remain unchanged. Phase 71F.2 Controlled Battle Action Animation Foundation is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2567,15 +2567,25 @@ Key decisions:
 - Missing identities/actions and load failures retain current emoji/CSS/static fallbacks.
 - The 14 needs-review candidates plus targeted layout/shadow notes remain a non-blocking polish backlog and must be rechecked in real layout/playback context.
 
-The next phase may be Phase 71F Controlled Runtime Integration, starting with static battle identities and fallbacks. A new explicit request is required before creating `src/assets/` or changing runtime code.
+Phase 71F.1 supersedes this planning-only state. The implementation result is recorded below.
+
+## Phase 71F.1 Controlled Runtime Asset Copy And Static Battle Identity Rendering
+
+Phase 71F.1 copied the 34 logical Phase 71E candidates into the proposed runtime tree. Gatekeeper attack came from `normalized_assets_refined_targeted/bosses/gatekeeper/`, the vocabulary card frame came from `normalized_assets_refined_targeted/ui/`, and the other 32 files came from `normalized_assets_refined_full/`. A SHA-256 audit matched every runtime copy to its selected source. Raw `Asset/` files were never used as runtime imports.
+
+`src/assets/runtimeAssetRegistry.ts` deliberately imports only the six idle sheets needed by this phase. `src/components/StaticBattleSprite.tsx` crops the first horizontal frame into a stable presentation box and swaps to the existing fallback when an identity has no mapping or an image fails to load. `src/screens/Dungeon.tsx` uses that renderer for Word Mage, Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper in encounter-intro and active-battle stage portraits.
+
+Desktop and `390px` mobile checks confirmed correct first-frame cropping, no horizontal overflow, readable quiz/controls, working Elite Slime and Gatekeeper ID mappings, and a stable `WQ` fallback after a forced player-image failure. The production build emits only those six idle PNGs. Copied action, effect, UI, icon, card-frame, and background assets remain dormant and do not create runtime behavior.
+
+No animation playback, effect wiring, gameplay, answer checking, combat, timer, save, mastery, unlock, Word Energy, shop, event, elite, boss, encounter progression, dependency, or deployment behavior changed.
 
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71F Controlled Runtime Integration only after explicit authorization.
-2. Begin with static Word Mage, Slime, Bat, Goblin, Crystal Slime, and Gatekeeper identities plus existing placeholder fallbacks.
-3. Add action playback, effects, icons, and decorative surfaces only in later verified stages described by `RUNTIME_ASSET_STRUCTURE_PROPOSAL.md`.
+1. Implement Phase 71F.2 Controlled Battle Action Animation Foundation only after explicit authorization.
+2. Add a presentation-only animation controller in a small verified slice, retaining the Phase 71F.1 static/emoji fallback path.
+3. Keep effects, icons, card frames, and battle backgrounds dormant until their own later verified stages.
 4. Keep gameplay state authoritative and require build plus desktop/mobile/reduced-motion/load-failure QA after every integration stage.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

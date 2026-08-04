@@ -2,7 +2,7 @@
 
 ## Phase 71E Scope
 
-This inventory is a planning artifact for a later controlled runtime integration phase. No file listed here is imported by the app, and none has been copied into `src/assets/`.
+This inventory began as the Phase 71E planning artifact. Phase 71F.1 has now copied every listed candidate into `src/assets/`; the implementation status below supersedes the original planning-only copy state.
 
 The inventory contains 34 logical candidates:
 
@@ -18,7 +18,43 @@ Readiness labels:
 - **Targeted ready candidate**: a Phase 71D.5 replacement that resolved a blocking defect.
 - **Layout-QA candidate**: usable source candidate, but final use depends on responsive runtime composition.
 
-All labels mean planning-ready candidate, not integrated or production-final runtime asset.
+These labels describe visual-source readiness. A runtime copy is still not production-final art, and only the six idle identities listed below are currently wired into presentation.
+
+## Phase 71F.1 Runtime Copy Status
+
+All 34 logical candidates were copied to the proposed runtime tree. A SHA-256 audit produced 34 matching source/destination pairs and no mismatches.
+
+| Category | Files copied | Runtime destination |
+| --- | ---: | --- |
+| Player | 3 | `src/assets/sprites/player/word-mage/` |
+| Normal monsters | 12 | `src/assets/sprites/monsters/{slime,bat,goblin}/` |
+| Elite | 4 | `src/assets/sprites/elites/crystal-slime/` |
+| Boss | 4 | `src/assets/sprites/bosses/gatekeeper/` |
+| Effects | 6 | `src/assets/effects/{elemental,defense,feedback}/` |
+| UI frame | 1 | `src/assets/ui/frames/` |
+| UI icons | 3 | `src/assets/ui/icons/` |
+| Background | 1 | `src/assets/backgrounds/battle/` |
+| Events | 0 | `src/assets/events/` reserved for future coverage |
+
+Authoritative copy sources:
+
+- Gatekeeper attack: `normalized_assets_refined_targeted/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png`.
+- Vocabulary card frame: `normalized_assets_refined_targeted/ui/ui_vocabulary_card_frame.png`.
+- Other 32 files: their corresponding paths under `normalized_assets_refined_full/`.
+- Raw `Asset/` files: never used as runtime import sources.
+
+Phase 71F.1 runtime wiring is limited to the following six static first-frame identities:
+
+| Identity | Imported runtime file | Runtime status |
+| --- | --- | --- |
+| Word Mage | `src/assets/sprites/player/word-mage/player_word_mage_idle_sheet.png` | Static first frame rendered |
+| `monster-slime` | `src/assets/sprites/monsters/slime/monster_slime_idle_sheet.png` | Static first frame rendered |
+| `monster-bat` | `src/assets/sprites/monsters/bat/monster_bat_idle_sheet.png` | Static first frame rendered |
+| `monster-goblin` | `src/assets/sprites/monsters/goblin/monster_goblin_idle_sheet.png` | Static first frame rendered |
+| `elite-monster-slime` | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_idle_sheet.png` | Static first frame rendered |
+| `boss-gatekeeper` | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_idle_sheet.png` | Static first frame rendered |
+
+Every other copied file remains dormant: it has a stable runtime path but no import, renderer mapping, playback, or gameplay effect in Phase 71F.1.
 
 ## Player
 

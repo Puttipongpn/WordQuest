@@ -1355,6 +1355,25 @@ The non-blocking polish backlog remains separate from planning readiness and inc
 
 Recommended next phase: **Phase 71F Controlled Runtime Integration**, starting with static battle identities and fallbacks. A new explicit implementation request is required before adding files to `src/assets/`, imports, metadata catalogs, renderers, or animation playback.
 
+## Phase 71F.1 Controlled Runtime Asset Copy And Static Battle Identity Rendering
+
+Phase 71F.1 creates the planned runtime structure and copies all 34 planning-ready candidates into `src/assets/`. The copy audit confirms 34 source/destination SHA-256 matches.
+
+Source precedence is fixed:
+
+1. `boss_gatekeeper_attack_sheet.png` comes from `normalized_assets_refined_targeted/bosses/gatekeeper/`.
+2. `ui_vocabulary_card_frame.png` comes from `normalized_assets_refined_targeted/ui/`.
+3. The other 32 candidates come from `normalized_assets_refined_full/`.
+4. Raw files under `Asset/` are never runtime import sources.
+
+The runtime tree now separates sprites by player, monster, elite, and boss; effects by purpose; UI frames and icons; battle backgrounds; and future events. The copied set contains 3 player sheets, 12 normal-monster sheets, 4 elite sheets, 4 boss sheets, 6 effects, 1 UI frame, 3 UI icons, and 1 background. No event candidate exists.
+
+Runtime wiring remains intentionally narrower than the copied inventory. `runtimeAssetRegistry.ts` imports only six idle sheets, and `StaticBattleSprite.tsx` displays only the first horizontal frame. Dungeon uses these static identities for Word Mage, Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Missing mappings and load failures retain the current emoji/CSS identity without changing the portrait box.
+
+Desktop and mobile QA confirm correct cropping and non-overlapping battle UI. Reduced-motion behavior is static by construction. Attack, hit, defeat, effects, icons, card frame, and background candidates remain copied but dormant. Phase 71F.1 changes no gameplay or progression behavior.
+
+Recommended next phase: **Phase 71F.2 Controlled Battle Action Animation Foundation**, beginning with a small presentation-only action slice and retaining the static fallback. Element effects and decorative UI/background integration remain later work.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

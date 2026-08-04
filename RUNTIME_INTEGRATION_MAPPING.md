@@ -2,7 +2,26 @@
 
 ## Phase 71E Scope
 
-This specification maps planning-ready visual candidates to existing WordQuest identities and resolved presentation states. It does not create runtime code, imports, manifests, animation playback, or new game events.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 now implements the static identity subset described below. All animation/effect mappings later in this document remain planning-only.
+
+## Phase 71F.1 Implemented Static Mapping
+
+`src/assets/runtimeAssetRegistry.ts` imports six idle sheets and maps existing encounter IDs without modifying encounter data. `src/components/StaticBattleSprite.tsx` displays the first frame in a stable crop box. `src/screens/Dungeon.tsx` uses the component in encounter-intro and active-battle stage portraits.
+
+| Runtime identity | Runtime file | Frame shown | Existing fallback |
+| --- | --- | ---: | --- |
+| Word Mage | `sprites/player/word-mage/player_word_mage_idle_sheet.png` | 1 of 4 | `WQ` portrait |
+| `monster-slime` | `sprites/monsters/slime/monster_slime_idle_sheet.png` | 1 of 4 | Encounter emoji/CSS portrait |
+| `monster-bat` | `sprites/monsters/bat/monster_bat_idle_sheet.png` | 1 of 4 | Encounter emoji/CSS portrait |
+| `monster-goblin` | `sprites/monsters/goblin/monster_goblin_idle_sheet.png` | 1 of 4 | Encounter emoji/CSS portrait |
+| `elite-monster-slime` | `sprites/elites/crystal-slime/elite_crystal_slime_idle_sheet.png` | 1 of 4 | Encounter emoji/CSS portrait |
+| `boss-gatekeeper` | `sprites/bosses/gatekeeper/boss_gatekeeper_idle_sheet.png` | 1 of 4 | Encounter emoji/CSS portrait |
+
+An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
+
+The registry does not import walk, cast, attack, hit, defeat, effect, UI, icon, card-frame, or background files. Those candidates are copied into stable paths but remain dormant. Reduced-motion behavior is the same static frame because Phase 71F.1 creates no animation.
+
+Recommended next phase: **Phase 71F.2 Controlled Battle Action Animation Foundation**. It should introduce only a small presentation-only action slice, retain the Phase 71F.1 static and emoji/CSS fallbacks, and keep all game resolution authoritative and independent from playback completion.
 
 ## Identity Mapping
 

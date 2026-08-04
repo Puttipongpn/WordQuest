@@ -4,6 +4,18 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-04: Runtime Copy Breadth And Runtime Wiring Breadth Are Separate
+
+- Decision: Phase 71F.1 copies all 34 planning-ready candidates into stable runtime paths but imports only the six idle sheets needed for static battle identity rendering. Copied action, effect, UI, icon, card-frame, and background files remain dormant until explicitly integrated.
+- Reason: Stable file provenance prepares later controlled phases, while narrow imports keep the first runtime presentation change easy to verify and prevent dormant candidates from implying new behavior.
+- Status: Accepted
+
+### 2026-08-04: Static Battle Art Retains Existing Fallback Identity
+
+- Decision: Static sprite rendering uses the first configured sheet frame and falls back to the current emoji/CSS identity for unmapped encounter IDs or image-load failure. The fallback occupies the same stable portrait box, and image state cannot control gameplay.
+- Reason: Runtime assets must enhance presentation without making missing coverage or delivery errors capable of crashing, shifting, or changing the battle flow.
+- Status: Accepted
+
 ### 2026-08-04: Runtime Integration Will Be Staged And Fallback-First
 
 - Decision: Phase 71F should integrate presentation in verified stages, beginning with static covered battle identities and retaining current emoji/CSS fallbacks for missing or failed assets. Animation and effects may run only from already-resolved game state and cannot control gameplay completion.

@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  getEncounterIdleAsset,
+  playerIdleAsset,
+} from "../assets/runtimeAssetRegistry";
 import { ScreenShell } from "../components/ScreenShell";
+import { StaticBattleSprite } from "../components/StaticBattleSprite";
 import {
   Badge,
   Button,
@@ -1096,6 +1101,7 @@ export function Dungeon({
     : encounterType === "elite"
       ? eliteMonster
       : currentMonster;
+  const encounterIdleAsset = getEncounterIdleAsset(currentEncounter.id);
   const currentEvent = chooseDungeonEvent(eventIndex);
   const isEventEncounter = battleStatus === "event";
   const isEncounterIntro = battleStatus === "encounter-intro";
@@ -2628,11 +2634,12 @@ export function Dungeon({
               >
                 {isBossEncounter ? "BOSS" : encounterLabel}
               </Badge>
-              <div
+              <StaticBattleSprite
+                alt={currentEncounter.name}
+                asset={encounterIdleAsset}
                 className={`mx-auto mt-4 grid place-items-center rounded-3xl border-4 shadow-lg ${isBossEncounter ? "size-28 text-6xl ring-4 ring-red-300/25 sm:size-32 sm:text-7xl" : "size-24 text-5xl sm:size-28 sm:text-6xl"} ${encounterPortraitClass}`}
-              >
-                {currentEncounter.imagePlaceholder}
-              </div>
+                fallback={currentEncounter.imagePlaceholder}
+              />
               <h3 className="mt-4 text-4xl font-black leading-none text-amber-50 drop-shadow sm:text-5xl">
                 {currentEncounter.name}
               </h3>
@@ -2652,9 +2659,12 @@ export function Dungeon({
               <div className="mx-auto mt-5 grid max-w-2xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 rounded-3xl border border-amber-100/15 bg-black/25 p-2 sm:gap-4 sm:p-3">
                 <div className="min-w-0 rounded-2xl border border-sky-100/15 bg-sky-950/25 p-2 text-left">
                   <div className="flex items-center gap-2">
-                    <div className="grid size-11 place-items-center rounded-xl border-2 border-sky-200/35 bg-sky-100 text-sm font-black text-sky-950">
-                      WQ
-                    </div>
+                    <StaticBattleSprite
+                      alt="Word Mage"
+                      asset={playerIdleAsset}
+                      className="size-11 rounded-xl border-2 border-sky-200/35 bg-sky-100 text-sm font-black text-sky-950"
+                      fallback="WQ"
+                    />
                     <div className="min-w-0">
                       <p className="truncate text-sm font-black text-sky-50">
                         Word Hero
@@ -2670,9 +2680,12 @@ export function Dungeon({
                 </p>
                 <div className="min-w-0 rounded-2xl border border-red-100/15 bg-red-950/25 p-2 text-left">
                   <div className="flex items-center gap-2">
-                    <div className={`grid size-11 place-items-center rounded-xl border-2 text-2xl ${encounterPortraitClass}`}>
-                      {currentEncounter.imagePlaceholder}
-                    </div>
+                    <StaticBattleSprite
+                      alt={currentEncounter.name}
+                      asset={encounterIdleAsset}
+                      className={`size-11 rounded-xl border-2 text-2xl ${encounterPortraitClass}`}
+                      fallback={currentEncounter.imagePlaceholder}
+                    />
                     <div className="min-w-0">
                       <p className="truncate text-sm font-black text-red-50">
                         {currentEncounter.name}
@@ -2846,9 +2859,12 @@ export function Dungeon({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="grid size-14 place-items-center rounded-2xl border-4 border-sky-200/35 bg-sky-100 text-lg font-black text-sky-950 shadow-lg sm:size-16">
-                        WQ
-                      </div>
+                      <StaticBattleSprite
+                        alt="Word Mage"
+                        asset={playerIdleAsset}
+                        className="size-14 rounded-2xl border-4 border-sky-200/35 bg-sky-100 text-lg font-black text-sky-950 shadow-lg sm:size-16"
+                        fallback="WQ"
+                      />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <Badge tone="sky">Word Hero</Badge>
@@ -2926,7 +2942,9 @@ export function Dungeon({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div
+                      <StaticBattleSprite
+                        alt={currentEncounter.name}
+                        asset={encounterIdleAsset}
                         className={`grid size-14 place-items-center rounded-2xl border-4 text-4xl shadow-lg transition sm:size-16 ${encounterPortraitClass} ${
                           encounterTookHit
                             ? "damage-shake scale-105 ring-4 ring-red-300/45"
@@ -2934,9 +2952,8 @@ export function Dungeon({
                               ? "defeat-glow ring-4 ring-emerald-300/35"
                               : ""
                         }`}
-                      >
-                        {currentEncounter.imagePlaceholder}
-                      </div>
+                        fallback={currentEncounter.imagePlaceholder}
+                      />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <Badge

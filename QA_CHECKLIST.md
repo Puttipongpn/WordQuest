@@ -812,3 +812,25 @@ Safety verification:
 - [x] Add no PNG copies, React imports, asset manifest, animation playback, or dependencies.
 - [x] Change no gameplay, save, combat, timer, mastery, unlock, Word Energy, shop, event, elite, boss, encounter progression, or deployment behavior.
 - [x] Recommend Phase 71F Controlled Runtime Integration only after a new explicit implementation request.
+
+## Phase 71F.1 Controlled Runtime Asset Copy And Static Identity QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Create the proposed tracked runtime categories under `src/assets/`.
+- [x] Copy all 34 planning-ready candidates and verify 34 source/destination SHA-256 matches.
+- [x] Use the Phase 71D.5 targeted Gatekeeper attack and vocabulary card-frame files.
+- [x] Use `normalized_assets_refined_full/` for the other 32 candidates.
+- [x] Import no file from raw `Asset/` or prior normalization-history folders.
+- [x] Keep the registry limited to Word Mage, Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper idle sheets.
+- [x] Render the first frame only; add no idle loop or one-shot animation playback.
+- [x] Render static identities in both encounter-intro and active-battle stage presentation.
+- [x] Preserve current emoji/CSS output for unmapped identities and image-load failures.
+- [x] Keep fallback portrait dimensions stable after a forced image failure.
+- [x] Verify Slime, Elite Slime, and Gatekeeper encounter-ID mappings.
+- [x] Verify desktop and `390px` mobile layouts with no horizontal overflow or hidden quiz controls.
+- [x] Keep reduced-motion output static without adding motion-specific runtime state.
+- [x] Confirm the production bundle emits only the six imported idle sheets.
+- [x] Keep copied action, effect, UI, icon, card-frame, and background candidates dormant.
+- [x] Add no dependencies, asset manifest, action/effect playback, or animation-controlled gameplay callbacks.
+- [x] Change no gameplay, save, combat, timer, mastery, unlock, Word Energy, shop, event, elite, boss, encounter progression, or deployment behavior.
+- [x] Run the final production build successfully.

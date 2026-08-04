@@ -10,10 +10,19 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71E Runtime Integration Planning. The project now has a 34-file logical runtime candidate inventory, a proposed `src/assets/` structure, stable identity/state mappings, explicit animation metadata requirements, source precedence for the two Phase 71D.5 targeted replacements, fallback/reduced-motion rules, and a separate non-blocking polish backlog. No runtime integration was performed: all files remain candidates, `src/assets/` remains absent/unused, and no React imports, manifest, animation playback, gameplay, save, combat, progression, or deployment behavior changed. The recommended next phase is Phase 71F Controlled Runtime Integration, beginning with static battle identities and fallbacks only after explicit authorization. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.1 Controlled Runtime Asset Copy and Static Battle Identity Rendering. All 34 planning-ready candidates now exist under the proposed `src/assets/` structure with verified source/destination hashes and the required targeted-source precedence. Runtime code imports only six idle sheets: Word Mage, Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Dungeon encounter intros and active battle stages render each sheet's first frame with the existing emoji/CSS identity as the fallback for an unmapped identity or image-load failure. Action/effect playback remains unimplemented, reduced motion remains inherently static, and no gameplay, save, combat, timer, progression, or deployment behavior changed. The recommended next phase is Phase 71F.2 Controlled Battle Action Animation Foundation. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71F.1 Controlled Runtime Asset Copy and Static Battle Identity Rendering.
+- Copied all 34 Phase 71E planning-ready candidates into the proposed `src/assets/` tree and verified all 34 destination files against their selected sources by SHA-256.
+- Used `normalized_assets_refined_targeted/` for Gatekeeper attack and the vocabulary card frame, `normalized_assets_refined_full/` for the other 32 files, and no raw `Asset/` runtime source.
+- Added a narrow runtime registry for six idle sheets only and a reusable first-frame `StaticBattleSprite` renderer with image-load and missing-mapping fallbacks.
+- Rendered Word Mage, Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper static identities in Dungeon encounter-intro and active-battle presentations.
+- Verified desktop and `390px` mobile layouts, no horizontal overflow, correct Slime/Elite/Gatekeeper mappings, and stable fallback dimensions after a forced image failure.
+- Confirmed the production build emits only the six imported idle sheets; copied action, effect, UI, icon, and background candidates remain dormant.
+- Kept attack/hit/defeat playback, element effects, runtime UI art, and background integration out of Phase 71F.1.
+- Changed no gameplay, save, combat math, timers, mastery, unlocks, Word Energy, shop, event, elite, boss, encounter progression, or deployment behavior.
 - Completed Phase 71E Runtime Integration Planning without creating runtime assets or code.
 - Added `RUNTIME_ASSET_INVENTORY.md` with all 34 logical candidates grouped by player, monsters, elites, bosses, effects, UI, icons, backgrounds, and events.
 - Recorded inventory readiness as 18 clean candidates, 14 candidates with non-blocking polish/layout backlog, and 2 targeted replacements with resolved blockers; no event PNGs exist.
