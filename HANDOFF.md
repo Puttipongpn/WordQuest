@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.2 Controlled Battle Action Animation Foundation is complete. Runtime presentation now supports only Word Mage cast and living-enemy hit reactions through explicit metadata and a reusable spritesheet component. Dungeon starts these one-shots only after its existing correct-answer state has committed, returns to idle independently, and never waits for playback before enabling result actions. Reduced motion and missing/load-failed assets keep static idle or emoji/CSS fallbacks. All gameplay behavior remains authoritative and unchanged. Phase 71F.3 Controlled Enemy Attack Animation Slice is recommended next.
+Current phase: Phase 71F.3 Controlled Enemy Attack Animation Slice is complete. Wrong answers and timeouts now derive mapped enemy attack presentation only after existing HP, shield, statistics, log, and Run Failed state commit. Playback returns to idle independently and cannot apply or duplicate damage, pause/extend timers, or gate result/progression actions. Phase 71F.2 cast/hit behavior and all gameplay remain unchanged. Reduced motion, load failure, and unmapped identities retain static fallbacks. Phase 71F.4 Controlled Enemy Defeat Animation Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2589,13 +2589,23 @@ Browser QA covered all three mini-games. Each observed enemy HP delta matched di
 
 Enemy attack, defeat, effects, shield block, upgrade spark, walk, UI icons, vocabulary card frame, and dungeon background remain unimplemented. No new dependency or gameplay/runtime-state authority was added.
 
+## Phase 71F.3 Controlled Enemy Attack Animation Slice
+
+Phase 71F.3 imports only the attack sheets for Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Gatekeeper uses `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png`, the runtime file copied from the repaired Phase 71D.5 targeted candidate. Each attack has explicit four-frame metadata, a zero-based reduced-motion frame of 2, an idle fallback/return state, and presentation-only cadence: `120ms` per `64x64` normal/elite frame and `140ms` per `128x128` Gatekeeper frame.
+
+`monsterAttack` now adds `enemyAttackResolved: true` only to the battle log it creates after existing shield, HP, sound, statistics, Run Failed, and result state calls. The existing post-commit presentation effect consumes that marker and starts the mapped enemy attack without player cast or enemy hit. Completion clears only the shared enemy presentation slot.
+
+Browser QA confirmed all three wrong-answer mini-games kept Slime damage at 4 exactly once, a real Word Match timeout kept Goblin damage at 5 exactly once, 5 shield absorbed all 5 Goblin damage with zero HP loss, and a real 1 HP wrong answer reached Run Failed with Restart Run immediately available during playback. Reduced motion showed attack frame 2, a forced action-image failure returned to idle, Gatekeeper played the targeted attack, and unmapped Shadow Reader retained its emoji fallback. Mobile viewport and document width both remained `390px`.
+
+Defeat, elemental/defense/upgrade effects, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71F.3 Controlled Enemy Attack Animation Slice only after explicit authorization.
-2. Trigger mapped enemy attack presentation only after existing wrong-answer or timeout damage has fully resolved.
-3. Keep defeat, effects, icons, card frames, walk, and battle backgrounds dormant until their own later verified stages.
-4. Retain static/emoji fallbacks and keep all gameplay state independent from playback completion.
+1. Implement Phase 71F.4 Controlled Enemy Defeat Animation Slice only after explicit authorization.
+2. Trigger mapped defeat presentation only after authoritative encounter HP reaches zero and existing result state is available.
+3. Keep effects, icons, card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
+4. Retain static/emoji fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

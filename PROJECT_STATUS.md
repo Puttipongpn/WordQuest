@@ -10,10 +10,21 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.2 Controlled Battle Action Animation Foundation. A reusable explicit-metadata spritesheet component now plays only the Word Mage cast and the living enemy's hit reaction after the existing correct-answer result, damage, effects, HP, statistics, and status updates have committed. One-shot completion returns presentation to idle but does not gate Next/result actions or trigger gameplay. Six action sheets are imported in addition to the Phase 71F.1 idle set. Reduced motion uses a static representative frame, and missing, unmapped, or failed images retain idle/emoji/CSS fallbacks. Enemy attack, defeat, effects, walk, UI icons, card frame, and background remain unimplemented. No gameplay, save, combat, timer, progression, or deployment behavior changed. The recommended next phase is Phase 71F.3 Controlled Enemy Attack Animation Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.3 Controlled Enemy Attack Animation Slice. Mapped Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper attacks now play only after the existing wrong-answer or timeout HP/shield/statistics result has committed. The targeted Phase 71D.5 Gatekeeper attack runtime copy is used. Playback is local presentation state, returns independently to idle, and never applies damage, extends timers, duplicates resolution, gates Run Failed/Next actions, or controls progression. Phase 71F.2 player cast and living-enemy hit remain unchanged. Reduced motion uses a representative static attack frame; failed or unmapped art retains idle/emoji/CSS fallback. Defeat, effects, walk, UI icons, card frame, and background remain unimplemented. No gameplay, save, combat, timer, progression, or deployment behavior changed. The recommended next phase is Phase 71F.4 Controlled Enemy Defeat Animation Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71F.3 Controlled Enemy Attack Animation Slice.
+- Added explicit idle-return metadata and imports for Slime, Bat, Goblin, Elite Crystal Slime, and targeted-copy Gatekeeper attack sheets.
+- Marked only completed `monsterAttack` battle logs as presentation-eligible, then selected mapped attack art in the existing post-commit Dungeon presentation effect.
+- Kept player cast and enemy hit unchanged; wrong answers and timeouts show no player cast or enemy hit.
+- Verified Word Choice, Word Match, and Word Scramble each applied Slime's existing 4 damage exactly once while attack playback returned to idle.
+- Verified a real Word Match timeout applied Goblin's existing 5 damage exactly once and exposed Next Mini-Game during playback.
+- Verified 5 shield absorbed all 5 Goblin attack damage with no HP loss or duplicate state update.
+- Verified a real 1 HP wrong-answer result reached 0 HP and exposed Restart Run while Goblin attack was still playing.
+- Verified reduced-motion frame 2, forced attack-image idle fallback, targeted Gatekeeper playback, unmapped Shadow Reader emoji fallback, and `390px` mobile with no horizontal overflow.
+- Kept defeat, effects, shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
+- Changed no gameplay, save, combat math, answer checking, timers, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, rewards, unlocks, progression, dependencies, or deployment behavior.
 - Completed Phase 71F.2 Controlled Battle Action Animation Foundation.
 - Added explicit metadata and imports for Word Mage cast plus Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper hit sheets.
 - Added reusable `SpritesheetAnimation` playback with explicit frame timing, one-shot/loop metadata, reduced-motion frames, idle fallback assets, and emoji/CSS load-failure fallback.

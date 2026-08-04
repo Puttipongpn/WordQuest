@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  getEncounterAttackAnimation,
   getEncounterHitAnimation,
   getEncounterIdleAsset,
   playerCastAnimation,
@@ -183,6 +184,7 @@ type BattleLog = {
   wordUsageCount?: number;
   effectsSummary?: string;
   rewardSummary?: string;
+  enemyAttackResolved?: true;
 };
 
 type ActiveBattleAnimation = {
@@ -1119,6 +1121,9 @@ export function Dungeon({
       : currentMonster;
   const encounterIdleAsset = getEncounterIdleAsset(currentEncounter.id);
   const encounterHitAnimation = getEncounterHitAnimation(currentEncounter.id);
+  const encounterAttackAnimation = getEncounterAttackAnimation(
+    currentEncounter.id,
+  );
   const currentEvent = chooseDungeonEvent(eventIndex);
   const isEventEncounter = battleStatus === "event";
   const isEncounterIntro = battleStatus === "encounter-intro";
@@ -1678,6 +1683,7 @@ export function Dungeon({
         hpDamageTaken,
         shieldAbsorbed,
         earthAttackReduction: attackReduction,
+        enemyAttackResolved: true,
       });
       return;
     }
@@ -1690,6 +1696,7 @@ export function Dungeon({
       hpDamageTaken,
       shieldAbsorbed,
       earthAttackReduction: attackReduction,
+      enemyAttackResolved: true,
     });
   }
 
@@ -1716,12 +1723,18 @@ export function Dungeon({
   }, [activeQuestionScrollKey]);
 
   useEffect(() => {
-    if (
-      presentedBattleLogRef.current === battleLog ||
-      battleLog.tone !== "success" ||
-      battleLog.triggeredCard === undefined ||
-      (battleLog.damageDealt ?? 0) <= 0
-    ) {
+    if (presentedBattleLogRef.current === battleLog) {
+      return;
+    }
+
+    const isResolvedPlayerAttack =
+      battleLog.tone === "success" &&
+      battleLog.triggeredCard !== undefined &&
+      (battleLog.damageDealt ?? 0) > 0;
+    const isResolvedEnemyAttack =
+      battleLog.tone === "danger" && battleLog.enemyAttackResolved === true;
+
+    if (!isResolvedPlayerAttack && !isResolvedEnemyAttack) {
       return;
     }
 
@@ -1729,29 +1742,44 @@ export function Dungeon({
     presentationSequenceRef.current += 1;
     const playbackId = presentationSequenceRef.current;
 
-    setPlayerBattleAnimation({
-      asset: playerCastAnimation,
-      playbackId,
-    });
-
-    if (
-      battleStatus === "fighting" &&
-      monsterHp > 0 &&
-      encounterHitAnimation
-    ) {
-      setEnemyBattleAnimation({
-        asset: encounterHitAnimation,
+    if (isResolvedPlayerAttack) {
+      setPlayerBattleAnimation({
+        asset: playerCastAnimation,
         playbackId,
-        encounterId: currentEncounter.id,
       });
+
+      if (
+        battleStatus === "fighting" &&
+        monsterHp > 0 &&
+        encounterHitAnimation
+      ) {
+        setEnemyBattleAnimation({
+          asset: encounterHitAnimation,
+          playbackId,
+          encounterId: currentEncounter.id,
+        });
+        return;
+      }
+
+      setEnemyBattleAnimation(null);
       return;
     }
 
-    setEnemyBattleAnimation(null);
+    setPlayerBattleAnimation(null);
+    setEnemyBattleAnimation(
+      encounterAttackAnimation
+        ? {
+            asset: encounterAttackAnimation,
+            playbackId,
+            encounterId: currentEncounter.id,
+          }
+        : null,
+    );
   }, [
     battleLog,
     battleStatus,
     currentEncounter.id,
+    encounterAttackAnimation,
     encounterHitAnimation,
     monsterHp,
   ]);

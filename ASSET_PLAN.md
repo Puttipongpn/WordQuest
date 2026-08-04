@@ -1386,6 +1386,16 @@ The component keeps the Phase 71F.1 dimensions and fallback chain: action sheet,
 
 Enemy attack, defeat, effects, shield block, upgrade spark, walk, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.3 Controlled Enemy Attack Animation Slice**.
 
+## Phase 71F.3 Controlled Enemy Attack Animation Slice
+
+Phase 71F.3 promotes only five copied attack sheets: Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Gatekeeper runtime precedence remains the repaired Phase 71D.5 targeted copy already under `src/assets/`; the obsolete full-run candidate is not imported.
+
+All attacks declare explicit metadata rather than filename inference. Normal and elite attacks use four `64x64` frames at `120ms` each. Gatekeeper uses four `128x128` frames at `140ms` each. Every entry is a one-shot with zero-based reduced-motion frame 2, identity fallback, and `returnState: idle`. Cadence values are presentation-only and cannot affect game timers.
+
+The attack presentation trigger is an explicit resolved battle-log marker written only by the existing wrong-answer/timeout `monsterAttack` path. Dungeon consumes it after the authoritative state commit. Playback cannot calculate damage, alter HP/shield, update statistics, pause or extend timers, gate Next/Restart actions, or control progression.
+
+Phase 71F.2 player cast and living-enemy hit mappings are unchanged. Defeat, effects, shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.4 Controlled Enemy Defeat Animation Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

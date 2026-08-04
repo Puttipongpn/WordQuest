@@ -67,7 +67,19 @@ At the end of Phase 71F.1 every other copied file remained dormant. Phase 71F.2 
 | Crystal Slime hit | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_hit_sheet.png` | 2 frames, `64x64`, `150ms`, one-shot, reduced frame 1 | Wired for living `elite-monster-slime` |
 | Gatekeeper hit | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_hit_sheet.png` | 2 frames, `128x128`, `170ms`, one-shot, reduced frame 1 | Wired for living `boss-gatekeeper` |
 
-Runtime-import status is now 12 PNGs: the six Phase 71F.1 idle sheets plus these six Phase 71F.2 action sheets. Timing metadata is presentation-only and does not replace or modify gameplay timer values. Walk, enemy attack, defeat, effects, UI, icons, card frame, and background candidates remain copied but unwired.
+At the Phase 71F.2 checkpoint, runtime-import status was 12 PNGs: six idle sheets plus cast and hit actions. Phase 71F.3 adds only the five enemy attack files below. Timing metadata is presentation-only and does not replace or modify gameplay timer values.
+
+## Phase 71F.3 Enemy Attack Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Slime attack | `src/assets/sprites/monsters/slime/monster_slime_attack_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, return idle | Wired after resolved wrong/timeout for `monster-slime` |
+| Bat attack | `src/assets/sprites/monsters/bat/monster_bat_attack_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, return idle | Wired after resolved wrong/timeout for `monster-bat` |
+| Goblin attack | `src/assets/sprites/monsters/goblin/monster_goblin_attack_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, return idle | Wired after resolved wrong/timeout for `monster-goblin` |
+| Crystal Slime attack | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_attack_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, return idle | Wired after resolved wrong/timeout for `elite-monster-slime` |
+| Gatekeeper attack | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png` | 4 frames, `128x128`, `140ms`, one-shot, reduced frame 2, return idle | Wired after resolved wrong/timeout for `boss-gatekeeper`; targeted Phase 71D.5 runtime copy |
+
+Runtime-import status is now 17 PNGs: six idle, six Phase 71F.2 cast/hit, and five Phase 71F.3 enemy attack sheets. Defeat, effects, UI, icons, card frame, background, and walk candidates remain copied but unwired.
 
 ## Player
 

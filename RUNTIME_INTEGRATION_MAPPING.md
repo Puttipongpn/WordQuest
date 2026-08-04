@@ -2,7 +2,22 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, and Phase 71F.2 now implements only the controlled cast/hit subset described below. Enemy attack, defeat, effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, and Phase 71F.3 now implements only mapped enemy attack presentation. Defeat, effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+
+## Phase 71F.3 Implemented Enemy Attack Mapping
+
+| Resolved source state | Player presentation | Enemy presentation | Completion behavior |
+| --- | --- | --- | --- |
+| Wrong answer; run continues | Idle | Mapped attack one-shot | Enemy independently returns idle; Next remains available |
+| Real timeout; run continues | Idle | Mapped attack one-shot | Enemy independently returns idle; timer is already stopped by answered state |
+| Wrong answer/timeout reaches 0 HP | Idle/Run Failed presentation | Mapped attack may play | Restart/result actions remain immediately authoritative |
+| Shield absorbs some/all damage | Idle | Same mapped attack one-shot | Existing shield/HP result is unchanged and cannot repeat |
+| Missing mapping or load failure | Existing idle or emoji/CSS fallback | No action playback | Existing damage/result remains authoritative |
+| Reduced motion | Idle | Configured static attack frame 2, then idle | No frame cycling and no game callback |
+
+`monsterAttack` adds an explicit `enemyAttackResolved` presentation marker only to the final log it creates after issuing existing shield, HP, statistics, status, and Run Failed updates. The shared post-commit Dungeon effect consumes that marker, clears player action presentation, and selects attack metadata by the current existing encounter ID. It does not infer behavior from filenames or log message text.
+
+Attack mappings cover `monster-slime`, `monster-bat`, `monster-goblin`, `elite-monster-slime`, and `boss-gatekeeper`. Gatekeeper uses the repaired Phase 71D.5 runtime copy. Normal/elite attacks are `4 x 64x64` at `120ms`; Gatekeeper is `4 x 128x128` at `140ms`. Every entry is one-shot, uses zero-based reduced frame 2, declares its fallback identity, and returns to idle.
 
 ## Phase 71F.2 Implemented Action Mapping
 
@@ -32,9 +47,9 @@ The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-At the Phase 71F.1 checkpoint the registry imported no action files. Phase 71F.2 now imports cast and hit only. Walk, enemy attack, defeat, effect, UI, icon, card-frame, and background files remain dormant.
+At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 adds mapped enemy attack only. Walk, defeat, effect, UI, icon, card-frame, and background files remain dormant.
 
-Recommended next phase: **Phase 71F.3 Controlled Enemy Attack Animation Slice**. It should derive presentation only after existing wrong-answer or timeout damage resolves and retain the Phase 71F.2 fallback and non-blocking ownership rules.
+Recommended next phase: **Phase 71F.4 Controlled Enemy Defeat Animation Slice**. It should derive presentation only after authoritative encounter HP reaches zero, retain immediate result actions, and preserve every fallback/non-blocking ownership rule.
 
 ## Identity Mapping
 

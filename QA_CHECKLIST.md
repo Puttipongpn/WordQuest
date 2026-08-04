@@ -858,3 +858,28 @@ Safety verification:
 - [x] Keep enemy attack, defeat, effects, shield block, upgrade spark, walk, UI icons, card frame, and background unimplemented.
 - [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.3 Controlled Enemy Attack Animation Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper attack sheets.
+- [x] Use the targeted Phase 71D.5 Gatekeeper attack runtime copy.
+- [x] Add explicit frames, dimensions, cadence, animation type, reduced-motion frame, fallback identity, and idle return state.
+- [x] Mark presentation eligibility only after the existing wrong-answer/timeout resolution path commits its result log.
+- [x] Play no player cast or enemy hit during wrong-answer/timeout attack presentation.
+- [x] Return one-shot enemy attack presentation to idle without changing game state.
+- [x] Verify Word Choice wrong answer preserves 4 Slime damage exactly once.
+- [x] Verify Word Match wrong answer preserves 4 Slime damage exactly once.
+- [x] Verify Word Scramble wrong answer preserves 4 Slime damage exactly once.
+- [x] Verify a real Word Match timeout preserves 5 Goblin damage exactly once.
+- [x] Verify 5 shield absorbs all 5 Goblin damage with no HP loss or duplicate update.
+- [x] Verify a real 1 HP wrong answer reaches Run Failed and Restart Run is immediately available during playback.
+- [x] Verify Next Mini-Game remains available during normal attack and timeout playback.
+- [x] Verify reduced motion shows configured static attack frame 2.
+- [x] Force an attack image failure and confirm idle fallback, responsive controls, and no duplicate damage.
+- [x] Verify Gatekeeper uses `boss_gatekeeper_attack` presentation.
+- [x] Verify unmapped Shadow Reader keeps its emoji/CSS fallback and resolved damage.
+- [x] Verify `390px` mobile has no horizontal overflow and readable battle/result UI.
+- [x] Keep defeat, effects, shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

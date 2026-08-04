@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-04: Enemy Attack Presentation Requires An Explicit Resolved Marker
+
+- Decision: Enemy attack animation may start only from `enemyAttackResolved` on a battle log produced by the completed wrong-answer/timeout `monsterAttack` path. The marker is presentation metadata; animation completion only returns the portrait to idle and cannot apply damage, change shield/HP, update statistics, gate Run Failed/Next actions, or control progression.
+- Reason: An explicit post-resolution marker distinguishes real enemy attacks from unrelated danger/QA logs without inferring behavior from message text, while preserving the authoritative gameplay path.
+- Status: Accepted
+
 ### 2026-08-04: Battle Animation State Is Derived And Non-Blocking
 
 - Decision: Phase 71F.2 action playback is local presentation state derived after an authoritative positive-damage success result commits. Player cast and living-enemy hit completion may return the portrait to idle but cannot calculate damage, change HP, grant rewards, save progress, advance encounters, or gate result actions.
