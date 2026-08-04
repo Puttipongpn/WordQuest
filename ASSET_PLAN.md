@@ -1374,6 +1374,18 @@ Desktop and mobile QA confirm correct cropping and non-overlapping battle UI. Re
 
 Recommended next phase: **Phase 71F.2 Controlled Battle Action Animation Foundation**, beginning with a small presentation-only action slice and retaining the static fallback. Element effects and decorative UI/background integration remain later work.
 
+## Phase 71F.2 Controlled Battle Action Animation Foundation
+
+Phase 71F.2 introduces reusable spritesheet playback while keeping the runtime surface deliberately small. The only newly imported assets are Word Mage cast/attack and the five approved hit sheets for Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper.
+
+Explicit metadata includes `assetId`, imported `file`, `frameCount`, `frameWidth`, `frameHeight`, `animationType`, `frameDurationMs`, `loop`, `reducedMotionFrame`, and `fallbackIdentity`. Word Mage cast uses six `64x64` frames at `110ms` each. Normal and elite hit sheets use two `64x64` frames at `150ms` each. Gatekeeper hit uses two `128x128` frames at `170ms` each. These are presentation cadence values only and are independent from quiz timers and game resolution.
+
+Dungeon starts cast and hit presentation from a post-commit effect after a positive-damage success result already exists. Player cast may accompany a defeating answer, but enemy hit is restricted to encounters whose resolved HP remains above zero. One-shot completion clears only local presentation state and cannot apply damage, change HP, grant rewards, save progress, or delay result actions.
+
+The component keeps the Phase 71F.1 dimensions and fallback chain: action sheet, then static idle sheet, then existing emoji/CSS identity. Reduced motion displays the configured representative frame without frame cycling and returns to idle on the same presentation-only schedule.
+
+Enemy attack, defeat, effects, shield block, upgrade spark, walk, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.3 Controlled Enemy Attack Animation Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

@@ -834,3 +834,27 @@ Safety verification:
 - [x] Add no dependencies, asset manifest, action/effect playback, or animation-controlled gameplay callbacks.
 - [x] Change no gameplay, save, combat, timer, mastery, unlock, Word Energy, shop, event, elite, boss, encounter progression, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.2 Controlled Battle Action Animation Foundation QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Add a reusable explicit-metadata `SpritesheetAnimation` component.
+- [x] Import only Word Mage cast and the five approved enemy hit sheets.
+- [x] Record asset ID, file, frames, dimensions, animation type, frame duration, loop behavior, reduced-motion frame, and fallback identity.
+- [x] Trigger presentation only after an already-committed positive-damage success result.
+- [x] Play enemy hit only when resolved encounter HP remains above zero.
+- [x] Return one-shot presentation to idle without changing gameplay state.
+- [x] Keep Next Mini-Game and Next Encounter available during playback.
+- [x] Verify Word Choice, Word Match, and Word Scramble correct-answer paths.
+- [x] Verify observed HP reduction matches displayed final damage in all three mini-games.
+- [x] Verify wrong answers preserve existing player damage and play no cast/hit animation.
+- [x] Verify a real timeout preserves existing result behavior and plays no cast/hit animation.
+- [x] Verify defeating damage plays player cast, suppresses living-enemy hit, and keeps result actions immediate.
+- [x] Verify normal motion advances frames and returns both actors to idle.
+- [x] Verify reduced motion uses configured static representative frames.
+- [x] Force both action images to fail and confirm idle fallback plus responsive controls.
+- [x] Verify an unmapped Word Warden displays the existing emoji/CSS fallback.
+- [x] Verify `390px` mobile has no horizontal overflow and battle controls remain readable.
+- [x] Keep enemy attack, defeat, effects, shield block, upgrade spark, walk, UI icons, card frame, and background unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

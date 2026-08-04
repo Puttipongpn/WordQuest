@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-04: Battle Animation State Is Derived And Non-Blocking
+
+- Decision: Phase 71F.2 action playback is local presentation state derived after an authoritative positive-damage success result commits. Player cast and living-enemy hit completion may return the portrait to idle but cannot calculate damage, change HP, grant rewards, save progress, advance encounters, or gate result actions.
+- Reason: Keeping playback downstream from `battleLog`, resolved HP, and battle status preserves every existing gameplay rule while allowing assets to fail, be skipped for reduced motion, or finish late without affecting the run.
+- Status: Accepted
+
 ### 2026-08-04: Runtime Copy Breadth And Runtime Wiring Breadth Are Separate
 
 - Decision: Phase 71F.1 copies all 34 planning-ready candidates into stable runtime paths but imports only the six idle sheets needed for static battle identity rendering. Copied action, effect, UI, icon, card-frame, and background files remain dormant until explicitly integrated.

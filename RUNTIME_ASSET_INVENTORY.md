@@ -54,7 +54,20 @@ Phase 71F.1 runtime wiring is limited to the following six static first-frame id
 | `elite-monster-slime` | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_idle_sheet.png` | Static first frame rendered |
 | `boss-gatekeeper` | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_idle_sheet.png` | Static first frame rendered |
 
-Every other copied file remains dormant: it has a stable runtime path but no import, renderer mapping, playback, or gameplay effect in Phase 71F.1.
+At the end of Phase 71F.1 every other copied file remained dormant. Phase 71F.2 promotes only the six action files listed below; all other copied files remain dormant.
+
+## Phase 71F.2 Animation Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Word Mage cast | `src/assets/sprites/player/word-mage/player_word_mage_cast_attack_sheet.png` | 6 frames, `64x64`, `110ms`, one-shot, reduced frame 3 | Wired after resolved correct-answer damage |
+| Slime hit | `src/assets/sprites/monsters/slime/monster_slime_hit_sheet.png` | 2 frames, `64x64`, `150ms`, one-shot, reduced frame 1 | Wired for living `monster-slime` |
+| Bat hit | `src/assets/sprites/monsters/bat/monster_bat_hit_sheet.png` | 2 frames, `64x64`, `150ms`, one-shot, reduced frame 1 | Wired for living `monster-bat` |
+| Goblin hit | `src/assets/sprites/monsters/goblin/monster_goblin_hit_sheet.png` | 2 frames, `64x64`, `150ms`, one-shot, reduced frame 1 | Wired for living `monster-goblin` |
+| Crystal Slime hit | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_hit_sheet.png` | 2 frames, `64x64`, `150ms`, one-shot, reduced frame 1 | Wired for living `elite-monster-slime` |
+| Gatekeeper hit | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_hit_sheet.png` | 2 frames, `128x128`, `170ms`, one-shot, reduced frame 1 | Wired for living `boss-gatekeeper` |
+
+Runtime-import status is now 12 PNGs: the six Phase 71F.1 idle sheets plus these six Phase 71F.2 action sheets. Timing metadata is presentation-only and does not replace or modify gameplay timer values. Walk, enemy attack, defeat, effects, UI, icons, card frame, and background candidates remain copied but unwired.
 
 ## Player
 

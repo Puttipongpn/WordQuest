@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  getEncounterHitAnimation,
   getEncounterIdleAsset,
+  playerCastAnimation,
   playerIdleAsset,
+  type SpritesheetAnimationAsset,
 } from "../assets/runtimeAssetRegistry";
 import { ScreenShell } from "../components/ScreenShell";
+import { SpritesheetAnimation } from "../components/SpritesheetAnimation";
 import { StaticBattleSprite } from "../components/StaticBattleSprite";
 import {
   Badge,
@@ -179,6 +183,12 @@ type BattleLog = {
   wordUsageCount?: number;
   effectsSummary?: string;
   rewardSummary?: string;
+};
+
+type ActiveBattleAnimation = {
+  asset: SpritesheetAnimationAsset;
+  playbackId: number;
+  encounterId?: string;
 };
 
 type BattleResultAction = {
@@ -1093,6 +1103,12 @@ export function Dungeon({
     useState<BattleStatus>("encounter-intro");
   const [questionWordFatigue, setQuestionWordFatigue] =
     useState<WordFatigueByWord>(wordFatigue);
+  const [playerBattleAnimation, setPlayerBattleAnimation] =
+    useState<ActiveBattleAnimation | null>(null);
+  const [enemyBattleAnimation, setEnemyBattleAnimation] =
+    useState<ActiveBattleAnimation | null>(null);
+  const presentationSequenceRef = useRef(0);
+  const presentedBattleLogRef = useRef<BattleLog | null>(null);
 
   const currentMonster = getMonsterForIndex(monsterIndex);
   const eliteMonster = createEliteMonster(currentMonster);
@@ -1102,6 +1118,7 @@ export function Dungeon({
       ? eliteMonster
       : currentMonster;
   const encounterIdleAsset = getEncounterIdleAsset(currentEncounter.id);
+  const encounterHitAnimation = getEncounterHitAnimation(currentEncounter.id);
   const currentEvent = chooseDungeonEvent(eventIndex);
   const isEventEncounter = battleStatus === "event";
   const isEncounterIntro = battleStatus === "encounter-intro";
@@ -1697,6 +1714,52 @@ export function Dungeon({
 
     return () => window.clearTimeout(scrollTimeoutId);
   }, [activeQuestionScrollKey]);
+
+  useEffect(() => {
+    if (
+      presentedBattleLogRef.current === battleLog ||
+      battleLog.tone !== "success" ||
+      battleLog.triggeredCard === undefined ||
+      (battleLog.damageDealt ?? 0) <= 0
+    ) {
+      return;
+    }
+
+    presentedBattleLogRef.current = battleLog;
+    presentationSequenceRef.current += 1;
+    const playbackId = presentationSequenceRef.current;
+
+    setPlayerBattleAnimation({
+      asset: playerCastAnimation,
+      playbackId,
+    });
+
+    if (
+      battleStatus === "fighting" &&
+      monsterHp > 0 &&
+      encounterHitAnimation
+    ) {
+      setEnemyBattleAnimation({
+        asset: encounterHitAnimation,
+        playbackId,
+        encounterId: currentEncounter.id,
+      });
+      return;
+    }
+
+    setEnemyBattleAnimation(null);
+  }, [
+    battleLog,
+    battleStatus,
+    currentEncounter.id,
+    encounterHitAnimation,
+    monsterHp,
+  ]);
+
+  useEffect(() => {
+    setPlayerBattleAnimation(null);
+    setEnemyBattleAnimation(null);
+  }, [currentEncounter.id, questionSeed]);
 
   useEffect(() => {
     if (!isTimerRunning) {
@@ -2859,11 +2922,23 @@ export function Dungeon({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <StaticBattleSprite
+                      <SpritesheetAnimation
                         alt="Word Mage"
-                        asset={playerIdleAsset}
+                        animation={playerBattleAnimation?.asset}
                         className="size-14 rounded-2xl border-4 border-sky-200/35 bg-sky-100 text-lg font-black text-sky-950 shadow-lg sm:size-16"
                         fallback="WQ"
+                        fallbackAsset={playerIdleAsset}
+                        key={`player-${playerBattleAnimation?.playbackId ?? "idle"}`}
+                        onComplete={() => {
+                          const completedPlaybackId =
+                            playerBattleAnimation?.playbackId;
+
+                          setPlayerBattleAnimation((current) =>
+                            current?.playbackId === completedPlaybackId
+                              ? null
+                              : current,
+                          );
+                        }}
                       />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
@@ -2942,9 +3017,14 @@ export function Dungeon({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <StaticBattleSprite
+                      <SpritesheetAnimation
                         alt={currentEncounter.name}
-                        asset={encounterIdleAsset}
+                        animation={
+                          enemyBattleAnimation?.encounterId ===
+                          currentEncounter.id
+                            ? enemyBattleAnimation.asset
+                            : undefined
+                        }
                         className={`grid size-14 place-items-center rounded-2xl border-4 text-4xl shadow-lg transition sm:size-16 ${encounterPortraitClass} ${
                           encounterTookHit
                             ? "damage-shake scale-105 ring-4 ring-red-300/45"
@@ -2953,6 +3033,18 @@ export function Dungeon({
                               : ""
                         }`}
                         fallback={currentEncounter.imagePlaceholder}
+                        fallbackAsset={encounterIdleAsset}
+                        key={`enemy-${currentEncounter.id}-${enemyBattleAnimation?.playbackId ?? "idle"}`}
+                        onComplete={() => {
+                          const completedPlaybackId =
+                            enemyBattleAnimation?.playbackId;
+
+                          setEnemyBattleAnimation((current) =>
+                            current?.playbackId === completedPlaybackId
+                              ? null
+                              : current,
+                          );
+                        }}
                       />
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">

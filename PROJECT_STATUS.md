@@ -10,10 +10,19 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.1 Controlled Runtime Asset Copy and Static Battle Identity Rendering. All 34 planning-ready candidates now exist under the proposed `src/assets/` structure with verified source/destination hashes and the required targeted-source precedence. Runtime code imports only six idle sheets: Word Mage, Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Dungeon encounter intros and active battle stages render each sheet's first frame with the existing emoji/CSS identity as the fallback for an unmapped identity or image-load failure. Action/effect playback remains unimplemented, reduced motion remains inherently static, and no gameplay, save, combat, timer, progression, or deployment behavior changed. The recommended next phase is Phase 71F.2 Controlled Battle Action Animation Foundation. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.2 Controlled Battle Action Animation Foundation. A reusable explicit-metadata spritesheet component now plays only the Word Mage cast and the living enemy's hit reaction after the existing correct-answer result, damage, effects, HP, statistics, and status updates have committed. One-shot completion returns presentation to idle but does not gate Next/result actions or trigger gameplay. Six action sheets are imported in addition to the Phase 71F.1 idle set. Reduced motion uses a static representative frame, and missing, unmapped, or failed images retain idle/emoji/CSS fallbacks. Enemy attack, defeat, effects, walk, UI icons, card frame, and background remain unimplemented. No gameplay, save, combat, timer, progression, or deployment behavior changed. The recommended next phase is Phase 71F.3 Controlled Enemy Attack Animation Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71F.2 Controlled Battle Action Animation Foundation.
+- Added explicit metadata and imports for Word Mage cast plus Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper hit sheets.
+- Added reusable `SpritesheetAnimation` playback with explicit frame timing, one-shot/loop metadata, reduced-motion frames, idle fallback assets, and emoji/CSS load-failure fallback.
+- Derived local Dungeon presentation state from the already-committed success battle log, HP, encounter status, and encounter ID.
+- Wired only player cast and living-enemy hit; defeating damage keeps enemy presentation idle while the existing result flow remains immediately available.
+- Verified Word Choice, Word Match, and Word Scramble damage against displayed final damage; verified wrong answer, real timeout, enemy defeat, reduced motion, forced image failure, and unmapped Word Warden fallback.
+- Verified Next Mini-Game/Next Encounter remains available during playback and `390px` mobile has no horizontal overflow.
+- Kept enemy attack, defeat, effects, shield block, upgrade spark, walk, UI icons, card frame, and battle background unimplemented.
+- Changed no gameplay, save, combat math, answer checking, timers, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, rewards, unlocks, progression, or deployment behavior.
 - Completed Phase 71F.1 Controlled Runtime Asset Copy and Static Battle Identity Rendering.
 - Copied all 34 Phase 71E planning-ready candidates into the proposed `src/assets/` tree and verified all 34 destination files against their selected sources by SHA-256.
 - Used `normalized_assets_refined_targeted/` for Gatekeeper attack and the vocabulary card frame, `normalized_assets_refined_full/` for the other 32 files, and no raw `Asset/` runtime source.

@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.1 Controlled Runtime Asset Copy and Static Battle Identity Rendering is complete. All 34 planning-ready files were copied into `src/assets/` with source precedence and hashes verified. Runtime code imports only the six approved idle identities and displays their first frame in Dungeon encounter-intro and active-battle stages. Existing emoji/CSS identities remain the fallback for missing mappings and image-load failures. Action/effect playback and all gameplay behavior remain unchanged. Phase 71F.2 Controlled Battle Action Animation Foundation is recommended next.
+Current phase: Phase 71F.2 Controlled Battle Action Animation Foundation is complete. Runtime presentation now supports only Word Mage cast and living-enemy hit reactions through explicit metadata and a reusable spritesheet component. Dungeon starts these one-shots only after its existing correct-answer state has committed, returns to idle independently, and never waits for playback before enabling result actions. Reduced motion and missing/load-failed assets keep static idle or emoji/CSS fallbacks. All gameplay behavior remains authoritative and unchanged. Phase 71F.3 Controlled Enemy Attack Animation Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2579,13 +2579,23 @@ Desktop and `390px` mobile checks confirmed correct first-frame cropping, no hor
 
 No animation playback, effect wiring, gameplay, answer checking, combat, timer, save, mastery, unlock, Word Energy, shop, event, elite, boss, encounter progression, dependency, or deployment behavior changed.
 
+## Phase 71F.2 Controlled Battle Action Animation Foundation
+
+Phase 71F.2 adds `src/components/SpritesheetAnimation.tsx` and extends `src/assets/runtimeAssetRegistry.ts` with explicit one-shot metadata. Imported action files are limited to `player_word_mage_cast_attack_sheet.png` and the hit sheets for Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Metadata records asset ID, imported file, frame count and dimensions, animation type, frame duration, loop flag, reduced-motion frame, and fallback identity.
+
+Dungeon owns two local presentation states. A post-commit effect observes a new resolved success battle log with positive damage, starts Word Mage cast, and starts the mapped enemy hit only when authoritative HP remains above zero. Completion clears only presentation state. Next Mini-Game, Next Encounter, run results, HP, damage, rewards, progression, saves, and timers never read or wait for animation state.
+
+Browser QA covered all three mini-games. Each observed enemy HP delta matched displayed final damage. Wrong answer and a real timeout retained their existing HP/result behavior without cast/hit playback. A defeating hit played player cast, kept enemy hit idle, and exposed Next Encounter immediately. Normal motion advanced frames and returned idle; reduced motion held configured representative frames; two forced action-image failures returned to loaded idle sheets without a crash; unmapped Word Warden retained its book fallback. At `390px`, document width and viewport width both remained `390px`.
+
+Enemy attack, defeat, effects, shield block, upgrade spark, walk, UI icons, vocabulary card frame, and dungeon background remain unimplemented. No new dependency or gameplay/runtime-state authority was added.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71F.2 Controlled Battle Action Animation Foundation only after explicit authorization.
-2. Add a presentation-only animation controller in a small verified slice, retaining the Phase 71F.1 static/emoji fallback path.
-3. Keep effects, icons, card frames, and battle backgrounds dormant until their own later verified stages.
-4. Keep gameplay state authoritative and require build plus desktop/mobile/reduced-motion/load-failure QA after every integration stage.
+1. Implement Phase 71F.3 Controlled Enemy Attack Animation Slice only after explicit authorization.
+2. Trigger mapped enemy attack presentation only after existing wrong-answer or timeout damage has fully resolved.
+3. Keep defeat, effects, icons, card frames, walk, and battle backgrounds dormant until their own later verified stages.
+4. Retain static/emoji fallbacks and keep all gameplay state independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

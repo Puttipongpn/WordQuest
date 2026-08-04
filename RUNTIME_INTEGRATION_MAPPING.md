@@ -2,7 +2,20 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 now implements the static identity subset described below. All animation/effect mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, and Phase 71F.2 now implements only the controlled cast/hit subset described below. Enemy attack, defeat, effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+
+## Phase 71F.2 Implemented Action Mapping
+
+| Resolved source state | Player presentation | Enemy presentation | Completion behavior |
+| --- | --- | --- | --- |
+| Positive-damage correct result; enemy HP remains above zero | Word Mage cast one-shot | Mapped encounter hit one-shot | Each independently returns to idle |
+| Positive-damage correct result; enemy HP is zero | Word Mage cast one-shot | Idle; defeat playback is not wired | Result actions remain immediately available |
+| Wrong answer or timeout | Idle | Idle; enemy attack is not wired | Existing damage/result flow is unchanged |
+| Missing mapping, reduced motion, or image failure | Static representative frame, loaded idle, or current fallback | Static representative frame, loaded idle, or current fallback | No gameplay callback |
+
+Dungeon observes a new committed success `battleLog`, positive `damageDealt`, resolved `monsterHp`, battle status, and encounter ID. That post-commit effect creates local presentation state only. `SpritesheetAnimation` completion can clear that state but no game function waits for it or reads it.
+
+The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-slime`, `monster-bat`, `monster-goblin`, `elite-monster-slime`, and `boss-gatekeeper`. Frame cadence is metadata rather than filename inference: cast is `6 x 64x64` at `110ms`; normal/elite hit is `2 x 64x64` at `150ms`; boss hit is `2 x 128x128` at `170ms`. Reduced-motion frame indexes are zero-based.
 
 ## Phase 71F.1 Implemented Static Mapping
 
@@ -19,9 +32,9 @@ This specification began as the Phase 71E mapping plan. Phase 71F.1 now implemen
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-The registry does not import walk, cast, attack, hit, defeat, effect, UI, icon, card-frame, or background files. Those candidates are copied into stable paths but remain dormant. Reduced-motion behavior is the same static frame because Phase 71F.1 creates no animation.
+At the Phase 71F.1 checkpoint the registry imported no action files. Phase 71F.2 now imports cast and hit only. Walk, enemy attack, defeat, effect, UI, icon, card-frame, and background files remain dormant.
 
-Recommended next phase: **Phase 71F.2 Controlled Battle Action Animation Foundation**. It should introduce only a small presentation-only action slice, retain the Phase 71F.1 static and emoji/CSS fallbacks, and keep all game resolution authoritative and independent from playback completion.
+Recommended next phase: **Phase 71F.3 Controlled Enemy Attack Animation Slice**. It should derive presentation only after existing wrong-answer or timeout damage resolves and retain the Phase 71F.2 fallback and non-blocking ownership rules.
 
 ## Identity Mapping
 
