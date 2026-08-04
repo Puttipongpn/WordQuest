@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71D.5 targeted cleanup is complete. The Gatekeeper attack frame-slicing defect and vocabulary card-frame opaque checkerboard are both resolved under `normalized_assets_refined_targeted/`, with 2 fixed and 0 still failing. Phase 71E Runtime Integration Planning may proceed, but implementation and runtime imports remain prohibited. Targeted outputs are candidates only, the polish backlog remains open, and `src/assets/` remains absent/unused.
+Current phase: Phase 71E Runtime Integration Planning is complete. Three planning documents now define the 34 logical candidates, proposed runtime folder structure, stable identity/state mappings, future animation metadata, fallbacks, reduced-motion behavior, source precedence, coverage gaps, and non-blocking polish backlog. No integration was performed, all PNGs remain candidates, and `src/assets/` remains absent/unused. Phase 71F Controlled Runtime Integration is recommended next only after explicit implementation authorization.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2549,13 +2549,33 @@ No alternate card-frame source was present under `Asset/ui/`. A bounded edge-con
 
 Needs-review assets from Phase 71D.4 were not modified and remain in the polish backlog. Both blockers are resolved, so Phase 71E Runtime Integration Planning may proceed. This is planning authorization only: React imports, `assetManifest`, animation playback, runtime file moves, and `src/assets/` remain prohibited.
 
+## Phase 71E Runtime Integration Planning
+
+Phase 71E is documentation-only planning. It creates no runtime imports, catalog/manifest, sprite renderer, animation playback, PNG copies, or `src/assets/` folder.
+
+Planning artifacts:
+
+- `RUNTIME_ASSET_INVENTORY.md`: 34 logical candidates with source path, category, intended use, frames, dimensions, readiness, and backlog notes.
+- `RUNTIME_ASSET_STRUCTURE_PROPOSAL.md`: proposed final tree, naming/ID conventions, candidate copy rules, ownership boundaries, fallbacks, and controlled integration order.
+- `RUNTIME_INTEGRATION_MAPPING.md`: existing identity mappings, resolved-state presentation triggers, future metadata requirements, reduced-motion/fallback rules, coverage gaps, and safety constraints.
+
+Key decisions:
+
+- Gatekeeper attack and the vocabulary card frame use `normalized_assets_refined_targeted/`; every other listed candidate uses `normalized_assets_refined_full/`.
+- Current game IDs remain authoritative. Crystal Slime is a visual override for `elite-monster-slime`, not a new encounter or mechanic.
+- Animations are derived presentation only. Correctness, damage, HP, shield, rewards, purchases, and progression resolve before any visual trigger and never depend on animation completion.
+- Missing identities/actions and load failures retain current emoji/CSS/static fallbacks.
+- The 14 needs-review candidates plus targeted layout/shadow notes remain a non-blocking polish backlog and must be rechecked in real layout/playback context.
+
+The next phase may be Phase 71F Controlled Runtime Integration, starting with static battle identities and fallbacks. A new explicit request is required before creating `src/assets/` or changing runtime code.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71E Runtime Integration Planning only, without importing assets or moving files into `src/assets/`.
-2. Define staged asset ownership, naming, animation metadata, loading/fallback behavior, responsive layout checks, and an integration order.
-3. Keep the Phase 71D.4 needs-review list plus Gatekeeper ground/shadow lines as a non-blocking polish backlog.
-4. Require a later explicit implementation phase before any React import, manifest, playback, or runtime asset file is created.
+1. Implement Phase 71F Controlled Runtime Integration only after explicit authorization.
+2. Begin with static Word Mage, Slime, Bat, Goblin, Crystal Slime, and Gatekeeper identities plus existing placeholder fallbacks.
+3. Add action playback, effects, icons, and decorative surfaces only in later verified stages described by `RUNTIME_ASSET_STRUCTURE_PROPOSAL.md`.
+4. Keep gameplay state authoritative and require build plus desktop/mobile/reduced-motion/load-failure QA after every integration stage.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

@@ -10,10 +10,18 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71D.5 targeted cleanup for the two blocking failures from Phase 71D.4. Gatekeeper attack now uses explicit nonuniform source regions and retains four complete poses without cross-frame fragments. The vocabulary card frame now has genuine exterior transparency with its baked checkerboard removed by bounded edge-connected cleanup. Both blockers are resolved, so Phase 71E Runtime Integration Planning may proceed, but implementation remains prohibited. Targeted outputs remain candidates only, the non-blocking polish backlog remains open, and `src/assets/` remains absent/unused. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71E Runtime Integration Planning. The project now has a 34-file logical runtime candidate inventory, a proposed `src/assets/` structure, stable identity/state mappings, explicit animation metadata requirements, source precedence for the two Phase 71D.5 targeted replacements, fallback/reduced-motion rules, and a separate non-blocking polish backlog. No runtime integration was performed: all files remain candidates, `src/assets/` remains absent/unused, and no React imports, manifest, animation playback, gameplay, save, combat, progression, or deployment behavior changed. The recommended next phase is Phase 71F Controlled Runtime Integration, beginning with static battle identities and fallbacks only after explicit authorization. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71E Runtime Integration Planning without creating runtime assets or code.
+- Added `RUNTIME_ASSET_INVENTORY.md` with all 34 logical candidates grouped by player, monsters, elites, bosses, effects, UI, icons, backgrounds, and events.
+- Recorded inventory readiness as 18 clean candidates, 14 candidates with non-blocking polish/layout backlog, and 2 targeted replacements with resolved blockers; no event PNGs exist.
+- Added `RUNTIME_ASSET_STRUCTURE_PROPOSAL.md` with the proposed `src/assets/` tree, stable naming/ID rules, source precedence, ownership boundaries, fallback requirements, and staged integration order.
+- Added `RUNTIME_INTEGRATION_MAPPING.md` with existing game-ID mappings, presentation-only state triggers, explicit future metadata fields, reduced-motion behavior, anti-spoiler rules, coverage gaps, and layout planning.
+- Locked Gatekeeper attack and the vocabulary card frame to their `normalized_assets_refined_targeted/` candidates; all other inventory entries use `normalized_assets_refined_full/`.
+- Kept the Phase 71D.4/71D.5 visual concerns as a separate non-blocking polish backlog that can be promoted only if real layout/playback QA finds a usability blocker.
+- Recommended Phase 71F Controlled Runtime Integration in staged, fallback-first batches; Phase 71E itself added no imports, manifest, playback, PNG moves, dependencies, or `src/assets/` files.
 - Completed Phase 71D.5 targeting only the Gatekeeper attack and vocabulary card-frame blockers from Phase 71D.4.
 - Added explicit Gatekeeper attack regions `0-625`, `626-1241`, `1242-1944`, and `1945-2507`; the targeted `512x128` output preserves all four complete poses.
 - Created a cleaned `1058x1487` card-frame candidate with 187,660 genuine transparent exterior pixels and no visible baked checkerboard in dark/light QA.

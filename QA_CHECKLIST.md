@@ -712,17 +712,17 @@ Preview verification:
 - [x] All player, monster, elite, boss, effect, and UI icon candidates have enlarged nearest-neighbor previews.
 - [x] Sprite/icon previews contain dark and light rows with visible frame gaps.
 - [x] One dungeon background preview was generated without modifying the normalized candidate.
-- [ ] Run a dedicated Human Visual QA pass across all 34 normalized candidates.
-- [ ] Review Word Mage cast/attack edge cleanliness, frame slicing, and six-frame cadence.
-- [ ] Review Bat and Goblin defeat cross-frame slicing; regenerate or manually re-layout if confirmed.
-- [ ] Review Goblin attack frame-edge action pixels.
-- [ ] Review every hit sheet for scale, spacing, baseline, and reaction readability.
-- [ ] Review Fire hard-alpha glow/particles and Wind contrast on dark and light backgrounds.
-- [ ] Review Elite Crystal Slime and Gatekeeper highlights/glow without deleting intentional bright pixels.
-- [ ] Review UI icons at native 64px and inspect card-frame transparency/text-safe insets.
+- [x] Run a dedicated Human Visual QA pass across all 34 normalized candidates.
+- [x] Review Word Mage cast/attack edge cleanliness, frame slicing, and six-frame cadence.
+- [x] Review Bat and Goblin defeat cross-frame slicing; regenerate or manually re-layout if confirmed.
+- [x] Review Goblin attack frame-edge action pixels.
+- [x] Review every hit sheet for scale, spacing, baseline, and reaction readability.
+- [x] Review Fire hard-alpha glow/particles and Wind contrast on dark and light backgrounds.
+- [x] Review Elite Crystal Slime and Gatekeeper highlights/glow without deleting intentional bright pixels.
+- [x] Review UI icons at native 64px and inspect card-frame transparency/text-safe insets.
 - [ ] Review dungeon background responsive crop, style fit, quiz readability, and mobile composition.
 - [ ] Add event overlay/mobile QA when event PNG sources become available.
-- [ ] Do not begin runtime integration planning until the full refined set passes Human Visual QA and receives explicit approval.
+- [x] Do not begin runtime integration planning until the full refined set passes Human Visual QA and receives explicit approval; Phase 71D.5 cleared the blocking findings.
 
 Safety verification:
 
@@ -756,16 +756,16 @@ Safety verification:
 - [x] Record per-file status, issue type, notes, and recommended action in `FULL_HUMAN_VISUAL_QA_REPORT.md`.
 - [x] Record totals of 18 pass, 14 needs review, and 2 fail.
 - [x] Confirm corrected Bat and Goblin defeat sheets pass frame-isolation review.
-- [ ] Correct Gatekeeper attack source-frame isolation; regenerate source only if explicit regions cannot produce complete frames.
-- [ ] Regenerate the vocabulary card frame from a true-transparent source without a baked checkerboard.
+- [x] Resolve Gatekeeper attack source-frame isolation with explicit regions; source regeneration was not required.
+- [x] Resolve vocabulary card-frame transparency with safety-gated targeted cleanup.
 - [ ] Apply the 11 listed localized edge/glow/contrast cleanup actions in Phase 71D.5.
 - [ ] Revisit Elite Crystal Slime hit normalization/scale configuration.
-- [ ] Repeat focused Human QA for every Phase 71D.5 output.
+- [x] Repeat focused Human QA for every Phase 71D.5 output.
 - [ ] Defer dungeon-background responsive crop and quiz readability checks until runtime layout QA is explicitly authorized.
 - [x] Keep Phase 71D.3 outputs as normalized candidates only.
 - [x] Keep runtime integration prohibited and `src/assets/` absent/unused.
 - [x] Confirm no gameplay, save, combat, progression, deployment, or runtime asset code changed.
-- [ ] Do not begin Phase 71E Runtime Integration Planning until the blocking failures are cleared and changed assets receive explicit Human approval.
+- [x] Do not begin Phase 71E Runtime Integration Planning until the blocking failures are cleared and changed assets receive explicit Human approval.
 
 ## Phase 71D.5 Targeted Cleanup / Regeneration QA
 
@@ -789,3 +789,26 @@ Safety verification:
 - [x] Keep runtime integration prohibited and `src/assets/` absent/unused.
 - [x] Confirm no gameplay, save, combat, progression, deployment, or runtime asset code changed.
 - [x] Permit Phase 71E Runtime Integration Planning only; require a later explicit phase for implementation.
+
+## Phase 71E Runtime Integration Planning QA
+
+- [x] Keep Phase 71E documentation-only and planning-only.
+- [x] Create `RUNTIME_ASSET_INVENTORY.md`.
+- [x] Inventory all 34 logical candidates with file, source path, category, use, frames, dimensions, readiness, and backlog notes.
+- [x] Separate UI/card, icons, backgrounds, and empty event coverage clearly.
+- [x] Use targeted Gatekeeper attack and card-frame paths instead of obsolete full-run candidates.
+- [x] Create `RUNTIME_ASSET_STRUCTURE_PROPOSAL.md` without creating the proposed folders.
+- [x] Define lowercase snake_case filenames and stable metadata ID conventions.
+- [x] Define candidate copy provenance and source-precedence rules.
+- [x] Define fallback-first ownership boundaries and a staged integration order.
+- [x] Create `RUNTIME_INTEGRATION_MAPPING.md`.
+- [x] Map current Slime, Bat, Goblin, Elite Slime, and Gatekeeper IDs without changing encounter data.
+- [x] Record missing player actions, monsters, bosses, elite identities, and events as fallback coverage gaps.
+- [x] Define explicit future frame, animation type, playback-purpose, baseline, facing, anchor, fallback, reduced-motion, and readiness metadata.
+- [x] Require presentation triggers to occur only after authoritative gameplay resolution.
+- [x] Require animation completion callbacks to remain independent from combat, saves, rewards, progression, purchases, and answer checking.
+- [x] Carry all non-blocking visual issues into a separate polish backlog.
+- [x] Keep `src/assets/` absent/unused.
+- [x] Add no PNG copies, React imports, asset manifest, animation playback, or dependencies.
+- [x] Change no gameplay, save, combat, timer, mastery, unlock, Word Energy, shop, event, elite, boss, encounter progression, or deployment behavior.
+- [x] Recommend Phase 71F Controlled Runtime Integration only after a new explicit implementation request.

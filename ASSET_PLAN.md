@@ -1315,6 +1315,46 @@ The vocabulary card frame had no alternate transparent source under `Asset/ui/`.
 
 Both blockers are resolved, so Phase 71E Runtime Integration Planning may proceed. This approval covers planning only. Targeted files remain candidates; runtime integration, React imports, `assetManifest`, playback, and `src/assets/` remain prohibited. Phase 71D.4 needs-review assets remain in the polish backlog unless later layout/integration planning identifies a blocker.
 
+## Phase 71E Runtime Integration Planning
+
+Phase 71E defines the handoff from normalized candidates to a later controlled integration phase without performing that integration.
+
+Planning documents:
+
+- `RUNTIME_ASSET_INVENTORY.md` is the authoritative 34-candidate planning inventory.
+- `RUNTIME_ASSET_STRUCTURE_PROPOSAL.md` defines the proposed runtime tree, naming conventions, source precedence, ownership boundaries, fallbacks, and staged copy/integration order.
+- `RUNTIME_INTEGRATION_MAPPING.md` maps candidates to current game identities and resolved presentation states and defines future animation metadata requirements.
+
+Inventory summary:
+
+- 18 Phase 71D.4 clean pass candidates.
+- 14 usable candidates with non-blocking polish or layout backlog.
+- 2 Phase 71D.5 targeted ready candidates replacing the obsolete Gatekeeper attack and vocabulary card-frame failures.
+- 0 event illustration candidates.
+
+Authoritative candidate precedence:
+
+1. Gatekeeper attack and vocabulary card frame use `normalized_assets_refined_targeted/`.
+2. Every other inventory asset uses `normalized_assets_refined_full/`.
+3. `Asset/` and earlier normalization-history folders must never be imported at runtime.
+
+The proposed future runtime structure groups player, monsters, elites, and bosses under `src/assets/sprites/`; effects by elemental/defense/feedback purpose; UI into frames/icons; backgrounds by scene; and event illustrations separately. Phase 71E does not create any of these folders.
+
+Future metadata must explicitly declare asset ID, source file, category, identity, state, frame count, frame dimensions, loop/one-shot/static behavior, playback purpose, return state, baseline, facing, optional anchor, fallback, reduced-motion frame, and readiness. Cadence values remain intentionally unlocked and cannot affect quiz timers or game resolution.
+
+Safety and fallback rules:
+
+- Runtime visual state is derived from already-resolved gameplay state.
+- Animation completion cannot apply combat, saves, rewards, progression, purchases, or answer results.
+- Missing/load-failed assets keep existing emoji/CSS/static fallbacks.
+- Reduced motion uses representative stable frames and preserves textual feedback.
+- Effects never reveal correctness or triggered cards before answer resolution and never obscure quiz/control UI.
+- Crystal Slime maps only to `elite-monster-slime`; missing elite/monster/boss identities keep fallbacks.
+
+The non-blocking polish backlog remains separate from planning readiness and includes localized sprite/icon fringe, Elite hit scale, Gatekeeper shadow/dust contrast, Fire/Wind readability, card-frame responsive insets, and battle-background layout QA.
+
+Recommended next phase: **Phase 71F Controlled Runtime Integration**, starting with static battle identities and fallbacks. A new explicit implementation request is required before adding files to `src/assets/`, imports, metadata catalogs, renderers, or animation playback.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

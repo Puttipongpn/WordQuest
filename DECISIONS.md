@@ -4,6 +4,18 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-04: Runtime Integration Will Be Staged And Fallback-First
+
+- Decision: Phase 71F should integrate presentation in verified stages, beginning with static covered battle identities and retaining current emoji/CSS fallbacks for missing or failed assets. Animation and effects may run only from already-resolved game state and cannot control gameplay completion.
+- Reason: The 34 planning-ready candidates cover only selected identities/actions and include non-blocking polish items. A fallback-first staged rollout limits presentation risk without changing answer checking, combat, timers, saves, rewards, or progression.
+- Status: Accepted
+
+### 2026-08-04: Targeted Candidates Override Obsolete Full-Run Files
+
+- Decision: Gatekeeper attack and the vocabulary card frame must use their `normalized_assets_refined_targeted/` candidates in future integration planning; all other inventory entries use `normalized_assets_refined_full/`.
+- Reason: The targeted files resolve the Phase 71D.4 slicing and transparency failures, while the same logical files in the full-run folder remain obsolete failed candidates.
+- Status: Accepted
+
 ### 2026-08-03: Phase 71D.5 Clears The Planning Gate Without Runtime Approval
 
 - Decision: The targeted Gatekeeper attack and vocabulary card-frame candidates resolve both Phase 71D.4 blocking failures. Phase 71E Runtime Integration Planning may proceed, but runtime implementation remains prohibited and the remaining needs-review assets stay in a polish backlog.
