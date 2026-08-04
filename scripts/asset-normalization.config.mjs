@@ -1,4 +1,10 @@
 const sourceFrameRegionOverrides = {
+  "Asset/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png": [
+    { left: 0, width: 626 },
+    { left: 626, width: 616 },
+    { left: 1242, width: 703 },
+    { left: 1945, width: 563 },
+  ],
   "Asset/monsters/bat/monster_bat_defeat_sheet.png": [
     { left: 0, width: 460 },
     { left: 460, width: 390 },
@@ -83,7 +89,7 @@ export const assetNormalizationConfig = [
   sheet("Asset/elites/crystal-slime/elite_crystal_slime_defeat_sheet.png", "elite-sheet", 4, 64, 64, "grounded", "Standard four-frame elite defeat action."),
 
   sheet("Asset/bosses/gatekeeper/boss_gatekeeper_idle_sheet.png", "boss-sheet", 4, 128, 128, "grounded", "Standard four-frame Gatekeeper idle action."),
-  sheet("Asset/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png", "boss-sheet", 4, 128, 128, "grounded", "Standard four-frame Gatekeeper attack action."),
+  sheet("Asset/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png", "boss-sheet", 4, 128, 128, "grounded", "Use explicit nonuniform source regions so each complete attack pose, key, and particle group stays in its intended frame."),
   sheet("Asset/bosses/gatekeeper/boss_gatekeeper_hit_sheet.png", "boss-sheet", 2, 128, 128, "grounded", "Explicit two-frame hit override; expected output is 256x128."),
   sheet("Asset/bosses/gatekeeper/boss_gatekeeper_defeat_sheet.png", "boss-sheet", 4, 128, 128, "grounded", "Standard four-frame Gatekeeper defeat action."),
 

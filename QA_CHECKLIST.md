@@ -745,3 +745,47 @@ Safety verification:
 - [ ] Confirm final cadence and particle ownership during the full-set Human Visual QA pass.
 - [ ] Keep both files as normalized candidates until full-set Human Visual QA receives explicit approval.
 - [x] Do not modify gameplay, runtime asset imports, animation playback, save behavior, progression, deployment, or `src/assets/`.
+
+## Phase 71D.4 Full-Set Human Visual QA
+
+- [x] Inspect all 34 normalized candidates under `normalized_assets_refined_full/`.
+- [x] Inspect all 33 enlarged dark/light previews under `normalized_assets_refined_full/qa_previews/`.
+- [x] Verify configured dimensions and frame counts for every sprite, effect, and UI icon.
+- [x] Check transparency, checkerboard contamination, frame isolation, cross-frame slicing, scale, baseline, cadence, glow, contrast, text contamination, and mobile readability risk.
+- [x] Inspect the preserved vocabulary card frame and dungeon background directly at source dimensions.
+- [x] Record per-file status, issue type, notes, and recommended action in `FULL_HUMAN_VISUAL_QA_REPORT.md`.
+- [x] Record totals of 18 pass, 14 needs review, and 2 fail.
+- [x] Confirm corrected Bat and Goblin defeat sheets pass frame-isolation review.
+- [ ] Correct Gatekeeper attack source-frame isolation; regenerate source only if explicit regions cannot produce complete frames.
+- [ ] Regenerate the vocabulary card frame from a true-transparent source without a baked checkerboard.
+- [ ] Apply the 11 listed localized edge/glow/contrast cleanup actions in Phase 71D.5.
+- [ ] Revisit Elite Crystal Slime hit normalization/scale configuration.
+- [ ] Repeat focused Human QA for every Phase 71D.5 output.
+- [ ] Defer dungeon-background responsive crop and quiz readability checks until runtime layout QA is explicitly authorized.
+- [x] Keep Phase 71D.3 outputs as normalized candidates only.
+- [x] Keep runtime integration prohibited and `src/assets/` absent/unused.
+- [x] Confirm no gameplay, save, combat, progression, deployment, or runtime asset code changed.
+- [ ] Do not begin Phase 71E Runtime Integration Planning until the blocking failures are cleared and changed assets receive explicit Human approval.
+
+## Phase 71D.5 Targeted Cleanup / Regeneration QA
+
+- [x] Limit processing to Gatekeeper attack and the vocabulary card frame.
+- [x] Preserve all files under `Asset/` and all earlier normalized output folders.
+- [x] Measure Gatekeeper source foreground gaps before selecting nonuniform frame regions.
+- [x] Configure Gatekeeper regions `0-625`, `626-1241`, `1242-1944`, and `1945-2507`.
+- [x] Produce a `512x128` Gatekeeper attack sheet with four `128x128` frames.
+- [x] Confirm body, key, attack arc, and particles remain with their intended pose.
+- [x] Confirm no Gatekeeper frame alpha bound touches a cell edge.
+- [x] Record thin neutral ground/shadow lines in frames 2 and 3 as non-blocking polish.
+- [x] Confirm no alternate true-transparent card-frame source exists under `Asset/ui/`.
+- [x] Apply safety-gated edge-connected cleanup only to the exterior neutral checkerboard.
+- [x] Preserve card-frame dimensions at `1058x1487`.
+- [x] Confirm the targeted card frame contains 187,660 genuine transparent pixels.
+- [x] Confirm dark/light preview backgrounds show through around the decorative frame without visible checkerboard.
+- [x] Generate targeted dark/light previews under `normalized_assets_refined_targeted/qa_previews/`.
+- [x] Record 2 fixed and 0 still failing in `TARGETED_CLEANUP_REPORT.md`.
+- [x] Keep Phase 71D.4 needs-review assets in a non-blocking polish backlog.
+- [x] Keep every targeted output as a candidate only.
+- [x] Keep runtime integration prohibited and `src/assets/` absent/unused.
+- [x] Confirm no gameplay, save, combat, progression, deployment, or runtime asset code changed.
+- [x] Permit Phase 71E Runtime Integration Planning only; require a later explicit phase for implementation.

@@ -1275,7 +1275,45 @@ Corrected result:
 - Every corrected alpha bound has internal cell padding and does not touch a cell edge.
 - Original source files remain unchanged and source regeneration is no longer required for this specific slicing defect.
 
-The correction does not grant runtime approval. Both sheets remain normalized candidates and still require cadence, particle ownership, scale, baseline, edge, and dark/light Human Visual QA with the rest of the full set.
+The correction did not grant runtime approval. At the Phase 71D.3.1 checkpoint, both sheets remained normalized candidates pending cadence, particle ownership, scale, baseline, edge, and dark/light Human Visual QA. Phase 71D.4 below records that completed review.
+
+## Phase 71D.4 Full-Set Human Visual QA
+
+Phase 71D.4 reviewed all 34 normalized candidates and all 33 available QA previews from the full refined run. The preserved vocabulary card frame and dungeon background were also inspected directly at source dimensions.
+
+Human decision totals:
+
+- Pass: 18.
+- Needs review: 14.
+- Fail: 2.
+- Human QA report: `normalized_assets_refined_full/FULL_HUMAN_VISUAL_QA_REPORT.md`.
+
+Blocking assets:
+
+- Gatekeeper attack: visible isolated body/key slivers indicate incorrect source-frame isolation. Try explicit nonuniform source regions first; regenerate the true-transparent source only if a clean extraction cannot be established.
+- Vocabulary card frame: opaque baked checkerboard outside the frame requires a new true-transparent source.
+
+Targeted follow-up scope includes localized edge cleanup for selected Slime, Bat, Goblin, Elite, and UI candidates; Fire glow and Wind contrast refinement; Elite Crystal Slime hit scale normalization; and later responsive layout QA for the dungeon background. Corrected Bat and Goblin defeat sheets now pass.
+
+The Phase 71D.3 outputs remain normalized candidates, not runtime assets. Proceed to Phase 71D.5 Targeted Manual Cleanup / Regeneration List before considering Phase 71E planning. Runtime integration, React imports, manifests, animation playback, and `src/assets/` remain prohibited.
+
+## Phase 71D.5 Targeted Cleanup / Regeneration
+
+Phase 71D.5 targets only the two blocking failures identified by Phase 71D.4. Outputs are isolated under `normalized_assets_refined_targeted/`; no source or previous normalized folder is overwritten.
+
+Targeted result:
+
+- Files targeted: 2.
+- Files fixed: 2.
+- Files still failing: 0.
+- Report: `normalized_assets_refined_targeted/TARGETED_CLEANUP_REPORT.md`.
+- QA previews: `normalized_assets_refined_targeted/qa_previews/`.
+
+Gatekeeper attack uses explicit nonuniform source regions `0-625`, `626-1241`, `1242-1944`, and `1945-2507`. This keeps all four complete poses, keys, attack arc, and particles in the correct `128x128` output cells. Source regeneration is not required for the slicing defect. Thin neutral ground/shadow lines remain a non-blocking polish item.
+
+The vocabulary card frame had no alternate transparent source under `Asset/ui/`. A dedicated safety-gated cleanup removed only light low-saturation pixels connected to the outer canvas edge. The output preserves `1058x1487`, creates 187,660 transparent exterior pixels, removes the visible checkerboard, and preserves the opaque parchment and decorative frame.
+
+Both blockers are resolved, so Phase 71E Runtime Integration Planning may proceed. This approval covers planning only. Targeted files remain candidates; runtime integration, React imports, `assetManifest`, playback, and `src/assets/` remain prohibited. Phase 71D.4 needs-review assets remain in the polish backlog unless later layout/integration planning identifies a blocker.
 
 ## Phase 61 Verification
 

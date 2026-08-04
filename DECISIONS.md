@@ -4,6 +4,18 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-03: Phase 71D.5 Clears The Planning Gate Without Runtime Approval
+
+- Decision: The targeted Gatekeeper attack and vocabulary card-frame candidates resolve both Phase 71D.4 blocking failures. Phase 71E Runtime Integration Planning may proceed, but runtime implementation remains prohibited and the remaining needs-review assets stay in a polish backlog.
+- Reason: Explicit Gatekeeper source regions isolate all four complete poses, and bounded edge-connected card cleanup produces genuine exterior alpha without changing the original source. Neither prior blocker now requires source regeneration, while planning can still account for non-blocking visual polish before implementation.
+- Status: Accepted
+
+### 2026-08-03: Phase 71D.4 Requires Targeted Cleanup Before Integration Planning
+
+- Decision: The full-set Human QA result of 18 pass, 14 needs review, and 2 fail requires Phase 71D.5 Targeted Manual Cleanup / Regeneration List before Phase 71E Runtime Integration Planning. Gatekeeper attack frame isolation and the opaque-checkerboard vocabulary card frame are blocking failures.
+- Reason: Multiple core candidates are usable, but a boss action still contains cross-frame fragments and the card frame lacks usable transparency. Runtime planning should use an explicitly approved visual set rather than carrying known blocking source defects forward.
+- Status: Accepted
+
 ### 2026-08-03: Nonuniform Source Sheets Use Explicit Frame Regions
 
 - Decision: When generated source poses are not evenly spaced across a sheet, normalization must use validated per-file source regions instead of dividing the canvas into equal-width cells.

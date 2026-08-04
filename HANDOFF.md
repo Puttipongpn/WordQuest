@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71D.3.1 defeat frame-region correction is complete. Bat and Goblin defeat sources now use explicit nonuniform crop regions, eliminating the torn frames caused by equal-width slicing. The full set remains 34 normalized candidates and 33 QA previews under `normalized_assets_refined_full/`. A full-set Human Visual QA pass is still required before any runtime integration planning. Runtime integration remains prohibited and `src/assets/` remains absent/unused.
+Current phase: Phase 71D.5 targeted cleanup is complete. The Gatekeeper attack frame-slicing defect and vocabulary card-frame opaque checkerboard are both resolved under `normalized_assets_refined_targeted/`, with 2 fixed and 0 still failing. Phase 71E Runtime Integration Planning may proceed, but implementation and runtime imports remain prohibited. Targeted outputs are candidates only, the polish backlog remains open, and `src/assets/` remains absent/unused.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2510,15 +2510,52 @@ Verification:
 - Regenerated dark/light previews show intact Bat wings and intact Goblin ears, body, staff, and particles.
 - Bat and Goblin defeat no longer require source regeneration for this slicing issue.
 
-The corrected files are still normalized candidates. Full-set Human Visual QA and explicit approval remain required before runtime integration planning.
+At the Phase 71D.3.1 checkpoint, the corrected files remained normalized candidates pending full-set Human Visual QA. Phase 71D.4 below records the completed review and its blocking findings.
+
+## Phase 71D.4 Full-Set Human Visual QA
+
+Phase 71D.4 inspected all 34 normalized candidates plus all 33 enlarged dark/light previews. Direct source-sized review was also used for the preserved vocabulary card frame and dungeon background.
+
+Result:
+
+- Pass: 18.
+- Needs review: 14.
+- Fail: 2.
+- Report: `normalized_assets_refined_full/FULL_HUMAN_VISUAL_QA_REPORT.md`.
+
+Blocking findings:
+
+- `boss_gatekeeper_attack_sheet.png` contains isolated body/key slivers between action frames. Rerun with explicit nonuniform source regions; regenerate only if clean frame isolation is not possible.
+- `ui_vocabulary_card_frame.png` is fully opaque and includes a baked checkerboard outside the decorative frame. Regenerate from a true-transparent source.
+
+The corrected Bat and Goblin defeat sheets pass this review. Eleven assets need localized edge/glow/contrast cleanup, Elite Crystal Slime hit needs normalization/scale review, and the dungeon background remains deferred to responsive runtime layout QA. No event PNGs were present.
+
+All Phase 71D.3 files remain normalized candidates. Runtime integration, React imports, `assetManifest`, animation playback, and `src/assets/` remain prohibited. No gameplay, save, combat, progression, deployment, or runtime asset code changed.
+
+## Phase 71D.5 Targeted Cleanup / Regeneration
+
+Phase 71D.5 processed only the two Phase 71D.4 blocking failures.
+
+Result:
+
+- Fixed: 2.
+- Still failing: 0.
+- Output root: `normalized_assets_refined_targeted/`.
+- Report: `normalized_assets_refined_targeted/TARGETED_CLEANUP_REPORT.md`.
+
+Gatekeeper attack now uses measured nonuniform regions `0-625`, `626-1241`, `1242-1944`, and `1945-2507`. Its four complete `128x128` frames no longer contain body/key fragments from neighboring poses, and source regeneration is not required. Thin neutral ground/shadow lines in frames 2 and 3 remain non-blocking polish.
+
+No alternate card-frame source was present under `Asset/ui/`. A bounded edge-connected cleanup removed only the exterior light neutral checkerboard, creating 187,660 transparent pixels while preserving the parchment and decorative border. The targeted dark/light preview confirms genuine exterior transparency.
+
+Needs-review assets from Phase 71D.4 were not modified and remain in the polish backlog. Both blockers are resolved, so Phase 71E Runtime Integration Planning may proceed. This is planning authorization only: React imports, `assetManifest`, animation playback, runtime file moves, and `src/assets/` remain prohibited.
 
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Run a dedicated Human Visual QA pass across all 34 Phase 71D.3 candidates using `normalized_assets_refined_full/qa_previews/`.
-2. Confirm Bat and Goblin defeat cadence/particle ownership in the full Human Visual QA pass; their frame-slicing defect is corrected.
-3. Repeat focused QA for every changed candidate.
-4. Plan runtime integration only after the full refined set passes Human Visual QA and receives explicit approval.
+1. Implement Phase 71E Runtime Integration Planning only, without importing assets or moving files into `src/assets/`.
+2. Define staged asset ownership, naming, animation metadata, loading/fallback behavior, responsive layout checks, and an integration order.
+3. Keep the Phase 71D.4 needs-review list plus Gatekeeper ground/shadow lines as a non-blocking polish backlog.
+4. Require a later explicit implementation phase before any React import, manifest, playback, or runtime asset file is created.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

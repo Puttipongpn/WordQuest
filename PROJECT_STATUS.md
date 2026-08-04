@@ -10,10 +10,26 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71D.3.1 defeat frame-region correction after the full refined run exposed torn Bat and Goblin defeat frames. Both sources now use explicit nonuniform frame regions, and regenerated `256x64` candidates/previews preserve all four complete poses without touching cell edges. The full set remains 34 normalized candidates and 33 QA previews under `normalized_assets_refined_full/`. These outputs still require full Human Visual QA and are not runtime-ready or integrated. Runtime integration remains prohibited and `src/assets/` remains absent/unused. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71D.5 targeted cleanup for the two blocking failures from Phase 71D.4. Gatekeeper attack now uses explicit nonuniform source regions and retains four complete poses without cross-frame fragments. The vocabulary card frame now has genuine exterior transparency with its baked checkerboard removed by bounded edge-connected cleanup. Both blockers are resolved, so Phase 71E Runtime Integration Planning may proceed, but implementation remains prohibited. Targeted outputs remain candidates only, the non-blocking polish backlog remains open, and `src/assets/` remains absent/unused. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71D.5 targeting only the Gatekeeper attack and vocabulary card-frame blockers from Phase 71D.4.
+- Added explicit Gatekeeper attack regions `0-625`, `626-1241`, `1242-1944`, and `1945-2507`; the targeted `512x128` output preserves all four complete poses.
+- Created a cleaned `1058x1487` card-frame candidate with 187,660 genuine transparent exterior pixels and no visible baked checkerboard in dark/light QA.
+- Added `npm run normalize-assets:refined-targeted` and `npm run asset-qa-previews:refined-targeted` for the two-file targeted workflow.
+- Added two targeted dark/light previews and `normalized_assets_refined_targeted/TARGETED_CLEANUP_REPORT.md`.
+- Recorded Phase 71D.5 totals as 2 fixed and 0 still failing; source regeneration is no longer required for either blocker.
+- Recommended Phase 71E Runtime Integration Planning only while retaining needs-review assets as a non-blocking polish backlog.
+- Preserved all `Asset/` sources and earlier normalized folders; no React imports, manifest, playback, `src/assets/`, gameplay, save, combat, progression, deployment, or runtime asset code changed.
+- Completed Phase 71D.4 Human Visual QA across all 34 full refined outputs and all 33 enlarged dark/light QA previews.
+- Added `normalized_assets_refined_full/FULL_HUMAN_VISUAL_QA_REPORT.md` with dimensions, frame counts, per-file status, issue classification, notes, and next actions.
+- Recorded the Human QA result as 18 pass, 14 needs review, and 2 fail.
+- Confirmed the corrected Bat and Goblin defeat sheets now pass without torn cross-frame silhouettes.
+- Identified Gatekeeper attack frame slicing and the opaque-checkerboard vocabulary card frame as blocking failures.
+- Identified 11 localized manual-cleanup candidates plus Elite Crystal Slime hit for normalization/scale review and responsive background QA for later runtime layout planning.
+- Recommended Phase 71D.5 Targeted Manual Cleanup / Regeneration List before Phase 71E planning.
+- Kept every Phase 71D.3 output as a candidate only; no PNG, React import, asset manifest, animation playback, `src/assets/`, gameplay, save, combat, progression, deployment, or runtime asset code changed.
 - Completed Phase 71D.3.1 targeted frame-region correction for Bat and Goblin defeat sheets.
 - Confirmed the cause was equal-width slicing at `384/768/1152` on `1536x1024` sources whose four poses use nonuniform spacing.
 - Added validated per-file `sourceFrameRegions` support and explicit Bat boundaries at `460/850/1305` plus Goblin boundaries at `500/930/1300`.
