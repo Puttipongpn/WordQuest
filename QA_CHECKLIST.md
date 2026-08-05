@@ -883,3 +883,27 @@ Safety verification:
 - [x] Keep defeat, effects, shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
 - [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.4 Controlled Enemy Defeat Animation Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper defeat sheets.
+- [x] Add explicit frame count, dimensions, cadence, animation type, reduced-motion frame, fallback identity, and final-frame hold metadata.
+- [x] Add defeat eligibility only inside existing authoritative HP-zero result branches.
+- [x] Preserve Word Mage cast and suppress living-enemy hit on the same defeating result.
+- [x] Keep Next Encounter and Run Complete actions available from the first defeat frame.
+- [x] Verify Word Choice defeats Bat through the existing damage/result flow.
+- [x] Verify Word Match defeats Goblin through the existing damage/result flow.
+- [x] Verify Word Scramble defeats an unmapped normal Wolf and retains emoji fallback.
+- [x] Verify Elite Crystal Slime defeat and existing gold/progress update exactly once.
+- [x] Verify Gatekeeper defeat reaches Run Complete and exposes existing actions immediately.
+- [x] Confirm normal-motion defeat advances frames and holds final frame 3.
+- [x] Confirm reduced motion displays static defeat frame 3.
+- [x] Confirm reward/progression LocalStorage remains stable after playback.
+- [x] Verify living-enemy hit from Phase 71F.2 remains unchanged.
+- [x] Verify wrong-answer and real-timeout enemy attack from Phase 71F.3 remain unchanged.
+- [x] Force a defeat image failure and confirm loaded idle fallback, responsive actions, and no crash.
+- [x] Verify `390px` mobile has no horizontal overflow and Next Encounter remains reachable.
+- [x] Keep effects, shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

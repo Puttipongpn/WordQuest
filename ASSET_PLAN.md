@@ -1396,6 +1396,14 @@ The attack presentation trigger is an explicit resolved battle-log marker writte
 
 Phase 71F.2 player cast and living-enemy hit mappings are unchanged. Defeat, effects, shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.4 Controlled Enemy Defeat Animation Slice**.
 
+## Phase 71F.4 Controlled Enemy Defeat Animation Slice
+
+Phase 71F.4 promotes only five copied defeat sheets: Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Normal and elite defeats use four `64x64` frames at `150ms`; Gatekeeper uses four `128x128` frames at `180ms`. Every entry is an explicit one-shot with zero-based reduced-motion frame 3, identity fallback, and `returnState: hold-final-frame`.
+
+Dungeon accepts defeat presentation only from `enemyDefeatResolved`, a marker written by existing authoritative HP-zero branches after their reward, statistics, unlock, and result-state calls. A mapped defeat replaces living-enemy hit on the same damage result while Word Mage cast remains unchanged. Playback and completion cannot calculate HP, grant rewards, unlock decks, advance progression, or gate Next Encounter/Run Complete actions.
+
+Browser QA confirms normal/elite/boss defeat playback, final-frame hold, immediate actions, stable rewards/progression after playback, reduced-motion frame 3, idle fallback after forced image failure, unmapped emoji fallback, and no horizontal overflow at `390px`. Elemental/defense/upgrade effects, walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.5 Controlled Elemental Effect Animation Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   getEncounterAttackAnimation,
+  getEncounterDefeatAnimation,
   getEncounterHitAnimation,
   getEncounterIdleAsset,
   playerCastAnimation,
@@ -185,6 +186,7 @@ type BattleLog = {
   effectsSummary?: string;
   rewardSummary?: string;
   enemyAttackResolved?: true;
+  enemyDefeatResolved?: true;
 };
 
 type ActiveBattleAnimation = {
@@ -1124,6 +1126,9 @@ export function Dungeon({
   const encounterAttackAnimation = getEncounterAttackAnimation(
     currentEncounter.id,
   );
+  const encounterDefeatAnimation = getEncounterDefeatAnimation(
+    currentEncounter.id,
+  );
   const currentEvent = chooseDungeonEvent(eventIndex);
   const isEventEncounter = battleStatus === "event";
   const isEncounterIntro = battleStatus === "encounter-intro";
@@ -1590,6 +1595,7 @@ export function Dungeon({
           wordUsageCount: nextUsageCount,
           effectsSummary,
           rewardSummary: `${completionReward.completedMessage} ${completionReward.unlockMessage}`,
+          enemyDefeatResolved: true,
         });
         return;
       }
@@ -1617,6 +1623,7 @@ export function Dungeon({
         wordEnergyFeedback,
         wordUsageCount: nextUsageCount,
         effectsSummary,
+        enemyDefeatResolved: true,
       });
       return;
     }
@@ -1733,6 +1740,8 @@ export function Dungeon({
       (battleLog.damageDealt ?? 0) > 0;
     const isResolvedEnemyAttack =
       battleLog.tone === "danger" && battleLog.enemyAttackResolved === true;
+    const isResolvedEnemyDefeat =
+      battleLog.enemyDefeatResolved === true && monsterHp === 0;
 
     if (!isResolvedPlayerAttack && !isResolvedEnemyAttack) {
       return;
@@ -1747,6 +1756,15 @@ export function Dungeon({
         asset: playerCastAnimation,
         playbackId,
       });
+
+      if (isResolvedEnemyDefeat && encounterDefeatAnimation) {
+        setEnemyBattleAnimation({
+          asset: encounterDefeatAnimation,
+          playbackId,
+          encounterId: currentEncounter.id,
+        });
+        return;
+      }
 
       if (
         battleStatus === "fighting" &&
@@ -1780,6 +1798,7 @@ export function Dungeon({
     battleStatus,
     currentEncounter.id,
     encounterAttackAnimation,
+    encounterDefeatAnimation,
     encounterHitAnimation,
     monsterHp,
   ]);
@@ -3068,7 +3087,9 @@ export function Dungeon({
                             enemyBattleAnimation?.playbackId;
 
                           setEnemyBattleAnimation((current) =>
-                            current?.playbackId === completedPlaybackId
+                            current !== null &&
+                            current.playbackId === completedPlaybackId &&
+                            current.asset.returnState === "idle"
                               ? null
                               : current,
                           );

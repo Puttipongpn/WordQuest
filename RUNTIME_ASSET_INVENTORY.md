@@ -18,7 +18,7 @@ Readiness labels:
 - **Targeted ready candidate**: a Phase 71D.5 replacement that resolved a blocking defect.
 - **Layout-QA candidate**: usable source candidate, but final use depends on responsive runtime composition.
 
-These labels describe visual-source readiness. A runtime copy is still not production-final art, and only the six idle identities listed below are currently wired into presentation.
+These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.4 has wired six idle identities, six cast/hit sheets, five enemy attacks, and five enemy defeats; the remaining copied candidates stay dormant.
 
 ## Phase 71F.1 Runtime Copy Status
 
@@ -79,7 +79,19 @@ At the Phase 71F.2 checkpoint, runtime-import status was 12 PNGs: six idle sheet
 | Crystal Slime attack | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_attack_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, return idle | Wired after resolved wrong/timeout for `elite-monster-slime` |
 | Gatekeeper attack | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png` | 4 frames, `128x128`, `140ms`, one-shot, reduced frame 2, return idle | Wired after resolved wrong/timeout for `boss-gatekeeper`; targeted Phase 71D.5 runtime copy |
 
-Runtime-import status is now 17 PNGs: six idle, six Phase 71F.2 cast/hit, and five Phase 71F.3 enemy attack sheets. Defeat, effects, UI, icons, card frame, background, and walk candidates remain copied but unwired.
+At the Phase 71F.3 checkpoint, runtime-import status was 17 PNGs: six idle, six Phase 71F.2 cast/hit, and five enemy attack sheets. Phase 71F.4 adds only the five defeat files below.
+
+## Phase 71F.4 Enemy Defeat Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Slime defeat | `src/assets/sprites/monsters/slime/monster_slime_defeat_sheet.png` | 4 frames, `64x64`, `150ms`, one-shot, reduced frame 3, hold final | Wired after authoritative HP zero for `monster-slime` |
+| Bat defeat | `src/assets/sprites/monsters/bat/monster_bat_defeat_sheet.png` | 4 frames, `64x64`, `150ms`, one-shot, reduced frame 3, hold final | Wired after authoritative HP zero for `monster-bat` |
+| Goblin defeat | `src/assets/sprites/monsters/goblin/monster_goblin_defeat_sheet.png` | 4 frames, `64x64`, `150ms`, one-shot, reduced frame 3, hold final | Wired after authoritative HP zero for `monster-goblin` |
+| Crystal Slime defeat | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_defeat_sheet.png` | 4 frames, `64x64`, `150ms`, one-shot, reduced frame 3, hold final | Wired after authoritative HP zero for `elite-monster-slime` |
+| Gatekeeper defeat | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_defeat_sheet.png` | 4 frames, `128x128`, `180ms`, one-shot, reduced frame 3, hold final | Wired after authoritative boss HP zero for `boss-gatekeeper` |
+
+Runtime-import status is now 22 PNGs: six idle, six Phase 71F.2 cast/hit, five Phase 71F.3 attacks, and five Phase 71F.4 defeats. Effects, UI, icons, card frame, background, and walk candidates remain copied but unwired.
 
 ## Player
 

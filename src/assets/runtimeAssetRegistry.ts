@@ -1,16 +1,21 @@
 import gatekeeperAttackUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png";
+import gatekeeperDefeatUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_defeat_sheet.png";
 import gatekeeperHitUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_hit_sheet.png";
 import gatekeeperIdleUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_idle_sheet.png";
 import crystalSlimeAttackUrl from "./sprites/elites/crystal-slime/elite_crystal_slime_attack_sheet.png";
+import crystalSlimeDefeatUrl from "./sprites/elites/crystal-slime/elite_crystal_slime_defeat_sheet.png";
 import crystalSlimeHitUrl from "./sprites/elites/crystal-slime/elite_crystal_slime_hit_sheet.png";
 import crystalSlimeIdleUrl from "./sprites/elites/crystal-slime/elite_crystal_slime_idle_sheet.png";
 import batAttackUrl from "./sprites/monsters/bat/monster_bat_attack_sheet.png";
+import batDefeatUrl from "./sprites/monsters/bat/monster_bat_defeat_sheet.png";
 import batHitUrl from "./sprites/monsters/bat/monster_bat_hit_sheet.png";
 import batIdleUrl from "./sprites/monsters/bat/monster_bat_idle_sheet.png";
 import goblinAttackUrl from "./sprites/monsters/goblin/monster_goblin_attack_sheet.png";
+import goblinDefeatUrl from "./sprites/monsters/goblin/monster_goblin_defeat_sheet.png";
 import goblinHitUrl from "./sprites/monsters/goblin/monster_goblin_hit_sheet.png";
 import goblinIdleUrl from "./sprites/monsters/goblin/monster_goblin_idle_sheet.png";
 import slimeAttackUrl from "./sprites/monsters/slime/monster_slime_attack_sheet.png";
+import slimeDefeatUrl from "./sprites/monsters/slime/monster_slime_defeat_sheet.png";
 import slimeHitUrl from "./sprites/monsters/slime/monster_slime_hit_sheet.png";
 import slimeIdleUrl from "./sprites/monsters/slime/monster_slime_idle_sheet.png";
 import wordMageCastUrl from "./sprites/player/word-mage/player_word_mage_cast_attack_sheet.png";
@@ -34,7 +39,7 @@ export type SpritesheetAnimationAsset = {
   loop: boolean;
   reducedMotionFrame: number;
   fallbackIdentity: string;
-  returnState: "idle";
+  returnState: "idle" | "hold-final-frame";
 };
 
 function idleSheet(src: string, frameSize: number): StaticSpriteAsset {
@@ -56,6 +61,7 @@ function oneShotAnimation(options: {
   frameDurationMs: number;
   frameSize: number;
   reducedMotionFrame: number;
+  returnState?: SpritesheetAnimationAsset["returnState"];
 }): SpritesheetAnimationAsset {
   return {
     assetId: options.assetId,
@@ -68,7 +74,7 @@ function oneShotAnimation(options: {
     loop: false,
     reducedMotionFrame: options.reducedMotionFrame,
     fallbackIdentity: options.fallbackIdentity,
-    returnState: "idle",
+    returnState: options.returnState ?? "idle",
   };
 }
 
@@ -190,6 +196,61 @@ const encounterAttackAnimations: Readonly<
   }),
 };
 
+const encounterDefeatAnimations: Readonly<
+  Record<string, SpritesheetAnimationAsset>
+> = {
+  "monster-slime": oneShotAnimation({
+    assetId: "monster_slime_defeat",
+    file: slimeDefeatUrl,
+    frameCount: 4,
+    frameSize: 64,
+    frameDurationMs: 150,
+    reducedMotionFrame: 3,
+    fallbackIdentity: "Slime idle",
+    returnState: "hold-final-frame",
+  }),
+  "monster-bat": oneShotAnimation({
+    assetId: "monster_bat_defeat",
+    file: batDefeatUrl,
+    frameCount: 4,
+    frameSize: 64,
+    frameDurationMs: 150,
+    reducedMotionFrame: 3,
+    fallbackIdentity: "Bat idle",
+    returnState: "hold-final-frame",
+  }),
+  "monster-goblin": oneShotAnimation({
+    assetId: "monster_goblin_defeat",
+    file: goblinDefeatUrl,
+    frameCount: 4,
+    frameSize: 64,
+    frameDurationMs: 150,
+    reducedMotionFrame: 3,
+    fallbackIdentity: "Goblin idle",
+    returnState: "hold-final-frame",
+  }),
+  "elite-monster-slime": oneShotAnimation({
+    assetId: "elite_crystal_slime_defeat",
+    file: crystalSlimeDefeatUrl,
+    frameCount: 4,
+    frameSize: 64,
+    frameDurationMs: 150,
+    reducedMotionFrame: 3,
+    fallbackIdentity: "Elite Crystal Slime idle",
+    returnState: "hold-final-frame",
+  }),
+  "boss-gatekeeper": oneShotAnimation({
+    assetId: "boss_gatekeeper_defeat",
+    file: gatekeeperDefeatUrl,
+    frameCount: 4,
+    frameSize: 128,
+    frameDurationMs: 180,
+    reducedMotionFrame: 3,
+    fallbackIdentity: "Gatekeeper idle",
+    returnState: "hold-final-frame",
+  }),
+};
+
 export function getEncounterIdleAsset(encounterId: string) {
   return encounterIdleAssets[encounterId];
 }
@@ -200,4 +261,8 @@ export function getEncounterHitAnimation(encounterId: string) {
 
 export function getEncounterAttackAnimation(encounterId: string) {
   return encounterAttackAnimations[encounterId];
+}
+
+export function getEncounterDefeatAnimation(encounterId: string) {
+  return encounterDefeatAnimations[encounterId];
 }

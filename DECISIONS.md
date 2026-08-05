@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-04: Defeat Presentation Holds Final Frame After Authoritative Resolution
+
+- Decision: Enemy defeat animation may start only from `enemyDefeatResolved` on a battle log produced by an authoritative HP-zero result branch after existing rewards, statistics, unlocks, and result state calls. Mapped defeats hold their final frame; animation completion cannot calculate HP, grant rewards, unlock decks, save progress, advance encounters, or gate result actions.
+- Reason: A dedicated post-resolution marker prevents living-hit/defeat ambiguity, while holding the final pose communicates the resolved encounter without making animation timing part of gameplay.
+- Status: Accepted
+
 ### 2026-08-04: Enemy Attack Presentation Requires An Explicit Resolved Marker
 
 - Decision: Enemy attack animation may start only from `enemyAttackResolved` on a battle log produced by the completed wrong-answer/timeout `monsterAttack` path. The marker is presentation metadata; animation completion only returns the portrait to idle and cannot apply damage, change shield/HP, update statistics, gate Run Failed/Next actions, or control progression.

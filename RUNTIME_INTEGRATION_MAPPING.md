@@ -2,7 +2,21 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, and Phase 71F.3 now implements only mapped enemy attack presentation. Defeat, effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, and Phase 71F.4 now implements mapped enemy defeat presentation. Effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+
+## Phase 71F.4 Implemented Enemy Defeat Mapping
+
+| Resolved source state | Player presentation | Enemy presentation | Completion behavior |
+| --- | --- | --- | --- |
+| Correct damage; mapped normal/elite HP reaches zero | Word Mage cast one-shot | Mapped defeat one-shot | Hold defeat frame 3; Next Encounter remains immediate |
+| Correct damage; mapped boss HP reaches zero | Word Mage cast one-shot | Gatekeeper defeat one-shot | Hold defeat frame 3; Run Complete actions remain immediate |
+| Correct damage; unmapped encounter HP reaches zero | Word Mage cast one-shot | Existing idle or emoji/CSS fallback | Existing result and rewards remain authoritative |
+| Defeat image load failure | Word Mage cast one-shot | Loaded idle sheet or emoji/CSS fallback | No crash or gameplay callback |
+| Reduced motion | Static cast frame 3 | Static defeat frame 3 | No frame cycling; actions remain immediate |
+
+The authoritative HP-zero branches add `enemyDefeatResolved` only to their completed result logs after existing reward, statistics, unlock, and result-state calls. Dungeon consumes the marker after commit, chooses defeat by encounter ID, and suppresses the living-hit mapping for that result. Defeat completion holds the final frame and has no authority over HP, gold, rewards, statistics, unlocks, encounter advancement, saves, or result actions.
+
+Defeat mappings cover `monster-slime`, `monster-bat`, `monster-goblin`, `elite-monster-slime`, and `boss-gatekeeper`. Normal/elite sheets are `4 x 64x64` at `150ms`; Gatekeeper is `4 x 128x128` at `180ms`. Every entry is one-shot, uses zero-based reduced frame 3, declares its fallback identity, and holds its final frame.
 
 ## Phase 71F.3 Implemented Enemy Attack Mapping
 
@@ -24,7 +38,7 @@ Attack mappings cover `monster-slime`, `monster-bat`, `monster-goblin`, `elite-m
 | Resolved source state | Player presentation | Enemy presentation | Completion behavior |
 | --- | --- | --- | --- |
 | Positive-damage correct result; enemy HP remains above zero | Word Mage cast one-shot | Mapped encounter hit one-shot | Each independently returns to idle |
-| Positive-damage correct result; enemy HP is zero | Word Mage cast one-shot | Idle; defeat playback is not wired | Result actions remain immediately available |
+| Positive-damage correct result; enemy HP is zero | Word Mage cast one-shot | Phase 71F.4 mapped defeat or existing fallback | Result actions remain immediately available |
 | Wrong answer or timeout | Idle | Idle; enemy attack is not wired | Existing damage/result flow is unchanged |
 | Missing mapping, reduced motion, or image failure | Static representative frame, loaded idle, or current fallback | Static representative frame, loaded idle, or current fallback | No gameplay callback |
 
@@ -47,9 +61,9 @@ The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 adds mapped enemy attack only. Walk, defeat, effect, UI, icon, card-frame, and background files remain dormant.
+At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, and Phase 71F.4 adds mapped enemy defeat. Walk, effect, UI, icon, card-frame, and background files remain dormant.
 
-Recommended next phase: **Phase 71F.4 Controlled Enemy Defeat Animation Slice**. It should derive presentation only after authoritative encounter HP reaches zero, retain immediate result actions, and preserve every fallback/non-blocking ownership rule.
+Recommended next phase: **Phase 71F.5 Controlled Elemental Effect Animation Slice**. It should derive presentation only after an existing Fire, Water, Wind, or Earth card effect resolves, without applying damage, shield, gold, or status.
 
 ## Identity Mapping
 

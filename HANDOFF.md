@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.3 Controlled Enemy Attack Animation Slice is complete. Wrong answers and timeouts now derive mapped enemy attack presentation only after existing HP, shield, statistics, log, and Run Failed state commit. Playback returns to idle independently and cannot apply or duplicate damage, pause/extend timers, or gate result/progression actions. Phase 71F.2 cast/hit behavior and all gameplay remain unchanged. Reduced motion, load failure, and unmapped identities retain static fallbacks. Phase 71F.4 Controlled Enemy Defeat Animation Slice is recommended next.
+Current phase: Phase 71F.4 Controlled Enemy Defeat Animation Slice is complete. Correct-answer results now derive mapped enemy defeat presentation only after authoritative HP reaches zero and existing reward, statistics, unlock, and result state calls commit. Defeat playback holds its final frame but cannot grant rewards, unlock decks, advance progression, or gate Next Encounter/Run Complete actions. Earlier cast, living-hit, and enemy-attack presentation remains unchanged. Reduced motion, load failure, and unmapped identities retain static fallbacks. Phase 71F.5 Controlled Elemental Effect Animation Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2599,13 +2599,23 @@ Browser QA confirmed all three wrong-answer mini-games kept Slime damage at 4 ex
 
 Defeat, elemental/defense/upgrade effects, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
 
+## Phase 71F.4 Controlled Enemy Defeat Animation Slice
+
+Phase 71F.4 imports only the defeat sheets for Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper. Normal and elite sheets declare four `64x64` frames at `150ms`; Gatekeeper declares four `128x128` frames at `180ms`. Every entry is a one-shot with zero-based reduced-motion frame 3, identity fallback, and `returnState: hold-final-frame`.
+
+The existing defeated branches add `enemyDefeatResolved: true` only to their final battle logs after `setMonsterHp(0)`, reward/statistics calls, normal/elite result status, or boss completion/unlock state has already been issued. The post-commit presentation effect keeps Word Mage cast, suppresses living-enemy hit, and selects mapped defeat. Animation completion may hold the final frame but cannot calculate HP, grant gold, update statistics, unlock a deck, advance an encounter, or gate result actions.
+
+Browser QA covered Word Choice, Word Match, and Word Scramble normal-monster defeats; Elite Crystal Slime reward flow; and Gatekeeper Run Complete. Elite gold changed once from 20 to 37, normal gold/progress and completion LocalStorage stayed stable after playback, and result actions remained available from frame 0. Normal motion advanced defeat frames `0 -> 2 -> 3`; reduced motion showed frame 3; a forced missing defeat image returned to the idle sheet; and unmapped Wolf retained its emoji fallback. Prior living hit, wrong-answer attack, and real-timeout attack still played. At a `390px` mobile viewport, document width remained within the viewport and Next Encounter stayed reachable.
+
+Elemental/defense/upgrade effects, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay, rewards, progression, saves, and deployment remain authoritative and unchanged.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71F.4 Controlled Enemy Defeat Animation Slice only after explicit authorization.
-2. Trigger mapped defeat presentation only after authoritative encounter HP reaches zero and existing result state is available.
-3. Keep effects, icons, card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
+1. Implement Phase 71F.5 Controlled Elemental Effect Animation Slice only after explicit authorization.
+2. Derive any Fire, Water, Wind, or Earth presentation only after the existing card effect has resolved; animation must not apply damage, shield, gold, or status.
+3. Keep defense/upgrade effects, icons, card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
 4. Retain static/emoji fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

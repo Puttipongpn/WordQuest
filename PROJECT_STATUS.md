@@ -10,10 +10,20 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.3 Controlled Enemy Attack Animation Slice. Mapped Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper attacks now play only after the existing wrong-answer or timeout HP/shield/statistics result has committed. The targeted Phase 71D.5 Gatekeeper attack runtime copy is used. Playback is local presentation state, returns independently to idle, and never applies damage, extends timers, duplicates resolution, gates Run Failed/Next actions, or controls progression. Phase 71F.2 player cast and living-enemy hit remain unchanged. Reduced motion uses a representative static attack frame; failed or unmapped art retains idle/emoji/CSS fallback. Defeat, effects, walk, UI icons, card frame, and background remain unimplemented. No gameplay, save, combat, timer, progression, or deployment behavior changed. The recommended next phase is Phase 71F.4 Controlled Enemy Defeat Animation Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.4 Controlled Enemy Defeat Animation Slice. Mapped Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper defeat sheets now play only from an explicit result marker written after authoritative encounter HP reaches zero and existing rewards, statistics, unlocks, and result status commit. Defeat one-shots hold their final frame while Next Encounter and Run Complete actions remain immediately available. Word Mage cast, living-enemy hit, and resolved enemy attack presentation remain unchanged. Reduced motion uses defeat frame 3; load failures return to idle art and unmapped identities retain emoji/CSS fallback. Effects, walk, UI icons, card frame, and background remain unimplemented. No gameplay, save, combat, timer, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.5 Controlled Elemental Effect Animation Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71F.4 Controlled Enemy Defeat Animation Slice.
+- Added explicit four-frame defeat metadata and imports for Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper.
+- Marked only the two authoritative HP-zero result logs with `enemyDefeatResolved: true`; Dungeon selects mapped defeat instead of living hit after the existing result commit.
+- Kept Word Mage cast on defeating answers and held mapped enemy defeat frame 3 without delaying or controlling result actions.
+- Verified Word Choice Bat defeat, Word Match Goblin defeat, Word Scramble Wolf fallback defeat, Elite Crystal Slime defeat, and Gatekeeper Run Complete through existing battle flows.
+- Verified Elite gold changed once from 20 to 37, normal rewards/progress remained stable after playback, and boss completion LocalStorage did not update again during animation.
+- Verified prior living hit, wrong-answer attack, and real-timeout attack presentation; forced defeat-image failure returned to idle without a crash.
+- Verified reduced-motion defeat frame 3 and `390px` mobile with no horizontal overflow and reachable Next Encounter controls.
+- Kept elemental/defense/upgrade effects, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background unimplemented.
+- Changed no gameplay, save, combat math, answer checking, timers, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, rewards, unlocks, progression, dependencies, or deployment behavior.
 - Completed Phase 71F.3 Controlled Enemy Attack Animation Slice.
 - Added explicit idle-return metadata and imports for Slime, Bat, Goblin, Elite Crystal Slime, and targeted-copy Gatekeeper attack sheets.
 - Marked only completed `monsterAttack` battle logs as presentation-eligible, then selected mapped attack art in the existing post-commit Dungeon presentation effect.
