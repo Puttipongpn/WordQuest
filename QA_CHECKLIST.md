@@ -1031,3 +1031,26 @@ Safety verification:
 - [x] Keep player walk and player defend/hurt/victory unimplemented.
 - [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, Shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71G Visual Regression And Playability QA Pass
+
+- [x] Confirm Phase 71F.10 status from `PROJECT_STATUS.md` and `HANDOFF.md` before editing.
+- [x] Run the baseline production build successfully.
+- [x] Test Home, Deck Review, Training, Dungeon, Shop, and Run Result on desktop.
+- [x] Verify English, Thai meanings, examples, answers, timer, HP, shield, gold, enemy status, logs, costs, modal buttons, and result actions remain readable.
+- [x] Test Word Choice, Word Match, and Word Scramble correct and wrong branches.
+- [x] Test a real timeout, shield absorption, mastery bonus damage, Word Energy use, monster defeat, elite reward, boss completion, and run failure.
+- [x] Test a mapped Shop purchase, upgrade spark, 5-gold reroll, affordability UI, modal actions, and return to Dungeon.
+- [x] Observe normal-motion Word Mage cast, enemy hit/attack/defeat, all four elemental overlays, shield overlay, and Shop spark.
+- [x] Target Elite Crystal Slime and Gatekeeper idle/attack/hit/defeat mappings through existing QA flows.
+- [x] Confirm an unmapped boss keeps emoji/CSS fallback.
+- [x] Force card-frame, Dungeon-background, Gold/HP/Shield-icon, actor/action, and effect failures; confirm readable fallback and no crash.
+- [x] Verify reduced motion uses configured static cast/hit frames and does not gate actions.
+- [x] Test Home, Deck Review, Training, Dungeon, Shop modal, Run Failed, and Run Result at `390px` with no horizontal overflow or hidden required actions.
+- [x] Confirm clean-profile Training mastery persists from 0 to 1 after reload.
+- [x] Confirm battle/Shop presentation and asset failures do not write player progress.
+- [x] Confirm no run-state LocalStorage key exists and no Continue Run appears after reload.
+- [x] Record zero blocking visual, gameplay, fallback, or persistence regressions and apply no unnecessary runtime fix.
+- [x] Keep player walk and player defend/hurt/victory unimplemented.
+- [x] Change no gameplay, save schema, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, Shop, event, elite, boss, reward, unlock, progression, asset, dependency, or deployment behavior.
+- [x] Create `VISUAL_REGRESSION_QA_REPORT.md` and run the final production build successfully.

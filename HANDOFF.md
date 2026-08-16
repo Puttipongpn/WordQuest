@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.10 Controlled Dungeon Background Slice is complete. The `1672x941` Dungeon background is imported through explicit static metadata and rendered only behind encounter-intro and active non-event battle stages by a reusable pointer-free `DecorativeBattleBackground`. Existing quiz/status/action panels remain above a conservative contrast overlay and remain authoritative. Image failure restores the existing stage appearance without affecting controls or state. Earlier battle presentation, Shop spark, UI icons, and vocabulary card frame remain unchanged. Phase 71F.11 Controlled Player Walk Slice is recommended next.
+Current phase: Phase 71G Visual Regression and Playability QA Pass is complete. Full desktop and `390px` mobile flow checks found no blocking visual, playability, fallback, persistence, or gameplay regression after Phase 71F.1 through Phase 71F.10. Normal/reduced presentation, all four elements, shield, Shop spark, icons, card frame, Dungeon background, Elite Crystal Slime, Gatekeeper, unmapped fallbacks, and forced failures passed. `VISUAL_REGRESSION_QA_REPORT.md` contains the test matrix and evidence. No application-code fix was required. Phase 71H Release Candidate and Deployment Verification is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2673,13 +2673,21 @@ Dungeon uses this component only for the encounter intro and active non-event ba
 
 Browser QA confirmed readable encounter intro, Word Choice, Word Match, and Word Scramble surfaces; visible timer, HP, shield, gold, enemy HP, battle log, QA Helper, and result actions; unchanged prior cast/hit/attack and Shop/card-frame behavior; and a usable fallback after forced image failure. The `390px` layout remained at `scrollWidth === clientWidth` with no hidden answer controls. Player walk and player defend/hurt/victory remain unimplemented.
 
+## Phase 71G Visual Regression And Playability QA Pass
+
+Phase 71G tested Home, Deck Review, Training, Dungeon, Shop, Run Result, Shop modal, Run Failed, and Run Complete across desktop and `390px` mobile. All measured pages had `scrollWidth === clientWidth`; English/Thai learning content, examples, answers, timer/status, logs, costs, modal buttons, and result actions remained readable and reachable.
+
+Normal-motion checks observed playing cast/hit/attack/defeat, all four elemental overlays, shield overlay, and mapped Shop upgrade spark. Reduced motion held configured representative frames. Targeted existing QA paths covered Elite Crystal Slime and Gatekeeper attack/hit/defeat, while unmapped bosses retained emoji/CSS fallback. Forced frame/background/icon/action/effect failures preserved readable UI and enabled actions without a crash.
+
+A clean-profile Training correct answer persisted mastery 0 to 1. Battle presentation, Shop presentation, and asset failures left the player-progress value unchanged; no run LocalStorage key existed after reload. Existing run-end statistics and boss completion remained the only tested authoritative run-result writes. No application code, CSS, asset, save, gameplay, economy, dependency, or deployment change was required. Full evidence is in `VISUAL_REGRESSION_QA_REPORT.md`.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71F.11 Controlled Player Walk Slice only after explicit authorization.
-2. Keep walk presentation independent from encounter progression, timing, and gameplay movement rules.
-3. Keep player defend/hurt/victory dormant until their own later verified stages.
+1. Run Phase 71H Release Candidate and Deployment Verification only after explicit authorization.
+2. Verify the production build/deployment against the Phase 71G regression matrix without changing deployment setup unless separately approved.
+3. Keep player walk and player defend/hurt/victory dormant until their own later explicit phase.
 4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

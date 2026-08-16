@@ -10,9 +10,16 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.10 Controlled Dungeon Background Slice. `background_dungeon_battle_01.png` now appears only behind the Dungeon encounter-intro and active non-event battle stage through an explicit static registry entry and reusable `DecorativeBattleBackground`. Existing quiz panels, answer controls, timer, HP, shield, gold, enemy status, battle log, QA Helper, and result actions remain readable HTML above a conservative dark overlay and remain authoritative. A failed background load removes only the image and preserves the existing stage styling and controls. Prior battle animation/overlays, Shop spark, UI icons, and vocabulary card frame remain unchanged. Player walk and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, dependency, or deployment behavior changed. The recommended next phase is Phase 71F.11 Controlled Player Walk Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71G Visual Regression and Playability QA Pass. Desktop and `390px` mobile checks cover Home, Deck Review, Training, Dungeon, Shop, and Run Result; all tested pages remained readable with no horizontal overflow. Normal and reduced-motion battle presentation, Fire/Water/Wind/Earth and shield overlays, Shop spark, UI icons, card frame, Dungeon background, mapped Elite Crystal Slime/Gatekeeper actions, emoji/CSS fallbacks, forced image failures, gameplay flow, and LocalStorage separation passed. No visual or gameplay regression required an application-code fix. Player walk and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, asset, dependency, or deployment behavior changed. The recommended next phase is Phase 71H Release Candidate and Deployment Verification. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
+
+- Completed Phase 71G Visual Regression and Playability QA Pass.
+- Tested Home, Deck Review, Training, Dungeon, Shop, Run Result, Shop modal, Run Failed, and Run Complete on desktop and at `390px`; no tested page had horizontal overflow or hidden required actions.
+- Verified normal/reduced-motion cast, hit, attack, defeat, all four elemental overlays, shield overlay, mapped Shop spark, static icons, card frame, Dungeon background, Elite Crystal Slime, Gatekeeper, and unmapped identity fallbacks.
+- Verified Word Choice/Match/Scramble correct and wrong paths, real timeout, shield absorption, mastery damage, Word Energy, monster/elite/boss results, Shop purchase/reroll/return, and result actions without changing authoritative behavior.
+- Verified permanent Training mastery persists, run state remains memory-only, and presentation/image failure does not write LocalStorage.
+- Added `VISUAL_REGRESSION_QA_REPORT.md`; no runtime code, CSS, asset, gameplay, save, economy, dependency, or deployment fix was required.
 
 - Completed Phase 71F.10 Controlled Dungeon Background Slice.
 - Imported only `background_dungeon_battle_01.png` through explicit static `1672x941` metadata.
