@@ -1545,3 +1545,9 @@ This file records accepted project decisions. Update it when architecture, scope
 - Decision: Use Git with `main` as the primary branch and `origin` pointing to `https://github.com/Puttipongpn/WordQuest.git`.
 - Reason: GitHub backup protects the current project state and gives future work a stable collaboration point.
 - Status: Accepted
+
+### 2026-08-16: Main Is The Authoritative Primary Branch
+
+- Decision: Promote the validated `redesign` history to `main` by fast-forward and use `main` as the authoritative branch for future development and Vercel deployment.
+- Reason: The redesign branch contains the complete reviewed runtime-presentation and release-candidate history, while fast-forward promotion preserves every commit without force push or a merge-only divergence.
+- Status: Accepted

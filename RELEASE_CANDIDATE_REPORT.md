@@ -4,7 +4,7 @@ Date: 2026-08-16
 
 ## Result
 
-**Release candidate ready pending source-control sync and post-deploy verification.** The local production build and built-app smoke flow passed with no runtime, TypeScript, gameplay, persistence, fallback, reduced-motion, or mobile blocker. The existing Vercel deployment is reachable, but it serves different generated bundle hashes from this local release candidate. `origin/main` also remains at the earlier Phase 63 snapshot, so this RC has not yet been deployed.
+**Release candidate deployed and verified.** The local production build and built-app smoke flow passed with no runtime, TypeScript, gameplay, persistence, fallback, reduced-motion, or mobile blocker. The former `redesign` release-candidate history was fast-forwarded to `origin/main` at `8b548bc`, Vercel redeployed through the existing setup, and the live generated bundle hashes now match the local RC.
 
 ## Build
 
@@ -67,9 +67,9 @@ The Phase 71F.1 through Phase 71F.10 runtime set is unchanged: 34 approved candi
 
 - Existing demo: `https://word-quest-hazel.vercel.app/`
 - Live HTML, JavaScript, and CSS returned HTTP 200 on 2026-08-16.
-- Live generated assets were `assets/index-CSez_pnb.js` and `assets/index-C6s1gvmp.css`.
-- Those hashes differ from the local RC output, so the live site is healthy but is not verified as this Phase 71H snapshot.
-- GitHub remote `origin/main` is documented and present, but its locally known tip is `1acbf45` (Phase 63), not the current RC work on `redesign`.
+- Before promotion, the live site served older generated assets. After the authorized fast-forward, live assets became `assets/index-C9Sq5LlG.js` and `assets/index-_vk3ZSMv.css`.
+- Live HTML, JavaScript, and CSS each returned HTTP 200 after redeployment, and the generated hashes match the local RC output.
+- `origin/main`, local `main`, and the promoted `redesign` snapshot all resolved to `8b548bc` immediately after the main promotion.
 
 ## Known Non-Blocking Polish Backlog
 
@@ -85,8 +85,8 @@ The Phase 71F.1 through Phase 71F.10 runtime set is unchanged: 34 approved candi
 
 Application readiness: **pass**.
 
-Deployment state: **pending**. There is no code/runtime blocker, but the current RC must be committed and intentionally synchronized to the approved deployment branch before Vercel can represent this snapshot. Deployment configuration was not changed in Phase 71H.
+Deployment state: **pass**. The RC was intentionally synchronized to `main`, Vercel redeployed it, and post-deploy static asset verification matched the local production output. Deployment configuration was not changed.
 
 ## Recommendation
 
-Proceed to **Phase 71I - Controlled Release Candidate Sync, Deployment, And Post-Deploy Verification** only after explicit authorization. That phase should commit/sync the intended RC, preserve the existing Vite/Vercel setup, wait for deployment, compare deployed asset hashes, and repeat a short live smoke check. Do not expand runtime presentation scope while performing the release.
+Phase 71I main promotion and post-deploy verification are complete. The next recommended phase is **Phase 71J - Post-Release Monitoring And Playtest Feedback Triage**, only after explicit authorization. Keep runtime presentation scope unchanged until real playtest evidence identifies a priority.

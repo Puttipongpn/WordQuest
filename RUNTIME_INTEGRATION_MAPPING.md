@@ -2,7 +2,7 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, Phase 71F.7 implemented successful Shop upgrade spark feedback, Phase 71F.8 implemented static Gold/HP/Shield icon support, Phase 71F.9 implemented controlled vocabulary-card framing, and Phase 71F.10 implemented the controlled Dungeon battle background. Phase 71G regression QA passed normal/reduced playback, every mapped presentation layer, targeted Elite Crystal Slime/Gatekeeper actions, fallback behavior, mobile layout, and persistence separation. Phase 71H passed the local release-candidate build and production-preview smoke checks without changing this mapping. The current RC is pending source-control sync and post-deploy verification; the walk mapping later in this document remains planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, Phase 71F.7 implemented successful Shop upgrade spark feedback, Phase 71F.8 implemented static Gold/HP/Shield icon support, Phase 71F.9 implemented controlled vocabulary-card framing, and Phase 71F.10 implemented the controlled Dungeon battle background. Phase 71G regression QA passed normal/reduced playback, every mapped presentation layer, targeted Elite Crystal Slime/Gatekeeper actions, fallback behavior, mobile layout, and persistence separation. Phase 71H passed the local release-candidate build and production-preview smoke checks without changing this mapping. Phase 71I promoted that exact mapping to `main` and verified matching live Vercel bundle hashes; the walk mapping later in this document remains planning-only.
 
 ## Phase 71F.10 Implemented Dungeon Background Mapping
 
@@ -144,7 +144,7 @@ An unmapped encounter receives no sprite asset and therefore keeps its current f
 
 At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, Phase 71F.7 added Shop upgrade spark feedback, Phase 71F.8 added three static UI icons, Phase 71F.9 added the controlled decorative card frame, and Phase 71F.10 adds the Dungeon stage background. The walk file remains dormant.
 
-Recommended next phase after the Phase 71H release-candidate pass: **Phase 71I Controlled Release Candidate Sync, Deployment, And Post-Deploy Verification**. Player walk remains dormant until a separate explicit phase authorizes it.
+Recommended next phase after the verified release: **Phase 71J Post-Release Monitoring And Playtest Feedback Triage**. Player walk remains dormant until a separate explicit phase authorizes it.
 
 ## Identity Mapping
 
@@ -302,4 +302,4 @@ Carry forward every non-blocking item from `RUNTIME_ASSET_INVENTORY.md`. Phase 7
 
 ## Recommendation
 
-Proceed with **Phase 71I Controlled Release Candidate Sync, Deployment, And Post-Deploy Verification** only after a new explicit phase request. Keep player walk and missing player defend/hurt/victory actions dormant, and do not expand runtime presentation scope during release work.
+Proceed with **Phase 71J Post-Release Monitoring And Playtest Feedback Triage** only after a new explicit phase request. Keep player walk and missing player defend/hurt/victory actions dormant until evidence justifies a dedicated presentation phase.

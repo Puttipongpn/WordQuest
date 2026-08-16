@@ -10,9 +10,16 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71H Release Candidate and Deployment Verification. The TypeScript/Vite production build passed with 94 modules and no new dependency; local production preview HTML, JavaScript, and CSS returned HTTP 200. Built-app smoke checks covered Home, Deck Review, Training wrong/correct, Shop, Run Result, Dungeon correct/wrong, development-only QA Helper exclusion, background fallback, reduced motion, permanent mastery, run-state separation, console errors, and desktop/`390px` overflow. No runtime source fix was required. The existing Vercel demo remains reachable at `https://word-quest-hazel.vercel.app/`, but its generated bundle hashes differ from the local RC and `origin/main` remains at the earlier Phase 63 snapshot, so this RC is ready pending intentional source-control sync and post-deploy verification. Player walk and player defend/hurt/victory remain dormant or unimplemented; no presentation scope, gameplay, save, combat, timer, economy, reward, progression, dependency, or deployment configuration changed. The recommended next phase is Phase 71I Controlled Release Candidate Sync, Deployment, and Post-Deploy Verification.
+WordQuest has completed Phase 71I Controlled Release Candidate Sync, Deployment, and Post-Deploy Verification. The validated `redesign` history was promoted to `origin/main` by fast-forward at `8b548bc`, local work now uses `main`, and Vercel redeployed through the existing setup. Live HTML, `assets/index-C9Sq5LlG.js`, and `assets/index-_vk3ZSMv.css` returned HTTP 200 and match the Phase 71H local RC. The Phase 71H build and smoke results remain authoritative: 94 modules, no new dependency, no console blocker, no production QA Helper, safe fallback/reduced motion/persistence, and no desktop/`390px` overflow. Player walk and player defend/hurt/victory remain dormant or unimplemented; no presentation scope, gameplay, save, combat, timer, economy, reward, progression, dependency, or deployment configuration changed. The recommended next phase is Phase 71J Post-Release Monitoring and Playtest Feedback Triage.
 
 ## Completed
+
+- Completed Phase 71I Controlled Release Candidate Sync, Deployment, and Post-Deploy Verification.
+- Fast-forwarded `origin/main` from `1acbf45` to the validated RC commit `8b548bc` without force push or a merge commit.
+- Switched the local working branch to `main`; `main` is now the authoritative primary branch.
+- Confirmed Vercel redeployed from the existing setup and live HTML, JavaScript, and CSS return HTTP 200.
+- Confirmed live JavaScript/CSS hashes match the Phase 71H local production output.
+- Changed no runtime source, gameplay, assets, dependencies, or deployment configuration during branch promotion.
 
 - Completed Phase 71H Release Candidate and Deployment Verification.
 - Ran `npm run build`; TypeScript and Vite passed with 94 modules and no new dependency.
@@ -22,7 +29,7 @@ WordQuest has completed Phase 71H Release Candidate and Deployment Verification.
 - Verified a Training correct answer persists mastery, a wrong answer does not write progress, Dungeon presentation does not alter permanent progress, and no LocalStorage run key exists.
 - Verified forced Dungeon-background failure keeps actions usable and reduced motion holds the configured Word Mage cast frame.
 - Confirmed the Phase 71F runtime set is unchanged: 33 of 34 copied candidates are wired, player walk remains dormant, player defend/hurt/victory remain unimplemented, and event illustrations remain absent.
-- Confirmed the existing Vercel site is healthy but does not yet serve this local RC; `origin/main` is also behind the RC, so deployment remains an explicit next-phase gate.
+- Recorded the initial live/hash and `origin/main` mismatch as the Phase 71H deployment gate; Phase 71I subsequently resolved and verified that gate.
 - Added `RELEASE_CANDIDATE_REPORT.md` and `qa_artifacts/phase71h/`; changed no runtime code, gameplay, save, economy, dependency, or deployment configuration.
 
 - Completed Phase 71G Visual Regression and Playability QA Pass.

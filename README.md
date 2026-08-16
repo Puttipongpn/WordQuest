@@ -6,7 +6,7 @@ The project is a local-first prototype focused on proving the learning and rogue
 
 Live demo: https://word-quest-hazel.vercel.app/
 
-Release-candidate status: Phase 71H local build and production-preview smoke checks pass. The existing live demo is healthy but has not yet been verified as the current RC; source-control sync and post-deploy verification remain explicit next steps.
+Release status: the Phase 71H release candidate is deployed from `main` and post-deploy asset verification passes.
 
 ## Tech Stack
 
@@ -134,7 +134,7 @@ Recommended target: Vercel static deployment.
 
 Current deployment status: live on Vercel at https://word-quest-hazel.vercel.app/
 
-GitHub remote `origin/main` remains the documented deployment branch. Phase 71H verified the local RC on `redesign`; it must be intentionally synchronized before the live site can be treated as this release candidate.
+GitHub remote `origin/main` is the primary development and deployment branch. The validated `redesign` history was promoted to `main` by fast-forward without changing the Vercel setup.
 
 Suggested Vercel setup:
 
@@ -171,8 +171,8 @@ Phase 71H verified the current local release candidate:
 - `npm run build` passed with 94 modules and no new dependency.
 - Built HTML, JavaScript, and CSS returned HTTP 200 through local production preview.
 - Built-app smoke checks passed Home, Deck Review, Training, Shop, Run Result, Dungeon, fallback, reduced motion, persistence, console safety, and `390px` overflow.
-- The live Vercel URL returned HTTP 200, but its generated asset hashes differ from the local RC.
-- `origin/main` remains at an earlier project snapshot, so current-RC deployment and post-deploy verification are still pending.
+- The validated history was fast-forwarded to `origin/main` at `8b548bc` without force push.
+- Vercel redeployed through the existing setup; live `index-C9Sq5LlG.js` and `index-_vk3ZSMv.css` match the local RC and return HTTP 200.
 - Full results: `RELEASE_CANDIDATE_REPORT.md`.
 
 ## Prototype Limitations / Roadmap

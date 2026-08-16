@@ -1076,8 +1076,21 @@ Safety verification:
 - [x] Confirm the Phase 71F runtime asset set and mapping remain unchanged.
 - [x] Confirm player walk remains dormant, player defend/hurt/victory remain unimplemented, and event illustrations remain absent.
 - [x] Confirm the live Vercel HTML, JavaScript, and CSS return HTTP 200.
-- [x] Record that live asset hashes differ from the local RC and `origin/main` is not yet synchronized to this snapshot.
+- [x] Record the initial live asset-hash mismatch and unsynchronized `origin/main` state before Phase 71I promotion.
 - [x] Keep all remaining asset issues in the non-blocking polish backlog.
 - [x] Change no runtime source, gameplay, save, combat, timer, economy, reward, progression, asset scope, dependency, or deployment configuration.
 - [x] Create `RELEASE_CANDIDATE_REPORT.md` and Phase 71H QA evidence.
 - [x] Run the final production build after documentation updates.
+
+## Phase 71I Main Promotion And Post-Deploy Verification
+
+- [x] Confirm `origin/main` is an ancestor of `redesign` before promotion.
+- [x] Fast-forward `origin/main` to `8b548bc` without force push or a merge commit.
+- [x] Switch the local working branch to `main` and fast-forward it to the promoted RC.
+- [x] Keep the existing Vite/Vercel deployment configuration unchanged.
+- [x] Confirm Vercel redeploys the promoted `main` snapshot.
+- [x] Confirm live HTML returns HTTP 200.
+- [x] Confirm live `assets/index-C9Sq5LlG.js` returns HTTP 200 and matches the local RC hash.
+- [x] Confirm live `assets/index-_vk3ZSMv.css` returns HTTP 200 and matches the local RC hash.
+- [x] Record `main` as the primary branch for future work.
+- [x] Change no runtime source, gameplay, save, asset mapping, dependency, or deployment configuration.
