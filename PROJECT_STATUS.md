@@ -10,10 +10,20 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.7 Controlled Upgrade Spark Effect Slice. The approved upgrade spark now plays once in a pointer-free Shop ceremony icon overlay only after the existing purchase callback has returned success for Upgrade Attack, Add Shield, or Add Element. The transaction remains authoritative: gold and the selected current-run card change before presentation starts, while playback only auto-clears local visual state. Reduced motion shows representative frame 2 and image failure skips silently. Insufficient gold, cancel, failed purchase, reroll, Remove Card, and Duplicate Card do not start the spark. Prior battle presentation remains unchanged. Walk, UI icons, vocabulary card frame, and dungeon background remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.8 Controlled Runtime UI Icon Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.8 Controlled Runtime UI Icon Slice. The approved Gold Coin, Heart HP, and Shield PNGs now provide small static visual support beside existing Dungeon and Shop labels/values through a reusable fallback-safe component. Text labels and numeric values remain visible and authoritative; icons are decorative, keep stable dimensions, mutate no state, and disappear cleanly if an image fails. Existing battle animation, elemental/shield overlays, and Shop upgrade spark remain unchanged. Vocabulary card frame, dungeon background, walk, and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.9 Controlled Vocabulary Card Frame Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71F.8 Controlled Runtime UI Icon Slice.
+- Imported only `ui_gold_coin.png`, `ui_heart_hp.png`, and `ui_shield.png` with explicit `64x64` static UI metadata.
+- Added reusable `StaticUiIcon` rendering with decorative accessibility semantics, stable sizing, pixel rendering, and load-failure fallback that leaves surrounding text/value UI intact.
+- Added Heart/Shield/Gold support to Dungeon encounter-intro, event status, and active battle status while preserving every readable label and numeric value.
+- Added Gold support to the Shop run-gold chip, offer costs, and purchase-modal Gold/Cost badges without changing affordability or purchase logic.
+- Verified HP, Shield, Gold, Cost, After, affordability, and missing-gold values; smoke-tested prior cast/hit, enemy attack, and Shop spark presentation.
+- Forced Heart, Gold, and Shield image failures and confirmed labels, values, controls, layout, and state remain usable without a crash.
+- Verified `390px` Dungeon and Shop have no horizontal overflow or hidden result/purchase controls.
+- Kept vocabulary card frame, dungeon background, walk, and player defend/hurt/victory unimplemented.
+- Changed no gameplay, save, combat math, answer checking, timers, HP/shield/gold/mastery, Word Energy, shop costs/values, event, elite, boss, rewards, unlocks, progression, dependencies, or deployment behavior.
 - Completed Phase 71F.7 Controlled Upgrade Spark Effect Slice.
 - Imported only `effect_upgrade_spark_sheet.png` and added explicit four-frame `64x64` metadata at `120ms`, one-shot playback, reduced-motion frame 2, Shop card-icon target layer, silent-skip fallback, and automatic clear.
 - Started spark presentation only after the existing Shop purchase callback returned `true` for Upgrade Attack, Add Shield, or Add Element; Remove Card and Duplicate Card remain intentionally unmapped.

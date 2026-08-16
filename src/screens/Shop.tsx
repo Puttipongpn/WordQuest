@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { upgradeSparkEffectAnimation } from "../assets/runtimeAssetRegistry";
+import {
+  uiIconAssets,
+  upgradeSparkEffectAnimation,
+} from "../assets/runtimeAssetRegistry";
 import { ScreenShell } from "../components/ScreenShell";
 import { SpritesheetAnimation } from "../components/SpritesheetAnimation";
+import { StaticUiIcon } from "../components/StaticUiIcon";
 import { Badge, Button, CardPanel } from "../components/ui";
 import { sampleShopItems } from "../data";
 import {
@@ -670,7 +674,11 @@ export function Shop({
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-black text-amber-950">
+            <span className="inline-flex items-center rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-black text-amber-950">
+              <StaticUiIcon
+                asset={uiIconAssets.gold}
+                className="mr-1.5 size-4"
+              />
               Gold {runGold}
             </span>
             <span className="rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-black text-emerald-900">
@@ -763,7 +771,13 @@ export function Shop({
               </div>
 
               <div className="mt-3 flex flex-wrap gap-1.5">
-                <Badge tone="amber">{item.cost} gold</Badge>
+                <Badge tone="amber">
+                  <StaticUiIcon
+                    asset={uiIconAssets.gold}
+                    className="mr-1 size-3.5"
+                  />
+                  {item.cost} gold
+                </Badge>
                 <Badge tone={hasEnoughGold ? "emerald" : "red"}>
                   {affordabilityCopy}
                 </Badge>
@@ -805,8 +819,20 @@ export function Shop({
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <Badge tone="amber">Gold {runGold}</Badge>
-                <Badge tone="amber">Cost {activeOffer.cost}</Badge>
+                <Badge tone="amber">
+                  <StaticUiIcon
+                    asset={uiIconAssets.gold}
+                    className="mr-1 size-3.5"
+                  />
+                  Gold {runGold}
+                </Badge>
+                <Badge tone="amber">
+                  <StaticUiIcon
+                    asset={uiIconAssets.gold}
+                    className="mr-1 size-3.5"
+                  />
+                  Cost {activeOffer.cost}
+                </Badge>
                 <Badge tone={runGold >= activeOffer.cost ? "emerald" : "red"}>
                   {runGold >= activeOffer.cost
                     ? `After ${runGold - activeOffer.cost}`

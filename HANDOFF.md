@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.7 Controlled Upgrade Spark Effect Slice is complete. Shop spark presentation is created only after the existing purchase callback returns `true` for Upgrade Attack, Add Shield, or Add Element. A separate pointer-free ceremony icon overlay auto-clears without spending gold, changing a card, closing the ceremony, or gating Continue. Insufficient gold, cancel, failed purchase, reroll, Remove Card, and Duplicate Card do not start the spark. Reduced motion uses frame 2 and failed images skip silently. Earlier battle presentation remains unchanged. Phase 71F.8 Controlled Runtime UI Icon Slice is recommended next.
+Current phase: Phase 71F.8 Controlled Runtime UI Icon Slice is complete. Gold Coin, Heart HP, and Shield are imported through explicit static metadata and rendered by a reusable decorative `StaticUiIcon`. Dungeon and Shop retain every existing Gold, HP, Shield, Cost, affordability, and missing-gold label/value as authoritative text. Failed icon images disappear without changing layout, state, or controls. Earlier battle animation/overlays and Shop spark remain unchanged. Phase 71F.9 Controlled Vocabulary Card Frame Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2619,6 +2619,16 @@ Browser QA observed Fire, Water, Wind, and Earth only on their resolved cards; n
 
 Shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
 
+## Phase 71F.8 Controlled Runtime UI Icon Slice
+
+Phase 71F.8 imports only `ui_gold_coin.png`, `ui_heart_hp.png`, and `ui_shield.png`. Explicit registry entries identify each `64x64` static PNG, while `StaticUiIcon` provides a stable decorative box, pixel rendering, and local load-failure fallback. It has no callback or state authority beyond remembering its own failed image source.
+
+Dungeon uses Heart next to encounter-intro HP, Heart/Shield/Gold in event status, and Gold/Heart/Shield in active player status. Shop uses Gold next to the current run value, offer costs, and purchase-modal Gold/Cost badges. Every existing text label and number remains present, so the images never become the only status indicator.
+
+Browser QA confirmed Dungeon `HP 32/32`, `Shield 0`, and `Gold 20`; an existing wrong-answer flow still reduced HP to 28 while mapped Slime attack played. Shop retained Gold, Cost, After, affordability, missing-gold copy, disabled confirmation, and successful Add Shield spark behavior. Forced Heart, Gold, and Shield load failures removed only their image while labels, values, and actions remained usable. Dungeon and Shop had no horizontal overflow or hidden controls at `390px`.
+
+Vocabulary card frame, dungeon background, walk, and player defend/hurt/victory remain unimplemented. Gameplay, Shop economy, saves, and progression remain authoritative and unchanged.
+
 ## Phase 71F.7 Controlled Upgrade Spark Effect Slice
 
 Phase 71F.7 imports only `effect_upgrade_spark_sheet.png`. Explicit metadata declares four `64x64` frames, `120ms` cadence, one-shot behavior, zero-based reduced-motion frame 2, `shop-card-icon-overlay` target, silent-skip fallback, idle return state, and automatic clear.
@@ -2643,9 +2653,9 @@ Upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame
 
 Recommended next steps:
 
-1. Implement Phase 71F.8 Controlled Runtime UI Icon Slice only after explicit authorization.
-2. Keep icon replacement presentation-only, retain existing text/emoji fallbacks, and preserve stable control dimensions.
-3. Keep card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
+1. Implement Phase 71F.9 Controlled Vocabulary Card Frame Slice only after explicit authorization.
+2. Keep card-frame placement presentation-only, preserve readable card content without the image, and verify safe text insets at mobile sizes.
+3. Keep walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
 4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

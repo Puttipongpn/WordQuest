@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-16: Static UI Icons Supplement Authoritative Text
+
+- Decision: Gold Coin, Heart HP, and Shield images may appear only as decorative support beside existing visible labels and numeric values. `StaticUiIcon` keeps stable dimensions and locally hides failed images; icon loading and rendering cannot mutate state, trigger effects, replace accessible text, or control gameplay/Shop/reward/save/progression behavior.
+- Reason: Supplementary icons improve scanning while preserving readable status information and making asset delivery failure harmless to game state and controls.
+- Status: Accepted
+
 ### 2026-08-16: Shop Upgrade Spark Requires A Successful Existing Transaction
 
 - Decision: Upgrade spark presentation may start only after the existing Shop callback returns `true` for Upgrade Attack, Add Shield, or Add Element. It uses local playback state in a fixed pointer-free ceremony icon overlay; completion and image failure may only clear that state. Remove Card, Duplicate Card, reroll, cancel, insufficient gold, and failed purchases remain unmapped.

@@ -971,3 +971,23 @@ Safety verification:
 - [x] Keep walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
 - [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery formulas, Word Energy, shop cost/value, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.8 Controlled Runtime UI Icon Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only `ui_gold_coin.png`, `ui_heart_hp.png`, and `ui_shield.png`.
+- [x] Add explicit static asset IDs, files, and `64x64` dimensions.
+- [x] Add reusable decorative `StaticUiIcon` rendering with stable dimensions and load-failure fallback.
+- [x] Keep all Gold, HP, Shield, Cost, affordability, and missing-gold text/values visible and authoritative.
+- [x] Verify Dungeon encounter-intro HP remains `32 / 32` and readable.
+- [x] Verify active Dungeon Gold, HP, and Shield values remain correct and readable.
+- [x] Verify an existing wrong-answer flow still changes HP once and plays mapped enemy attack presentation.
+- [x] Verify existing correct-answer cast and living-enemy hit presentation still works.
+- [x] Verify Shop Gold, offer Cost, modal Gold/Cost/After, affordability, and missing-gold copy remain correct.
+- [x] Verify insufficient-gold confirmation remains disabled and no spark starts.
+- [x] Verify a successful mapped Shop purchase still plays the existing upgrade spark after the transaction.
+- [x] Force Heart, Gold, and Shield image failures and confirm labels, values, actions, layout, and state remain usable without a crash.
+- [x] Verify `390px` Dungeon and Shop have no horizontal overflow or hidden result/purchase controls.
+- [x] Keep vocabulary card frame, dungeon background, walk, and player defend/hurt/victory unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop cost/value, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

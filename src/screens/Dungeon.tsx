@@ -8,6 +8,7 @@ import {
   playerCastAnimation,
   playerIdleAsset,
   shieldBlockEffectAnimation,
+  uiIconAssets,
   type ElementalEffectAnimationAsset,
   type ShieldEffectAnimationAsset,
   type SpritesheetAnimationAsset,
@@ -15,6 +16,7 @@ import {
 import { ScreenShell } from "../components/ScreenShell";
 import { SpritesheetAnimation } from "../components/SpritesheetAnimation";
 import { StaticBattleSprite } from "../components/StaticBattleSprite";
+import { StaticUiIcon } from "../components/StaticUiIcon";
 import {
   Badge,
   Button,
@@ -2833,8 +2835,12 @@ export function Dungeon({
                       <p className="truncate text-sm font-black text-sky-50">
                         Word Hero
                       </p>
-                      <p className="text-xs font-bold text-sky-100/70">
-                        HP {playerHp} / {PLAYER_MAX_HP}
+                      <p className="flex items-center gap-1 text-xs font-bold text-sky-100/70">
+                        <StaticUiIcon
+                          asset={uiIconAssets.hp}
+                          className="size-3.5"
+                        />
+                        <span>HP {playerHp} / {PLAYER_MAX_HP}</span>
                       </p>
                     </div>
                   </div>
@@ -2996,15 +3002,33 @@ export function Dungeon({
                   </div>
                   <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
                     <div className="rounded-xl border border-red-100/15 bg-red-950/25 px-2 py-1.5">
-                      <p className="text-xs font-black uppercase text-red-100/70">HP</p>
+                      <p className="flex items-center gap-1 text-xs font-black uppercase text-red-100/70">
+                        <StaticUiIcon
+                          asset={uiIconAssets.hp}
+                          className="size-3.5"
+                        />
+                        <span>HP</span>
+                      </p>
                       <p className="text-lg font-black text-red-50">{playerHp}</p>
                     </div>
                     <div className="rounded-xl border border-sky-100/15 bg-sky-950/25 px-2 py-1.5">
-                      <p className="text-xs font-black uppercase text-sky-100/70">Shield</p>
+                      <p className="flex items-center gap-1 text-xs font-black uppercase text-sky-100/70">
+                        <StaticUiIcon
+                          asset={uiIconAssets.shield}
+                          className="size-3.5"
+                        />
+                        <span>Shield</span>
+                      </p>
                       <p className="text-lg font-black text-sky-50">{shield}</p>
                     </div>
                     <div className="rounded-xl border border-amber-100/15 bg-amber-950/25 px-2 py-1.5">
-                      <p className="text-xs font-black uppercase text-amber-100/70">Gold</p>
+                      <p className="flex items-center gap-1 text-xs font-black uppercase text-amber-100/70">
+                        <StaticUiIcon
+                          asset={uiIconAssets.gold}
+                          className="size-3.5"
+                        />
+                        <span>Gold</span>
+                      </p>
                       <p className="text-lg font-black text-amber-50">{runGold}</p>
                     </div>
                     <div className="rounded-xl border border-emerald-100/15 bg-emerald-950/25 px-2 py-1.5">
@@ -3071,10 +3095,22 @@ export function Dungeon({
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <Badge tone="sky">Word Hero</Badge>
-                          <Badge tone="amber">Gold {runGold}</Badge>
+                          <Badge tone="amber">
+                            <StaticUiIcon
+                              asset={uiIconAssets.gold}
+                              className="mr-1 size-3.5"
+                            />
+                            Gold {runGold}
+                          </Badge>
                         </div>
                         <div className="mt-1 flex items-center justify-between gap-2 text-sm font-black text-red-50">
-                          <span>HP</span>
+                          <span className="flex items-center gap-1">
+                            <StaticUiIcon
+                              asset={uiIconAssets.hp}
+                              className="size-4"
+                            />
+                            HP
+                          </span>
                           <span>{playerHp} / {PLAYER_MAX_HP}</span>
                         </div>
                         <ProgressBar
@@ -3093,7 +3129,13 @@ export function Dungeon({
                             : "border-sky-100/15 bg-black/20"
                         }`}
                       >
-                        <p className="text-[10px] font-black uppercase text-sky-100/70">Shield</p>
+                        <p className="flex items-center justify-center gap-1 text-[10px] font-black uppercase text-sky-100/70">
+                          <StaticUiIcon
+                            asset={uiIconAssets.shield}
+                            className="size-3.5"
+                          />
+                          <span>Shield</span>
+                        </p>
                         <p className="text-base font-black text-sky-50">{shield}</p>
                       </div>
                       <div className="rounded-xl border border-stone-100/15 bg-black/20 px-2 py-1">

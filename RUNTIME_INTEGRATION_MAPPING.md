@@ -2,7 +2,18 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, and Phase 71F.7 now implements successful Shop upgrade spark feedback. Walk, UI, card-frame, and background mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, Phase 71F.7 implemented successful Shop upgrade spark feedback, and Phase 71F.8 now implements static Gold/HP/Shield icon support. Walk, card-frame, and background mappings later in this document remain planning-only.
+
+## Phase 71F.8 Implemented Static UI Icon Mapping
+
+| Existing text/value UI | Decorative asset | Runtime locations | Failure behavior |
+| --- | --- | --- | --- |
+| Gold/current run value | `ui_gold_coin` | Dungeon active/event status; Shop current Gold | Keep Gold label/value and stable empty icon box |
+| Shop offer/modal cost | `ui_gold_coin` | Offer cost badge; modal Gold and Cost badges | Keep Cost/After/affordability/missing-gold text |
+| Player HP | `ui_heart_hp` | Dungeon encounter intro, active status, event status | Keep HP label/value and progress bar |
+| Player Shield | `ui_shield` | Dungeon active and event status | Keep Shield label/value and shield feedback behavior |
+
+`StaticUiIcon` receives an explicit registry asset, renders a decorative `alt=""` image in a stable box, and locally hides only a failed image. Surrounding text and numbers remain authoritative. The component has no gameplay callbacks and cannot mutate HP, shield, gold, costs, affordability, combat, rewards, saves, or progression.
 
 ## Phase 71F.7 Implemented Shop Upgrade Spark Mapping
 
@@ -111,9 +122,9 @@ The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, and Phase 71F.7 adds Shop upgrade spark feedback. Walk, UI, icon, card-frame, and background files remain dormant.
+At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, Phase 71F.7 added Shop upgrade spark feedback, and Phase 71F.8 adds three static UI icons. Walk, card-frame, and background files remain dormant.
 
-Recommended next phase: **Phase 71F.8 Controlled Runtime UI Icon Slice**. It should replace a small approved icon subset with stable dimensions and retain existing text/emoji fallback without changing any game action.
+Recommended next phase: **Phase 71F.9 Controlled Vocabulary Card Frame Slice**. It should preserve existing card content as the complete fallback and verify text-safe insets before any broader card styling.
 
 ## Identity Mapping
 
@@ -271,4 +282,4 @@ Carry forward every non-blocking item from `RUNTIME_ASSET_INVENTORY.md`. Phase 7
 
 ## Recommendation
 
-Proceed with **Phase 71F.8 Controlled Runtime UI Icon Slice** only after a new explicit phase request. Keep card-frame, background, walk, and missing player actions dormant.
+Proceed with **Phase 71F.9 Controlled Vocabulary Card Frame Slice** only after a new explicit phase request. Keep background, walk, and missing player actions dormant.

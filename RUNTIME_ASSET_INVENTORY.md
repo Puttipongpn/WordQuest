@@ -18,7 +18,7 @@ Readiness labels:
 - **Targeted ready candidate**: a Phase 71D.5 replacement that resolved a blocking defect.
 - **Layout-QA candidate**: usable source candidate, but final use depends on responsive runtime composition.
 
-These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.7 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, one shield effect, and one Shop upgrade spark; the remaining copied candidates stay dormant.
+These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.8 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, one shield effect, one Shop upgrade spark, and three static UI icons; the remaining copied candidates stay dormant.
 
 ## Phase 71F.1 Runtime Copy Status
 
@@ -120,6 +120,16 @@ Runtime-import status is now 27 PNGs: six idle, six Phase 71F.2 cast/hit, five P
 
 Runtime-import status is now 28 PNGs. Remove/Duplicate Shop actions remain unmapped, and UI, icons, card frame, background, and walk candidates remain copied but unwired.
 
+## Phase 71F.8 Static UI Icon Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Gold visual support | `src/assets/ui/icons/ui_gold_coin.png` | Static `64x64`, decorative, stable box, local load-failure fallback | Wired beside Dungeon/Shop Gold and Shop Cost text |
+| HP visual support | `src/assets/ui/icons/ui_heart_hp.png` | Static `64x64`, decorative, stable box, local load-failure fallback | Wired beside Dungeon player HP text |
+| Shield visual support | `src/assets/ui/icons/ui_shield.png` | Static `64x64`, decorative, stable box, local load-failure fallback | Wired beside Dungeon Shield text |
+
+Runtime-import status is now 31 PNGs. Vocabulary card frame, background, walk, and missing player-action candidates remain copied but unwired.
+
 ## Player
 
 | File name | Current source path | Intended runtime usage | Frames | Expected frame size | Readiness | Notes |
@@ -208,9 +218,9 @@ The card frame is optional presentation. Existing card content must remain usabl
 
 | File name | Current source path | Intended runtime usage | Frames | Expected dimensions | Readiness | Notes |
 | --- | --- | --- | ---: | --- | --- | --- |
-| `ui_gold_coin.png` | `normalized_assets_refined_full/ui/ui_gold_coin.png` | Gold/reward/shop icon | 1 | `64x64` | Ready candidate, polish backlog | Localized neutral outer fringe. |
-| `ui_heart_hp.png` | `normalized_assets_refined_full/ui/ui_heart_hp.png` | Player HP icon | 1 | `64x64` | Ready candidate, polish backlog | Gray pixels remain at several outer edges. |
-| `ui_shield.png` | `normalized_assets_refined_full/ui/ui_shield.png` | Shield value icon | 1 | `64x64` | Ready candidate, polish backlog | Localized gray outer fringe. |
+| `ui_gold_coin.png` | `normalized_assets_refined_full/ui/ui_gold_coin.png` | Gold/reward/shop icon | 1 | `64x64` | Runtime-wired Phase 71F.8, polish backlog | Decorative support beside authoritative text; localized neutral outer fringe. |
+| `ui_heart_hp.png` | `normalized_assets_refined_full/ui/ui_heart_hp.png` | Player HP icon | 1 | `64x64` | Runtime-wired Phase 71F.8, polish backlog | Decorative support beside authoritative text; gray pixels remain at several outer edges. |
+| `ui_shield.png` | `normalized_assets_refined_full/ui/ui_shield.png` | Shield value icon | 1 | `64x64` | Runtime-wired Phase 71F.8, polish backlog | Decorative support beside authoritative text; localized gray outer fringe. |
 
 Icons must remain supplementary to readable text/values and cannot become the only accessible status indicator.
 

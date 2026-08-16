@@ -1428,6 +1428,14 @@ Shop creates local spark playback only after its existing purchase callback retu
 
 Browser QA confirms all three mapped purchase families mutate once and play one spark, while reroll, cancel, and insufficient gold play none. Normal playback auto-clears; reduced motion shows frame 2; load failure skips silently with Continue available. The `56x56` pointer-free icon overlay has no text/button overlap or horizontal overflow at `390px`. Walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.8 Controlled Runtime UI Icon Slice**.
 
+## Phase 71F.8 Controlled Runtime UI Icon Slice
+
+Phase 71F.8 promotes only `ui_gold_coin.png`, `ui_heart_hp.png`, and `ui_shield.png`. Each has explicit `64x64` static metadata. The reusable decorative renderer preserves stable compact dimensions, uses pixel rendering, and removes a failed image without affecting its surrounding text/value UI.
+
+Dungeon adds visual support beside existing HP, Shield, and Gold status in encounter-intro/event/active layouts. Shop adds Gold support beside current gold, offer costs, and purchase-modal Gold/Cost. Text labels and numeric values remain visible and authoritative everywhere; icons cannot mutate state, trigger effects, calculate affordability, or control combat, Shop, rewards, saves, or progression.
+
+Browser QA confirms unchanged Dungeon values, existing cast/hit and enemy attack presentation, unchanged Shop affordability/missing-gold behavior, and unchanged Shop spark. Forced failures for all three icons preserve labels/values/actions. At `390px`, both screens have no horizontal overflow or hidden controls. Vocabulary card frame, dungeon background, walk, and player defend/hurt/victory remain copied but dormant. Recommended next phase: **Phase 71F.9 Controlled Vocabulary Card Frame Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

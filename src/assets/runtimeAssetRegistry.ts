@@ -26,6 +26,9 @@ import slimeHitUrl from "./sprites/monsters/slime/monster_slime_hit_sheet.png";
 import slimeIdleUrl from "./sprites/monsters/slime/monster_slime_idle_sheet.png";
 import wordMageCastUrl from "./sprites/player/word-mage/player_word_mage_cast_attack_sheet.png";
 import wordMageIdleUrl from "./sprites/player/word-mage/player_word_mage_idle_sheet.png";
+import goldCoinIconUrl from "./ui/icons/ui_gold_coin.png";
+import heartHpIconUrl from "./ui/icons/ui_heart_hp.png";
+import shieldIconUrl from "./ui/icons/ui_shield.png";
 import type { ElementType } from "../types";
 
 export type StaticSpriteAsset = {
@@ -33,6 +36,13 @@ export type StaticSpriteAsset = {
   frameCount: number;
   frameWidth: number;
   frameHeight: number;
+};
+
+export type StaticUiIconAsset = {
+  assetId: string;
+  src: string;
+  width: 64;
+  height: 64;
 };
 
 export type SpritesheetAnimationAsset = {
@@ -66,6 +76,29 @@ export type UpgradeSparkAnimationAsset = SpritesheetAnimationAsset & {
   targetLayer: "shop-card-icon-overlay";
   fallbackBehavior: "skip";
   autoClear: true;
+};
+
+export const uiIconAssets: Readonly<
+  Record<"gold" | "hp" | "shield", StaticUiIconAsset>
+> = {
+  gold: {
+    assetId: "ui_gold_coin",
+    src: goldCoinIconUrl,
+    width: 64,
+    height: 64,
+  },
+  hp: {
+    assetId: "ui_heart_hp",
+    src: heartHpIconUrl,
+    width: 64,
+    height: 64,
+  },
+  shield: {
+    assetId: "ui_shield",
+    src: shieldIconUrl,
+    width: 64,
+    height: 64,
+  },
 };
 
 function idleSheet(src: string, frameSize: number): StaticSpriteAsset {
