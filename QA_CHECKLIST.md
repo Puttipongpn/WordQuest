@@ -1010,3 +1010,24 @@ Safety verification:
 - [x] Keep dungeon background, walk, and player defend/hurt/victory unimplemented.
 - [x] Change no gameplay, card data/effects, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, Shop cost/value/purchase logic, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.10 Controlled Dungeon Background Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only `background_dungeon_battle_01.png` from the verified runtime copy.
+- [x] Add explicit asset ID, `1672x941` dimensions, and centered object-position metadata.
+- [x] Add reusable pointer-free `DecorativeBattleBackground` rendering with conservative contrast overlay and local load-failure fallback.
+- [x] Apply the image only behind Dungeon encounter intro and active non-event battle stages.
+- [x] Keep Training, Deck Review, Shop, Run Result, events, and the global app background unchanged.
+- [x] Verify encounter intro identity, HP, attack, Start Battle, and QA Helper remain readable/reachable.
+- [x] Verify active Word Choice question and all answer buttons remain dominant and readable.
+- [x] Verify Word Match choices remain readable and no correctness hint is introduced before resolution.
+- [x] Verify Word Scramble tiles/input/action controls remain readable and reachable.
+- [x] Verify timer, HP, shield, gold, enemy HP, battle log, and result actions remain readable and authoritative.
+- [x] Verify prior battle animations/overlays, Shop spark, UI icons, and vocabulary card frame remain unchanged.
+- [x] Force background image failure and confirm the original stage styling, status, and actions remain usable without a crash.
+- [x] Verify reduced motion keeps the background static without a loading transition.
+- [x] Verify `390px` Dungeon has no horizontal overflow or hidden answer controls.
+- [x] Keep player walk and player defend/hurt/victory unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, Shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

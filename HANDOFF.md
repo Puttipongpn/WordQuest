@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.9 Controlled Vocabulary Card Frame Slice is complete. The repaired targeted vocabulary card frame is imported through explicit `1058x1487` metadata and rendered by a reusable pointer-free `DecorativeCardFrame` using 9-slice scaling. It is opt-in only on the Deck selected-card detail, Training prompt, and selected Shop target. Existing HTML text, numeric values, selection, answer, preview, and modal controls remain authoritative and usable if the image fails. Earlier battle presentation, Shop spark, and UI icons remain unchanged. Phase 71F.10 Controlled Dungeon Background Slice is recommended next.
+Current phase: Phase 71F.10 Controlled Dungeon Background Slice is complete. The `1672x941` Dungeon background is imported through explicit static metadata and rendered only behind encounter-intro and active non-event battle stages by a reusable pointer-free `DecorativeBattleBackground`. Existing quiz/status/action panels remain above a conservative contrast overlay and remain authoritative. Image failure restores the existing stage appearance without affecting controls or state. Earlier battle presentation, Shop spark, UI icons, and vocabulary card frame remain unchanged. Phase 71F.11 Controlled Player Walk Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2665,13 +2665,21 @@ Browser QA confirmed a correct shield card showed feedback after shield increase
 
 Upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
 
+## Phase 71F.10 Controlled Dungeon Background Slice
+
+Phase 71F.10 imports only `src/assets/backgrounds/battle/background_dungeon_battle_01.png`. Its explicit metadata records asset ID, `1672x941` dimensions, and centered object positioning. The reusable `DecorativeBattleBackground` owns only local load/failure state, places a pointer-free responsive image below existing content, and adds a conservative dark overlay when the image loads. The caller's existing gradient, border, layout, and controls remain the failure fallback.
+
+Dungeon uses this component only for the encounter intro and active non-event battle stage. Event encounters intentionally disable the image, and Training, Deck Review, Shop, Run Result, and global app surfaces remain untouched. Background loading cannot mutate combat, timer, HP, shield, gold, answers, rewards, saves, or progression.
+
+Browser QA confirmed readable encounter intro, Word Choice, Word Match, and Word Scramble surfaces; visible timer, HP, shield, gold, enemy HP, battle log, QA Helper, and result actions; unchanged prior cast/hit/attack and Shop/card-frame behavior; and a usable fallback after forced image failure. The `390px` layout remained at `scrollWidth === clientWidth` with no hidden answer controls. Player walk and player defend/hurt/victory remain unimplemented.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71F.10 Controlled Dungeon Background Slice only after explicit authorization.
-2. Keep the background behind existing readable stage/quiz surfaces with a CSS fallback and responsive crop QA.
-3. Keep walk and player defend/hurt/victory dormant until their own later verified stages.
+1. Implement Phase 71F.11 Controlled Player Walk Slice only after explicit authorization.
+2. Keep walk presentation independent from encounter progression, timing, and gameplay movement rules.
+3. Keep player defend/hurt/victory dormant until their own later verified stages.
 4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

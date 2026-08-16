@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  dungeonBattleBackgroundAsset,
   getEncounterAttackAnimation,
   getEncounterDefeatAnimation,
   getEncounterHitAnimation,
@@ -13,6 +14,7 @@ import {
   type ShieldEffectAnimationAsset,
   type SpritesheetAnimationAsset,
 } from "../assets/runtimeAssetRegistry";
+import { DecorativeBattleBackground } from "../components/DecorativeBattleBackground";
 import { ScreenShell } from "../components/ScreenShell";
 import { SpritesheetAnimation } from "../components/SpritesheetAnimation";
 import { StaticBattleSprite } from "../components/StaticBattleSprite";
@@ -2784,7 +2786,9 @@ export function Dungeon({
     >
       {isEncounterIntro ? (
         <CardPanel className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-5xl place-items-center border-red-900/30 bg-gradient-to-br from-stone-900 via-stone-800 to-emerald-950 p-3 text-amber-50 sm:min-h-[calc(100vh-6rem)] sm:p-4 xl:h-full xl:min-h-0 xl:overflow-hidden">
-          <section
+          <DecorativeBattleBackground
+            as="section"
+            asset={dungeonBattleBackgroundAsset}
             className={`relative w-full overflow-hidden rounded-3xl border-2 p-4 text-center shadow-[inset_0_0_55px_rgba(0,0,0,0.28)] sm:p-6 ${encounterStageClass}`}
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/10 to-transparent" />
@@ -2927,7 +2931,7 @@ export function Dungeon({
                 </div>
               )}
             </div>
-          </section>
+          </DecorativeBattleBackground>
         </CardPanel>
       ) : (
       <div
@@ -2978,7 +2982,10 @@ export function Dungeon({
               </div>
             </div>
 
-            <section
+            <DecorativeBattleBackground
+              as="section"
+              asset={dungeonBattleBackgroundAsset}
+              enabled={!isEventEncounter}
               className={`relative overflow-hidden rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] sm:p-3 ${encounterStageClass} ${battleStageMotionClass}`}
             >
               <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/10 to-transparent" />
@@ -3314,7 +3321,7 @@ export function Dungeon({
                   </div>
                 </div>
               )}
-            </section>
+            </DecorativeBattleBackground>
 
             <div
               ref={mobilePlayAreaRef}

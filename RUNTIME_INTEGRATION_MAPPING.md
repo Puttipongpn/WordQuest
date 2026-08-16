@@ -2,7 +2,17 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, Phase 71F.7 implemented successful Shop upgrade spark feedback, Phase 71F.8 implemented static Gold/HP/Shield icon support, and Phase 71F.9 now implements controlled vocabulary-card framing. Walk and background mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, Phase 71F.7 implemented successful Shop upgrade spark feedback, Phase 71F.8 implemented static Gold/HP/Shield icon support, Phase 71F.9 implemented controlled vocabulary-card framing, and Phase 71F.10 now implements the controlled Dungeon battle background. The walk mapping later in this document remains planning-only.
+
+## Phase 71F.10 Implemented Dungeon Background Mapping
+
+| Dungeon surface | Decorative asset | Runtime rule | Failure behavior |
+| --- | --- | --- | --- |
+| Encounter intro | `background_dungeon_battle_01` | Centered responsive cover below existing stage content and contrast overlay | Keep existing gradient, border, content, and controls |
+| Active non-event battle stage | `background_dungeon_battle_01` | Same decorative layer below status identities and battle lane | Keep existing stage styling and all quiz/result behavior |
+| Event encounter | None | Explicitly disabled to preserve the existing event presentation | Existing event stage remains unchanged |
+
+`DecorativeBattleBackground` receives explicit `1672x941` metadata, owns only image load/failure state, and renders no interactive content. Loading, success, failure, or responsive cropping cannot mutate answers, timers, HP, shield, gold, enemy status, combat, rewards, saves, or progression. Training, Deck Review, Shop, Run Result, and global app surfaces are not mapped.
 
 ## Phase 71F.9 Implemented Vocabulary Card Frame Mapping
 
@@ -132,9 +142,9 @@ The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, Phase 71F.7 added Shop upgrade spark feedback, Phase 71F.8 added three static UI icons, and Phase 71F.9 adds the controlled decorative card frame. Walk and background files remain dormant.
+At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, Phase 71F.7 added Shop upgrade spark feedback, Phase 71F.8 added three static UI icons, Phase 71F.9 added the controlled decorative card frame, and Phase 71F.10 adds the Dungeon stage background. The walk file remains dormant.
 
-Recommended next phase: **Phase 71F.10 Controlled Dungeon Background Slice**. It should keep existing readable battle/quiz surfaces above a responsive image with a CSS fallback.
+Recommended next phase: **Phase 71F.11 Controlled Player Walk Slice**. It must remain presentation-only and independent from encounter progression or timing.
 
 ## Identity Mapping
 
@@ -292,4 +302,4 @@ Carry forward every non-blocking item from `RUNTIME_ASSET_INVENTORY.md`. Phase 7
 
 ## Recommendation
 
-Proceed with **Phase 71F.10 Controlled Dungeon Background Slice** only after a new explicit phase request. Keep walk and missing player actions dormant.
+Proceed with **Phase 71F.11 Controlled Player Walk Slice** only after a new explicit phase request. Keep missing player defend/hurt/victory actions dormant.

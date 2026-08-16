@@ -18,7 +18,7 @@ Readiness labels:
 - **Targeted ready candidate**: a Phase 71D.5 replacement that resolved a blocking defect.
 - **Layout-QA candidate**: usable source candidate, but final use depends on responsive runtime composition.
 
-These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.9 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, one shield effect, one Shop upgrade spark, three static UI icons, and one decorative card frame; the remaining copied candidates stay dormant.
+These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.10 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, one shield effect, one Shop upgrade spark, three static UI icons, one decorative card frame, and one Dungeon background; the remaining copied candidate stays dormant.
 
 ## Phase 71F.1 Runtime Copy Status
 
@@ -138,6 +138,14 @@ Runtime-import status is now 31 PNGs. Vocabulary card frame, background, walk, a
 
 Runtime-import status is now 32 PNGs. Dungeon background, walk, and missing player-action candidates remain copied but unwired. Broader card-frame use is not approved.
 
+## Phase 71F.10 Dungeon Background Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Decorative Dungeon stage background | `src/assets/backgrounds/battle/background_dungeon_battle_01.png` | Static `1672x941`, centered cover, pointer-free layer, dark readability overlay, local load-failure fallback | Wired only to encounter intro and active non-event battle stages |
+
+Runtime-import status is now 33 PNGs. Walk remains copied but unwired, and approved normalized player defend/hurt/victory runtime candidates remain unavailable.
+
 ## Player
 
 | File name | Current source path | Intended runtime usage | Frames | Expected frame size | Readiness | Notes |
@@ -236,7 +244,7 @@ Icons must remain supplementary to readable text/values and cannot become the on
 
 | File name | Current source path | Intended runtime usage | Frames | Expected dimensions | Readiness | Notes |
 | --- | --- | --- | ---: | --- | --- | --- |
-| `background_dungeon_battle_01.png` | `normalized_assets_refined_full/backgrounds/background_dungeon_battle_01.png` | Optional Dungeon battle-stage background | 1 | `1672x941` preserved | Layout-QA candidate | Responsive crop, quiz contrast, mobile framing, and pixel-art consistency remain deferred. |
+| `background_dungeon_battle_01.png` | `normalized_assets_refined_full/backgrounds/background_dungeon_battle_01.png` | Decorative Dungeon battle-stage background | 1 | `1672x941` preserved | Runtime-wired Phase 71F.10, polish backlog | Responsive crop, quiz contrast, and mobile framing accepted for controlled intro/active stages; pixel-art consistency remains non-blocking polish. |
 
 The background must be introduced behind existing readable battle/quiz surfaces with a CSS fallback color and must never hide controls or answer content.
 
@@ -265,6 +273,6 @@ Later integration planning must resolve each logical asset from one authoritativ
 - Fire hard-alpha glow and pale particles.
 - Wind light-background contrast.
 - Gold, HP, and Shield icon edge fringe.
-- Dungeon background responsive crop, contrast, mobile composition, and style consistency.
+- Dungeon background pixel-art style consistency; controlled responsive crop, contrast, and mobile composition passed Phase 71F.10 runtime QA.
 
 These items do not block Phase 71F planning readiness. They must remain visible in implementation QA and can be promoted to blockers if real layout/playback testing exposes a usability problem.

@@ -1,3 +1,4 @@
+import dungeonBattleBackgroundUrl from "./backgrounds/battle/background_dungeon_battle_01.png";
 import shieldBlockEffectUrl from "./effects/defense/effect_shield_block_sheet.png";
 import earthEffectUrl from "./effects/elemental/effect_earth_sheet.png";
 import fireEffectUrl from "./effects/elemental/effect_fire_sheet.png";
@@ -52,6 +53,14 @@ export type DecorativeCardFrameAsset = {
   width: 1058;
   height: 1487;
   borderSlice: 150;
+};
+
+export type StaticBattleBackgroundAsset = {
+  assetId: string;
+  src: string;
+  width: 1672;
+  height: 941;
+  objectPosition: "center";
 };
 
 export type SpritesheetAnimationAsset = {
@@ -116,6 +125,14 @@ export const vocabularyCardFrameAsset: DecorativeCardFrameAsset = {
   width: 1058,
   height: 1487,
   borderSlice: 150,
+};
+
+export const dungeonBattleBackgroundAsset: StaticBattleBackgroundAsset = {
+  assetId: "background_dungeon_battle_01",
+  src: dungeonBattleBackgroundUrl,
+  width: 1672,
+  height: 941,
+  objectPosition: "center",
 };
 
 function idleSheet(src: string, frameSize: number): StaticSpriteAsset {

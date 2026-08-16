@@ -1446,6 +1446,14 @@ Controlled placement is limited to the Deck Review selected-card detail, Trainin
 
 The card-frame responsive inset backlog is resolved for these three controlled surfaces. Broader card-frame use remains outside this phase and requires its own layout QA. Dungeon background, walk, and player defend/hurt/victory remain copied but dormant. Recommended next phase: **Phase 71F.10 Controlled Dungeon Background Slice**.
 
+## Phase 71F.10 Controlled Dungeon Background Slice
+
+Phase 71F.10 promotes only `background_dungeon_battle_01.png`. Explicit static metadata records its `1672x941` dimensions and centered object position. `DecorativeBattleBackground` renders it as a pointer-free, responsive cover layer under existing HTML and adds a conservative dark overlay only after successful loading. Reduced-motion mode keeps the background static and removes the loading transition.
+
+Controlled placement is limited to Dungeon encounter intro and active non-event battle stages. Existing stage gradients remain the fallback; event stages, Training, Deck Review, Shop, Run Result, and global application surfaces are not changed. The asset cannot provide gameplay information or influence combat, timers, answers, status, rewards, saves, or progression.
+
+Browser QA confirms readable Word Choice, Word Match, and Word Scramble controls, visible timer and battle status, accessible battle log/QA Helper/result actions, unchanged prior presentation layers, safe forced-image failure, and no horizontal overflow at `390px`. The runtime-import count is now 33 PNGs. Responsive crop and contrast are accepted for these controlled surfaces; pixel-art style consistency remains a non-blocking art-polish item. Player walk and player defend/hurt/victory remain unimplemented. Recommended next phase: **Phase 71F.11 Controlled Player Walk Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-16: Dungeon Background Is A Local Decorative Stage Layer
+
+- Decision: The Dungeon background may render only as a pointer-free layer behind encounter-intro and active non-event battle stages. Existing HTML quiz, status, log, QA, and result surfaces remain authoritative above a readability overlay, while the caller's prior stage styling remains the complete load-failure fallback.
+- Reason: Local opt-in placement adds battle identity without making the Dungeon image-dependent, reducing text/control contrast, or coupling asset delivery to gameplay state.
+- Status: Accepted
+
 ### 2026-08-16: Vocabulary Card Frame Is An Opt-In HTML Backdrop
 
 - Decision: The targeted repaired vocabulary card frame may be used only as a pointer-free 9-slice layer behind selected HTML card surfaces. Existing text, numeric values, selection, answers, previews, and controls remain authoritative; loading or failure must preserve the caller's original surface. Broad application to small/dense cards is not approved.

@@ -10,9 +10,16 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.9 Controlled Vocabulary Card Frame Slice. The repaired targeted `ui_vocabulary_card_frame.png` now provides optional decorative 9-slice framing for the Deck Review selected-card detail, Training question prompt, and only the selected Shop target card. Existing HTML vocabulary text, meanings, examples, mastery, stats, costs, previews, and controls remain authoritative, selectable, readable, and interactive. The frame is pointer-free and locally disappears on image failure while the original surface remains usable. Existing battle animation/overlays, Shop spark, and Gold/HP/Shield icons remain unchanged. Dungeon background, walk, and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.10 Controlled Dungeon Background Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.10 Controlled Dungeon Background Slice. `background_dungeon_battle_01.png` now appears only behind the Dungeon encounter-intro and active non-event battle stage through an explicit static registry entry and reusable `DecorativeBattleBackground`. Existing quiz panels, answer controls, timer, HP, shield, gold, enemy status, battle log, QA Helper, and result actions remain readable HTML above a conservative dark overlay and remain authoritative. A failed background load removes only the image and preserves the existing stage styling and controls. Prior battle animation/overlays, Shop spark, UI icons, and vocabulary card frame remain unchanged. Player walk and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, dependency, or deployment behavior changed. The recommended next phase is Phase 71F.11 Controlled Player Walk Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
+
+- Completed Phase 71F.10 Controlled Dungeon Background Slice.
+- Imported only `background_dungeon_battle_01.png` through explicit static `1672x941` metadata.
+- Added reusable, pointer-free `DecorativeBattleBackground` rendering with responsive cover positioning, a conservative readability overlay, reduced-motion-safe loading, and local image-failure fallback.
+- Applied the image only to Dungeon encounter intro and active non-event battle stages; Training, Deck Review, Shop, Run Result, events, and the global app background remain unchanged.
+- Verified encounter intro, Word Choice, Word Match, and Word Scramble readability; timer/status/action visibility; prior battle presentation; QA Helper access; forced load failure; and no horizontal overflow at `390px`.
+- Kept player walk and player defend/hurt/victory unimplemented and changed no gameplay, save, combat, answer checking, timer, Shop, reward, unlock, progression, dependency, or deployment behavior.
 
 - Completed Phase 71F.9 Controlled Vocabulary Card Frame Slice.
 - Imported only the repaired targeted `ui_vocabulary_card_frame.png` through explicit `1058x1487` metadata and verified its runtime SHA-256 matches the Phase 71D.5 candidate.
