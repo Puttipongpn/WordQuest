@@ -2,7 +2,17 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, Phase 71F.7 implemented successful Shop upgrade spark feedback, and Phase 71F.8 now implements static Gold/HP/Shield icon support. Walk, card-frame, and background mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, Phase 71F.7 implemented successful Shop upgrade spark feedback, Phase 71F.8 implemented static Gold/HP/Shield icon support, and Phase 71F.9 now implements controlled vocabulary-card framing. Walk and background mappings later in this document remain planning-only.
+
+## Phase 71F.9 Implemented Vocabulary Card Frame Mapping
+
+| Existing HTML surface | Decorative asset | Runtime rule | Failure behavior |
+| --- | --- | --- | --- |
+| Deck Review selected-card detail | `ui_vocabulary_card_frame` | Always opt-in around the selected detail only | Keep original detail panel, text, selection, and scrolling |
+| Training active question prompt | `ui_vocabulary_card_frame` | Frame prompt only; never answer choices | Keep original prompt surface and answer interaction |
+| Shop target modal selected card | `ui_vocabulary_card_frame` | Enable on exactly the selected target; unselected targets remain plain | Keep original target card, preview, selection, Cancel, and Confirm |
+
+`DecorativeCardFrame` receives explicit targeted metadata and places a 9-slice border/fill behind its children with `pointer-events: none`. Existing HTML remains accessible and authoritative. Component load state cannot mutate card selection, answers, purchases, gold, cards, saves, rewards, or progression.
 
 ## Phase 71F.8 Implemented Static UI Icon Mapping
 
@@ -122,9 +132,9 @@ The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, Phase 71F.7 added Shop upgrade spark feedback, and Phase 71F.8 adds three static UI icons. Walk, card-frame, and background files remain dormant.
+At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, Phase 71F.7 added Shop upgrade spark feedback, Phase 71F.8 added three static UI icons, and Phase 71F.9 adds the controlled decorative card frame. Walk and background files remain dormant.
 
-Recommended next phase: **Phase 71F.9 Controlled Vocabulary Card Frame Slice**. It should preserve existing card content as the complete fallback and verify text-safe insets before any broader card styling.
+Recommended next phase: **Phase 71F.10 Controlled Dungeon Background Slice**. It should keep existing readable battle/quiz surfaces above a responsive image with a CSS fallback.
 
 ## Identity Mapping
 
@@ -193,7 +203,7 @@ Crystal Slime is a visual override for Elite Slime only. It does not create a ne
 - Existing gold display -> `ui_gold_coin`
 - Existing player HP display -> `ui_heart_hp`
 - Existing shield display -> `ui_shield`
-- Optional vocabulary-card presentation -> targeted `ui_vocabulary_card_frame`
+- Controlled Deck detail, Training prompt, and selected Shop target presentation -> targeted `ui_vocabulary_card_frame`
 - Optional Dungeon battle-stage background -> `background_dungeon_battle_01`
 
 ## Animation Metadata Plan
@@ -282,4 +292,4 @@ Carry forward every non-blocking item from `RUNTIME_ASSET_INVENTORY.md`. Phase 7
 
 ## Recommendation
 
-Proceed with **Phase 71F.9 Controlled Vocabulary Card Frame Slice** only after a new explicit phase request. Keep background, walk, and missing player actions dormant.
+Proceed with **Phase 71F.10 Controlled Dungeon Background Slice** only after a new explicit phase request. Keep walk and missing player actions dormant.

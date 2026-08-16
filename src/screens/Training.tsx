@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
+import { vocabularyCardFrameAsset } from "../assets/runtimeAssetRegistry";
+import { DecorativeCardFrame } from "../components/DecorativeCardFrame";
 import {
   Badge,
   Button,
@@ -689,7 +691,10 @@ function TrainingSession({
           </div>
         </div>
 
-        <div className="mt-4 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white via-amber-50 to-sky-100 p-4 shadow-inner sm:p-5">
+        <DecorativeCardFrame
+          asset={vocabularyCardFrameAsset}
+          className="mt-4 rounded-xl border-2 border-sky-900/20 bg-gradient-to-br from-white via-amber-50 to-sky-100 p-4 shadow-inner sm:p-5"
+        >
           <p className="text-sm font-extrabold uppercase text-sky-800">
             {formatQuestionType(currentQuestion.questionType)}
           </p>
@@ -724,7 +729,7 @@ function TrainingSession({
               </p>
             </div>
           )}
-        </div>
+        </DecorativeCardFrame>
 
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {currentQuestion.choices.map((choice) => {

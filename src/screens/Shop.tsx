@@ -2,7 +2,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   uiIconAssets,
   upgradeSparkEffectAnimation,
+  vocabularyCardFrameAsset,
 } from "../assets/runtimeAssetRegistry";
+import { DecorativeCardFrame } from "../components/DecorativeCardFrame";
 import { ScreenShell } from "../components/ScreenShell";
 import { SpritesheetAnimation } from "../components/SpritesheetAnimation";
 import { StaticUiIcon } from "../components/StaticUiIcon";
@@ -850,41 +852,48 @@ export function Shop({
                     key={card.id}
                     type="button"
                     onClick={() => setSelectedTargetId(card.id)}
-                    className={`flex min-h-52 flex-col rounded-2xl border-2 bg-gradient-to-br from-white via-amber-50 to-emerald-50 p-3 text-left shadow-[0_5px_0_rgba(120,53,15,0.12)] transition ${
+                    className={`flex min-h-52 flex-col overflow-hidden rounded-2xl border-2 bg-gradient-to-br from-white via-amber-50 to-emerald-50 p-0 text-left shadow-[0_5px_0_rgba(120,53,15,0.12)] transition ${
                       isSelected
                         ? "selected-glow border-emerald-500 ring-2 ring-emerald-200"
                         : "border-amber-900/10 hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-md active:translate-y-0.5"
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="grid size-11 shrink-0 place-items-center rounded-lg border border-amber-900/10 bg-amber-100 text-2xl shadow-inner">
-                        {card.imagePlaceholder}
-                      </span>
-                      {isSelected && <Badge tone="emerald">Selected</Badge>}
-                    </div>
-                    <div className="mt-3 min-w-0">
-                      <p className="truncate text-xl font-black capitalize text-amber-950">
-                        {card.word}
-                      </p>
-                      <p className="mt-1 line-clamp-2 text-sm font-bold text-emerald-900">
-                        {card.meaningTh}
-                      </p>
-                    </div>
-                    <div className="mt-auto space-y-2 pt-4">
-                      <p className="rounded-lg border border-amber-900/10 bg-white/80 px-2.5 py-2 text-sm font-black text-amber-950">
-                        {getPurchasePreview(
-                          activeOffer,
-                          card,
-                          currentRunDeck.length,
-                        )}
-                      </p>
-                      <p className="truncate text-xs font-black uppercase text-amber-800/70">
-                        {getCardEffectSummary(card)}
-                      </p>
-                      <p className="text-xs font-bold text-amber-900/70">
-                        {getPurchasePreviewHelper(activeOffer)}
-                      </p>
-                    </div>
+                    <DecorativeCardFrame
+                      asset={vocabularyCardFrameAsset}
+                      className="flex w-full flex-1 p-3"
+                      contentClassName="flex w-full flex-1 flex-col"
+                      enabled={isSelected}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="grid size-11 shrink-0 place-items-center rounded-lg border border-amber-900/10 bg-amber-100 text-2xl shadow-inner">
+                          {card.imagePlaceholder}
+                        </span>
+                        {isSelected && <Badge tone="emerald">Selected</Badge>}
+                      </div>
+                      <div className="mt-3 min-w-0">
+                        <p className="truncate text-xl font-black capitalize text-amber-950">
+                          {card.word}
+                        </p>
+                        <p className="mt-1 line-clamp-2 text-sm font-bold text-emerald-900">
+                          {card.meaningTh}
+                        </p>
+                      </div>
+                      <div className="mt-auto space-y-2 pt-4">
+                        <p className="rounded-lg border border-amber-900/10 bg-white/80 px-2.5 py-2 text-sm font-black text-amber-950">
+                          {getPurchasePreview(
+                            activeOffer,
+                            card,
+                            currentRunDeck.length,
+                          )}
+                        </p>
+                        <p className="truncate text-xs font-black uppercase text-amber-800/70">
+                          {getCardEffectSummary(card)}
+                        </p>
+                        <p className="text-xs font-bold text-amber-900/70">
+                          {getPurchasePreviewHelper(activeOffer)}
+                        </p>
+                      </div>
+                    </DecorativeCardFrame>
                   </button>
                 );
               })}

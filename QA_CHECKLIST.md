@@ -991,3 +991,22 @@ Safety verification:
 - [x] Keep vocabulary card frame, dungeon background, walk, and player defend/hurt/victory unimplemented.
 - [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop cost/value, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.9 Controlled Vocabulary Card Frame Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only the targeted repaired `ui_vocabulary_card_frame.png` runtime copy.
+- [x] Verify the runtime file SHA-256 matches the Phase 71D.5 targeted candidate.
+- [x] Add explicit asset ID, `1058x1487` dimensions, and 9-slice metadata.
+- [x] Add reusable pointer-free `DecorativeCardFrame` rendering with local load-failure fallback.
+- [x] Frame only the Deck Review selected-card detail, Training prompt, and selected Shop target card.
+- [x] Keep answer buttons, small Deck grid cards, unselected Shop cards, and modal controls unframed.
+- [x] Verify Deck selection updates the framed detail while English/Thai/example/mastery/stats remain readable and selectable.
+- [x] Verify Training question text remains readable and answer feedback/Next remain unchanged.
+- [x] Verify Shop selection moves exactly one frame and keeps cost, preview, ATK, SHD, element, Cancel, and Confirm readable/reachable.
+- [x] Force the frame image to fail and confirm the original selected-card UI and modal controls remain usable without a crash.
+- [x] Verify prior Word Mage cast, enemy attack, Gold/HP/Shield icons, and Shop upgrade spark still work.
+- [x] Verify `390px` Deck, Training, and Shop have no horizontal overflow or hidden selected-card/modal controls.
+- [x] Keep dungeon background, walk, and player defend/hurt/victory unimplemented.
+- [x] Change no gameplay, card data/effects, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, Shop cost/value/purchase logic, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

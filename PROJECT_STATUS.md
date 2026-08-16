@@ -10,9 +10,18 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.8 Controlled Runtime UI Icon Slice. The approved Gold Coin, Heart HP, and Shield PNGs now provide small static visual support beside existing Dungeon and Shop labels/values through a reusable fallback-safe component. Text labels and numeric values remain visible and authoritative; icons are decorative, keep stable dimensions, mutate no state, and disappear cleanly if an image fails. Existing battle animation, elemental/shield overlays, and Shop upgrade spark remain unchanged. Vocabulary card frame, dungeon background, walk, and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.9 Controlled Vocabulary Card Frame Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.9 Controlled Vocabulary Card Frame Slice. The repaired targeted `ui_vocabulary_card_frame.png` now provides optional decorative 9-slice framing for the Deck Review selected-card detail, Training question prompt, and only the selected Shop target card. Existing HTML vocabulary text, meanings, examples, mastery, stats, costs, previews, and controls remain authoritative, selectable, readable, and interactive. The frame is pointer-free and locally disappears on image failure while the original surface remains usable. Existing battle animation/overlays, Shop spark, and Gold/HP/Shield icons remain unchanged. Dungeon background, walk, and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.10 Controlled Dungeon Background Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
+
+- Completed Phase 71F.9 Controlled Vocabulary Card Frame Slice.
+- Imported only the repaired targeted `ui_vocabulary_card_frame.png` through explicit `1058x1487` metadata and verified its runtime SHA-256 matches the Phase 71D.5 candidate.
+- Added reusable `DecorativeCardFrame` rendering with pointer-free 9-slice decoration, opt-in enablement, and local load-failure fallback.
+- Framed only the Deck Review selected-card detail, Training question prompt, and currently selected Shop target card; answer choices and dense unselected cards remain unchanged.
+- Preserved English/Thai text, examples, part of speech, ATK, SHD, elements, mastery, costs, before/after previews, selection, and confirm/cancel behavior as normal HTML.
+- Forced the frame image to fail and confirmed the selected Shop card, preview text, selection, Cancel, and Confirm remain usable without a crash.
+- Verified Deck selection, Training answer/Next behavior, Shop target selection, prior battle presentation/UI icons/Shop spark, and no horizontal overflow at `390px`.
+- Kept dungeon background, walk, and player defend/hurt/victory unimplemented and changed no gameplay, save, combat, timer, Shop, reward, unlock, progression, dependency, or deployment behavior.
 
 - Completed Phase 71F.8 Controlled Runtime UI Icon Slice.
 - Imported only `ui_gold_coin.png`, `ui_heart_hp.png`, and `ui_shield.png` with explicit `64x64` static UI metadata.

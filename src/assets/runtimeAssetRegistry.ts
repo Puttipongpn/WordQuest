@@ -29,6 +29,7 @@ import wordMageIdleUrl from "./sprites/player/word-mage/player_word_mage_idle_sh
 import goldCoinIconUrl from "./ui/icons/ui_gold_coin.png";
 import heartHpIconUrl from "./ui/icons/ui_heart_hp.png";
 import shieldIconUrl from "./ui/icons/ui_shield.png";
+import vocabularyCardFrameUrl from "./ui/frames/ui_vocabulary_card_frame.png";
 import type { ElementType } from "../types";
 
 export type StaticSpriteAsset = {
@@ -43,6 +44,14 @@ export type StaticUiIconAsset = {
   src: string;
   width: 64;
   height: 64;
+};
+
+export type DecorativeCardFrameAsset = {
+  assetId: string;
+  src: string;
+  width: 1058;
+  height: 1487;
+  borderSlice: 150;
 };
 
 export type SpritesheetAnimationAsset = {
@@ -99,6 +108,14 @@ export const uiIconAssets: Readonly<
     width: 64,
     height: 64,
   },
+};
+
+export const vocabularyCardFrameAsset: DecorativeCardFrameAsset = {
+  assetId: "ui_vocabulary_card_frame",
+  src: vocabularyCardFrameUrl,
+  width: 1058,
+  height: 1487,
+  borderSlice: 150,
 };
 
 function idleSheet(src: string, frameSize: number): StaticSpriteAsset {

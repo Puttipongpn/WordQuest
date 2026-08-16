@@ -18,7 +18,7 @@ Readiness labels:
 - **Targeted ready candidate**: a Phase 71D.5 replacement that resolved a blocking defect.
 - **Layout-QA candidate**: usable source candidate, but final use depends on responsive runtime composition.
 
-These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.8 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, one shield effect, one Shop upgrade spark, and three static UI icons; the remaining copied candidates stay dormant.
+These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.9 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, one shield effect, one Shop upgrade spark, three static UI icons, and one decorative card frame; the remaining copied candidates stay dormant.
 
 ## Phase 71F.1 Runtime Copy Status
 
@@ -130,6 +130,14 @@ Runtime-import status is now 28 PNGs. Remove/Duplicate Shop actions remain unmap
 
 Runtime-import status is now 31 PNGs. Vocabulary card frame, background, walk, and missing player-action candidates remain copied but unwired.
 
+## Phase 71F.9 Vocabulary Card Frame Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Optional vocabulary-card decoration | `src/assets/ui/frames/ui_vocabulary_card_frame.png` | Static `1058x1487`, source slice 150, pointer-free 9-slice, local load-failure fallback | Wired only to Deck selected detail, Training prompt, and selected Shop target |
+
+Runtime-import status is now 32 PNGs. Dungeon background, walk, and missing player-action candidates remain copied but unwired. Broader card-frame use is not approved.
+
 ## Player
 
 | File name | Current source path | Intended runtime usage | Frames | Expected frame size | Readiness | Notes |
@@ -210,7 +218,7 @@ Effects are result feedback only. They must not run before answer checking, impl
 
 | File name | Current source path | Intended runtime usage | Frames | Expected dimensions | Readiness | Notes |
 | --- | --- | --- | ---: | --- | --- | --- |
-| `ui_vocabulary_card_frame.png` | `normalized_assets_refined_targeted/ui/ui_vocabulary_card_frame.png` | Optional vocabulary-card presentation frame | 1 | `1058x1487` preserved | Targeted ready candidate | Exterior alpha fixed; runtime text-safe inset, scaling, and mobile readability remain layout QA. |
+| `ui_vocabulary_card_frame.png` | `normalized_assets_refined_targeted/ui/ui_vocabulary_card_frame.png` | Optional vocabulary-card presentation frame | 1 | `1058x1487` preserved | Runtime-wired Phase 71F.9 targeted candidate | Pointer-free 9-slice approved for three controlled surfaces; broader use remains deferred. |
 
 The card frame is optional presentation. Existing card content must remain usable without it.
 
@@ -257,7 +265,6 @@ Later integration planning must resolve each logical asset from one authoritativ
 - Fire hard-alpha glow and pale particles.
 - Wind light-background contrast.
 - Gold, HP, and Shield icon edge fringe.
-- Vocabulary card-frame text-safe inset, scaling, and mobile readability.
 - Dungeon background responsive crop, contrast, mobile composition, and style consistency.
 
 These items do not block Phase 71F planning readiness. They must remain visible in implementation QA and can be promoted to blockers if real layout/playback testing exposes a usability problem.

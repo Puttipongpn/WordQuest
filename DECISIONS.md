@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-16: Vocabulary Card Frame Is An Opt-In HTML Backdrop
+
+- Decision: The targeted repaired vocabulary card frame may be used only as a pointer-free 9-slice layer behind selected HTML card surfaces. Existing text, numeric values, selection, answers, previews, and controls remain authoritative; loading or failure must preserve the caller's original surface. Broad application to small/dense cards is not approved.
+- Reason: A 9-slice decorative layer preserves the frame's corners across different aspect ratios while keeping vocabulary content accessible, selectable, interactive, and independent from image delivery.
+- Status: Accepted
+
 ### 2026-08-16: Static UI Icons Supplement Authoritative Text
 
 - Decision: Gold Coin, Heart HP, and Shield images may appear only as decorative support beside existing visible labels and numeric values. `StaticUiIcon` keeps stable dimensions and locally hides failed images; icon loading and rendering cannot mutate state, trigger effects, replace accessible text, or control gameplay/Shop/reward/save/progression behavior.

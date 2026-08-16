@@ -1436,6 +1436,16 @@ Dungeon adds visual support beside existing HP, Shield, and Gold status in encou
 
 Browser QA confirms unchanged Dungeon values, existing cast/hit and enemy attack presentation, unchanged Shop affordability/missing-gold behavior, and unchanged Shop spark. Forced failures for all three icons preserve labels/values/actions. At `390px`, both screens have no horizontal overflow or hidden controls. Vocabulary card frame, dungeon background, walk, and player defend/hurt/victory remain copied but dormant. Recommended next phase: **Phase 71F.9 Controlled Vocabulary Card Frame Slice**.
 
+## Phase 71F.9 Controlled Vocabulary Card Frame Slice
+
+Phase 71F.9 promotes only the targeted repaired `ui_vocabulary_card_frame.png`. Explicit metadata records the `1058x1487` source dimensions and a 150-pixel source slice. Runtime hash verification confirms the imported file is the Phase 71D.5 targeted copy rather than the obsolete full-run candidate.
+
+`DecorativeCardFrame` applies the asset as a pointer-free 9-slice layer behind existing HTML content. The caller's original background, padding, text, and interactions remain present while the image loads and after any image failure. No vocabulary, meaning, example, mastery, attack, shield, element, cost, preview, or control is baked into or replaced by the PNG.
+
+Controlled placement is limited to the Deck Review selected-card detail, Training active question prompt, and currently selected Shop target card. Answer choices, small Deck grid cards, unselected Shop targets, and modal controls remain unframed. Browser QA confirms readable content, working Deck/Shop selection, working Training answers, load-failure fallback, prior presentation behavior, and no horizontal overflow at `390px`.
+
+The card-frame responsive inset backlog is resolved for these three controlled surfaces. Broader card-frame use remains outside this phase and requires its own layout QA. Dungeon background, walk, and player defend/hurt/victory remain copied but dormant. Recommended next phase: **Phase 71F.10 Controlled Dungeon Background Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

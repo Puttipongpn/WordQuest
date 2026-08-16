@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { ScreenShell } from "../components/ScreenShell";
+import { vocabularyCardFrameAsset } from "../assets/runtimeAssetRegistry";
+import { DecorativeCardFrame } from "../components/DecorativeCardFrame";
 import { Badge, Button, CardPanel, ProgressBar, StatCard } from "../components/ui";
 import { getMasteryDamageBonus } from "../game/mastery";
 import type {
@@ -461,7 +463,11 @@ export function DeckReview({
           </section>
         </div>
 
-        <aside className="result-pop rounded-xl border-2 border-emerald-800/30 bg-gradient-to-br from-emerald-100 via-amber-50 to-yellow-50 p-5 shadow-[0_10px_0_rgba(120,53,15,0.18)] lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:self-start lg:overflow-y-auto">
+        <DecorativeCardFrame
+          as="aside"
+          asset={vocabularyCardFrameAsset}
+          className="result-pop rounded-xl border-2 border-emerald-800/30 bg-gradient-to-br from-emerald-100 via-amber-50 to-yellow-50 p-5 shadow-[0_10px_0_rgba(120,53,15,0.18)] lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:self-start lg:overflow-y-auto"
+        >
           <div className="flex items-start gap-4">
             <span className="grid size-20 shrink-0 place-items-center rounded-lg border border-amber-900/20 bg-white/80 text-5xl shadow-inner">
               {selectedCard.imagePlaceholder}
@@ -584,7 +590,7 @@ export function DeckReview({
               </dd>
             </div>
           </dl>
-        </aside>
+        </DecorativeCardFrame>
       </div>
     </ScreenShell>
   );

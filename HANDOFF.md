@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.8 Controlled Runtime UI Icon Slice is complete. Gold Coin, Heart HP, and Shield are imported through explicit static metadata and rendered by a reusable decorative `StaticUiIcon`. Dungeon and Shop retain every existing Gold, HP, Shield, Cost, affordability, and missing-gold label/value as authoritative text. Failed icon images disappear without changing layout, state, or controls. Earlier battle animation/overlays and Shop spark remain unchanged. Phase 71F.9 Controlled Vocabulary Card Frame Slice is recommended next.
+Current phase: Phase 71F.9 Controlled Vocabulary Card Frame Slice is complete. The repaired targeted vocabulary card frame is imported through explicit `1058x1487` metadata and rendered by a reusable pointer-free `DecorativeCardFrame` using 9-slice scaling. It is opt-in only on the Deck selected-card detail, Training prompt, and selected Shop target. Existing HTML text, numeric values, selection, answer, preview, and modal controls remain authoritative and usable if the image fails. Earlier battle presentation, Shop spark, and UI icons remain unchanged. Phase 71F.10 Controlled Dungeon Background Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2619,6 +2619,22 @@ Browser QA observed Fire, Water, Wind, and Earth only on their resolved cards; n
 
 Shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
 
+## Phase 71F.9 Controlled Vocabulary Card Frame Slice
+
+Phase 71F.9 imports only `src/assets/ui/frames/ui_vocabulary_card_frame.png`. Its SHA-256 matches `normalized_assets_refined_targeted/ui/ui_vocabulary_card_frame.png`, preserving the Phase 71D.5 source-precedence rule. Explicit registry metadata records asset ID, `1058x1487` dimensions, and the source border slice.
+
+`DecorativeCardFrame` loads the image independently, places a pointer-free 9-slice layer behind its children, and preserves the caller's original HTML surface while loading or after failure. It cannot mutate state or intercept selection, answers, Shop actions, saves, rewards, or progression.
+
+Controlled runtime locations:
+
+- Deck Review selected-card detail only.
+- Training active question prompt only; answer buttons remain unframed.
+- Shop target modal selected card only; unselected target cards and modal controls remain unframed.
+
+Browser QA confirmed Deck selection changed the authoritative detail from apple to book, Training answer feedback and Next remained available, Shop selection moved exactly one frame to the newly selected target, and all required English/Thai/stat/mastery/cost/preview text stayed visible. A forced frame-image failure returned the selected target to the original surface with Cancel and Confirm still reachable. At `390px`, Deck, Training, and Shop had no horizontal overflow, and the selected Shop frame did not hide content or sticky modal actions. Prior Word Mage cast, enemy attack, Gold/HP/Shield icons, and Shop upgrade spark also remained active.
+
+Dungeon background, walk, and player defend/hurt/victory remain unimplemented. Gameplay, Shop economy, saves, and progression remain authoritative and unchanged.
+
 ## Phase 71F.8 Controlled Runtime UI Icon Slice
 
 Phase 71F.8 imports only `ui_gold_coin.png`, `ui_heart_hp.png`, and `ui_shield.png`. Explicit registry entries identify each `64x64` static PNG, while `StaticUiIcon` provides a stable decorative box, pixel rendering, and local load-failure fallback. It has no callback or state authority beyond remembering its own failed image source.
@@ -2653,9 +2669,9 @@ Upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame
 
 Recommended next steps:
 
-1. Implement Phase 71F.9 Controlled Vocabulary Card Frame Slice only after explicit authorization.
-2. Keep card-frame placement presentation-only, preserve readable card content without the image, and verify safe text insets at mobile sizes.
-3. Keep walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
+1. Implement Phase 71F.10 Controlled Dungeon Background Slice only after explicit authorization.
+2. Keep the background behind existing readable stage/quiz surfaces with a CSS fallback and responsive crop QA.
+3. Keep walk and player defend/hurt/victory dormant until their own later verified stages.
 4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.
