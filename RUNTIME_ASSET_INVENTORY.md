@@ -18,7 +18,7 @@ Readiness labels:
 - **Targeted ready candidate**: a Phase 71D.5 replacement that resolved a blocking defect.
 - **Layout-QA candidate**: usable source candidate, but final use depends on responsive runtime composition.
 
-These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.6 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, and one shield effect; the remaining copied candidates stay dormant.
+These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.7 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, one shield effect, and one Shop upgrade spark; the remaining copied candidates stay dormant.
 
 ## Phase 71F.1 Runtime Copy Status
 
@@ -112,6 +112,14 @@ At the Phase 71F.5 checkpoint, runtime-import status was 26 PNGs: six idle, six 
 
 Runtime-import status is now 27 PNGs: six idle, six Phase 71F.2 cast/hit, five Phase 71F.3 attacks, five Phase 71F.4 defeats, four Phase 71F.5 elemental effects, and one Phase 71F.6 shield effect. Upgrade spark, UI, icons, card frame, background, and walk candidates remain copied but unwired.
 
+## Phase 71F.7 Shop Upgrade Effect Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Successful Shop upgrade feedback | `src/assets/effects/feedback/effect_upgrade_spark_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, Shop card-icon overlay, silent skip, auto-clear | Wired after successful Upgrade Attack, Add Shield, or Add Element only |
+
+Runtime-import status is now 28 PNGs. Remove/Duplicate Shop actions remain unmapped, and UI, icons, card frame, background, and walk candidates remain copied but unwired.
+
 ## Player
 
 | File name | Current source path | Intended runtime usage | Frames | Expected frame size | Readiness | Notes |
@@ -182,7 +190,7 @@ Coverage gap: `boss-word-warden`, `boss-grammar-golem`, `boss-shadow-reader`, an
 | `effect_earth_sheet.png` | `normalized_assets_refined_full/effects/effect_earth_sheet.png` | Existing Earth element result feedback | 4 | `64x64` | Ready candidate | Lower/grounded placement. |
 | `effect_fire_sheet.png` | `normalized_assets_refined_full/effects/effect_fire_sheet.png` | Existing Fire element result feedback | 4 | `64x64` | Ready candidate, polish backlog | Hard-alpha glow and pale particles need polish. |
 | `effect_shield_block_sheet.png` | `normalized_assets_refined_full/effects/effect_shield_block_sheet.png` | Existing shield gain/block result feedback | 4 | `64x64` | Ready candidate | Teal/gold barrier remains readable. |
-| `effect_upgrade_spark_sheet.png` | `normalized_assets_refined_full/effects/effect_upgrade_spark_sheet.png` | Successful existing Shop upgrade feedback | 4 | `64x64` | Ready candidate | Play only after purchase succeeds. |
+| `effect_upgrade_spark_sheet.png` | `normalized_assets_refined_full/effects/effect_upgrade_spark_sheet.png` | Successful existing Shop upgrade feedback | 4 | `64x64` | Runtime-wired Phase 71F.7 | Plays only after successful Attack, Shield, or Element purchase; Remove/Duplicate stay unmapped. |
 | `effect_water_sheet.png` | `normalized_assets_refined_full/effects/effect_water_sheet.png` | Existing Water element result feedback | 4 | `64x64` | Ready candidate | Strong contrast on dark/light backgrounds. |
 | `effect_wind_sheet.png` | `normalized_assets_refined_full/effects/effect_wind_sheet.png` | Existing Wind element result feedback | 4 | `64x64` | Ready candidate, polish backlog | Pale mint detail loses presence on light backgrounds. |
 

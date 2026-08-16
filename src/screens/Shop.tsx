@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { upgradeSparkEffectAnimation } from "../assets/runtimeAssetRegistry";
 import { ScreenShell } from "../components/ScreenShell";
+import { SpritesheetAnimation } from "../components/SpritesheetAnimation";
 import { Badge, Button, CardPanel } from "../components/ui";
 import { sampleShopItems } from "../data";
 import {
@@ -78,6 +80,14 @@ function getCardElement(card: WordCard) {
 
 function getShopItemElement(item: ShopItem) {
   return item.effect?.type === "element" ? item.effect.element : null;
+}
+
+function supportsUpgradeSpark(item: ShopItem) {
+  return (
+    item.type === "upgrade-attack" ||
+    item.type === "add-shield" ||
+    item.type === "add-element"
+  );
 }
 
 function countUniqueWords(deck: WordCard[]) {
@@ -456,6 +466,10 @@ export function Shop({
   const [selectedTargetId, setSelectedTargetId] = useState("");
   const [purchaseCeremony, setPurchaseCeremony] =
     useState<PurchaseCeremony | null>(null);
+  const [upgradeSparkPlaybackId, setUpgradeSparkPlaybackId] = useState<
+    number | null
+  >(null);
+  const upgradeSparkSequenceRef = useRef(0);
   const [purchaseFeedback, setPurchaseFeedback] = useState<PurchaseFeedback>({
     tone: "neutral",
     title: "Merchant Note",
@@ -499,6 +513,7 @@ export function Shop({
   function openOfferModal(item: ShopItem) {
     const eligibleTargets = getEligibleTargets(item, currentRunDeck);
     setPurchaseCeremony(null);
+    setUpgradeSparkPlaybackId(null);
 
     if (eligibleTargets.length === 0) {
       playSound("shop-error");
@@ -568,6 +583,7 @@ export function Shop({
     if (!isPurchased) {
       playSound("shop-error");
       setPurchaseCeremony(null);
+      setUpgradeSparkPlaybackId(null);
       setPurchaseFeedback({
         tone: "danger",
         title: runGold < activeOffer.cost ? "Not Enough Gold" : "Trade Blocked",
@@ -583,6 +599,12 @@ export function Shop({
     setPurchaseCeremony(
       getPurchaseCeremony(activeOffer, activeTarget, deckSizeBefore),
     );
+    if (supportsUpgradeSpark(activeOffer)) {
+      upgradeSparkSequenceRef.current += 1;
+      setUpgradeSparkPlaybackId(upgradeSparkSequenceRef.current);
+    } else {
+      setUpgradeSparkPlaybackId(null);
+    }
     setPurchaseFeedback(
       getPurchaseReceipt(activeOffer, activeTarget, deckSizeBefore, goldBefore),
     );
@@ -594,6 +616,7 @@ export function Shop({
   function rerollOffers() {
     const goldBefore = runGold;
     setPurchaseCeremony(null);
+    setUpgradeSparkPlaybackId(null);
 
     if (!onSpendRunGold(SHOP_REROLL_COST)) {
       playSound("shop-error");
@@ -882,8 +905,28 @@ export function Shop({
             <div className="relative mx-auto max-w-[15rem]">
               <div className="shop-card-ceremony rounded-2xl border-2 border-emerald-400 bg-white p-4 shadow-[0_10px_0_rgba(6,95,70,0.18),0_20px_40px_rgba(35,22,14,0.2)]">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="grid size-14 place-items-center rounded-xl border border-amber-900/10 bg-amber-100 text-4xl shadow-inner">
-                    {purchaseCeremony.cardIcon}
+                  <span className="relative grid size-14 shrink-0 place-items-center">
+                    <span className="grid size-14 place-items-center rounded-xl border border-amber-900/10 bg-amber-100 text-4xl shadow-inner">
+                      {purchaseCeremony.cardIcon}
+                    </span>
+                    {upgradeSparkPlaybackId !== null && (
+                      <span className="pointer-events-none absolute inset-0 z-10">
+                        <SpritesheetAnimation
+                          key={`upgrade-spark-${upgradeSparkPlaybackId}`}
+                          alt="Upgrade spark"
+                          animation={upgradeSparkEffectAnimation}
+                          className="size-14"
+                          fallback={null}
+                          onComplete={() =>
+                            setUpgradeSparkPlaybackId((currentId) =>
+                              currentId === upgradeSparkPlaybackId
+                                ? null
+                                : currentId,
+                            )
+                          }
+                        />
+                      </span>
+                    )}
                   </span>
                   <Badge tone="emerald">{purchaseCeremony.badge}</Badge>
                 </div>
@@ -921,7 +964,10 @@ export function Shop({
             <Button
               type="button"
               className="mt-5 w-full"
-              onClick={() => setPurchaseCeremony(null)}
+              onClick={() => {
+                setPurchaseCeremony(null);
+                setUpgradeSparkPlaybackId(null);
+              }}
             >
               Continue
             </Button>

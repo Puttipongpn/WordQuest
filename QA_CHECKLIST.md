@@ -951,3 +951,23 @@ Safety verification:
 - [x] Keep upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
 - [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.7 Controlled Upgrade Spark Effect Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only `effect_upgrade_spark_sheet.png`.
+- [x] Add explicit asset ID, file, frame count, dimensions, cadence, animation type, reduced-motion frame, target layer, fallback, return state, and auto-clear metadata.
+- [x] Trigger presentation only after the existing purchase callback returns success for Upgrade Attack, Add Shield, or Add Element.
+- [x] Verify Upgrade Attack deducts gold and applies exactly one `+2 ATK` mutation before one spark plays.
+- [x] Verify Add Shield deducts gold and applies exactly one `SHD +3` mutation before one spark plays.
+- [x] Verify Add Element deducts gold and applies exactly one selected element mutation before one spark plays.
+- [x] Verify insufficient gold leaves Confirm disabled and shows no spark.
+- [x] Verify cancel and reroll show no spark and preserve their existing behavior.
+- [x] Keep Remove Card and Duplicate Card intentionally unmapped in this phase.
+- [x] Confirm playback auto-clears without blocking or closing the purchase ceremony.
+- [x] Force upgrade-spark image failure and confirm silent clear, enabled Continue, and no crash.
+- [x] Confirm reduced motion displays static frame 2 and then clears.
+- [x] Verify `390px` mobile has no horizontal overflow and the fixed icon overlay does not overlap card text or Continue.
+- [x] Keep walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery formulas, Word Energy, shop cost/value, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

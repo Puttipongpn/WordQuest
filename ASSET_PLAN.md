@@ -1420,6 +1420,14 @@ Dungeon derives this presentation from structured post-resolution fields already
 
 Browser QA confirms correct shield gain, non-shield correct results, wrong answers with and without absorption, real timeout absorption, mapped enemy attack coexistence, Water elemental coexistence, automatic clear, stable shield/HP, reduced-motion frame 2, silent load-failure skip, and no button overlap or horizontal overflow at `390px`. Upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.7 Controlled Upgrade Spark Effect Slice**.
 
+## Phase 71F.7 Controlled Upgrade Spark Effect Slice
+
+Phase 71F.7 promotes only the copied upgrade-spark sheet. Explicit metadata declares four `64x64` frames at `120ms`, one-shot playback, zero-based reduced-motion frame 2, `shop-card-icon-overlay` target, silent skip on load failure, idle return state, and automatic clear.
+
+Shop creates local spark playback only after its existing purchase callback returns success for Upgrade Attack, Add Shield, or Add Element. Gold spending and run-card mutation remain in the existing authoritative callbacks and complete before presentation starts. Spark completion only clears presentation state and cannot change gold, attack, shield, element, deck contents, saves, rewards, or progression. Remove Card and Duplicate Card remain intentionally unmapped.
+
+Browser QA confirms all three mapped purchase families mutate once and play one spark, while reroll, cancel, and insufficient gold play none. Normal playback auto-clears; reduced motion shows frame 2; load failure skips silently with Continue available. The `56x56` pointer-free icon overlay has no text/button overlap or horizontal overflow at `390px`. Walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.8 Controlled Runtime UI Icon Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

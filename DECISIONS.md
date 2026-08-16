@@ -4,6 +4,12 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-16: Shop Upgrade Spark Requires A Successful Existing Transaction
+
+- Decision: Upgrade spark presentation may start only after the existing Shop callback returns `true` for Upgrade Attack, Add Shield, or Add Element. It uses local playback state in a fixed pointer-free ceremony icon overlay; completion and image failure may only clear that state. Remove Card, Duplicate Card, reroll, cancel, insufficient gold, and failed purchases remain unmapped.
+- Reason: Using the existing boolean transaction result keeps gold spending and current-run card mutation authoritative while providing feedback that cannot duplicate upgrades, block Shop controls, or change save/progression behavior.
+- Status: Accepted
+
 ### 2026-08-16: Shield Feedback Uses Structured Post-Resolution Values
 
 - Decision: Shield presentation may start only from positive `shieldGained` on an already-completed successful BattleLog or positive `shieldAbsorbed` on an already-completed wrong-answer/timeout attack BattleLog. It uses a separate local player-portrait overlay that auto-clears and silently skips failed images; completion cannot add shield, absorb damage, change HP, or update any gameplay/progression state.

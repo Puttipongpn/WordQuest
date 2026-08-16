@@ -2,7 +2,23 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, and Phase 71F.6 now implements shield gain/absorption feedback. Upgrade effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, Phase 71F.6 implemented shield gain/absorption feedback, and Phase 71F.7 now implements successful Shop upgrade spark feedback. Walk, UI, card-frame, and background mappings later in this document remain planning-only.
+
+## Phase 71F.7 Implemented Shop Upgrade Spark Mapping
+
+| Resolved source state | Shop presentation | Completion behavior |
+| --- | --- | --- |
+| Successful Upgrade Attack callback | `effect_upgrade_spark` over ceremony card icon | Auto-clear; existing `+2 ATK` and gold result are not repeated |
+| Successful Add Shield callback | Same icon overlay | Auto-clear; existing `SHD +3` and gold result are not repeated |
+| Successful Add Element callback | Same icon overlay | Auto-clear; existing selected element and gold result are not repeated |
+| Insufficient gold, canceled modal, or failed callback | No spark | Existing Shop feedback remains authoritative |
+| Reroll, Remove Card, or Duplicate Card | No spark | Existing action remains unchanged and independent |
+| Spark image load failure | Silently skip and clear | Ceremony and Continue remain available; no gameplay callback |
+| Reduced motion | Static configured spark frame 2 | Auto-clear on configured one-shot duration |
+
+`Shop.confirmPurchase()` consumes the existing boolean callback result. Only success for `upgrade-attack`, `add-shield`, or `add-element` creates a local playback ID after the parent transaction has committed. The spark sits in a fixed pointer-free card-icon overlay and has no authority over gold, card attack/shield/element, deck contents, reroll, saves, rewards, unlocks, or progression.
+
+The spark sheet uses `4 x 64x64` frames at `120ms`, zero-based reduced frame 2, target layer `shop-card-icon-overlay`, silent-skip fallback, idle return state, and automatic clear.
 
 ## Phase 71F.6 Implemented Shield Effect Mapping
 
@@ -95,9 +111,9 @@ The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, and Phase 71F.6 adds shield feedback in an independent player overlay. Walk, upgrade effect, UI, icon, card-frame, and background files remain dormant.
+At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, Phase 71F.6 added shield feedback, and Phase 71F.7 adds Shop upgrade spark feedback. Walk, UI, icon, card-frame, and background files remain dormant.
 
-Recommended next phase: **Phase 71F.7 Controlled Upgrade Spark Effect Slice**. It should derive presentation only after an existing successful Shop purchase commits, without spending gold, applying an upgrade, or gating Shop controls.
+Recommended next phase: **Phase 71F.8 Controlled Runtime UI Icon Slice**. It should replace a small approved icon subset with stable dimensions and retain existing text/emoji fallback without changing any game action.
 
 ## Identity Mapping
 
@@ -255,4 +271,4 @@ Carry forward every non-blocking item from `RUNTIME_ASSET_INVENTORY.md`. Phase 7
 
 ## Recommendation
 
-Proceed with **Phase 71F.7 Controlled Upgrade Spark Effect Slice** only after a new explicit phase request. Keep UI, card-frame, background, walk, and missing player actions dormant.
+Proceed with **Phase 71F.8 Controlled Runtime UI Icon Slice** only after a new explicit phase request. Keep card-frame, background, walk, and missing player actions dormant.

@@ -3,6 +3,7 @@ import earthEffectUrl from "./effects/elemental/effect_earth_sheet.png";
 import fireEffectUrl from "./effects/elemental/effect_fire_sheet.png";
 import waterEffectUrl from "./effects/elemental/effect_water_sheet.png";
 import windEffectUrl from "./effects/elemental/effect_wind_sheet.png";
+import upgradeSparkEffectUrl from "./effects/feedback/effect_upgrade_spark_sheet.png";
 import gatekeeperAttackUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png";
 import gatekeeperDefeatUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_defeat_sheet.png";
 import gatekeeperHitUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_hit_sheet.png";
@@ -57,6 +58,12 @@ export type ElementalEffectAnimationAsset = SpritesheetAnimationAsset & {
 
 export type ShieldEffectAnimationAsset = SpritesheetAnimationAsset & {
   targetLayer: "player-portrait-overlay";
+  fallbackBehavior: "skip";
+  autoClear: true;
+};
+
+export type UpgradeSparkAnimationAsset = SpritesheetAnimationAsset & {
+  targetLayer: "shop-card-icon-overlay";
   fallbackBehavior: "skip";
   autoClear: true;
 };
@@ -130,6 +137,21 @@ export const shieldBlockEffectAnimation: ShieldEffectAnimationAsset = {
     fallbackIdentity: "",
   }),
   targetLayer: "player-portrait-overlay",
+  fallbackBehavior: "skip",
+  autoClear: true,
+};
+
+export const upgradeSparkEffectAnimation: UpgradeSparkAnimationAsset = {
+  ...oneShotAnimation({
+    assetId: "effect_upgrade_spark",
+    file: upgradeSparkEffectUrl,
+    frameCount: 4,
+    frameSize: 64,
+    frameDurationMs: 120,
+    reducedMotionFrame: 2,
+    fallbackIdentity: "",
+  }),
+  targetLayer: "shop-card-icon-overlay",
   fallbackBehavior: "skip",
   autoClear: true,
 };

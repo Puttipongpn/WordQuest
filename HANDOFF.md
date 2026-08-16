@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.6 Controlled Shield Block Effect Slice is complete. Shield gain and absorption presentation is derived only from positive resolved `shieldGained` or `shieldAbsorbed` values already present in `BattleLog`. A separate player-portrait overlay may play alongside cast, enemy attack, or elemental feedback and then auto-clears without changing shield/HP or gating result actions. Non-shield results produce no shield overlay. Reduced motion uses frame 2 and failed shield images skip silently. Earlier cast, hit, attack, defeat, and elemental presentation remains unchanged. Phase 71F.7 Controlled Upgrade Spark Effect Slice is recommended next.
+Current phase: Phase 71F.7 Controlled Upgrade Spark Effect Slice is complete. Shop spark presentation is created only after the existing purchase callback returns `true` for Upgrade Attack, Add Shield, or Add Element. A separate pointer-free ceremony icon overlay auto-clears without spending gold, changing a card, closing the ceremony, or gating Continue. Insufficient gold, cancel, failed purchase, reroll, Remove Card, and Duplicate Card do not start the spark. Reduced motion uses frame 2 and failed images skip silently. Earlier battle presentation remains unchanged. Phase 71F.8 Controlled Runtime UI Icon Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2619,6 +2619,16 @@ Browser QA observed Fire, Water, Wind, and Earth only on their resolved cards; n
 
 Shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
 
+## Phase 71F.7 Controlled Upgrade Spark Effect Slice
+
+Phase 71F.7 imports only `effect_upgrade_spark_sheet.png`. Explicit metadata declares four `64x64` frames, `120ms` cadence, one-shot behavior, zero-based reduced-motion frame 2, `shop-card-icon-overlay` target, silent-skip fallback, idle return state, and automatic clear.
+
+`Shop.confirmPurchase()` still delegates every transaction to the existing parent callback. Only a `true` result for `upgrade-attack`, `add-shield`, or `add-element` creates a local playback ID after the card/gold mutation has committed. Completion only clears that ID. Remove/Duplicate remain intentionally unmapped, and opening an offer, canceling, rerolling, insufficient gold, or a failed callback cannot start spark presentation.
+
+Browser QA confirmed Upgrade Attack, Add Shield, and Add Element each changed the chosen run card and deducted gold exactly once before one spark played. Reroll, cancel, and disabled insufficient-gold confirmation showed no spark. Normal playback auto-cleared, reduced motion showed frame 2, forced image failure cleared silently while Continue remained enabled, and the fixed `56x56` icon overlay had no text/button overlap or horizontal overflow at `390px`.
+
+Walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay, Shop economy, saves, and progression remain authoritative and unchanged.
+
 ## Phase 71F.6 Controlled Shield Block Effect Slice
 
 Phase 71F.6 imports only `effect_shield_block_sheet.png`. Its explicit metadata declares four `64x64` frames, `120ms` cadence, one-shot behavior, zero-based reduced-motion frame 2, `player-portrait-overlay` target, silent-skip fallback, idle return state, and automatic clear.
@@ -2633,9 +2643,9 @@ Upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame
 
 Recommended next steps:
 
-1. Implement Phase 71F.7 Controlled Upgrade Spark Effect Slice only after explicit authorization.
-2. Derive upgrade presentation only after an existing successful Shop purchase commits; animation must not spend gold or apply an upgrade.
-3. Keep icons, card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
+1. Implement Phase 71F.8 Controlled Runtime UI Icon Slice only after explicit authorization.
+2. Keep icon replacement presentation-only, retain existing text/emoji fallbacks, and preserve stable control dimensions.
+3. Keep card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
 4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.
