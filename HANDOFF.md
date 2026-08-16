@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71G Visual Regression and Playability QA Pass is complete. Full desktop and `390px` mobile flow checks found no blocking visual, playability, fallback, persistence, or gameplay regression after Phase 71F.1 through Phase 71F.10. Normal/reduced presentation, all four elements, shield, Shop spark, icons, card frame, Dungeon background, Elite Crystal Slime, Gatekeeper, unmapped fallbacks, and forced failures passed. `VISUAL_REGRESSION_QA_REPORT.md` contains the test matrix and evidence. No application-code fix was required. Phase 71H Release Candidate and Deployment Verification is recommended next.
+Current phase: Phase 71H Release Candidate and Deployment Verification is complete. The local production build and built-app preview passed with no code fix or new dependency. Home, Deck Review, Training, Shop, Run Result, Dungeon, `390px` overflow, QA Helper exclusion, fallback, reduced motion, persistence, and console safety passed. The existing Vercel demo is reachable but serves older bundle hashes, and `origin/main` remains at Phase 63, so the local RC is ready pending intentional source-control sync and post-deploy verification. `RELEASE_CANDIDATE_REPORT.md` contains the release gate and evidence. Phase 71I Controlled Release Candidate Sync, Deployment, and Post-Deploy Verification is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2681,13 +2681,24 @@ Normal-motion checks observed playing cast/hit/attack/defeat, all four elemental
 
 A clean-profile Training correct answer persisted mastery 0 to 1. Battle presentation, Shop presentation, and asset failures left the player-progress value unchanged; no run LocalStorage key existed after reload. Existing run-end statistics and boss completion remained the only tested authoritative run-result writes. No application code, CSS, asset, save, gameplay, economy, dependency, or deployment change was required. Full evidence is in `VISUAL_REGRESSION_QA_REPORT.md`.
 
+## Phase 71H Release Candidate And Deployment Verification
+
+Phase 71H ran the existing `npm run build` pipeline successfully with 94 modules, then served `dist/` through Vite production preview. Local preview HTML, generated JavaScript, and generated CSS returned HTTP 200. Production output contained none of the checked QA Helper strings and the built-app smoke flow captured no console error.
+
+The smoke flow loaded Home, Deck Review, Shop, and Run Result; resolved a deliberate Training wrong answer followed by a correct mastery-saving answer; and resolved one Dungeon correct and one wrong Word Choice answer. Home, Deck Review, Training, Shop, Run Result, and Dungeon each had zero horizontal overflow at `390px`. A forced Dungeon background failure kept Next Mini-Game enabled, reduced motion held the configured Word Mage cast frame, permanent progress stayed unchanged during Dungeon presentation, and no run-state LocalStorage key appeared.
+
+The Phase 71F runtime mapping did not change. Thirty-three of 34 copied candidates remain wired, player walk remains dormant, player defend/hurt/victory remain unimplemented, and event illustrations remain absent. Phase 71G remains the broader visual/playability regression basis.
+
+The live Vercel URL returned HTTP 200 for HTML, JavaScript, and CSS, but its generated hashes differ from the local RC. The locally known `origin/main` tip is still Phase 63, while the current work is on `redesign`. This is a deployment-state gate, not an application blocker: the RC must be intentionally committed/synchronized and then verified live. No deployment configuration was changed. Full details and QA evidence are in `RELEASE_CANDIDATE_REPORT.md` and `qa_artifacts/phase71h/`.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Run Phase 71H Release Candidate and Deployment Verification only after explicit authorization.
-2. Verify the production build/deployment against the Phase 71G regression matrix without changing deployment setup unless separately approved.
-3. Keep player walk and player defend/hurt/victory dormant until their own later explicit phase.
-4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
+1. Run Phase 71I Controlled Release Candidate Sync, Deployment, and Post-Deploy Verification only after explicit authorization.
+2. Commit and synchronize the intended RC to the approved deployment branch without changing the Vite/Vercel setup.
+3. Confirm the deployed asset hashes match the RC and repeat a short live desktop/`390px` smoke check.
+4. Keep player walk and player defend/hurt/victory dormant until their own later explicit phase.
+5. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

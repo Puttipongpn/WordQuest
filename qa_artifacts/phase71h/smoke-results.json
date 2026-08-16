@@ -1,0 +1,96 @@
+{
+  "screens": {
+    "home": {
+      "title": "Vocabulary Dungeon Deckbuilder",
+      "hasHomeHeading": true,
+      "overflow": 0
+    },
+    "deck": {
+      "loaded": true,
+      "hasThai": true,
+      "overflow": 0
+    },
+    "shop": {
+      "loaded": true,
+      "hasGold": true,
+      "overflow": 0
+    },
+    "result": {
+      "loaded": true,
+      "hasAction": true,
+      "overflow": 0
+    },
+    "mobileHome": {
+      "overflow": 0,
+      "width": 390
+    },
+    "mobileDeck": {
+      "overflow": 0,
+      "width": 390
+    },
+    "mobileTraining": {
+      "overflow": 0,
+      "width": 390
+    },
+    "mobileShop": {
+      "overflow": 0,
+      "width": 390
+    },
+    "mobileResult": {
+      "overflow": 0,
+      "width": 390
+    }
+  },
+  "training": {
+    "wrong": true,
+    "wrongSelectionWasDifferent": true,
+    "wrongDidNotWriteProgress": true,
+    "correct": true
+  },
+  "dungeon": {
+    "intro": {
+      "loaded": true,
+      "qaHelperPresent": false,
+      "overflow": 0
+    },
+    "correct": {
+      "feedback": true,
+      "nextEnabled": true,
+      "playerProgress": "{\"version\":1,\"unlockedDeckIds\":[\"starter-deck\"],\"completedDeckIds\":[],\"wordMastery\":{\"starter-012\":1},\"statistics\":{\"totalCorrectAnswers\":0,\"totalWrongAnswers\":0,\"bestMonstersDefeated\":0,\"bestAccuracy\":0,\"bestDamageDealt\":0,\"completedRuns\":0,\"failedRuns\":0}}"
+    },
+    "wrong": {
+      "feedback": true,
+      "nextEnabled": true,
+      "playerProgress": "{\"version\":1,\"unlockedDeckIds\":[\"starter-deck\"],\"completedDeckIds\":[],\"wordMastery\":{\"starter-012\":1},\"statistics\":{\"totalCorrectAnswers\":0,\"totalWrongAnswers\":0,\"bestMonstersDefeated\":0,\"bestAccuracy\":0,\"bestDamageDealt\":0,\"completedRuns\":0,\"failedRuns\":0}}"
+    },
+    "mobile": {
+      "overflow": 0,
+      "width": 390,
+      "nextReachable": true
+    }
+  },
+  "persistence": {
+    "afterTraining": "{\"version\":1,\"unlockedDeckIds\":[\"starter-deck\"],\"completedDeckIds\":[],\"wordMastery\":{\"starter-012\":1},\"statistics\":{\"totalCorrectAnswers\":0,\"totalWrongAnswers\":0,\"bestMonstersDefeated\":0,\"bestAccuracy\":0,\"bestDamageDealt\":0,\"completedRuns\":0,\"failedRuns\":0}}",
+    "finalKeys": [
+      "wordquest.playerProgress"
+    ],
+    "runKeys": [],
+    "presentationUnchanged": true
+  },
+  "fallback": {
+    "background": "image",
+    "afterError": {
+      "state": "fallback",
+      "nextEnabled": true
+    }
+  },
+  "reducedMotion": {
+    "states": [
+      {
+        "id": "player_word_mage_cast_attack",
+        "frame": "3"
+      }
+    ]
+  },
+  "consoleErrors": []
+}

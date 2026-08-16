@@ -1054,3 +1054,30 @@ Safety verification:
 - [x] Keep player walk and player defend/hurt/victory unimplemented.
 - [x] Change no gameplay, save schema, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, Shop, event, elite, boss, reward, unlock, progression, asset, dependency, or deployment behavior.
 - [x] Create `VISUAL_REGRESSION_QA_REPORT.md` and run the final production build successfully.
+
+## Phase 71H Release Candidate And Deployment Verification
+
+- [x] Confirm Phase 71G completion from `PROJECT_STATUS.md` and `HANDOFF.md` before editing.
+- [x] Confirm `node_modules` is present and no dependency install or new dependency is required.
+- [x] Run the baseline `npm run build`; TypeScript and Vite pass with 94 modules.
+- [x] Serve the built `dist/` app using the existing Vite production preview support.
+- [x] Confirm local preview HTML, generated JavaScript, and generated CSS return HTTP 200.
+- [x] Confirm `dist/` contains no `QA Helper`, `QA Correct`, `QA Wrong`, `Force Run Failed`, `Force Run Complete`, or `Development only` strings.
+- [x] Smoke-test Home and Deck Review from the production bundle.
+- [x] Resolve one deliberate Training wrong answer without a progress write and one correct answer with a mastery write.
+- [x] Smoke-test Shop and Run Result through existing main navigation.
+- [x] Start Dungeon and resolve one correct and one wrong Word Choice answer without gating Next Mini-Game.
+- [x] Confirm production Dungeon does not expose QA Helper UI.
+- [x] Confirm forced Dungeon-background failure keeps the stage and result action usable.
+- [x] Confirm reduced motion holds the configured static Word Mage cast frame.
+- [x] Confirm Dungeon presentation leaves permanent progress unchanged and creates no run-state LocalStorage key.
+- [x] Confirm no console error is captured during the built-app smoke flow.
+- [x] Confirm Home, Deck Review, Training, Shop, Run Result, and Dungeon each have zero horizontal overflow at `390px`.
+- [x] Confirm the Phase 71F runtime asset set and mapping remain unchanged.
+- [x] Confirm player walk remains dormant, player defend/hurt/victory remain unimplemented, and event illustrations remain absent.
+- [x] Confirm the live Vercel HTML, JavaScript, and CSS return HTTP 200.
+- [x] Record that live asset hashes differ from the local RC and `origin/main` is not yet synchronized to this snapshot.
+- [x] Keep all remaining asset issues in the non-blocking polish backlog.
+- [x] Change no runtime source, gameplay, save, combat, timer, economy, reward, progression, asset scope, dependency, or deployment configuration.
+- [x] Create `RELEASE_CANDIDATE_REPORT.md` and Phase 71H QA evidence.
+- [x] Run the final production build after documentation updates.

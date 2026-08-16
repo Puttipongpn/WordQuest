@@ -10,9 +10,20 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71G Visual Regression and Playability QA Pass. Desktop and `390px` mobile checks cover Home, Deck Review, Training, Dungeon, Shop, and Run Result; all tested pages remained readable with no horizontal overflow. Normal and reduced-motion battle presentation, Fire/Water/Wind/Earth and shield overlays, Shop spark, UI icons, card frame, Dungeon background, mapped Elite Crystal Slime/Gatekeeper actions, emoji/CSS fallbacks, forced image failures, gameplay flow, and LocalStorage separation passed. No visual or gameplay regression required an application-code fix. Player walk and player defend/hurt/victory remain unimplemented. No gameplay, save, combat, timer, shop economy, reward, progression, asset, dependency, or deployment behavior changed. The recommended next phase is Phase 71H Release Candidate and Deployment Verification. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71H Release Candidate and Deployment Verification. The TypeScript/Vite production build passed with 94 modules and no new dependency; local production preview HTML, JavaScript, and CSS returned HTTP 200. Built-app smoke checks covered Home, Deck Review, Training wrong/correct, Shop, Run Result, Dungeon correct/wrong, development-only QA Helper exclusion, background fallback, reduced motion, permanent mastery, run-state separation, console errors, and desktop/`390px` overflow. No runtime source fix was required. The existing Vercel demo remains reachable at `https://word-quest-hazel.vercel.app/`, but its generated bundle hashes differ from the local RC and `origin/main` remains at the earlier Phase 63 snapshot, so this RC is ready pending intentional source-control sync and post-deploy verification. Player walk and player defend/hurt/victory remain dormant or unimplemented; no presentation scope, gameplay, save, combat, timer, economy, reward, progression, dependency, or deployment configuration changed. The recommended next phase is Phase 71I Controlled Release Candidate Sync, Deployment, and Post-Deploy Verification.
 
 ## Completed
+
+- Completed Phase 71H Release Candidate and Deployment Verification.
+- Ran `npm run build`; TypeScript and Vite passed with 94 modules and no new dependency.
+- Served the built `dist/` app through the existing Vite preview path and confirmed local HTML, JavaScript, and CSS return HTTP 200.
+- Confirmed production output contains no QA Helper player-facing strings and captured no console error during the RC smoke flow.
+- Smoke-tested Home, Deck Review, Training wrong/correct, Shop, Run Result, and Dungeon correct/wrong; all tested desktop and `390px` surfaces had zero horizontal overflow.
+- Verified a Training correct answer persists mastery, a wrong answer does not write progress, Dungeon presentation does not alter permanent progress, and no LocalStorage run key exists.
+- Verified forced Dungeon-background failure keeps actions usable and reduced motion holds the configured Word Mage cast frame.
+- Confirmed the Phase 71F runtime set is unchanged: 33 of 34 copied candidates are wired, player walk remains dormant, player defend/hurt/victory remain unimplemented, and event illustrations remain absent.
+- Confirmed the existing Vercel site is healthy but does not yet serve this local RC; `origin/main` is also behind the RC, so deployment remains an explicit next-phase gate.
+- Added `RELEASE_CANDIDATE_REPORT.md` and `qa_artifacts/phase71h/`; changed no runtime code, gameplay, save, economy, dependency, or deployment configuration.
 
 - Completed Phase 71G Visual Regression and Playability QA Pass.
 - Tested Home, Deck Review, Training, Dungeon, Shop, Run Result, Shop modal, Run Failed, and Run Complete on desktop and at `390px`; no tested page had horizontal overflow or hidden required actions.

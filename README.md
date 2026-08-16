@@ -6,6 +6,8 @@ The project is a local-first prototype focused on proving the learning and rogue
 
 Live demo: https://word-quest-hazel.vercel.app/
 
+Release-candidate status: Phase 71H local build and production-preview smoke checks pass. The existing live demo is healthy but has not yet been verified as the current RC; source-control sync and post-deploy verification remain explicit next steps.
+
 ## Tech Stack
 
 - Vite
@@ -107,7 +109,7 @@ The Dungeon QA Helper is development-only and gated by `import.meta.env.DEV`.
 
 ## Asset Normalization
 
-Phase 71C provides an offline PNG normalization script. It reads organized source/reference images from `Asset/` and writes normalization candidates to `normalized_assets/`.
+Phase 71C provides the original offline PNG normalization script. It reads organized source/reference images from `Asset/` and writes normalization candidates to `normalized_assets/`. Later Phase 71F work copied only approved candidates into the controlled runtime tree under `src/assets/`.
 
 Install dependencies, then run:
 
@@ -121,16 +123,18 @@ The normal run writes `normalized_assets/NORMALIZATION_REPORT.md`.
 Important:
 
 - `Asset/` source files are preserved.
-- `normalized_assets/` is not `src/assets/`.
-- Outputs are not imported by React and still require visual QA.
+- `normalized_assets/` is not `src/assets/`; raw normalization output must never become a direct runtime import source.
+- Only the reviewed Phase 71F runtime copies under `src/assets/` are imported by React.
 - The script does not remove possible baked checkerboard/preview backgrounds automatically.
-- `src/assets/` remains reserved for a later explicit runtime integration phase.
+- Source/reference files under `Asset/` remain separate from runtime files.
 
 ## Deployment
 
 Recommended target: Vercel static deployment.
 
 Current deployment status: live on Vercel at https://word-quest-hazel.vercel.app/
+
+GitHub remote `origin/main` remains the documented deployment branch. Phase 71H verified the local RC on `redesign`; it must be intentionally synchronized before the live site can be treated as this release candidate.
 
 Suggested Vercel setup:
 
@@ -162,18 +166,27 @@ Phase 56 verified the first live Vercel deployment with HTTP/static checks:
 - Generated JavaScript and CSS assets returned HTTP 200.
 - Post-deploy mobile polish was applied to Dungeon mini-games, result overlays, pause/abandon modals, and the Shop target modal without changing gameplay rules.
 
+Phase 71H verified the current local release candidate:
+
+- `npm run build` passed with 94 modules and no new dependency.
+- Built HTML, JavaScript, and CSS returned HTTP 200 through local production preview.
+- Built-app smoke checks passed Home, Deck Review, Training, Shop, Run Result, Dungeon, fallback, reduced motion, persistence, console safety, and `390px` overflow.
+- The live Vercel URL returned HTTP 200, but its generated asset hashes differ from the local RC.
+- `origin/main` remains at an earlier project snapshot, so current-RC deployment and post-deploy verification are still pending.
+- Full results: `RELEASE_CANDIDATE_REPORT.md`.
+
 ## Prototype Limitations / Roadmap
 
 - No backend, database, authentication, or external API.
 - Manual sample decks only.
 - Oxford 3000 import is deferred.
-- Final art assets are not included.
-- Sound effects are not included.
-- Advanced animations are intentionally limited.
+- Runtime presentation assets are integrated in a controlled candidate-quality set; non-blocking polish remains documented.
+- Sound uses the existing lightweight optional foundation and is not final audio production.
+- Animation coverage is intentionally limited; player walk and player defend/hurt/victory remain dormant or unimplemented.
 - Element interactions are first-pass only.
 - More balance testing is needed.
 - Full boss clear takes time and still needs longer playtesting.
-- Browser-click production smoke testing still needs manual tester access or an environment with browser automation.
+- Long-form post-deploy playtesting across complete runs remains pending after the RC is synchronized and deployed.
 - `npm audit` currently reports a high-severity `esbuild` advisory through the Vite toolchain; npm recommends a force fix with breaking dependency changes, so it has not been applied in this stabilization pass.
 
 ## Project Documents
