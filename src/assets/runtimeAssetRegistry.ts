@@ -1,3 +1,8 @@
+import shieldBlockEffectUrl from "./effects/defense/effect_shield_block_sheet.png";
+import earthEffectUrl from "./effects/elemental/effect_earth_sheet.png";
+import fireEffectUrl from "./effects/elemental/effect_fire_sheet.png";
+import waterEffectUrl from "./effects/elemental/effect_water_sheet.png";
+import windEffectUrl from "./effects/elemental/effect_wind_sheet.png";
 import gatekeeperAttackUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_attack_sheet.png";
 import gatekeeperDefeatUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_defeat_sheet.png";
 import gatekeeperHitUrl from "./sprites/bosses/gatekeeper/boss_gatekeeper_hit_sheet.png";
@@ -20,6 +25,7 @@ import slimeHitUrl from "./sprites/monsters/slime/monster_slime_hit_sheet.png";
 import slimeIdleUrl from "./sprites/monsters/slime/monster_slime_idle_sheet.png";
 import wordMageCastUrl from "./sprites/player/word-mage/player_word_mage_cast_attack_sheet.png";
 import wordMageIdleUrl from "./sprites/player/word-mage/player_word_mage_idle_sheet.png";
+import type { ElementType } from "../types";
 
 export type StaticSpriteAsset = {
   src: string;
@@ -40,6 +46,19 @@ export type SpritesheetAnimationAsset = {
   reducedMotionFrame: number;
   fallbackIdentity: string;
   returnState: "idle" | "hold-final-frame";
+};
+
+export type ElementalEffectAnimationAsset = SpritesheetAnimationAsset & {
+  element: ElementType;
+  targetLayer: "enemy-portrait-overlay";
+  fallbackBehavior: "skip";
+  autoClear: true;
+};
+
+export type ShieldEffectAnimationAsset = SpritesheetAnimationAsset & {
+  targetLayer: "player-portrait-overlay";
+  fallbackBehavior: "skip";
+  autoClear: true;
 };
 
 function idleSheet(src: string, frameSize: number): StaticSpriteAsset {
@@ -77,6 +96,43 @@ function oneShotAnimation(options: {
     returnState: options.returnState ?? "idle",
   };
 }
+
+function elementalEffectAnimation(options: {
+  assetId: string;
+  element: ElementType;
+  file: string;
+}): ElementalEffectAnimationAsset {
+  return {
+    ...oneShotAnimation({
+      assetId: options.assetId,
+      file: options.file,
+      frameCount: 4,
+      frameSize: 64,
+      frameDurationMs: 120,
+      reducedMotionFrame: 2,
+      fallbackIdentity: "",
+    }),
+    element: options.element,
+    targetLayer: "enemy-portrait-overlay",
+    fallbackBehavior: "skip",
+    autoClear: true,
+  };
+}
+
+export const shieldBlockEffectAnimation: ShieldEffectAnimationAsset = {
+  ...oneShotAnimation({
+    assetId: "effect_shield_block",
+    file: shieldBlockEffectUrl,
+    frameCount: 4,
+    frameSize: 64,
+    frameDurationMs: 120,
+    reducedMotionFrame: 2,
+    fallbackIdentity: "",
+  }),
+  targetLayer: "player-portrait-overlay",
+  fallbackBehavior: "skip",
+  autoClear: true,
+};
 
 export const playerCastAnimation = oneShotAnimation({
   assetId: "player_word_mage_cast_attack",
@@ -251,6 +307,31 @@ const encounterDefeatAnimations: Readonly<
   }),
 };
 
+const elementalEffectAnimations: Readonly<
+  Record<ElementType, ElementalEffectAnimationAsset>
+> = {
+  fire: elementalEffectAnimation({
+    assetId: "effect_fire",
+    element: "fire",
+    file: fireEffectUrl,
+  }),
+  water: elementalEffectAnimation({
+    assetId: "effect_water",
+    element: "water",
+    file: waterEffectUrl,
+  }),
+  wind: elementalEffectAnimation({
+    assetId: "effect_wind",
+    element: "wind",
+    file: windEffectUrl,
+  }),
+  earth: elementalEffectAnimation({
+    assetId: "effect_earth",
+    element: "earth",
+    file: earthEffectUrl,
+  }),
+};
+
 export function getEncounterIdleAsset(encounterId: string) {
   return encounterIdleAssets[encounterId];
 }
@@ -265,4 +346,8 @@ export function getEncounterAttackAnimation(encounterId: string) {
 
 export function getEncounterDefeatAnimation(encounterId: string) {
   return encounterDefeatAnimations[encounterId];
+}
+
+export function getElementalEffectAnimation(element: ElementType) {
+  return elementalEffectAnimations[element];
 }

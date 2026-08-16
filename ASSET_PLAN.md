@@ -1404,6 +1404,22 @@ Dungeon accepts defeat presentation only from `enemyDefeatResolved`, a marker wr
 
 Browser QA confirms normal/elite/boss defeat playback, final-frame hold, immediate actions, stable rewards/progression after playback, reduced-motion frame 3, idle fallback after forced image failure, unmapped emoji fallback, and no horizontal overflow at `390px`. Elemental/defense/upgrade effects, walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.5 Controlled Elemental Effect Animation Slice**.
 
+## Phase 71F.5 Controlled Elemental Effect Animation Slice
+
+Phase 71F.5 promotes only the copied Fire, Water, Wind, and Earth sheets. Every entry uses explicit metadata: four `64x64` frames at `120ms`, one-shot playback, zero-based reduced-motion frame 2, `enemy-portrait-overlay` target, silent skip on load failure, and automatic clear. Metadata is keyed by the existing `ElementType`; filenames are not inspected at runtime.
+
+Dungeon records `resolvedElement` only in existing successful result logs after current card damage and element effects have resolved. A separate local overlay presentation may play alongside living hit or defeat, but it cannot apply damage, shield, gold, status, rewards, unlocks, or progression and cannot gate any result action. Wrong answers, timeouts, and non-element cards do not start the overlay.
+
+Browser QA confirms all four element mappings, no effect for non-element/wrong/timeout results, independent hit/defeat layering, automatic clear, stable state after playback, reduced-motion frame 2, silent load-failure skip, and no button overlap or horizontal overflow at `390px`. Shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.6 Controlled Shield Block Effect Slice**.
+
+## Phase 71F.6 Controlled Shield Block Effect Slice
+
+Phase 71F.6 promotes only the copied shield-block sheet. It declares explicit metadata rather than filename inference: four `64x64` frames at `120ms`, one-shot playback, zero-based reduced-motion frame 2, `player-portrait-overlay` target, silent skip on load failure, idle return state, and automatic clear.
+
+Dungeon derives this presentation from structured post-resolution fields already in `BattleLog`: positive `shieldGained` on an existing successful card result, or positive `shieldAbsorbed` on an existing resolved wrong-answer/timeout enemy attack. A separate local overlay may accompany Word Mage cast, mapped enemy attack, or elemental feedback, but it cannot add shield, absorb damage, alter HP/damage, change rewards or progression, or gate any result action. Shop Add Shield is not wired in this phase.
+
+Browser QA confirms correct shield gain, non-shield correct results, wrong answers with and without absorption, real timeout absorption, mapped enemy attack coexistence, Water elemental coexistence, automatic clear, stable shield/HP, reduced-motion frame 2, silent load-failure skip, and no button overlap or horizontal overflow at `390px`. Upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background remain copied but dormant. Recommended next phase: **Phase 71F.7 Controlled Upgrade Spark Effect Slice**.
+
 ## Phase 61 Verification
 
 Phase 61 should be considered complete when:

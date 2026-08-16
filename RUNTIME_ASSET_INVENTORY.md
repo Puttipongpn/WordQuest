@@ -18,7 +18,7 @@ Readiness labels:
 - **Targeted ready candidate**: a Phase 71D.5 replacement that resolved a blocking defect.
 - **Layout-QA candidate**: usable source candidate, but final use depends on responsive runtime composition.
 
-These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.4 has wired six idle identities, six cast/hit sheets, five enemy attacks, and five enemy defeats; the remaining copied candidates stay dormant.
+These labels describe visual-source readiness. A runtime copy is still not production-final art. Phase 71F.6 has wired six idle identities, six cast/hit sheets, five enemy attacks, five enemy defeats, four elemental effects, and one shield effect; the remaining copied candidates stay dormant.
 
 ## Phase 71F.1 Runtime Copy Status
 
@@ -91,7 +91,26 @@ At the Phase 71F.3 checkpoint, runtime-import status was 17 PNGs: six idle, six 
 | Crystal Slime defeat | `src/assets/sprites/elites/crystal-slime/elite_crystal_slime_defeat_sheet.png` | 4 frames, `64x64`, `150ms`, one-shot, reduced frame 3, hold final | Wired after authoritative HP zero for `elite-monster-slime` |
 | Gatekeeper defeat | `src/assets/sprites/bosses/gatekeeper/boss_gatekeeper_defeat_sheet.png` | 4 frames, `128x128`, `180ms`, one-shot, reduced frame 3, hold final | Wired after authoritative boss HP zero for `boss-gatekeeper` |
 
-Runtime-import status is now 22 PNGs: six idle, six Phase 71F.2 cast/hit, five Phase 71F.3 attacks, and five Phase 71F.4 defeats. Effects, UI, icons, card frame, background, and walk candidates remain copied but unwired.
+At the Phase 71F.4 checkpoint, runtime-import status was 22 PNGs: six idle, six Phase 71F.2 cast/hit, five Phase 71F.3 attacks, and five Phase 71F.4 defeats. Phase 71F.5 adds only the four elemental effect files below.
+
+## Phase 71F.5 Elemental Effect Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Fire result effect | `src/assets/effects/elemental/effect_fire_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, enemy overlay, silent skip, auto-clear | Wired after resolved Fire card effect |
+| Water result effect | `src/assets/effects/elemental/effect_water_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, enemy overlay, silent skip, auto-clear | Wired after resolved Water card effect |
+| Wind result effect | `src/assets/effects/elemental/effect_wind_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, enemy overlay, silent skip, auto-clear | Wired after resolved Wind card effect |
+| Earth result effect | `src/assets/effects/elemental/effect_earth_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, enemy overlay, silent skip, auto-clear | Wired after resolved Earth card effect |
+
+At the Phase 71F.5 checkpoint, runtime-import status was 26 PNGs: six idle, six Phase 71F.2 cast/hit, five Phase 71F.3 attacks, five Phase 71F.4 defeats, and four Phase 71F.5 elemental effects. Phase 71F.6 adds only the shield-block effect below.
+
+## Phase 71F.6 Shield Effect Wiring Status
+
+| Runtime role | Imported runtime file | Metadata | Runtime status |
+| --- | --- | --- | --- |
+| Shield gain/absorption feedback | `src/assets/effects/defense/effect_shield_block_sheet.png` | 4 frames, `64x64`, `120ms`, one-shot, reduced frame 2, player overlay, silent skip, auto-clear | Wired after positive resolved `shieldGained` or `shieldAbsorbed` in Dungeon only |
+
+Runtime-import status is now 27 PNGs: six idle, six Phase 71F.2 cast/hit, five Phase 71F.3 attacks, five Phase 71F.4 defeats, four Phase 71F.5 elemental effects, and one Phase 71F.6 shield effect. Upgrade spark, UI, icons, card frame, background, and walk candidates remain copied but unwired.
 
 ## Player
 

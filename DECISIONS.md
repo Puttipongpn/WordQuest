@@ -4,6 +4,18 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-08-16: Shield Feedback Uses Structured Post-Resolution Values
+
+- Decision: Shield presentation may start only from positive `shieldGained` on an already-completed successful BattleLog or positive `shieldAbsorbed` on an already-completed wrong-answer/timeout attack BattleLog. It uses a separate local player-portrait overlay that auto-clears and silently skips failed images; completion cannot add shield, absorb damage, change HP, or update any gameplay/progression state.
+- Reason: Existing structured result fields already distinguish genuine shield gain and absorption without text inference. Keeping the overlay independent lets it coexist with Word Mage cast, enemy attack, and elemental effects while shield/HP calculations remain authoritative and result actions remain immediate.
+- Status: Accepted
+
+### 2026-08-05: Element Effects Use An Independent Post-Resolution Overlay
+
+- Decision: Fire, Water, Wind, and Earth presentation may start only from an explicit `resolvedElement` copied into an already-completed successful battle log. Effects use a separate local enemy-portrait overlay, auto-clear, and silently skip failed images; completion cannot calculate or repeat damage, shield, gold, mastery, Word Energy, rewards, unlocks, saves, or progression.
+- Reason: Keeping elemental feedback independent from actor animation lets it accompany living hit or defeat while preserving authoritative gameplay, immediate result actions, reduced-motion behavior, and safe fallback for uncovered or failed visuals.
+- Status: Accepted
+
 ### 2026-08-04: Defeat Presentation Holds Final Frame After Authoritative Resolution
 
 - Decision: Enemy defeat animation may start only from `enemyDefeatResolved` on a battle log produced by an authoritative HP-zero result branch after existing rewards, statistics, unlocks, and result state calls. Mapped defeats hold their final frame; animation completion cannot calculate HP, grant rewards, unlock decks, save progress, advance encounters, or gate result actions.

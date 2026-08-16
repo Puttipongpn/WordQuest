@@ -10,10 +10,27 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71F.4 Controlled Enemy Defeat Animation Slice. Mapped Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper defeat sheets now play only from an explicit result marker written after authoritative encounter HP reaches zero and existing rewards, statistics, unlocks, and result status commit. Defeat one-shots hold their final frame while Next Encounter and Run Complete actions remain immediately available. Word Mage cast, living-enemy hit, and resolved enemy attack presentation remain unchanged. Reduced motion uses defeat frame 3; load failures return to idle art and unmapped identities retain emoji/CSS fallback. Effects, walk, UI icons, card frame, and background remain unimplemented. No gameplay, save, combat, timer, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.5 Controlled Elemental Effect Animation Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
+WordQuest has completed Phase 71F.6 Controlled Shield Block Effect Slice. The approved shield sheet now plays in a presentation-only player-portrait overlay after an existing correct-answer shield gain or wrong-answer/timeout shield absorption has already resolved. The overlay may accompany Word Mage cast, mapped enemy attack, and elemental feedback, then auto-clears without gating result actions. It shows representative frame 2 for reduced motion and silently skips failed images. Results with no shield gain or absorption do not start shield feedback. Prior battle-character animation and elemental overlays remain unchanged. Upgrade spark, walk, UI icons, card frame, and background remain unimplemented. No gameplay, save, combat, timer, reward, progression, or deployment behavior changed. The recommended next phase is Phase 71F.7 Controlled Upgrade Spark Effect Slice. The production demo is live on Vercel at `https://word-quest-hazel.vercel.app/`. GitHub backup is configured on `origin/main`.
 
 ## Completed
 
+- Completed Phase 71F.6 Controlled Shield Block Effect Slice.
+- Imported only `effect_shield_block_sheet.png` and added explicit four-frame `64x64` metadata at `120ms`, one-shot playback, reduced-motion frame 2, player-portrait target layer, silent-skip fallback, and automatic clear.
+- Derived shield presentation only from positive `battleLog.shieldGained` after correct-answer resolution or positive `battleLog.shieldAbsorbed` after the existing wrong-answer/timeout attack path commits.
+- Rendered shield feedback in an independent pointer-free player overlay so cast, enemy attack, defeat/hit, and elemental presentation remain independent.
+- Verified correct shield gain, correct non-shield result, wrong answer with and without absorption, real timeout absorption, Water plus shield overlay, mapped Slime attack, immediate result actions, and stable shield/HP after playback.
+- Verified forced shield-image failure clears silently, reduced motion uses frame 2, and `390px` mobile has no horizontal overflow or button overlap.
+- Kept Shop upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background unimplemented.
+- Changed no gameplay, save, combat math, answer checking, timers, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, rewards, unlocks, progression, dependencies, or deployment behavior.
+- Completed Phase 71F.5 Controlled Elemental Effect Animation Slice.
+- Added explicit `effect_fire`, `effect_water`, `effect_wind`, and `effect_earth` metadata: four `64x64` frames at `120ms`, one-shot playback, reduced-motion frame 2, enemy-portrait target layer, silent-skip fallback, and automatic clear.
+- Added `resolvedElement` only to existing successful result logs after current damage, shield, gold, mastery, Word Energy, rewards, statistics, and result state have already resolved.
+- Rendered elemental feedback in an independent pointer-free overlay so it may accompany living hit or defeat without replacing actor presentation or delaying Next Mini-Game, Next Encounter, Run Complete, or Run Failed actions.
+- Verified all four mapped elements, non-element success, wrong answer, real timeout, normal playback auto-clear, stable LocalStorage after playback, forced effect-image failure, and reduced-motion frame 2.
+- Verified prior player cast and mapped hit/defeat presentation continue alongside effects; unmapped actor fallback remains available.
+- Verified `390px` mobile with no horizontal overflow, effect bounds contained by the enemy portrait, no overlap with buttons, and an immediately available result action.
+- Kept shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background unimplemented.
+- Changed no gameplay, save, combat math, answer checking, timers, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, rewards, unlocks, progression, dependencies, or deployment behavior.
 - Completed Phase 71F.4 Controlled Enemy Defeat Animation Slice.
 - Added explicit four-frame defeat metadata and imports for Slime, Bat, Goblin, Elite Crystal Slime, and Gatekeeper.
 - Marked only the two authoritative HP-zero result logs with `enemyDefeatResolved: true`; Dungeon selects mapped defeat instead of living hit after the existing result commit.

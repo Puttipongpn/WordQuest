@@ -2,7 +2,41 @@
 
 ## Phase 71E Scope
 
-This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, and Phase 71F.4 now implements mapped enemy defeat presentation. Effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+This specification began as the Phase 71E mapping plan. Phase 71F.1 implemented static identities, Phase 71F.2 implemented cast/hit, Phase 71F.3 implemented mapped enemy attack, Phase 71F.4 implemented mapped enemy defeat, Phase 71F.5 implemented Fire/Water/Wind/Earth result presentation, and Phase 71F.6 now implements shield gain/absorption feedback. Upgrade effects, walk, UI, card-frame, and background mappings later in this document remain planning-only.
+
+## Phase 71F.6 Implemented Shield Effect Mapping
+
+| Resolved source state | Actor presentation | Shield presentation | Completion behavior |
+| --- | --- | --- | --- |
+| Correct result with positive `shieldGained` | Existing Word Mage cast plus mapped enemy hit/defeat | `effect_shield_block` in player portrait overlay | Auto-clear; existing shield value is not repeated |
+| Correct result with no shield gain | Existing correct-result presentation | No shield overlay | Existing result remains authoritative |
+| Wrong answer with positive `shieldAbsorbed` | Existing mapped enemy attack/fallback | `effect_shield_block` in player portrait overlay | Auto-clear; existing absorption/HP result is not repeated |
+| Real timeout with positive `shieldAbsorbed` | Existing mapped enemy attack/fallback | Same shield overlay | Result action remains immediate |
+| Wrong answer/timeout with zero absorption | Existing mapped enemy attack/fallback | No shield overlay | Existing damage result remains authoritative |
+| Water result with shield gain | Existing cast/hit plus Water enemy overlay | Shield overlay independently targets player | Both auto-clear without cross-callbacks |
+| Shield image load failure | Existing actor/effect presentation continues | Silently skip and clear shield overlay | No crash or gameplay callback |
+| Reduced motion | Existing actor representative frame | Static configured shield frame 2 | Auto-clear on configured one-shot duration |
+
+Dungeon uses positive `shieldGained` and `shieldAbsorbed` values already written into completed BattleLog objects after current shield/HP and answer-result operations. The post-commit presentation effect creates a separate pointer-free player overlay and does not inspect result text. Shop Add Shield is not mapped in this phase.
+
+The shield sheet uses `4 x 64x64` frames at `120ms`, zero-based reduced frame 2, target layer `player-portrait-overlay`, silent-skip fallback, idle return state, and automatic clear. Playback has no authority over shield, absorption, damage, HP, gold, mastery, Word Energy, rewards, unlocks, saves, or progression and does not gate result actions.
+
+## Phase 71F.5 Implemented Elemental Effect Mapping
+
+| Resolved source state | Actor presentation | Effect presentation | Completion behavior |
+| --- | --- | --- | --- |
+| Correct result with Fire | Existing cast plus mapped hit/defeat | `effect_fire` in enemy portrait overlay | Auto-clear; result action remains immediate |
+| Correct result with Water | Existing cast plus mapped hit/defeat | `effect_water` in enemy portrait overlay | Auto-clear; existing shield result is not repeated |
+| Correct result with Wind | Existing cast plus mapped hit/defeat | `effect_wind` in enemy portrait overlay | Auto-clear; existing gold/result is not repeated |
+| Correct result with Earth | Existing cast plus mapped hit/defeat | `effect_earth` in enemy portrait overlay | Auto-clear; existing damage/result is not repeated |
+| Correct non-element result | Existing cast plus mapped hit/defeat | No elemental overlay | Existing result remains authoritative |
+| Wrong answer or timeout | Existing enemy attack/fallback | No elemental overlay | Existing damage/result remains authoritative |
+| Effect image load failure | Existing actor presentation continues | Silently skip and clear overlay | No crash or gameplay callback |
+| Reduced motion | Existing actor representative frame | Static configured effect frame 2 | Auto-clear on configured one-shot duration |
+
+The existing successful answer branches write `resolvedElement` into their completed battle logs only after current damage, shield, gold, mastery, Word Energy, reward, statistics, completion, and result-state operations have run. Dungeon consumes that explicit value in the post-commit presentation effect and creates a separate pointer-free overlay local to the current encounter.
+
+Fire, Water, Wind, and Earth each use `4 x 64x64` frames at `120ms`, zero-based reduced frame 2, target layer `enemy-portrait-overlay`, silent-skip load fallback, and automatic clear. The overlay has no authority over damage, HP, shield, gold, mastery, Word Energy, status, rewards, unlocks, saves, or progression and does not gate result actions.
 
 ## Phase 71F.4 Implemented Enemy Defeat Mapping
 
@@ -39,7 +73,7 @@ Attack mappings cover `monster-slime`, `monster-bat`, `monster-goblin`, `elite-m
 | --- | --- | --- | --- |
 | Positive-damage correct result; enemy HP remains above zero | Word Mage cast one-shot | Mapped encounter hit one-shot | Each independently returns to idle |
 | Positive-damage correct result; enemy HP is zero | Word Mage cast one-shot | Phase 71F.4 mapped defeat or existing fallback | Result actions remain immediately available |
-| Wrong answer or timeout | Idle | Idle; enemy attack is not wired | Existing damage/result flow is unchanged |
+| Wrong answer or timeout | Idle | Phase 71F.3 mapped attack or existing fallback | Existing damage/result flow is unchanged |
 | Missing mapping, reduced motion, or image failure | Static representative frame, loaded idle, or current fallback | Static representative frame, loaded idle, or current fallback | No gameplay callback |
 
 Dungeon observes a new committed success `battleLog`, positive `damageDealt`, resolved `monsterHp`, battle status, and encounter ID. That post-commit effect creates local presentation state only. `SpritesheetAnimation` completion can clear that state but no game function waits for it or reads it.
@@ -61,9 +95,9 @@ The runtime registry explicitly maps Word Mage cast and hit sheets for `monster-
 
 An unmapped encounter receives no sprite asset and therefore keeps its current fallback. An image `onError` swaps to the same fallback without changing portrait dimensions. No timer, correctness, damage, HP, shield, result, reward, or progression state depends on image loading.
 
-At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, and Phase 71F.4 adds mapped enemy defeat. Walk, effect, UI, icon, card-frame, and background files remain dormant.
+At the Phase 71F.2 checkpoint the registry imported cast and hit only. Phase 71F.3 added mapped enemy attack, Phase 71F.4 added mapped enemy defeat, Phase 71F.5 added four elemental effects, and Phase 71F.6 adds shield feedback in an independent player overlay. Walk, upgrade effect, UI, icon, card-frame, and background files remain dormant.
 
-Recommended next phase: **Phase 71F.5 Controlled Elemental Effect Animation Slice**. It should derive presentation only after an existing Fire, Water, Wind, or Earth card effect resolves, without applying damage, shield, gold, or status.
+Recommended next phase: **Phase 71F.7 Controlled Upgrade Spark Effect Slice**. It should derive presentation only after an existing successful Shop purchase commits, without spending gold, applying an upgrade, or gating Shop controls.
 
 ## Identity Mapping
 
@@ -221,4 +255,4 @@ Carry forward every non-blocking item from `RUNTIME_ASSET_INVENTORY.md`. Phase 7
 
 ## Recommendation
 
-Proceed to **Phase 71F Controlled Runtime Integration**, starting with static battle identities and explicit fallbacks. Do not start implementation without a new explicit phase request.
+Proceed with **Phase 71F.7 Controlled Upgrade Spark Effect Slice** only after a new explicit phase request. Keep UI, card-frame, background, walk, and missing player actions dormant.

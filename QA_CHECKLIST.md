@@ -907,3 +907,47 @@ Safety verification:
 - [x] Keep effects, shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
 - [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
 - [x] Run the final production build successfully.
+
+## Phase 71F.5 Controlled Elemental Effect Animation Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only Fire, Water, Wind, and Earth effect sheets.
+- [x] Add explicit asset ID, file, element, frame count, dimensions, cadence, animation type, reduced-motion frame, target layer, fallback, return state, and auto-clear metadata.
+- [x] Derive elemental presentation only from the existing successful result after the card effect has resolved.
+- [x] Verify Fire appears only after a resolved Fire card effect.
+- [x] Verify Water appears only after a resolved Water card effect.
+- [x] Verify Wind appears only after a resolved Wind card effect.
+- [x] Verify Earth appears only after a resolved Earth card effect.
+- [x] Verify non-element correct answers do not show an elemental effect.
+- [x] Verify wrong answers and real timeouts do not show an elemental effect.
+- [x] Verify Word Mage cast and living hit or defeat presentation remain independent from the effect overlay.
+- [x] Keep result actions available while the effect is playing and confirm playback auto-clears.
+- [x] Confirm LocalStorage remains stable after effect playback completion.
+- [x] Force an effect-image failure and confirm silent clear, responsive actions, and no crash.
+- [x] Confirm reduced motion displays static frame 2 and then clears.
+- [x] Verify `390px` mobile has no horizontal overflow, the effect remains inside the enemy portrait, and no button is obscured.
+- [x] Keep shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.
+
+## Phase 71F.6 Controlled Shield Block Effect Slice QA
+
+- [x] Run the baseline production build before editing runtime files.
+- [x] Import only `effect_shield_block_sheet.png`.
+- [x] Add explicit asset ID, file, frame count, dimensions, cadence, animation type, reduced-motion frame, target layer, fallback, return state, and auto-clear metadata.
+- [x] Derive shield presentation only from positive resolved `shieldGained` or `shieldAbsorbed` BattleLog data.
+- [x] Verify a correct shield card shows shield feedback after shield gain resolves.
+- [x] Verify a correct non-shield result does not show shield feedback.
+- [x] Verify a wrong answer with shield absorption shows shield feedback after damage resolves.
+- [x] Verify a wrong answer with zero shield does not show shield feedback.
+- [x] Verify a real timeout with shield absorption shows shield feedback after damage resolves.
+- [x] Verify shield and HP remain stable after playback completion.
+- [x] Verify mapped Slime attack continues while shield absorption feedback plays.
+- [x] Verify Water elemental and shield overlays can play together without conflict.
+- [x] Keep Next Mini-Game/result actions available during shield playback and confirm auto-clear.
+- [x] Force shield-effect image failure and confirm silent clear, responsive actions, and no crash.
+- [x] Confirm reduced motion displays static frame 2 and then clears.
+- [x] Verify `390px` mobile has no horizontal overflow, the effect remains inside the player portrait, and no button is obscured.
+- [x] Keep upgrade spark, walk, player defend/hurt/victory, UI icons, card frame, and background unimplemented.
+- [x] Change no gameplay, save, combat, answer checking, timer, HP/shield/gold/mastery, Word Energy, shop, event, elite, boss, reward, unlock, progression, dependency, or deployment behavior.
+- [x] Run the final production build successfully.

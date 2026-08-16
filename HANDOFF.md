@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71F.4 Controlled Enemy Defeat Animation Slice is complete. Correct-answer results now derive mapped enemy defeat presentation only after authoritative HP reaches zero and existing reward, statistics, unlock, and result state calls commit. Defeat playback holds its final frame but cannot grant rewards, unlock decks, advance progression, or gate Next Encounter/Run Complete actions. Earlier cast, living-hit, and enemy-attack presentation remains unchanged. Reduced motion, load failure, and unmapped identities retain static fallbacks. Phase 71F.5 Controlled Elemental Effect Animation Slice is recommended next.
+Current phase: Phase 71F.6 Controlled Shield Block Effect Slice is complete. Shield gain and absorption presentation is derived only from positive resolved `shieldGained` or `shieldAbsorbed` values already present in `BattleLog`. A separate player-portrait overlay may play alongside cast, enemy attack, or elemental feedback and then auto-clears without changing shield/HP or gating result actions. Non-shield results produce no shield overlay. Reduced motion uses frame 2 and failed shield images skip silently. Earlier cast, hit, attack, defeat, and elemental presentation remains unchanged. Phase 71F.7 Controlled Upgrade Spark Effect Slice is recommended next.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2609,13 +2609,33 @@ Browser QA covered Word Choice, Word Match, and Word Scramble normal-monster def
 
 Elemental/defense/upgrade effects, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay, rewards, progression, saves, and deployment remain authoritative and unchanged.
 
+## Phase 71F.5 Controlled Elemental Effect Animation Slice
+
+Phase 71F.5 imports only `effect_fire_sheet.png`, `effect_water_sheet.png`, `effect_wind_sheet.png`, and `effect_earth_sheet.png`. Each entry explicitly declares its element, four `64x64` frames, `120ms` cadence, one-shot behavior, zero-based reduced-motion frame 2, `enemy-portrait-overlay` target, silent-skip fallback, and automatic clear.
+
+The three existing successful answer branches copy the already-resolved card element into `battleLog.resolvedElement` after their current damage, shield, gold, mastery, Word Energy, reward, statistics, completion, and result-state work. The post-commit presentation effect reads that value and starts an independent local overlay. It does not calculate or repeat any element outcome and does not run for wrong answers, timeouts, or non-element cards.
+
+Browser QA observed Fire, Water, Wind, and Earth only on their resolved cards; non-element successes, a wrong answer, and a real timeout produced no effect. Element overlays coexisted with Word Mage cast and mapped enemy hit/defeat, result actions stayed available, LocalStorage stayed stable after playback, a forced missing image cleared without a crash, and reduced motion showed frame 2 before automatic clear. At `390px`, document width stayed inside the viewport, the effect stayed within the enemy portrait, and no button overlapped it.
+
+Shield block, upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
+
+## Phase 71F.6 Controlled Shield Block Effect Slice
+
+Phase 71F.6 imports only `effect_shield_block_sheet.png`. Its explicit metadata declares four `64x64` frames, `120ms` cadence, one-shot behavior, zero-based reduced-motion frame 2, `player-portrait-overlay` target, silent-skip fallback, idle return state, and automatic clear.
+
+No combat marker or formula changed. The existing successful logs already contain resolved `shieldGained`, while the completed wrong-answer/timeout `monsterAttack` logs already contain resolved `shieldAbsorbed`. The post-commit presentation effect checks only positive values in those structured fields and creates independent local shield overlay state. Shop Add Shield and upgrade feedback remain outside this phase.
+
+Browser QA confirmed a correct shield card showed feedback after shield increased from 0 to 3; a non-shield correct result showed none; Slime wrong-answer damage consumed 3 shield and 1 HP while mapped attack and shield feedback played together; the following zero-shield wrong answer showed no shield effect; and a real timeout consumed 5 shield and 3 HP before feedback. Water produced shield and elemental overlays together without conflict. Shield/HP stayed stable after playback, result actions remained immediate, forced image failure skipped safely, and reduced motion showed frame 2 before clear. At `390px`, the overlay remained inside the player portrait with no horizontal overflow or button overlap.
+
+Upgrade spark, walk, player defend/hurt/victory, UI icons, vocabulary card frame, and dungeon background remain unimplemented. Gameplay and saves remain authoritative and unchanged.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Implement Phase 71F.5 Controlled Elemental Effect Animation Slice only after explicit authorization.
-2. Derive any Fire, Water, Wind, or Earth presentation only after the existing card effect has resolved; animation must not apply damage, shield, gold, or status.
-3. Keep defense/upgrade effects, icons, card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
-4. Retain static/emoji fallbacks and keep result/progression actions independent from playback completion.
+1. Implement Phase 71F.7 Controlled Upgrade Spark Effect Slice only after explicit authorization.
+2. Derive upgrade presentation only after an existing successful Shop purchase commits; animation must not spend gold or apply an upgrade.
+3. Keep icons, card frames, walk, player defend/hurt/victory, and battle backgrounds dormant until their own later verified stages.
+4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

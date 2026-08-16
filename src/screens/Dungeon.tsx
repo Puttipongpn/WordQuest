@@ -4,8 +4,12 @@ import {
   getEncounterDefeatAnimation,
   getEncounterHitAnimation,
   getEncounterIdleAsset,
+  getElementalEffectAnimation,
   playerCastAnimation,
   playerIdleAsset,
+  shieldBlockEffectAnimation,
+  type ElementalEffectAnimationAsset,
+  type ShieldEffectAnimationAsset,
   type SpritesheetAnimationAsset,
 } from "../assets/runtimeAssetRegistry";
 import { ScreenShell } from "../components/ScreenShell";
@@ -65,6 +69,7 @@ import {
 } from "../game/mastery";
 import type {
   ActiveRunSummary,
+  ElementType,
   Monster,
   Boss,
   RunProgressState,
@@ -187,12 +192,25 @@ type BattleLog = {
   rewardSummary?: string;
   enemyAttackResolved?: true;
   enemyDefeatResolved?: true;
+  resolvedElement?: ElementType;
 };
 
 type ActiveBattleAnimation = {
   asset: SpritesheetAnimationAsset;
   playbackId: number;
   encounterId?: string;
+};
+
+type ActiveElementalEffect = {
+  asset: ElementalEffectAnimationAsset;
+  playbackId: number;
+  encounterId: string;
+};
+
+type ActiveShieldEffect = {
+  asset: ShieldEffectAnimationAsset;
+  playbackId: number;
+  encounterId: string;
 };
 
 type BattleResultAction = {
@@ -1111,6 +1129,10 @@ export function Dungeon({
     useState<ActiveBattleAnimation | null>(null);
   const [enemyBattleAnimation, setEnemyBattleAnimation] =
     useState<ActiveBattleAnimation | null>(null);
+  const [elementalBattleEffect, setElementalBattleEffect] =
+    useState<ActiveElementalEffect | null>(null);
+  const [shieldBattleEffect, setShieldBattleEffect] =
+    useState<ActiveShieldEffect | null>(null);
   const presentationSequenceRef = useRef(0);
   const presentedBattleLogRef = useRef<BattleLog | null>(null);
 
@@ -1596,6 +1618,7 @@ export function Dungeon({
           effectsSummary,
           rewardSummary: `${completionReward.completedMessage} ${completionReward.unlockMessage}`,
           enemyDefeatResolved: true,
+          resolvedElement: element?.element,
         });
         return;
       }
@@ -1624,6 +1647,7 @@ export function Dungeon({
         wordUsageCount: nextUsageCount,
         effectsSummary,
         enemyDefeatResolved: true,
+        resolvedElement: element?.element,
       });
       return;
     }
@@ -1646,6 +1670,7 @@ export function Dungeon({
       wordEnergyFeedback,
       wordUsageCount: nextUsageCount,
       effectsSummary,
+      resolvedElement: element?.element,
     });
   }
 
@@ -1750,12 +1775,38 @@ export function Dungeon({
     presentedBattleLogRef.current = battleLog;
     presentationSequenceRef.current += 1;
     const playbackId = presentationSequenceRef.current;
+    const hasResolvedShieldFeedback =
+      (battleLog.tone === "success" && (battleLog.shieldGained ?? 0) > 0) ||
+      (isResolvedEnemyAttack && (battleLog.shieldAbsorbed ?? 0) > 0);
+
+    setShieldBattleEffect(
+      hasResolvedShieldFeedback
+        ? {
+            asset: shieldBlockEffectAnimation,
+            playbackId,
+            encounterId: currentEncounter.id,
+          }
+        : null,
+    );
 
     if (isResolvedPlayerAttack) {
+      const elementalEffect = battleLog.resolvedElement
+        ? getElementalEffectAnimation(battleLog.resolvedElement)
+        : undefined;
+
       setPlayerBattleAnimation({
         asset: playerCastAnimation,
         playbackId,
       });
+      setElementalBattleEffect(
+        elementalEffect
+          ? {
+              asset: elementalEffect,
+              playbackId,
+              encounterId: currentEncounter.id,
+            }
+          : null,
+      );
 
       if (isResolvedEnemyDefeat && encounterDefeatAnimation) {
         setEnemyBattleAnimation({
@@ -1784,6 +1835,7 @@ export function Dungeon({
     }
 
     setPlayerBattleAnimation(null);
+    setElementalBattleEffect(null);
     setEnemyBattleAnimation(
       encounterAttackAnimation
         ? {
@@ -1806,6 +1858,8 @@ export function Dungeon({
   useEffect(() => {
     setPlayerBattleAnimation(null);
     setEnemyBattleAnimation(null);
+    setElementalBattleEffect(null);
+    setShieldBattleEffect(null);
   }, [currentEncounter.id, questionSeed]);
 
   useEffect(() => {
@@ -2969,24 +3023,51 @@ export function Dungeon({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <SpritesheetAnimation
-                        alt="Word Mage"
-                        animation={playerBattleAnimation?.asset}
-                        className="size-14 rounded-2xl border-4 border-sky-200/35 bg-sky-100 text-lg font-black text-sky-950 shadow-lg sm:size-16"
-                        fallback="WQ"
-                        fallbackAsset={playerIdleAsset}
-                        key={`player-${playerBattleAnimation?.playbackId ?? "idle"}`}
-                        onComplete={() => {
-                          const completedPlaybackId =
-                            playerBattleAnimation?.playbackId;
+                      <div className="relative shrink-0">
+                        <SpritesheetAnimation
+                          alt="Word Mage"
+                          animation={playerBattleAnimation?.asset}
+                          className="size-14 rounded-2xl border-4 border-sky-200/35 bg-sky-100 text-lg font-black text-sky-950 shadow-lg sm:size-16"
+                          fallback="WQ"
+                          fallbackAsset={playerIdleAsset}
+                          key={`player-${playerBattleAnimation?.playbackId ?? "idle"}`}
+                          onComplete={() => {
+                            const completedPlaybackId =
+                              playerBattleAnimation?.playbackId;
 
-                          setPlayerBattleAnimation((current) =>
-                            current?.playbackId === completedPlaybackId
-                              ? null
-                              : current,
-                          );
-                        }}
-                      />
+                            setPlayerBattleAnimation((current) =>
+                              current?.playbackId === completedPlaybackId
+                                ? null
+                                : current,
+                            );
+                          }}
+                        />
+                        {shieldBattleEffect?.encounterId ===
+                          currentEncounter.id && (
+                          <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-0 z-10"
+                          >
+                            <SpritesheetAnimation
+                              alt="Shield feedback"
+                              animation={shieldBattleEffect.asset}
+                              className="size-full bg-transparent"
+                              fallback=""
+                              key={`shield-${shieldBattleEffect.playbackId}`}
+                              onComplete={() => {
+                                const completedPlaybackId =
+                                  shieldBattleEffect.playbackId;
+
+                                setShieldBattleEffect((current) =>
+                                  current?.playbackId === completedPlaybackId
+                                    ? null
+                                    : current,
+                                );
+                              }}
+                            />
+                          </span>
+                        )}
+                      </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <Badge tone="sky">Word Hero</Badge>
@@ -3064,37 +3145,64 @@ export function Dungeon({
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <SpritesheetAnimation
-                        alt={currentEncounter.name}
-                        animation={
-                          enemyBattleAnimation?.encounterId ===
-                          currentEncounter.id
-                            ? enemyBattleAnimation.asset
-                            : undefined
-                        }
-                        className={`grid size-14 place-items-center rounded-2xl border-4 text-4xl shadow-lg transition sm:size-16 ${encounterPortraitClass} ${
-                          encounterTookHit
-                            ? "damage-shake scale-105 ring-4 ring-red-300/45"
-                            : encounterResolved
-                              ? "defeat-glow ring-4 ring-emerald-300/35"
-                              : ""
-                        }`}
-                        fallback={currentEncounter.imagePlaceholder}
-                        fallbackAsset={encounterIdleAsset}
-                        key={`enemy-${currentEncounter.id}-${enemyBattleAnimation?.playbackId ?? "idle"}`}
-                        onComplete={() => {
-                          const completedPlaybackId =
-                            enemyBattleAnimation?.playbackId;
+                      <div className="relative shrink-0">
+                        <SpritesheetAnimation
+                          alt={currentEncounter.name}
+                          animation={
+                            enemyBattleAnimation?.encounterId ===
+                            currentEncounter.id
+                              ? enemyBattleAnimation.asset
+                              : undefined
+                          }
+                          className={`grid size-14 place-items-center rounded-2xl border-4 text-4xl shadow-lg transition sm:size-16 ${encounterPortraitClass} ${
+                            encounterTookHit
+                              ? "damage-shake scale-105 ring-4 ring-red-300/45"
+                              : encounterResolved
+                                ? "defeat-glow ring-4 ring-emerald-300/35"
+                                : ""
+                          }`}
+                          fallback={currentEncounter.imagePlaceholder}
+                          fallbackAsset={encounterIdleAsset}
+                          key={`enemy-${currentEncounter.id}-${enemyBattleAnimation?.playbackId ?? "idle"}`}
+                          onComplete={() => {
+                            const completedPlaybackId =
+                              enemyBattleAnimation?.playbackId;
 
-                          setEnemyBattleAnimation((current) =>
-                            current !== null &&
-                            current.playbackId === completedPlaybackId &&
-                            current.asset.returnState === "idle"
-                              ? null
-                              : current,
-                          );
-                        }}
-                      />
+                            setEnemyBattleAnimation((current) =>
+                              current !== null &&
+                              current.playbackId === completedPlaybackId &&
+                              current.asset.returnState === "idle"
+                                ? null
+                                : current,
+                            );
+                          }}
+                        />
+                        {elementalBattleEffect?.encounterId ===
+                          currentEncounter.id && (
+                          <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-0 z-10"
+                          >
+                            <SpritesheetAnimation
+                              alt={`${formatElementName(elementalBattleEffect.asset.element)} effect`}
+                              animation={elementalBattleEffect.asset}
+                              className="size-full bg-transparent"
+                              fallback=""
+                              key={`element-${elementalBattleEffect.playbackId}`}
+                              onComplete={() => {
+                                const completedPlaybackId =
+                                  elementalBattleEffect.playbackId;
+
+                                setElementalBattleEffect((current) =>
+                                  current?.playbackId === completedPlaybackId
+                                    ? null
+                                    : current,
+                                );
+                              }}
+                            />
+                          </span>
+                        )}
+                      </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-1.5">
                           <Badge
