@@ -1094,3 +1094,22 @@ Safety verification:
 - [x] Confirm live `assets/index-_vk3ZSMv.css` returns HTTP 200 and matches the local RC hash.
 - [x] Record `main` as the primary branch for future work.
 - [x] Change no runtime source, gameplay, save, asset mapping, dependency, or deployment configuration.
+
+## Phase 71J Post-Release Monitoring And Playtest Feedback Triage
+
+- [x] Confirm Phase 71H/71I remains the release and deployment baseline.
+- [x] Run the baseline `npm run build`; TypeScript and Vite pass with 94 modules.
+- [x] Confirm live HTML returns HTTP 200 and renders non-empty Home content.
+- [x] Confirm live `assets/index-C9Sq5LlG.js` returns HTTP 200.
+- [x] Confirm live `assets/index-_vk3ZSMv.css` returns HTTP 200.
+- [x] Smoke-test live Home, Deck Review, Training setup, Shop, Dungeon intro, and one battle start.
+- [x] Confirm no runtime exception or browser log error is captured during the light smoke flow.
+- [x] Confirm desktop Home, Deck Review, Training, Shop, and Dungeon intro have zero horizontal overflow.
+- [x] Confirm Home, Shop, Dungeon intro, and active battle have zero horizontal overflow at `390px`.
+- [x] Create `POST_RELEASE_MONITORING_REPORT.md` with a reusable per-session feedback template.
+- [x] Define Blocker, High, Medium, Low, and Backlog triage categories plus evidence requirements.
+- [x] Review the existing non-blocking art/presentation backlog without expanding scope.
+- [x] Record zero blockers and implement no runtime fix.
+- [x] Keep player walk and player defend/hurt/victory dormant or unimplemented.
+- [x] Require future feature or art expansion to be justified by reproducible playtest evidence.
+- [x] Change no runtime presentation, gameplay, save, combat, timer, economy, asset, dependency, or deployment configuration.

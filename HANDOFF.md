@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71I Controlled Release Candidate Sync, Deployment, and Post-Deploy Verification is complete. The validated `redesign` history was fast-forwarded to `origin/main` at `8b548bc`, local work now uses `main`, and Vercel redeployed through the existing setup. Live HTML, JavaScript, and CSS return HTTP 200 and the deployed hashes match the Phase 71H local RC. No runtime code, gameplay, asset, dependency, or deployment-configuration change was made during promotion. `RELEASE_CANDIDATE_REPORT.md` contains the build, smoke, and deployment evidence. Phase 71J Post-Release Monitoring and Playtest Feedback Triage is recommended next.
+Current phase: Phase 71J Post-Release Monitoring and Playtest Feedback Triage is complete. The Phase 71H/71I deployment remains the release baseline, and live HTML, JavaScript, and CSS still return HTTP 200 with the same release-candidate hashes. Live Home, Deck Review, Training setup, Shop, Dungeon intro, and one battle start passed a light desktop/`390px` smoke check with no blank screen, captured runtime error, or horizontal overflow. `POST_RELEASE_MONITORING_REPORT.md` contains the feedback template, triage definitions, known-backlog review, and evidence gate. No blocker was found and no runtime code, gameplay, asset, save, dependency, or deployment configuration changed. Phase 71K Structured Playtest Evidence Review And Priority Selection is recommended only after real playtest feedback is collected.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2697,13 +2697,22 @@ The user designated `main` as the primary branch. `origin/main` was a direct anc
 
 Vercel redeployed automatically through the existing Git/Vite configuration. The live site returned HTTP 200 for HTML, `assets/index-C9Sq5LlG.js`, and `assets/index-_vk3ZSMv.css`; those hashes and byte sizes match the Phase 71H local production output. No deployment setting, runtime code, gameplay rule, save rule, dependency, or asset mapping changed.
 
+## Phase 71J Post-Release Monitoring And Playtest Feedback Triage
+
+Phase 71J rechecked the deployed Vercel app rather than expanding runtime scope. Live HTML, `assets/index-C9Sq5LlG.js`, and `assets/index-_vk3ZSMv.css` returned HTTP 200. Home, Deck Review, Training setup, Shop, Dungeon intro, and one active Word Scramble battle loaded from production; no blank screen or captured runtime/log error appeared.
+
+Desktop Home, Deck Review, Training, Shop, and Dungeon intro had zero horizontal overflow. At `390px`, Home, Shop, Dungeon intro, and active battle each stayed at `scrollWidth = 390`, with Shop and answer controls reachable through normal scrolling. No blocker was found, so Phase 71J made no runtime fix.
+
+`POST_RELEASE_MONITORING_REPORT.md` defines one feedback record per tester/session, captures confusion, fun, pace, readability, screen friction, temporary-upgrade understanding, permanent-mastery understanding, visual distraction, and mobile usability, and requires reproducible evidence. Triage uses Blocker, High, Medium, Low, and Backlog. Existing visual polish remains non-blocking; broader card-frame use and dormant/unimplemented player animation remain unapproved.
+
 ## Next Recommended Task
 
 Recommended next steps:
 
-1. Run Phase 71J Post-Release Monitoring and Playtest Feedback Triage only after explicit authorization.
-2. Collect real live-play feedback and classify only reproducible usability, balance, or presentation issues.
-3. Keep player walk and player defend/hurt/victory dormant until their own later explicit phase.
-4. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
+1. Collect real live-play feedback using `POST_RELEASE_MONITORING_REPORT.md` without changing runtime scope.
+2. Run Phase 71K Structured Playtest Evidence Review And Priority Selection only after reproducible feedback exists.
+3. Classify reports by impact, frequency, reproducibility, device/build, and evidence before authorizing a fix or expansion.
+4. Keep player walk and player defend/hurt/victory dormant until playtest evidence and an explicit phase justify them.
+5. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.
