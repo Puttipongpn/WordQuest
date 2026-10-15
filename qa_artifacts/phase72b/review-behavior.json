@@ -1,0 +1,426 @@
+{
+  "results": [
+    {
+      "mode": "choice",
+      "width": 1366,
+      "correct": true,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 14/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "choice",
+      "width": 1366,
+      "correct": false,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "idle",
+          "state": "idle",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_attack",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "choice",
+      "width": 390,
+      "correct": true,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 14/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "choice",
+      "width": 390,
+      "correct": false,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "idle",
+          "state": "idle",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_attack",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "match",
+      "width": 1366,
+      "correct": true,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 14/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "match",
+      "width": 1366,
+      "correct": false,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "idle",
+          "state": "idle",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_attack",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "match",
+      "width": 390,
+      "correct": true,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 14/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "match",
+      "width": 390,
+      "correct": false,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "idle",
+          "state": "idle",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_attack",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "scramble",
+      "width": 1366,
+      "correct": true,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 14/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "✨ Battle Log CARD TRIGGERED apple triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "scramble",
+      "width": 1366,
+      "correct": false,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "idle",
+          "state": "idle",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_attack",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "scramble",
+      "width": 390,
+      "correct": true,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 14/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "✨ Battle Log CARD TRIGGERED apple triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "scramble",
+      "width": 390,
+      "correct": false,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+      "animation": [
+        {
+          "id": "idle",
+          "state": "idle",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_attack",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "mode": "choice",
+      "test": "real-timeout",
+      "elapsed": 14071,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "⏳ Battle Log TIME OUT Time's up! No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0"
+    },
+    {
+      "mode": "match",
+      "test": "real-timeout",
+      "elapsed": 20215,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "⏳ Battle Log TIME OUT Time's up! No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0"
+    },
+    {
+      "mode": "scramble",
+      "test": "real-timeout",
+      "elapsed": 24297,
+      "before": {
+        "player": "Word Mage\nHP 32/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resolved": {
+        "player": "Word Mage\nHP 28/32\nShield 0",
+        "enemy": "Slime\nHP 18/18\nATK 4",
+        "storage": "{}",
+        "overflow": 0
+      },
+      "resultLog": "⏳ Battle Log TIME OUT Time's up! No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0"
+    },
+    {
+      "test": "pause-resume",
+      "paused": "WORD MATCH\nPAUSED\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n19s\n\n/ 20S",
+      "resumed": "WORD MATCH\nCOUNTING\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n18s\n\n/ 20S"
+    }
+  ],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

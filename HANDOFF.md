@@ -10,7 +10,7 @@ The core loop combines vocabulary cards, deck review, practice mini-games, dunge
 
 Current version: Prototype v0.1
 
-Current phase: Phase 71J Post-Release Monitoring and Playtest Feedback Triage is complete. The Phase 71H/71I deployment remains the release baseline, and live HTML, JavaScript, and CSS still return HTTP 200 with the same release-candidate hashes. Live Home, Deck Review, Training setup, Shop, Dungeon intro, and one battle start passed a light desktop/`390px` smoke check with no blank screen, captured runtime error, or horizontal overflow. `POST_RELEASE_MONITORING_REPORT.md` contains the feedback template, triage definitions, known-backlog review, and evidence gate. No blocker was found and no runtime code, gameplay, asset, save, dependency, or deployment configuration changed. Phase 71K Structured Playtest Evidence Review And Priority Selection is recommended only after real playtest feedback is collected.
+Current phase: Phase 72B Dungeon Scene Prototype implemented (2026-10-14), technical review passed for the owner-requested commit/push (2026-10-15). Read `qa_artifacts/phase72b/REPORT.md` for before/after evidence, independent reruns, behavior parity, commands and limitations. Runtime changes are confined to `src/screens/Dungeon.tsx` and Dungeon-scoped `src/styles.css`; core logic/timers and mini-game answer controls remain identical to baseline. Build passes (94 modules); no review-time runtime correction was needed. Local review URL: http://127.0.0.1:5174/ (requires the dev server). Phase 72C has not started; owner visual acceptance and external playtest remain pending. Phase 72A documentation is preserved in the review snapshot. A push to main may trigger the existing Vercel pipeline; this review does not claim a new verified production deployment.
 
 The project has a Vite + React + TypeScript + Tailwind CSS scaffold with simple screen navigation using React state. It does not use React Router, backend services, databases, authentication, or external APIs.
 
@@ -2707,12 +2707,24 @@ Desktop Home, Deck Review, Training, Shop, and Dungeon intro had zero horizontal
 
 ## Next Recommended Task
 
-Recommended next steps:
+1. Review the runnable Phase 72B prototype and the report/screenshot pairs under `qa_artifacts/phase72b/`.
+2. Collect owner feedback; keep native 200% zoom/device checks and the full 72C/72D matrix explicitly open.
+3. Do not begin Phase 72C or other screen redesigns as part of this delivery.
+4. Keep state handlers, answer controls, asset mapping, save schema, and deployment untouched.
 
-1. Collect real live-play feedback using `POST_RELEASE_MONITORING_REPORT.md` without changing runtime scope.
-2. Run Phase 71K Structured Playtest Evidence Review And Priority Selection only after reproducible feedback exists.
-3. Classify reports by impact, frequency, reproducibility, device/build, and evidence before authorizing a fix or expansion.
-4. Keep player walk and player defend/hurt/victory dormant until playtest evidence and an explicit phase justify them.
-5. Retain static/emoji/silent-skip fallbacks and keep result/progression actions independent from playback completion.
+## Phase 72B Implementation Handoff
+
+- Shared scene with side-by-side actors; compact HP/shield/enemy HP/ATK and distinct progress counters.
+- Single timer above quiz; full-width answer area and natural vertical scrolling within the scoped presentation.
+- Details disclosure contains Energy/Log/Trigger/Learning Info and does not pause; Pause/Abandon/Sound and result actions keep original semantics.
+- Fresh tests: 12 correct/wrong viewport cases, three real timeouts, pause/resume, details keyboard/timing, reduced-motion cast/hit/shield, PNG failure, ordinary progression to unmapped Wolf, and scope smoke.
+- No JavaScript exceptions; original favicon 404 and deliberate failed-image requests are documented. Generic strict audit findings are recorded, not reported as a pass.
+- Existing design documents remain canonical; no new art, dependencies, dormant player animation, or frame/background expansion.
+
+## Phase 72A Game-First UI Direction And Work Planning
+
+The owner requested a systematic plan to make WordQuest feel more like a game and reduce buttons/detail panels. Planning introduces no runtime changes. The new plan records phases 72A-72H, component ownership, limits, review gates, and rollback guidance. The screen spec describes shared-scene combat, compact decision information, one resolved-result area, and future screen-specific simplification. The QA plan preserves all three mini-games, timing, progression, persistence, image failure, reduced motion, and keyboard/mobile access.
+
+Pause/menu/detail relocation must preserve current state-specific behavior; no automatic submit, next question, timer extension, or loss of Shop/Result access is implied. The existing hierarchy guide remains the maintained design reference. Phase 72A does not authorize new art, dormant animations, broader card-frame/background usage, or deployment. Historical phase descriptions above describe their own checkpoints; the current status and Phase 72 plan govern the next task.
 
 Use `ASSET_PROMPTS.md` and `ASSET_PLAN.md` for future asset work. Do not add runtime art integration, backend, run rewards beyond deck completion, Training timers, persistent run state, advanced element interactions, or Oxford 3000 import unless explicitly requested.

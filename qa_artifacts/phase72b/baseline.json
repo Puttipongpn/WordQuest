@@ -1,0 +1,134 @@
+[
+  {
+    "mode": "choice",
+    "width": 1366,
+    "height": 768,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nWORD CHOICE\n\nเลือกคำตอบที่ถูกต้อง\n\nCOUNTING\n\nTIMER\n\n14s\n\n/ 14s\n\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 26
+    }
+  },
+  {
+    "mode": "choice",
+    "width": 1440,
+    "height": 900,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nWORD CHOICE\n\nเลือกคำตอบที่ถูกต้อง\n\nCOUNTING\n\nTIMER\n\n14s\n\n/ 14s\n\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 26
+    }
+  },
+  {
+    "mode": "choice",
+    "width": 390,
+    "height": 844,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nWORD CHOICE\nCOUNTING\n\nเลือกคำตอบที่ถูกต้อง\n\n14s\n\n/ 14S\n\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 26
+    }
+  },
+  {
+    "mode": "choice",
+    "width": 390,
+    "height": 667,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nWORD CHOICE\nCOUNTING\n\nเลือกคำตอบที่ถูกต้อง\n\n14s\n\n/ 14S\n\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 26
+    }
+  },
+  {
+    "mode": "match",
+    "width": 1366,
+    "height": 768,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nWORD MATCH\n\nจับคู่คำอังกฤษกับความหมายไทย\n\nCOUNTING\n\nTIMER\n\n20s\n\n/ 20s\n\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 29
+    }
+  },
+  {
+    "mode": "match",
+    "width": 1440,
+    "height": 900,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nWORD MATCH\n\nจับคู่คำอังกฤษกับความหมายไทย\n\nCOUNTING\n\nTIMER\n\n20s\n\n/ 20s\n\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 29
+    }
+  },
+  {
+    "mode": "match",
+    "width": 390,
+    "height": 844,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nWORD MATCH\nCOUNTING\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n20s\n\n/ 20S\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 29
+    }
+  },
+  {
+    "mode": "match",
+    "width": 390,
+    "height": 667,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nWORD MATCH\nCOUNTING\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n20s\n\n/ 20S\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 29
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 1366,
+    "height": 768,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nWORD SCRAMBLE\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\nCOUNTING\n\nTIMER\n\n24s\n\n/ 24s\n\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 29
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 1440,
+    "height": 900,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nWORD SCRAMBLE\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\nCOUNTING\n\nTIMER\n\n24s\n\n/ 24s\n\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 29
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 390,
+    "height": 844,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nWORD SCRAMBLE\nCOUNTING\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\n24s\n\n/ 24S\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 29
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 390,
+    "height": 667,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nWORD HERO\nGOLD 20\nHP\n32 / 32\n\nSHIELD\n\n0\n\nFLOOR\n\n1\n\nPROGRESS\n\n0/5\n\nBATTLE LANE\n\nChoose your move.\n\nVS\n\nMONSTER\nATK 4\nSlime\n18 / 18\nBOSS 0/20\nWORD SCRAMBLE\nCOUNTING\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\n24s\n\n/ 24S\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nWORD ENERGY\n20 fresh · 0 used\n🎴\n\nBattle Log\n\nAWAITING MOVE\nLearning Info\nQA HELPER\nDEVELOPMENT ONLY",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 29
+    }
+  }
+]

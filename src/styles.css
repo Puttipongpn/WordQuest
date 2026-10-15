@@ -342,3 +342,93 @@ body::after {
     animation: none;
   }
 }
+
+/* Phase 72B: Dungeon-only composition; shared screen/event styling stays intact. */
+section:has(> .dungeon-prototype) {
+  height: auto;
+  overflow: visible;
+}
+.dungeon-prototype {
+  display: block;
+  max-width: 1200px;
+  height: auto;
+  margin-inline: auto;
+}
+.dungeon-prototype > section:first-child {
+  height: auto;
+  overflow: visible;
+  border: 0;
+  padding: 8px;
+  box-shadow: none;
+  background: #18251f;
+}
+.dungeon-prototype > section:first-child > div:first-child { height: auto; }
+.dungeon-scene-surface {
+  padding: 8px 16px 12px;
+  border: 0;
+  border-radius: 12px;
+}
+.dungeon-scene {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(100px, .6fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 4px 24px;
+  max-width: 900px;
+  margin-inline: auto;
+}
+.dungeon-scene-progress {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  color: #fef3c7;
+  font-size: 13px;
+  font-weight: 700;
+}
+.dungeon-scene-progress > span { display: inline-flex; align-items: center; }
+.dungeon-actor { min-width: 0; display: grid; justify-items: center; }
+.dungeon-actor-sprite { width: 96px; height: 96px; }
+.dungeon-actor-status {
+  width: 100%;
+  max-width: 260px;
+  padding: 4px 8px;
+  background: rgb(12 25 22 / 85%);
+  border-radius: 6px;
+  color: #fff7ed;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+.dungeon-actor-status h3 { font-size: 16px; font-weight: 900; overflow-wrap: anywhere; }
+.dungeon-scene-feedback { align-self: center; text-align: center; font-size: 13px; font-weight: 800; line-height: 1.6; }
+.dungeon-question-timer { border: 0; border-radius: 8px; padding: 8px 12px; }
+.dungeon-quiz { flex: none; padding: 10px; border: 0; border-radius: 8px; box-shadow: none; background: #fffaf0; }
+.dungeon-quiz > div { min-height: 0; border: 0; padding: 0; box-shadow: none; background: transparent; }
+.dungeon-quiz > div > div { height: auto; }
+.dungeon-details { padding: 4px 12px; color: #fff7ed; background: #18251f; border-radius: 8px; margin-top: 4px; }
+.dungeon-details > summary { cursor: pointer; min-height: 44px; padding-block: 10px; font-weight: 700; }
+.dungeon-details > summary > span { margin-left: 8px; color: #e7e5e4; font-size: 12px; font-weight: 400; }
+.dungeon-details > details { margin-bottom: 8px; box-shadow: none; border-width: 1px; }
+.dungeon-details summary:focus-visible { outline: 2px solid #fbbf24; outline-offset: 3px; }
+.dungeon-prototype button { min-height: 44px; }
+.dungeon-question-timer > div:last-child { margin-top: 4px; }
+.dungeon-question-timer > div:first-child > div:first-child { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; }
+@media (min-width: 640px) and (min-height: 850px) {
+  .dungeon-actor-sprite { width: 128px; height: 128px; }
+}
+@media (max-width: 639px) {
+  .dungeon-prototype > section:first-child { padding: 6px; }
+  .dungeon-scene-surface { padding: 6px; }
+  .dungeon-scene { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; }
+  .dungeon-scene-progress { gap: 2px 12px; font-size: 12px; }
+  .dungeon-actor-sprite { width: 96px; height: 96px; }
+  .dungeon-hero { grid-column: 1; grid-row: 2; }
+  .dungeon-enemy { grid-column: 2; grid-row: 2; }
+  .dungeon-scene-feedback { grid-column: 1 / -1; grid-row: 3; min-height: 22px; }
+  .dungeon-scene-feedback p { display: inline; margin-inline: 4px; }
+  .dungeon-actor-status { padding: 3px 5px; font-size: 12px; }
+  .dungeon-actor-status h3 { font-size: 14px; }
+  .dungeon-quiz { padding: 8px; }
+  .dungeon-details > summary > span { display: block; margin-left: 0; line-height: 1.8; }
+}

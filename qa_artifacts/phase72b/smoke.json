@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "screen": "Deck",
+      "overflow": 0
+    },
+    {
+      "screen": "Training",
+      "overflow": 0
+    },
+    {
+      "screen": "Home",
+      "overflow": 0
+    },
+    {
+      "test": "event-existing-layout-helper-setup",
+      "overflow": 0
+    },
+    {
+      "test": "boss-essential-stats-helper-setup",
+      "scene": "Gold 20\nFloor 1\nShop 0/5\nBoss Active\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\n🗿\nGrammar Golem\nHP 76/76\nATK 7\n\nStone Sentence Guardian · Stone Clause",
+      "overflow": 0
+    },
+    {
+      "test": "pause-abandon-cancel-resume",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

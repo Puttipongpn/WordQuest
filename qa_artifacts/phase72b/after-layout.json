@@ -1,0 +1,570 @@
+[
+  {
+    "mode": "choice",
+    "width": 1366,
+    "height": 768,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD CHOICE\nCOUNTING\n\nเลือกคำตอบที่ถูกต้อง\n\n14s\n\n/ 14S\n\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nรายละเอียดการต่อสู้ Energy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 11,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 42.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 116
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 116
+        },
+        {
+          "text": "musicNoun⚡ FreshATK 4",
+          "bottom": 600.890625
+        },
+        {
+          "text": "waterNoun⚡ FreshATK 4Water",
+          "bottom": 600.890625
+        },
+        {
+          "text": "protectVerb⚡ FreshATK 5SHD +2",
+          "bottom": 668.890625
+        },
+        {
+          "text": "bookNoun⚡ FreshATK 4",
+          "bottom": 668.890625
+        }
+      ],
+      "sceneHeight": 207.890625
+    }
+  },
+  {
+    "mode": "choice",
+    "width": 1440,
+    "height": 900,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD CHOICE\nCOUNTING\n\nเลือกคำตอบที่ถูกต้อง\n\n14s\n\n/ 14S\n\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nรายละเอียดการต่อสู้ Energy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 11,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 42.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 116
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 116
+        },
+        {
+          "text": "musicNoun⚡ FreshATK 4",
+          "bottom": 632.890625
+        },
+        {
+          "text": "waterNoun⚡ FreshATK 4Water",
+          "bottom": 632.890625
+        },
+        {
+          "text": "protectVerb⚡ FreshATK 5SHD +2",
+          "bottom": 700.890625
+        },
+        {
+          "text": "bookNoun⚡ FreshATK 4",
+          "bottom": 700.890625
+        }
+      ],
+      "sceneHeight": 239.890625
+    }
+  },
+  {
+    "mode": "choice",
+    "width": 390,
+    "height": 844,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD CHOICE\nCOUNTING\n\nเลือกคำตอบที่ถูกต้อง\n\n14s\n\n/ 14S\n\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nรายละเอียดการต่อสู้\nEnergy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 11,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 38.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 132.5
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 132.5
+        },
+        {
+          "text": "musicNoun⚡ FreshATK 4",
+          "bottom": 637.078125
+        },
+        {
+          "text": "waterNoun⚡ FreshATK 4Water",
+          "bottom": 734.078125
+        },
+        {
+          "text": "protectVerb⚡ FreshATK 5SHD +2",
+          "bottom": 831.078125
+        },
+        {
+          "text": "bookNoun⚡ FreshATK 4",
+          "bottom": 928.078125
+        }
+      ],
+      "sceneHeight": 213.578125
+    }
+  },
+  {
+    "mode": "choice",
+    "width": 390,
+    "height": 667,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD CHOICE\nCOUNTING\n\nเลือกคำตอบที่ถูกต้อง\n\n14s\n\n/ 14S\n\nEXAMPLE SENTENCE CLOZE\n\nI listen to ____ while I study.\n\nmusic\n\nNoun\n\n⚡ FRESH\nATK 4\n\nwater\n\nNoun\n\n⚡ FRESH\nATK 4\nWATER\n\nprotect\n\nVerb\n\n⚡ FRESH\nATK 5\nSHD +2\n\nbook\n\nNoun\n\n⚡ FRESH\nATK 4\nรายละเอียดการต่อสู้\nEnergy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 7,
+      "frames": 11,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 38.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 132.5
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 132.5
+        },
+        {
+          "text": "musicNoun⚡ FreshATK 4",
+          "bottom": 637.078125
+        },
+        {
+          "text": "waterNoun⚡ FreshATK 4Water",
+          "bottom": 734.078125
+        },
+        {
+          "text": "protectVerb⚡ FreshATK 5SHD +2",
+          "bottom": 831.078125
+        },
+        {
+          "text": "bookNoun⚡ FreshATK 4",
+          "bottom": 928.078125
+        }
+      ],
+      "sceneHeight": 213.578125
+    }
+  },
+  {
+    "mode": "match",
+    "width": 1366,
+    "height": 768,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD MATCH\nCOUNTING\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n20s\n\n/ 20S\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nรายละเอียดการต่อสู้ Energy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 42.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 116
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 116
+        },
+        {
+          "text": "music⚡ FreshATK 4",
+          "bottom": 516.390625
+        },
+        {
+          "text": "courage⚡ FreshATK 8SHD +3",
+          "bottom": 568.390625
+        },
+        {
+          "text": "choose⚡ FreshATK 6",
+          "bottom": 620.390625
+        },
+        {
+          "text": "ความกล้าหาญNoun",
+          "bottom": 532.390625
+        },
+        {
+          "text": "ดนตรีNoun",
+          "bottom": 600.390625
+        },
+        {
+          "text": "เลือกVerb",
+          "bottom": 668.390625
+        },
+        {
+          "text": "Check Pair",
+          "bottom": 730.390625
+        }
+      ],
+      "sceneHeight": 207.890625
+    }
+  },
+  {
+    "mode": "match",
+    "width": 1440,
+    "height": 900,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD MATCH\nCOUNTING\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n20s\n\n/ 20S\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nรายละเอียดการต่อสู้ Energy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 42.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 116
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 116
+        },
+        {
+          "text": "music⚡ FreshATK 4",
+          "bottom": 548.390625
+        },
+        {
+          "text": "courage⚡ FreshATK 8SHD +3",
+          "bottom": 600.390625
+        },
+        {
+          "text": "choose⚡ FreshATK 6",
+          "bottom": 652.390625
+        },
+        {
+          "text": "ความกล้าหาญNoun",
+          "bottom": 564.390625
+        },
+        {
+          "text": "ดนตรีNoun",
+          "bottom": 632.390625
+        },
+        {
+          "text": "เลือกVerb",
+          "bottom": 700.390625
+        },
+        {
+          "text": "Check Pair",
+          "bottom": 762.390625
+        }
+      ],
+      "sceneHeight": 239.890625
+    }
+  },
+  {
+    "mode": "match",
+    "width": 390,
+    "height": 844,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD MATCH\nCOUNTING\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n20s\n\n/ 20S\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nรายละเอียดการต่อสู้\nEnergy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 38.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 132.5
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 132.5
+        },
+        {
+          "text": "music⚡ FreshATK 4",
+          "bottom": 559.578125
+        },
+        {
+          "text": "courage⚡ FreshATK 8SHD +3",
+          "bottom": 640.578125
+        },
+        {
+          "text": "choose⚡ FreshATK 6",
+          "bottom": 721.578125
+        },
+        {
+          "text": "ความกล้าหาญNoun",
+          "bottom": 815.578125
+        },
+        {
+          "text": "ดนตรีNoun",
+          "bottom": 891.578125
+        },
+        {
+          "text": "เลือกVerb",
+          "bottom": 967.578125
+        },
+        {
+          "text": "Check Pair",
+          "bottom": 834
+        }
+      ],
+      "sceneHeight": 213.578125
+    }
+  },
+  {
+    "mode": "match",
+    "width": 390,
+    "height": 667,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD MATCH\nCOUNTING\n\nจับคู่คำอังกฤษกับความหมายไทย\n\n20s\n\n/ 20S\n\nเลือกการ์ด\n\nMusic\n\n⚡ FRESH\nATK 4\n\nCourage\n\n⚡ FRESH\nATK 8\nSHD +3\n\nChoose\n\n⚡ FRESH\nATK 6\n\nเลือกความหมาย\n\nความกล้าหาญ\n\nNoun\n\nดนตรี\n\nNoun\n\nเลือก\n\nVerb\n\nChoose 1 card and 1 meaning\n\nCheck Pair\nรายละเอียดการต่อสู้\nEnergy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 10,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 38.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 132.5
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 132.5
+        },
+        {
+          "text": "music⚡ FreshATK 4",
+          "bottom": 559.578125
+        },
+        {
+          "text": "courage⚡ FreshATK 8SHD +3",
+          "bottom": 640.578125
+        },
+        {
+          "text": "choose⚡ FreshATK 6",
+          "bottom": 721.578125
+        },
+        {
+          "text": "ความกล้าหาญNoun",
+          "bottom": 815.578125
+        },
+        {
+          "text": "ดนตรีNoun",
+          "bottom": 891.578125
+        },
+        {
+          "text": "เลือกVerb",
+          "bottom": 967.578125
+        },
+        {
+          "text": "Check Pair",
+          "bottom": 657
+        }
+      ],
+      "sceneHeight": 213.578125
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 1366,
+    "height": 768,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD SCRAMBLE\nCOUNTING\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\n24s\n\n/ 24S\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nรายละเอียดการต่อสู้ Energy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 42.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 116
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 116
+        },
+        {
+          "text": "rugaceo⚡ FreshATK 8SHD +3",
+          "bottom": 529.390625
+        },
+        {
+          "text": "soceoh⚡ FreshATK 6",
+          "bottom": 529.390625
+        },
+        {
+          "text": "aeppl⚡ FreshATK 4",
+          "bottom": 529.390625
+        },
+        {
+          "text": "Clear Answer",
+          "bottom": 691.390625
+        },
+        {
+          "text": "Check Word",
+          "bottom": 761.390625
+        }
+      ],
+      "sceneHeight": 207.890625
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 1440,
+    "height": 900,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\n\nBATTLE MODE\n\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD SCRAMBLE\nCOUNTING\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\n24s\n\n/ 24S\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nรายละเอียดการต่อสู้ Energy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 42.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 116
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 116
+        },
+        {
+          "text": "rugaceo⚡ FreshATK 8SHD +3",
+          "bottom": 561.390625
+        },
+        {
+          "text": "soceoh⚡ FreshATK 6",
+          "bottom": 561.390625
+        },
+        {
+          "text": "aeppl⚡ FreshATK 4",
+          "bottom": 561.390625
+        },
+        {
+          "text": "Clear Answer",
+          "bottom": 723.390625
+        },
+        {
+          "text": "Check Word",
+          "bottom": 793.390625
+        }
+      ],
+      "sceneHeight": 239.890625
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 390,
+    "height": 844,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD SCRAMBLE\nCOUNTING\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\n24s\n\n/ 24S\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nรายละเอียดการต่อสู้\nEnergy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 38.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 132.5
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 132.5
+        },
+        {
+          "text": "rugaceo⚡ FreshATK 8SHD +3",
+          "bottom": 541.578125
+        },
+        {
+          "text": "soceoh⚡ FreshATK 6",
+          "bottom": 622.578125
+        },
+        {
+          "text": "aeppl⚡ FreshATK 4",
+          "bottom": 703.578125
+        },
+        {
+          "text": "Clear Answer",
+          "bottom": 847.578125
+        },
+        {
+          "text": "Check Word",
+          "bottom": 963.578125
+        }
+      ],
+      "sceneHeight": 213.578125
+    }
+  },
+  {
+    "mode": "scramble",
+    "width": 390,
+    "height": 667,
+    "text": "📖\n\nWORDQUEST\n\nDungeon\nSOUND OFF\n⚔ MONSTER\nSTARTER DECK\nPause\nAbandon Run\nGold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nChoose your move.\n\nSlime\nHP 18/18\nATK 4\nWORD SCRAMBLE\nCOUNTING\n\nเลือกคำที่สลับ แล้วพิมพ์คำอังกฤษให้ถูก\n\n24s\n\n/ 24S\n\nrugaceo\n\n⚡ FRESH\nATK 8\nSHD +3\n\nsoceoh\n\n⚡ FRESH\nATK 6\n\naeppl\n\n⚡ FRESH\nATK 4\n\nBUILD YOUR ANSWER\n\nChoose a scrambled word first.\n\nLETTER TILES\n\nClear Answer\n\nLetter tiles appear after choosing a card.\n\nCheck Word\nรายละเอียดการต่อสู้\nEnergy · Log · Learning Info — ไม่หยุดเวลา",
+    "metrics": {
+      "overflow": 0,
+      "buttons": 8,
+      "frames": 14,
+      "controls": [
+        {
+          "text": "Sound Off",
+          "bottom": 38.75
+        },
+        {
+          "text": "Pause",
+          "bottom": 132.5
+        },
+        {
+          "text": "Abandon Run",
+          "bottom": 132.5
+        },
+        {
+          "text": "rugaceo⚡ FreshATK 8SHD +3",
+          "bottom": 541.578125
+        },
+        {
+          "text": "soceoh⚡ FreshATK 6",
+          "bottom": 622.578125
+        },
+        {
+          "text": "aeppl⚡ FreshATK 4",
+          "bottom": 703.578125
+        },
+        {
+          "text": "Clear Answer",
+          "bottom": 847.578125
+        },
+        {
+          "text": "Check Word",
+          "bottom": 963.578125
+        }
+      ],
+      "sceneHeight": 213.578125
+    }
+  }
+]

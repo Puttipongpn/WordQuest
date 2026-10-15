@@ -1,0 +1,272 @@
+[
+  {
+    "mode": "choice",
+    "width": 1366,
+    "correct": true,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "32",
+      "32"
+    ],
+    "enemyHp": [
+      "14",
+      "18"
+    ],
+    "log": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "choice",
+    "width": 1366,
+    "correct": false,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "choice",
+    "width": 390,
+    "correct": true,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "32",
+      "32"
+    ],
+    "enemyHp": [
+      "14",
+      "18"
+    ],
+    "log": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "choice",
+    "width": 390,
+    "correct": false,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "match",
+    "width": 1366,
+    "correct": true,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "32",
+      "32"
+    ],
+    "enemyHp": [
+      "14",
+      "18"
+    ],
+    "log": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "match",
+    "width": 1366,
+    "correct": false,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "match",
+    "width": 390,
+    "correct": true,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "32",
+      "32"
+    ],
+    "enemyHp": [
+      "14",
+      "18"
+    ],
+    "log": "✨ Battle Log CARD TRIGGERED music triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "match",
+    "width": 390,
+    "correct": false,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "scramble",
+    "width": 1366,
+    "correct": true,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "32",
+      "32"
+    ],
+    "enemyHp": [
+      "14",
+      "18"
+    ],
+    "log": "✨ Battle Log CARD TRIGGERED apple triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "scramble",
+    "width": 1366,
+    "correct": false,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "scramble",
+    "width": 390,
+    "correct": true,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "32",
+      "32"
+    ],
+    "enemyHp": [
+      "14",
+      "18"
+    ],
+    "log": "✨ Battle Log CARD TRIGGERED apple triggered for 4 total damage. TOTAL DMG 4 TAKEN 0 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "scramble",
+    "width": 390,
+    "correct": false,
+    "test": "answer",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "💥 Battle Log ENEMY HIT Wrong answer. No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": null,
+    "afterElapsed": null
+  },
+  {
+    "mode": "choice",
+    "width": null,
+    "correct": null,
+    "test": "real-timeout",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "⏳ Battle Log TIME OUT Time's up! No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": 14084,
+    "afterElapsed": 14080
+  },
+  {
+    "mode": "match",
+    "width": null,
+    "correct": null,
+    "test": "real-timeout",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "⏳ Battle Log TIME OUT Time's up! No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": 20193,
+    "afterElapsed": 20162
+  },
+  {
+    "mode": "scramble",
+    "width": null,
+    "correct": null,
+    "test": "real-timeout",
+    "parity": true,
+    "playerHp": [
+      "28",
+      "32"
+    ],
+    "enemyHp": [
+      "18",
+      "18"
+    ],
+    "log": "⏳ Battle Log TIME OUT Time's up! No card triggered. Slime attacked for 4. Shield absorbed 0; HP took 4. TOTAL DMG 0 TAKEN 4 SHIELD BLOCK 0 SHIELD GAIN 0",
+    "baselineElapsed": 24273,
+    "afterElapsed": 24262
+  }
+]

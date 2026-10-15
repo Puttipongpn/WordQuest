@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-15",
+  "results": [
+    {
+      "test": "details-do-not-pause; low-HP-wrong-answer; run-failed-restart-outside-closed-details",
+      "passed": true
+    },
+    {
+      "test": "all-PNG-failure-background-and-answer-controls",
+      "passed": true
+    },
+    {
+      "test": "reduced-motion-resolved-shield-and-immediate-next",
+      "frames": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "frame": "3"
+        },
+        {
+          "id": "effect_shield_block",
+          "frame": "2"
+        },
+        {
+          "id": "monster_slime_hit",
+          "frame": "1"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "errors": []
+}

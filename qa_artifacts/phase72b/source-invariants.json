@@ -1,0 +1,8 @@
+{
+  "gameplayAndTimerPrefixUnchanged": true,
+  "miniGameComponentsAndAnswerControlsUnchanged": true,
+  "runtimeFilesChanged": [
+    "src/screens/Dungeon.tsx",
+    "src/styles.css"
+  ]
+}

@@ -10,9 +10,16 @@ Prototype v0.1
 
 ## Current Status
 
-WordQuest has completed Phase 71J Post-Release Monitoring and Playtest Feedback Triage. The Phase 71H/71I deployment remains the release baseline: live HTML, `assets/index-C9Sq5LlG.js`, and `assets/index-_vk3ZSMv.css` still return HTTP 200 and match the promoted RC. A light live smoke check passed Home, Deck Review, Training setup, Shop, Dungeon intro, and one battle start with no blank screen, captured runtime error, or horizontal overflow on desktop or tested `390px` surfaces. `POST_RELEASE_MONITORING_REPORT.md` now defines a reusable playtest feedback template and Blocker/High/Medium/Low/Backlog triage framework. No blocker was found, no fix was implemented, and player walk plus player defend/hurt/victory remain dormant or unimplemented. Future feature or art expansion must be justified by reproducible playtest evidence. The recommended next phase is Phase 71K Structured Playtest Evidence Review And Priority Selection after real feedback is collected.
+Phase 72B Dungeon Scene Prototype is implemented (2026-10-14) and passed technical review for the owner-requested commit/push on 2026-10-15. Dungeon now uses one shared actor scene, compact HUD, one question-adjacent timer, and on-demand battle details. Only Dungeon.tsx and scoped styles changed at runtime; gameplay/timer logic and mini-game answer components are unchanged. Independent reruns passed 15 answer/timeout parity cases, pause/resume, and additional 390px Run Failed/restart, failed-art and reduced-motion checks. Build passes with 94 modules. See [Phase 72B report](qa_artifacts/phase72b/REPORT.md) for evidence and explicit limitations, including native zoom and full later-phase regression. Owner visual acceptance is pending; Phase 72C has not started. Existing Phase 72A edits are preserved in this review snapshot. Local review URL: http://127.0.0.1:5174/ (requires the dev server). Phase 71H/71I remains the last verified release baseline; production deployment has not been reverified in this review.
 
 ## Completed
+
+- Implemented Phase 72B Dungeon Scene Prototype and recorded fresh QA in `qa_artifacts/phase72b/`; owner visual acceptance remains pending.
+
+- Completed Phase 72A Game-First UI Direction And Work Planning as a documentation-only task.
+- Recorded direct owner feedback and a phased Dungeon-first redesign with explicit behavior, asset, and release boundaries.
+- Added the redesign plan, screen specification, and QA plan with evidence templates and unchecked future implementation gates.
+- Linked the new workstream to the existing hierarchy guide, gameplay design, decisions, and handoff; refreshed the stale Next Task section.
 
 - Completed Phase 71J Post-Release Monitoring and Playtest Feedback Triage.
 - Confirmed live HTML, JavaScript, and CSS still return HTTP 200 with the Phase 71H release hashes.
@@ -1095,11 +1102,10 @@ WordQuest has completed Phase 71J Post-Release Monitoring and Playtest Feedback 
 
 ## Next Task
 
-Recommended next steps:
-
-1. Choose the next asset phase: elite enemy assets, event illustration assets, normalization planning, or polish for weaker candidates.
-2. If normalizing later, include Player Batch 1A, Monster Batch 1B, Effects Batch 1C, UI/Card/Background Batch 1D, and Boss Batch 1E in the normalization plan.
-3. Do not integrate assets into runtime until an explicit future integration phase.
+1. Review the Phase 72B prototype and before/after evidence in `qa_artifacts/phase72b/REPORT.md`.
+2. Record owner feedback and address evidenced prototype issues before expanding the redesign.
+3. Phase 72C and the full 72D Dungeon validation gate remain separate next tasks; do not redesign sibling screens yet.
+4. Preserve all gameplay/asset boundaries and do not commit, push, or deploy without a separate request.
 
 ## Required Project Documents
 

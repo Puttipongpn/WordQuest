@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-14",
+  "command": "npm run build",
+  "exitCode": 0,
+  "modules": 94,
+  "javascript": "index-BJFzMRgg.js",
+  "css": "index-DwQZ-HH2.css",
+  "note": "Summary of observed TypeScript/Vite command output; not a raw log. No dependency installation."
+}

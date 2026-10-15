@@ -1,5 +1,45 @@
 # QA_CHECKLIST.md
 
+## Phase 72B Technical Review - 2026-10-15
+
+- [x] Review runtime diff and before/after screenshots; no blocking regression or runtime correction identified.
+- [x] Rerun correct/wrong flows for all three mini-games on desktop and 390px, plus real 14/20/24-second timeouts: all 15 result/log/LocalStorage comparisons match the earlier after evidence.
+- [x] Rerun pause/resume; verify details do not pause, Run Failed/restart works outside closed details, forced PNG failure is safe, and reduced-motion cast/hit/shield remain static.
+- [x] Inspect fresh result screenshots; zero horizontal overflow in the rerun states. Build passes (94 modules).
+- [ ] Native zoom, real-device and owner visual/playtest acceptance remain open; this is not the full Phase 72D/72H gate.
+
+Evidence: `qa_artifacts/phase72b/review-behavior.json`, `review-smoke.json`, `review-*.png`, and the review addendum in `REPORT.md`.
+
+## Phase 72B Fresh QA — 2026-10-14
+
+- [x] Preserve Phase 72A edits on main; baseline/final build pass (94 modules).
+- [x] Capture matching answering screenshots for all three modes at 1366x768, 1440x900, 390x844, 390x667.
+- [x] Compare correct/wrong real handlers on desktop/mobile and real 14/20/24-second timeouts against baseline.
+- [x] Verify pause/resume, details keyboard access without pause, required controls and no pre-answer trigger details.
+- [x] Verify reduced-motion cast/hit/shield, failed PNG fallback, unmapped Wolf, and no horizontal overflow in tested states.
+- [x] Verify event background stays disabled and sibling Home/Deck/Training scope smoke.
+- [x] Record console favicon 404/intentional asset failures and static-audit findings honestly.
+- [x] Verify 200% equivalent reflow at 683x384 CSS pixels; this is not native browser zoom.
+- [ ] Native 200% browser zoom and real mobile/device checks.
+- [ ] Owner visual acceptance and external playtest.
+- [ ] Full Phase 72C/72D matrix and later production-preview/release regression.
+
+Evidence, exact coverage and limitations: [Phase 72B report](qa_artifacts/phase72b/REPORT.md). Historical pass marks below are not reused as fresh evidence.
+
+## Phase 72A Game UI Planning Checkpoint
+
+- [x] Inspect clean `main` at `35fccce` and confirm Phase 71J from current status/handoff.
+- [x] Run baseline `npm run build`: TypeScript/Vite pass, 94 modules, existing RC bundle names unchanged.
+- [x] Record owner feedback as the reason for planning, separately from external playtest evidence.
+- [x] Define phase order, screen responsibilities, gameplay invariants, state-specific control access, and acceptance gates.
+- [x] Create `GAME_UI_REDESIGN_PLAN.md`, `GAME_UI_SCREEN_SPEC.md`, and `GAME_UI_QA_PLAN.md` and link maintenance documents.
+- [x] Preserve historical release/QA results without claiming new live or visual validation.
+- [x] Implement Phase 72B Dungeon Scene Prototype and record its scoped technical QA; owner review and limitations remain open.
+- [ ] Complete Phase 72C feedback/control checks and Phase 72D owner review before changing other screens.
+- [ ] Complete subsequent screen-specific and cross-screen acceptance gates.
+
+Detailed future test cases and evidence requirements live in [GAME_UI_QA_PLAN.md](GAME_UI_QA_PLAN.md). These unchecked implementation gates must not inherit pass status from earlier phases.
+
 Use this checklist before sharing or deploying the WordQuest prototype.
 
 ## Fresh Start

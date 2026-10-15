@@ -191,6 +191,9 @@ Phase 71H verified the current local release candidate:
 
 ## Project Documents
 
+- `GAME_UI_REDESIGN_PLAN.md`: Phase 72 game-first UI work order, scope, ownership, and review gates; start here for the planned redesign.
+- `GAME_UI_SCREEN_SPEC.md`: planned scene/HUD/quiz composition, screen priorities, motion, and control behavior.
+- `GAME_UI_QA_PLAN.md`: future redesign test matrix, evidence template, and playtest acceptance criteria.
 - `GAME_DESIGN.md`: accepted gameplay design and rules.
 - `PROJECT_STATUS.md`: current progress and completed phases.
 - `HANDOFF.md`: detailed continuation context for another developer or AI agent.

@@ -1,5 +1,17 @@
 # UI_HIERARCHY_GUIDE.md
 
+## Phase 72 Planning Extension (2026-10-13)
+
+This remains WordQuest's maintained UI hierarchy reference. Owner feedback after Phase 71J confirms that the panel/button-heavy presentation still feels like a website. Phase 72A extends the guide with a Dungeon-first prototype direction; it does not claim that the redesign is implemented.
+
+- Work order and scope: [GAME_UI_REDESIGN_PLAN.md](GAME_UI_REDESIGN_PLAN.md).
+- Screen composition, information placement, motion, and control-state parity: [GAME_UI_SCREEN_SPEC.md](GAME_UI_SCREEN_SPEC.md).
+- Baseline metrics, regression matrix, playtest protocol, and gates: [GAME_UI_QA_PLAN.md](GAME_UI_QA_PLAN.md).
+
+The target is a shared actor scene with compact status and a focused quiz. Existing per-screen sections below record the Phase 64-era foundation. Their hierarchy and anti-hint principles remain useful; the Phase 72 spec takes precedence for proposed composition. Preserve existing behavior and detail access when removing visible panels. Do not mistake fewer buttons for fewer answer options or automatic confirmation.
+
+## Original Phase 64A Context
+
 This guide records the Phase 64A UX declutter strategy for WordQuest.
 
 It exists to keep future UI implementation phases focused. Phase 64A is planning and documentation only. It does not redesign screens, change gameplay, add assets, change save rules, or add dependencies.

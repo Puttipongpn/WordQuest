@@ -1,0 +1,32 @@
+{
+  "findings": [
+    {
+      "category": "unresolved",
+      "file": "src/screens/DeckReview.tsx",
+      "line": 372,
+      "message": "Native select is used without an explicit ownership decision.",
+      "remediation": "Record Select/Listbox as native or reuse the authored canonical owner.",
+      "ruleId": "ownership.native-select-undecided",
+      "severity": "error"
+    },
+    {
+      "category": "violation",
+      "file": "src/components/ui.tsx",
+      "line": 131,
+      "message": "Enabled literal button has no detectable action or submit behavior.",
+      "remediation": "Connect the button to a real action, make it a submit button, or disable/remove it.",
+      "ruleId": "affordance.actionless-button",
+      "severity": "error"
+    }
+  ],
+  "mode": "strict",
+  "projectRoot": "D:\\project\\WordQuest",
+  "schemaVersion": 1,
+  "summary": {
+    "errors": 2,
+    "total": 2,
+    "unresolved": 1,
+    "violations": 1,
+    "warnings": 0
+  }
+}

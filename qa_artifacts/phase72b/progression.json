@@ -1,0 +1,269 @@
+{
+  "browser": "155.0.4283.45",
+  "results": [
+    {
+      "test": "progression-answer",
+      "word": "music",
+      "scene": "Gold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nPlayer attacks!\n\n-4 DMG\n\nSlime\nHP 14/18\nATK 4",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "book",
+      "scene": "Gold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 0\n\nPlayer attacks!\n\n-4 DMG\n\nSlime\nHP 10/18\nATK 4",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "courage",
+      "scene": "Gold 20\nFloor 1\nShop 0/5\nBoss 0/20\nWord Mage\nHP 32/32\nShield 3\n\nPlayer attacks!\n\n-8 DMG\n\nSlime\nHP 2/18\nATK 4",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "effect_shield_block",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "water",
+      "scene": "Gold 27\nFloor 2\nShop 1/5\nBoss 1/20\nWord Mage\nHP 32/32\nShield 5\n\nSlime defeated!\n\nDEFEATED\n\nWater +2 SHD\n\nSlime\nHP 0/18\nATK 4",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "effect_shield_block",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_slime_defeat",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "effect_water",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "choose",
+      "scene": "Gold 27\nFloor 2\nShop 1/5\nBoss 1/20\nWord Mage\nHP 32/32\nShield 5\n\nPlayer attacks!\n\n-6 DMG\n\nGoblin\nHP 16/22\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_goblin_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "apple",
+      "scene": "Gold 27\nFloor 2\nShop 1/5\nBoss 1/20\nWord Mage\nHP 32/32\nShield 5\n\nPlayer attacks!\n\n-4 DMG\n\nGoblin\nHP 12/22\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_goblin_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "apple",
+      "scene": "Gold 27\nFloor 2\nShop 1/5\nBoss 1/20\nWord Mage\nHP 32/32\nShield 5\n\nPlayer attacks!\n\n-4 DMG\n\nGoblin\nHP 8/22\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_goblin_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "memory",
+      "scene": "Gold 27\nFloor 2\nShop 1/5\nBoss 1/20\nWord Mage\nHP 32/32\nShield 5\n\nPlayer attacks!\n\n-6 DMG\n\nGoblin\nHP 2/22\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_goblin_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "ancient",
+      "scene": "Gold 34\nFloor 3\nShop 2/5\nBoss 2/20\nWord Mage\nHP 32/32\nShield 5\n\nGoblin defeated!\n\nDEFEATED\n\nGoblin\nHP 0/22\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_goblin_defeat",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "forest",
+      "scene": "Gold 34\nFloor 3\nShop 2/5\nBoss 2/20\nWord Mage\nHP 32/32\nShield 5\n\nPlayer attacks!\n\n-6 DMG\n\nEarth weakens attack\n\nBat\nHP 14/20\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_bat_hit",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "effect_earth",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "market",
+      "scene": "Gold 34\nFloor 3\nShop 2/5\nBoss 2/20\nWord Mage\nHP 32/32\nShield 5\n\nPlayer attacks!\n\n-5 DMG\n\nBat\nHP 9/20\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_bat_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "market",
+      "scene": "Gold 34\nFloor 3\nShop 2/5\nBoss 2/20\nWord Mage\nHP 32/32\nShield 5\n\nPlayer attacks!\n\n-5 DMG\n\nBat\nHP 4/20\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_bat_hit",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "progression-answer",
+      "word": "flame",
+      "scene": "Gold 41\nFloor 4\nShop 3/5\nBoss 3/20\nWord Mage\nHP 32/32\nShield 5\n\nBat defeated!\n\nDEFEATED\n\nFire +2 DMG\n\nBat\nHP 0/20\nATK 5",
+      "animations": [
+        {
+          "id": "player_word_mage_cast_attack",
+          "state": "playing",
+          "frame": "0"
+        },
+        {
+          "id": "monster_bat_defeat",
+          "state": "idle",
+          "frame": "0"
+        },
+        {
+          "id": "effect_fire",
+          "state": "playing",
+          "frame": "0"
+        }
+      ]
+    },
+    {
+      "test": "ordinary-progression-unmapped-wolf",
+      "scene": "Gold 41\nFloor 4\nShop 3/5\nBoss 3/20\nWord Mage\nHP 32/32\nShield 5\n\nChoose your move.\n\n🐺\nWolf\nHP 22/22\nATK 5"
+    }
+  ],
+  "errors": [
+    {
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": {
+        "url": "http://127.0.0.1:5174/favicon.ico",
+        "line": 0,
+        "column": 0,
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "expectedAssetFailure": false
+    }
+  ],
+  "badResponses": []
+}

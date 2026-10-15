@@ -4,6 +4,13 @@ This file records accepted project decisions. Update it when architecture, scope
 
 ## Decision Log
 
+### 2026-10-14: Dungeon Prototype Uses Native Non-Pausing Details And Scoped Natural Scrolling
+
+- Decision: Phase 72B composes existing actor/effect components into one scene, keeps one timer next to the quiz, and puts secondary battle information inside a native details disclosure. Opening/closing details has no game-state or pause callback. Pause/Abandon/Sound and answer/result actions retain their existing handlers and availability.
+- Scope: Only Dungeon presentation and scoped CSS; natural vertical scrolling prevents content clipping on narrow/short viewports. Existing game UI screen spec and hierarchy guide remain the design authority. Event layout remains outside the prototype treatment.
+- Status: Implemented prototype; technical evidence in `qa_artifacts/phase72b/REPORT.md`. Owner visual acceptance is pending; this does not authorize Phase 72C or release.
+- Review follow-up (2026-10-15): Technical review passed without runtime corrections. The owner separately requested commit/push of this snapshot; that authorization does not complete the visual/playtest gate or authorize Phase 72C. Existing deployment configuration is unchanged, and post-push production verification is not claimed here.
+
 ### 2026-08-16: Dungeon Background Is A Local Decorative Stage Layer
 
 - Decision: The Dungeon background may render only as a pointer-free layer behind encounter-intro and active non-event battle stages. Existing HTML quiz, status, log, QA, and result surfaces remain authoritative above a readability overlay, while the caller's prior stage styling remains the complete load-failure fallback.
@@ -1551,3 +1558,12 @@ This file records accepted project decisions. Update it when architecture, scope
 - Decision: Promote the validated `redesign` history to `main` by fast-forward and use `main` as the authoritative branch for future development and Vercel deployment.
 - Reason: The redesign branch contains the complete reviewed runtime-presentation and release-candidate history, while fast-forward promotion preserves every commit without force push or a merge-only divergence.
 - Status: Accepted
+
+### 2026-10-13: Plan A Dungeon-First Game UI Redesign
+
+- Decision: Record the owner's feedback about excessive panels/buttons as the basis for Phase 72A planning. Establish a shared actor scene, compact decision information, and consolidated resolved feedback as the prototype direction. Validate Dungeon before expanding to other screens.
+- Scope: Planning is accepted; implementation phases 72B-72H have not started. Phase 71K's prior recommendation is deferred, not marked complete. Keep using the Phase 71J feedback structure for future evidence.
+- Constraints: Reuse existing assets, animation metadata, and authoritative game handlers. No gameplay/save/economy/timer changes, new dependencies/art, automatic submission/progression, dormant player animations, or expanded frame/background surfaces. Menu and navigation changes must preserve current access and state behavior.
+- Reason: A technical regression pass does not establish game feel. A focused prototype and owner/playtester evidence make the direction reviewable before a multi-screen redesign.
+- Documentation: `GAME_UI_REDESIGN_PLAN.md`, `GAME_UI_SCREEN_SPEC.md`, and `GAME_UI_QA_PLAN.md` extend the maintained `UI_HIERARCHY_GUIDE.md`; exact prototype measurements and visual tuning remain to be tested.
+- Status: Accepted for planning; runtime implementation pending.

@@ -1,0 +1,13 @@
+const {chromium}=require('C:/Users/Famicon/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');const fs=require('node:fs/promises');const assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({headless:true,channel:'msedge'});const page=await browser.newPage({viewport:{width:390,height:667}});const results=[];const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+try {await page.goto('http://127.0.0.1:5174');for(const name of ['Deck','Training','Home']) {await page.getByRole('button',{name:new RegExp(name+'$')}).first().click();results.push({screen:name,overflow:await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)});}
+await page.getByRole('button',{name:'Start Adventure',exact:true}).click();await page.getByRole('button',{name:'Start Battle',exact:true}).click();
+await page.locator('.dungeon-details > summary').click();await page.locator('summary').filter({hasText:'QA Helper'}).click();await page.getByRole('button',{name:'Trigger Event',exact:true}).click();
+assert.equal(await page.locator('[data-battle-background-state="disabled"]').count(),1);assert.equal(await page.locator('.dungeon-prototype').count(),0);
+const energy=page.locator('details').filter({has:page.locator('summary').filter({hasText:'Word Energy'})}).last();assert.equal(await energy.getAttribute('open'),null);
+results.push({test:'event-existing-layout-helper-setup',overflow:await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)});await page.screenshot({path:'qa_artifacts/phase72b/event-smoke-390.png',fullPage:true});
+await page.locator('summary').filter({hasText:'QA Helper'}).click();await page.getByRole('button',{name:'Start Boss Test',exact:true}).click();await page.getByRole('button',{name:'Start Boss Battle',exact:true}).click();
+results.push({test:'boss-essential-stats-helper-setup',scene:await page.locator('.dungeon-scene').innerText(),overflow:await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth)});await page.screenshot({path:'qa_artifacts/phase72b/boss-smoke-390.png',fullPage:true});
+await page.getByRole('button',{name:'Pause',exact:true}).click();await page.getByRole('button',{name:'Abandon Run',exact:true}).last().click();await page.getByRole('button',{name:'Continue Run',exact:true}).click();assert.equal(await page.getByRole('button',{name:'Resume',exact:true}).isVisible(),true);await page.getByRole('button',{name:'Resume',exact:true}).click();
+results.push({test:'pause-abandon-cancel-resume',passed:true});
+}finally{await fs.writeFile('qa_artifacts/phase72b/smoke.json',JSON.stringify({results,errors},null,2));await browser.close();}console.log(results);})().catch(e=>{console.error(e);process.exitCode=1});

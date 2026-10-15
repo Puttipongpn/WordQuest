@@ -2775,6 +2775,8 @@ export function Dungeon({
     return [];
   })();
 
+  const DetailsContainer = isEventEncounter ? "aside" : "details";
+
   return (
     <ScreenShell
       eyebrow="Dungeon"
@@ -2935,7 +2937,7 @@ export function Dungeon({
         </CardPanel>
       ) : (
       <div
-        className={`grid gap-2 sm:gap-3 xl:h-full xl:min-h-0 ${
+        className={`${!isEventEncounter ? "dungeon-prototype" : ""} grid gap-2 sm:gap-3 xl:h-full xl:min-h-0 ${
           isActiveAnswering
             ? "xl:grid-cols-[minmax(0,1fr)_220px] 2xl:grid-cols-[minmax(0,1fr)_240px]"
             : "xl:grid-cols-[minmax(0,1fr)_260px] 2xl:grid-cols-[minmax(0,1fr)_280px]"
@@ -2986,7 +2988,7 @@ export function Dungeon({
               as="section"
               asset={dungeonBattleBackgroundAsset}
               enabled={!isEventEncounter}
-              className={`relative overflow-hidden rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] sm:p-3 ${encounterStageClass} ${battleStageMotionClass}`}
+              className={`${!isEventEncounter ? "dungeon-scene-surface" : ""} relative overflow-hidden rounded-2xl border-2 p-2 shadow-[inset_0_0_28px_rgba(0,0,0,0.2)] sm:p-3 ${encounterStageClass} ${battleStageMotionClass}`}
             >
               <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-white/10 to-transparent" />
               {isEventEncounter ? (
@@ -3045,20 +3047,19 @@ export function Dungeon({
                   </div>
                 </div>
               ) : (
-                <div className="relative grid gap-2 md:grid-cols-[minmax(0,0.95fr)_minmax(6.5rem,0.38fr)_minmax(0,1fr)] md:items-stretch">
-                  <div
-                    className={`rounded-2xl border p-2 transition sm:p-3 ${
-                      playerTookHit
-                        ? "damage-shake border-red-200/70 bg-red-800/45 shadow-[0_0_24px_rgba(248,113,113,0.28)]"
-                        : "border-sky-100/15 bg-sky-950/25"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
+                <div className="dungeon-scene">
+                  <div className="dungeon-scene-progress">
+                    <span><StaticUiIcon asset={uiIconAssets.gold} className="mr-1 size-4" />Gold {runGold}</span>
+                    <span>Floor {runProgress.currentFloor}</span>
+                    <span>Shop {runProgress.monstersDefeated}/{runProgress.nextShopAt}</span>
+                    <span>Boss {hasCompletedBoss ? "Done" : isBossEncounter ? "Active" : isBossAvailable ? "Ready" : `${runProgress.monstersDefeated}/${BOSS_MONSTER_REQUIREMENT}`}</span>
+                  </div>
+                  <div className={`dungeon-actor dungeon-hero ${playerTookHit ? "damage-shake" : ""}`}>
                       <div className="relative shrink-0">
                         <SpritesheetAnimation
                           alt="Word Mage"
                           animation={playerBattleAnimation?.asset}
-                          className="size-14 rounded-2xl border-4 border-sky-200/35 bg-sky-100 text-lg font-black text-sky-950 shadow-lg sm:size-16"
+                          className="dungeon-actor-sprite text-lg font-black text-sky-100"
                           fallback="WQ"
                           fallbackAsset={playerIdleAsset}
                           key={`player-${playerBattleAnimation?.playbackId ?? "idle"}`}
@@ -3099,101 +3100,19 @@ export function Dungeon({
                           </span>
                         )}
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          <Badge tone="sky">Word Hero</Badge>
-                          <Badge tone="amber">
-                            <StaticUiIcon
-                              asset={uiIconAssets.gold}
-                              className="mr-1 size-3.5"
-                            />
-                            Gold {runGold}
-                          </Badge>
-                        </div>
-                        <div className="mt-1 flex items-center justify-between gap-2 text-sm font-black text-red-50">
-                          <span className="flex items-center gap-1">
-                            <StaticUiIcon
-                              asset={uiIconAssets.hp}
-                              className="size-4"
-                            />
-                            HP
-                          </span>
-                          <span>{playerHp} / {PLAYER_MAX_HP}</span>
-                        </div>
-                        <ProgressBar
-                          value={playerHp}
-                          max={PLAYER_MAX_HP}
-                          tone="red"
-                          label="Player HP"
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
-                      <div
-                        className={`rounded-xl border px-2 py-1 transition ${
-                          shieldBlockedHit
-                            ? "shield-pulse border-sky-200/70 bg-sky-700/35"
-                            : "border-sky-100/15 bg-black/20"
-                        }`}
-                      >
-                        <p className="flex items-center justify-center gap-1 text-[10px] font-black uppercase text-sky-100/70">
-                          <StaticUiIcon
-                            asset={uiIconAssets.shield}
-                            className="size-3.5"
-                          />
-                          <span>Shield</span>
-                        </p>
-                        <p className="text-base font-black text-sky-50">{shield}</p>
-                      </div>
-                      <div className="rounded-xl border border-stone-100/15 bg-black/20 px-2 py-1">
-                        <p className="text-[10px] font-black uppercase text-stone-100/70">Floor</p>
-                        <p className="text-base font-black text-stone-50">{runProgress.currentFloor}</p>
-                      </div>
-                      <div className="rounded-xl border border-emerald-100/15 bg-black/20 px-2 py-1">
-                        <p className="text-[10px] font-black uppercase text-emerald-100/70">Progress</p>
-                        <p className="text-sm font-black text-emerald-50">
-                          {runProgress.monstersDefeated}/{runProgress.nextShopAt}
-                        </p>
-                      </div>
+
+                    <div className="dungeon-actor-status">
+                      <h3>Word Mage</h3>
+                      <div className="flex justify-between gap-2"><span>HP {playerHp}/{PLAYER_MAX_HP}</span><span className={shieldBlockedHit ? "shield-pulse" : ""}>Shield {shield}</span></div>
+                      <ProgressBar value={playerHp} max={PLAYER_MAX_HP} tone="red" label="Player HP" />
                     </div>
                   </div>
-
-                  <div className="flex min-h-20 flex-col items-center justify-center rounded-2xl border border-amber-100/15 bg-black/25 px-2 py-2 text-center">
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-100/65">
-                      Battle Lane
-                    </p>
-                    <p className="attack-pop mt-1 rounded-full border border-amber-200 bg-amber-100 px-3 py-1 text-sm font-black text-amber-950 shadow">
-                      {stageFeedbackText}
-                    </p>
-                    <p className="mt-1 text-2xl font-black leading-none text-amber-100">
-                      VS
-                    </p>
-                    {(floatingCombatText || elementCombatText) && (
-                      <div className="mt-1 flex max-w-full flex-wrap justify-center gap-1">
-                        {floatingCombatText && (
-                          <span className="attack-pop rounded-full border border-emerald-200 bg-emerald-100 px-2 py-0.5 text-[11px] font-black text-emerald-950 shadow">
-                            {floatingCombatText}
-                          </span>
-                        )}
-                        {elementCombatText && (
-                          <span className="attack-pop rounded-full border border-violet-200 bg-violet-100 px-2 py-0.5 text-[11px] font-black text-violet-950 shadow">
-                            {elementCombatText}
-                          </span>
-                        )}
-                      </div>
-                    )}
+                  <div className="dungeon-scene-feedback" aria-live="polite">
+                    <p>{stageFeedbackText}</p>
+                    {floatingCombatText && <p className="attack-pop text-emerald-200">{floatingCombatText}</p>}
+                    {elementCombatText && <p className="attack-pop text-violet-200">{elementCombatText}</p>}
                   </div>
-
-                  <div
-                    className={`rounded-2xl border p-2 transition sm:p-3 ${
-                      isBossEncounter
-                        ? "border-red-200/45 bg-red-950/30 shadow-[0_0_32px_rgba(248,113,113,0.18)]"
-                        : encounterType === "elite"
-                          ? "border-amber-200/45 bg-amber-950/25 shadow-[0_0_28px_rgba(251,191,36,0.16)]"
-                          : "border-emerald-100/15 bg-emerald-950/20"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
+                  <div className="dungeon-actor dungeon-enemy">
                       <div className="relative shrink-0">
                         <SpritesheetAnimation
                           alt={currentEncounter.name}
@@ -3203,7 +3122,7 @@ export function Dungeon({
                               ? enemyBattleAnimation.asset
                               : undefined
                           }
-                          className={`grid size-14 place-items-center rounded-2xl border-4 text-4xl shadow-lg transition sm:size-16 ${encounterPortraitClass} ${
+                          className={`dungeon-actor-sprite text-4xl transition ${
                             encounterTookHit
                               ? "damage-shake scale-105 ring-4 ring-red-300/45"
                               : encounterResolved
@@ -3252,71 +3171,13 @@ export function Dungeon({
                           </span>
                         )}
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          <Badge
-                            tone={
-                              isBossEncounter
-                                ? "red"
-                                : encounterType === "elite"
-                                  ? "amber"
-                                  : "emerald"
-                            }
-                          >
-                            {isBossEncounter ? "BOSS" : encounterLabel}
-                          </Badge>
-                          <Badge tone="red">ATK {currentEncounter.attack}</Badge>
-                          {isBossEncounter && getBossTitle(currentEncounter) && (
-                            <Badge tone="purple">
-                              {getBossTitle(currentEncounter)}
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="mt-1 flex items-center justify-between gap-3">
-                          <h3 className="truncate text-xl font-black leading-none text-amber-50 drop-shadow sm:text-2xl">
-                            {currentEncounter.name}
-                          </h3>
-                          <span className="shrink-0 text-sm font-black text-amber-100">
-                            {monsterHp} / {currentEncounter.maxHp}
-                          </span>
-                        </div>
-                        <ProgressBar
-                          value={monsterHp}
-                          max={currentEncounter.maxHp}
-                          label={`${isBossEncounter ? "BOSS " : ""}${currentEncounter.name} HP`}
-                          tone={
-                            isBossEncounter || encounterType === "elite"
-                              ? "red"
-                              : "emerald"
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      <Badge
-                        tone={
-                          hasCompletedBoss
-                            ? "emerald"
-                            : isBossAvailable || isBossEncounter
-                              ? "red"
-                              : "slate"
-                        }
-                      >
-                        Boss{" "}
-                        {hasCompletedBoss
-                          ? "Done"
-                          : isBossEncounter
-                            ? "Active"
-                            : isBossAvailable
-                              ? "Ready"
-                              : `${runProgress.monstersDefeated}/${BOSS_MONSTER_REQUIREMENT}`}
-                      </Badge>
-                      {isBossEncounter && (
-                        <Badge tone="red">{selectedBoss.specialMoveName}</Badge>
-                      )}
-                      {encounterType === "elite" && (
-                        <Badge tone="amber">Elite +{ELITE_GOLD_BONUS} gold</Badge>
-                      )}
+
+                    <div className="dungeon-actor-status">
+                      <h3>{currentEncounter.name}</h3>
+                      <div className="flex justify-between gap-2"><span>HP {monsterHp}/{currentEncounter.maxHp}</span><span>ATK {currentEncounter.attack}</span></div>
+                      <ProgressBar value={monsterHp} max={currentEncounter.maxHp} tone={isBossEncounter || encounterType === "elite" ? "red" : "emerald"} label={`${currentEncounter.name} HP`} />
+                      {isBossEncounter && <p className="mt-1 text-xs">{getBossTitle(currentEncounter)} · {selectedBoss.specialMoveName}</p>}
+                      {encounterType === "elite" && <p className="mt-1 text-xs">Elite +{ELITE_GOLD_BONUS} gold</p>}
                     </div>
                   </div>
                 </div>
@@ -3331,7 +3192,7 @@ export function Dungeon({
 
             {!isEventEncounter && (
               <section
-                className={`rounded-2xl border-2 p-1.5 xl:hidden ${
+                className={`dungeon-question-timer rounded-2xl border-2 p-1.5 ${
                   timeRemaining === 0
                     ? "border-red-400 bg-red-100 text-red-950"
                     : isTimerLow && isTimerRunning
@@ -3347,7 +3208,7 @@ export function Dungeon({
                         {timerStateLabel}
                       </Badge>
                     </div>
-                    <p className="mt-1 truncate text-xs font-black text-amber-900/75">
+                    <p className="mt-1 text-sm font-bold leading-6 text-amber-900/75">
                       {getMiniGameInstruction(miniGameType)}
                     </p>
                   </div>
@@ -3369,7 +3230,7 @@ export function Dungeon({
                     value={timeRemaining}
                     max={miniGameTimeLimit}
                     tone={isTimerLow && isTimerRunning ? "red" : "amber"}
-                    label="Mobile battle timer"
+                    label="Battle timer"
                   />
                 </div>
               </section>
@@ -3420,7 +3281,7 @@ export function Dungeon({
               </div>
             </section>
 
-            <section className="flex min-h-0 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-1 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)] sm:p-2 xl:flex-1">
+            <section className={`${!isEventEncounter ? "dungeon-quiz" : ""} flex min-h-0 flex-col rounded-3xl border-2 border-amber-300/30 bg-gradient-to-br from-amber-50 via-orange-50 to-emerald-50 p-1 text-amber-950 shadow-[0_8px_0_rgba(120,53,15,0.2)] sm:p-2 xl:flex-1`}>
               <div className="min-h-[18rem] rounded-2xl border-2 border-amber-900/10 bg-white/80 p-1.5 shadow-inner sm:p-2 xl:min-h-0 xl:flex-1">
                 {battleStatus === "run-complete" ||
                 battleStatus === "run-failed" ? (
@@ -3582,61 +3443,11 @@ export function Dungeon({
           )}
         </CardPanel>
 
-        <aside className="grid min-h-0 gap-3 lg:grid-cols-2 xl:block xl:h-full xl:max-h-full xl:space-y-3 xl:overflow-y-auto xl:overscroll-contain xl:pr-1">
-          {!isEventEncounter && (
-            <section
-              className={`hidden rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] xl:block ${
-                timeRemaining === 0
-                  ? "border-red-400 bg-red-100"
-                  : isTimerLow && isTimerRunning
-                    ? "hit-flash border-red-400 bg-red-50 motion-safe:animate-pulse"
-                    : "border-amber-800/30 bg-gradient-to-br from-amber-50 to-stone-100"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <Badge tone="emerald">{formatMiniGameName(miniGameType)}</Badge>
-                  <p className="mt-2 text-sm font-black leading-5 text-amber-950">
-                    {getMiniGameInstruction(miniGameType)}
-                  </p>
-                </div>
-                <Badge tone={isTimerLow && isTimerRunning ? "red" : "amber"}>
-                  {timerStateLabel}
-                </Badge>
-              </div>
-              <div className="mt-3 flex items-end justify-between gap-3">
-                <div>
-                  <p className="text-xs font-extrabold uppercase text-amber-800/70">
-                    Timer
-                  </p>
-                  <p
-                    className={`text-3xl font-black leading-none ${
-                      isTimerLow && isTimerRunning
-                        ? "attack-pop text-red-700"
-                        : "text-amber-950"
-                    }`}
-                  >
-                    {timeRemaining}s
-                  </p>
-                </div>
-                <p className="text-sm font-black text-amber-900/60">
-                  / {miniGameTimeLimit}s
-                </p>
-              </div>
-              <div className="mt-2">
-                <ProgressBar
-                  value={timeRemaining}
-                  max={miniGameTimeLimit}
-                  tone={isTimerLow && isTimerRunning ? "red" : "amber"}
-                  label="Battle timer"
-                />
-              </div>
-            </section>
-          )}
-
+        <DetailsContainer className={isEventEncounter ? "grid min-h-0 gap-3 lg:grid-cols-2 xl:block xl:h-full xl:max-h-full xl:space-y-3 xl:overflow-y-auto xl:overscroll-contain xl:pr-1" : "dungeon-details"}>
+          {!isEventEncounter && <summary>รายละเอียดการต่อสู้ <span>Energy · Log · Learning Info — ไม่หยุดเวลา</span></summary>}
           <details
             className="rounded-xl border-2 border-emerald-800/20 bg-emerald-50/95 p-2 shadow-[0_5px_0_rgba(6,95,70,0.08)]"
-            open={!isActiveAnswering && !isEventEncounter}
+            open={isEventEncounter ? false : undefined}
           >
             <summary className="flex cursor-pointer flex-wrap items-center gap-2">
               <Badge tone="emerald">Word Energy</Badge>
@@ -3655,7 +3466,7 @@ export function Dungeon({
 
           <details
             className={`rounded-2xl border-2 p-3 shadow-[0_8px_0_rgba(120,53,15,0.14)] ${battleFeedbackClass}`}
-            open={!isActiveAnswering && battleLog.tone !== "neutral"}
+            open={isEventEncounter ? !isActiveAnswering && battleLog.tone !== "neutral" : undefined}
           >
             <summary className="flex cursor-pointer flex-wrap items-center gap-2">
               <span className="text-3xl" aria-hidden="true">
@@ -3674,7 +3485,7 @@ export function Dungeon({
                 {battleFeedbackLabel}
               </Badge>
             </summary>
-            <p className="mt-2 line-clamp-3 text-sm font-medium text-amber-950/80">
+            <p className={`mt-2 text-sm font-medium text-amber-950/80 ${isEventEncounter ? "line-clamp-3" : ""}`}>
               {battleLog.message}
             </p>
 
@@ -3705,7 +3516,7 @@ export function Dungeon({
           {canShowTriggeredCardDetails && (
           <details
             className="result-pop rounded-2xl border-2 border-amber-800/30 bg-gradient-to-br from-amber-50 to-orange-100 p-3 shadow-[0_10px_0_rgba(120,53,15,0.16)]"
-            open={!isActiveAnswering}
+            open={isEventEncounter ? !isActiveAnswering : undefined}
           >
             <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-2">
               <span className="flex flex-wrap gap-2">
@@ -3768,7 +3579,7 @@ export function Dungeon({
               <p className="text-xs font-extrabold uppercase text-amber-800/70">
                 Final trigger result
               </p>
-              <p className="mt-1 line-clamp-2 font-black text-amber-950">
+              <p className="mt-1 font-black text-amber-950">
                 {battleLog.effectsSummary ?? "None yet"}
               </p>
               {(battleLog.damageDealt ?? 0) > 0 && (
@@ -3830,7 +3641,7 @@ export function Dungeon({
             />
           )}
 
-        </aside>
+        </DetailsContainer>
       </div>
       )}
     </ScreenShell>

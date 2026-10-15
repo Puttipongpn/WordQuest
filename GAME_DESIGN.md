@@ -10,7 +10,15 @@ The project prioritizes a playable learning loop before final art, balancing, or
 
 The current prototype uses a cozy fantasy dungeon learning game style.
 
-Current presentation rules:
+### Current Baseline And Planned Direction (2026-10-13)
+
+Phase 71F.1-71F.10 integrated approved sprites, controlled battle animations/effects, UI icons, limited card frames, and the Dungeon battle background. Phase 71J is the latest runtime checkpoint. Earlier placeholder-only and phase-specific layout statements below describe historical scopes; they do not require removing already integrated assets. See `RUNTIME_ASSET_INVENTORY.md` and `RUNTIME_INTEGRATION_MAPPING.md` for current wiring.
+
+Phase 72A plans a game-first presentation in response to owner feedback: one shared actor scene, compact essential HUD, a focused vocabulary interaction, and one resolved-feedback/action area. Optional logs, trigger breakdowns, and guidance move to contextual details while decision-relevant card stats and anti-hint rules remain intact. Mobile prioritizes answer controls over scene height. The canonical Word Mage fantasy and all gameplay/save/timer/progression rules remain unchanged.
+
+`GAME_UI_REDESIGN_PLAN.md` defines staged work, `GAME_UI_SCREEN_SPEC.md` defines target composition and state behavior, and `GAME_UI_QA_PLAN.md` defines acceptance. These are planning targets, not claims of implemented UI. No automatic answer/continuation, new asset integration, dormant animation wiring, or expansion of card-frame/background surfaces is included. Changes to access paths or Pause behavior require parity with current handlers.
+
+Historical presentation rules and phase notes:
 
 - Use CSS, Tailwind, emoji, and simple placeholder icons only.
 - Make the app feel like a fantasy deckbuilder game before adding final art.
